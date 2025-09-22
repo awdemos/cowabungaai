@@ -1,10 +1,16 @@
 # Quick Start Guide: CowabungaAI Maintenance
 
-**Branch**: `001-update-the-feature` | **Date**: 2025-09-21
+**Branch**: `001-update-the-feature` | **Date**: 2025-09-22
 
 ## Overview
 
 This guide provides quick start procedures for maintaining CowabungaAI, a production-ready AI platform. The focus is on system health monitoring, dependency updates, bug fixes, and operational maintenance rather than new feature development.
+
+**Recent Improvements Completed:**
+- ✅ Default model upgraded to Qwen2.5-Coder-7B for enhanced performance
+- ✅ Build system modernized with improved error handling
+- ✅ Complete rebranding from LeapfrogAI to CowabungaAI
+- ✅ Enhanced download scripts using huggingface_hub library
 
 ## Prerequisites
 
@@ -18,8 +24,8 @@ This guide provides quick start procedures for maintaining CowabungaAI, a produc
 ### Development Environment
 ```bash
 # Clone the repository (already exists for maintainers)
-git clone https://github.com/defenseunicorns/leapfrogai.git
-cd leapfrogai
+git clone https://github.com/awdemos/cowabungaai.git
+cd cowabungaai
 
 # Create virtual environment
 python -m venv venv
@@ -39,8 +45,8 @@ pip install -r requirements-dev.txt
 python scripts/maintenance/health_check.py
 
 # Check individual component health
-python scripts/maintenance/health_check.py --component leapfrogai_api
-python scripts/maintenance/health_check.py --component leapfrogai_ui
+python scripts/maintenance/health_check.py --component cowabungaai_api
+python scripts/maintenance/health_check.py --component cowabungaai_ui
 
 # Generate health report
 python scripts/maintenance/health_check.py --report health-report.json
@@ -55,7 +61,7 @@ python scripts/maintenance/dependency_audit.py
 python scripts/maintenance/dependency_audit.py --security
 
 # Focus on specific component
-python scripts/maintenance/dependency_audit.py --package leapfrogai_api
+python scripts/maintenance/dependency_audit.py --package cowabungaai_api
 ```
 
 #### TODO/FIXME Analysis
@@ -98,11 +104,11 @@ python scripts/maintenance/fix_issue.py --batch --risk low
 
 #### Complete Rebranding
 ```bash
-# Find remaining "leapfrogai" references
+# Find remaining branding references
 python scripts/maintenance/find_branding_issues.py
 
 # Update branding in specific component
-python scripts/maintenance/update_branding.py --component leapfrogai_api
+python scripts/maintenance/update_branding.py --component cowabungaai_api
 
 # Complete rebranding across all components
 python scripts/maintenance/update_branding.py --all
@@ -116,10 +122,10 @@ python scripts/maintenance/update_branding.py --all
 pytest
 
 # Run tests for specific component
-pytest src/leapfrogai_api/tests/
+pytest src/cowabungaai_api/tests/
 
 # Run with coverage
-pytest --cov=src/leapfrogai_api --cov-report=html
+pytest --cov=src/cowabungaai_api --cov-report=html
 ```
 
 #### Integration Tests
@@ -307,7 +313,7 @@ python scripts/maintenance/monitoring.py --setup
 #### Health Check Failures
 ```bash
 # Debug health check issues
-python scripts/maintenance/health_check.py --debug --component leapfrogai_api
+python scripts/maintenance/health_check.py --debug --component cowabungaai_api
 
 # Check component dependencies
 python scripts/maintenance/health_check.py --dependencies
@@ -322,7 +328,7 @@ python scripts/maintenance/diagnostics.py --full
 python scripts/maintenance/resolve_conflicts.py
 
 # Check dependency tree
-python scripts/maintenance/dependency_tree.py --package leapfrogai_api
+python scripts/maintenance/dependency_tree.py --package cowabungaai_api
 
 # Clean dependency cache
 python scripts/maintenance/clean_cache.py --dependencies
