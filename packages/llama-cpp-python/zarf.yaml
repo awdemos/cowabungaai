@@ -42,21 +42,5 @@ components:
     images:
       - ghcr.io/defenseunicorns/leapfrogai/llama-cpp-python:###ZARF_PKG_TMPL_IMAGE_VERSION###
       - cgr.dev/chainguard/bash:latest
-    dataInjections:
-      - source: .model/
-        target:
-          namespace: leapfrogai
-          selector: app=lfai-llama-cpp-python
-          container: data-loader
-          path: /data/.model
-        compress: true
-    actions:
-      onCreate:
-        before:
-          # NOTE: This assumes python is installed and in $PATH and 'huggingface_hub[cli,hf_transfer]' has been installed
-          - cmd: python scripts/model_download.py
-            env:
-              - REPO_ID=Qwen/Qwen2.5-Coder-7B-Instruct-GGUF
-              - FILENAME=qwen2.5-coder-7b-instruct-q4_k_m.gguf
-              - REVISION=main
-              - SHA256_CHECKSUM=
+    # dataInjections disabled - model download will be handled separately
+    # actions disabled for now - model download will be handled separately
