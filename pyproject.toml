@@ -1,7 +1,7 @@
 [project]
-name = "leapfrogai"
+name = "cowabungaai"
 description = "OpenAI-like capabilities for secure, local, air-gapped systems."
-authors = [{ name = "LeapfrogAI Team", email = "ai@defenseunicorns.com" }]
+authors = [{ name = "CowabungaAI Team", email = "team@cowabungaai.com" }]
 
 # x-release-please-start-version
 version = "0.14.0"

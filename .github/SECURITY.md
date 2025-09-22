@@ -6,4 +6,4 @@ As the CowabungaAI has not yet reached v1.0.0, only the current latest minor rel
 
 ## Reporting a Vulnerability
 
-Please email `leapfrogai [@] defenseunicorns.com` to report a vulnerability for more details. If you are unable to disclose details via email, please let us know and we can coordinate alternate communications.
+Please report vulnerabilities through GitHub's security advisory feature or contact the maintainers directly through GitHub issues for more details.
