@@ -1,4 +1,4 @@
-![CowabungaAI](https://github.com/defenseunicorns/leapfrogai/raw/main/docs/imgs/leapfrogai.png)
+![CowabungaAI](./cowabungaai_logo.png)
 
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai/badge)](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai)
 [![Nightly Snapshot Tests](https://github.com/defenseunicorns/leapfrogai/actions/workflows/nightly-snapshot-release.yaml/badge.svg?branch=main)](https://github.com/defenseunicorns/leapfrogai/actions/workflows/nightly-snapshot-release.yaml)
