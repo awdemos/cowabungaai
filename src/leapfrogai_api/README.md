@@ -1,4 +1,4 @@
-# LeapfrogAI API
+# CowabungaAI API
 
 > [!IMPORTANT]
 > See the [API package documentation](../../packages/api/README.md) for general pre-requisites, dependent components, and package deployment instructions
@@ -13,7 +13,7 @@ This document is only applicable for spinning up the API in a local Python devel
 ### Running
 
 > [!IMPORTANT]
-> The following steps assume that you already have a deployed and accessible UDS Kubernetes cluster and LeapfrogAI. Please follow the steps within the [DEVELOPMENT.md](../../docs/DEVELOPMENT.md) for details.
+> The following steps assume that you already have a deployed and accessible UDS Kubernetes cluster and CowabungaAI. Please follow the steps within the [DEVELOPMENT.md](../../docs/DEVELOPMENT.md) for details.
 
 1. Install dependencies
 
@@ -59,7 +59,7 @@ See the [tests directory documentation](../../tests/README.md) for more details.
 
 ### Reranking Configuration
 
-The LeapfrogAI API includes a Retrieval Augmented Generation (RAG) pipeline for enhanced question answering. This section details how to configure its reranking options. All RAG configurations are managed through the `/leapfrogai/v1/rag/configure` API endpoint.
+The CowabungaAI API includes a Retrieval Augmented Generation (RAG) pipeline for enhanced question answering. This section details how to configure its reranking options. All RAG configurations are managed through the `/leapfrogai/v1/rag/configure` API endpoint.
 
 #### 1. Enabling/Disabling Reranking
 

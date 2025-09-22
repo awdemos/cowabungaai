@@ -1,4 +1,4 @@
-# LeapfrogAI UI
+# CowabungaAI UI
 
 > [!IMPORTANT]
 > See the [UI package documentation](../../packages/UI/README.md) for general pre-requisites, dependent components, and package deployment instructions
@@ -46,22 +46,22 @@ You can preview the production build with `npm run preview`.
 
 #### API
 
-It is recommended to run LeapfrogAI with UDS, but if you want to run the UI locally (on localhost, e.g. for local development),
+It is recommended to run CowabungaAI with UDS, but if you want to run the UI locally (on localhost, e.g. for local development),
 you can either:
 
-1. Connect to a UDS deployed version of the LeapfrogAI API and Supabase
+1. Connect to a UDS deployed version of the CowabungaAI API and Supabase
 
    **OR**
 
 2. Connect to OpenAI and UDS deployed Supabase or locally running Supabase.
 
-**NOTE:** most data CRUD operations utilize LeapfrogAI API or OpenAI, but some functionality still depends on a direct connection with Supabase.
+**NOTE:** most data CRUD operations utilize CowabungaAI API or OpenAI, but some functionality still depends on a direct connection with Supabase.
 
-If running the UI locally and utilizing LeapfrogAI API, **you must use the same Supabase instance that the LeapfrogAI API is utilizing**.
+If running the UI locally and utilizing CowabungaAI API, **you must use the same Supabase instance that the CowabungaAI API is utilizing**.
 
 #### Cluster
 
-1. Connect the UI to a UDS deployed version of Supabase and LeapfrogAI API.
+1. Connect the UI to a UDS deployed version of Supabase and CowabungaAI API.
    Ensure these env variables are set appropriately in your .env file:
 
 ```bash
@@ -101,7 +101,7 @@ Stop Supabase:
 
 `npm run supabase:stop`
 
-**WARNING:** if switching the application from utilizing LeapfrogAI API to OpenAI or vice versa, and you encounter this error: `Server responded with status code 431. See https://vitejs.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.`, then you need to clear your browser cookies.
+**WARNING:** if switching the application from utilizing CowabungaAI API to OpenAI or vice versa, and you encounter this error: `Server responded with status code 431. See https://vitejs.dev/guide/troubleshooting.html#_431-request-header-fields-too-large.`, then you need to clear your browser cookies.
 
 #### Authentication
 
@@ -138,7 +138,7 @@ Set the following .env variables:
 ```bash
 DEFAULT_MODEL=gpt-3.5-turbo
 LEAPFROGAI_API_BASE_URL=https://api.openai.com
-# If specified, app will use OpenAI instead of LeapfrogAI
+# If specified, app will use OpenAI instead of CowabungaAI
 OPENAI_API_KEY=<your_openai_api_key>
 ```
 
@@ -156,7 +156,7 @@ PUBLIC_SUPABASE_ANON_KEY=<anon_key>
 
 We use Supabase for authentication and a database. Application specific data
 (ex. user profile images, application settings like feature flags, etc..) should be stored directly in Supabase and
-would not normally utilize the LeapfrogAI API for CRUD operations.
+would not normally utilize the CowabungaAI API for CRUD operations.
 
 ### Playwright End-to-End Tests
 

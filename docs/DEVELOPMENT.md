@@ -1,13 +1,13 @@
 # Development
 
 > [!IMPORTANT]
-> Please read the entirety of the root [README.md](../README.md) and the [LeapfrogAI documentation website](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) prior to reading this document. Also, please refer to the [CONTRIBUTING.md](../.github/CONTRIBUTING.md) for rules on contributing to the LeapfrogAI project.
+> Please read the entirety of the root [README.md](../README.md) and the [CowabungaAI documentation website](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) prior to reading this document. Also, please refer to the [CONTRIBUTING.md](../.github/CONTRIBUTING.md) for rules on contributing to the CowabungaAI project.
 
-The purpose of this document is to describe how to run a development loop on the LeapfrogAI tech stack. Specifics for each component are within the sub-directories identified in the root [README.md](../README.md).
+The purpose of this document is to describe how to run a development loop on the CowabungaAI tech stack. Specifics for each component are within the sub-directories identified in the root [README.md](../README.md).
 
 ## Local Development
 
-Please first see the pre-requisites listed on the LeapfrogAI documentation website's [Requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/), before going to each component's subdirectory README
+Please first see the pre-requisites listed on the CowabungaAI documentation website's [Requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/), before going to each component's subdirectory README
 
 ## PyEnv
 
@@ -66,13 +66,13 @@ Please refer to each Makefile for more arguments and details on what each target
 
 UDS tasks use the UDS CLI runner, and are defined in the root `tasks.yaml` file.
 
-Currently, the only tasks within the file are for checking the progress of the LeapfrogAI towards the `Made for UDS` packaging standards. To run the task verification task you must have a [UDS Kubernetes cluster](../packages/k3d-gpu/README.md) and LeapfrogAI (GPU or CPU) deployed. After deploying both major capabilities, you can execute the following:
+Currently, the only tasks within the file are for checking the progress of the CowabungaAI towards the `Made for UDS` packaging standards. To run the task verification task you must have a [UDS Kubernetes cluster](../packages/k3d-gpu/README.md) and CowabungaAI (GPU or CPU) deployed. After deploying both major capabilities, you can execute the following:
 
 ```bash
 uds run nightly-uds-badge-verification --no-progress
 ```
 
-You should get an output similar to this, depending on how many components of LeapfrogAI are actually deployed:
+You should get an output similar to this, depending on how many components of CowabungaAI are actually deployed:
 
 ```bash
   •  Running "Create Reports Directory"
@@ -112,7 +112,7 @@ UDS Capability Issues
 
 Be wary of `*config*.yaml` or `.env*` files that are in individual components of the stack. The component's README will usually tell the developer when to fill them out or supply environment variables to a script.
 
-For example, the LeapfrogAI API requires a `config.yaml` be supplied when spun up locally. Use the `config.example.yaml` as an example, and make sure the [ports chosen for applicable backends do not conflict on localhost](#port-conflicts).
+For example, the CowabungaAI API requires a `config.yaml` be supplied when spun up locally. Use the `config.example.yaml` as an example, and make sure the [ports chosen for applicable backends do not conflict on localhost](#port-conflicts).
 
 ## Package Development
 
@@ -251,7 +251,7 @@ REG_PORT=5001 ARCH=arm64 LOCAL_VERSION=dev FLAVOR=upstream make build-cpu
 
 ## Access
 
-All LeapfrogAI components exposed as `VirtualService`resources within a [UDS Kubernetes cluster](../packages/k3d-gpu/README.md) can be accessed without port-forwarding if [UDS Core Slim Dev](../packages/k3d-gpu/README.md) is installed with LeapfrogAI packages.
+All CowabungaAI components exposed as `VirtualService`resources within a [UDS Kubernetes cluster](../packages/k3d-gpu/README.md) can be accessed without port-forwarding if [UDS Core Slim Dev](../packages/k3d-gpu/README.md) is installed with CowabungaAI packages.
 
 For example, when developing the API and you need access to Supabase, you can point your locally running API to the in-cluster Supabase by setting the Supabase base URL to the in-cluster domain (https://supabase-kong.uds.dev).
 
@@ -266,11 +266,11 @@ Although not recommended, below are example endpoints for direct interaction wit
 - https://supabase-kong.uds.dev/auth/v1/* -> to access auth endpoints
 - https://supabase-kong.uds.dev/rest/v1/ -> for postgres
 
-We highly recommend using the published `supabase` packages, or interacting with Supabase via the LeapfrogAI API or UI. Go to https://leapfrogai-api.uds.dev/docs to see the exposed Supabase sub-component routes under the `leapfrogai` namespace / routes.
+We highly recommend using the published `supabase` packages, or interacting with Supabase via the CowabungaAI API or UI. Go to https://leapfrogai-api.uds.dev/docs to see the exposed Supabase sub-component routes under the `leapfrogai` namespace / routes.
 
 ### Backends
 
-The following sections discuss the nuances of developing on or with the LeapfrogAI model backends.
+The following sections discuss the nuances of developing on or with the CowabungaAI model backends.
 
 #### Locally
 
@@ -278,9 +278,9 @@ Backends can also be run locally as Python applications. See each model backend'
 
 #### Cluster
 
-The model backends are the only components within the LeapfrogAI stack that are not readily accessible via a `VirtualService`. These must be port-forwarded if a user wants to test a local deployment of the API against an in-cluster backend.
+The model backends are the only components within the CowabungaAI stack that are not readily accessible via a `VirtualService`. These must be port-forwarded if a user wants to test a local deployment of the API against an in-cluster backend.
 
-For example, the following bash script can be used to setup CPU RAG between a deployed UDS Kubernetes cluster and a locally running LeapfrogAI API:
+For example, the following bash script can be used to setup CPU RAG between a deployed UDS Kubernetes cluster and a locally running CowabungaAI API:
 
 ```bash
 #!/bin/bash

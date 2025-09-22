@@ -1,6 +1,6 @@
 apiVersion: v2
 name: leapfrogai-model
-description: "A LeapfrogAI compatible inferencing backend, vllm"
+description: "A CowabungaAI compatible inferencing backend, vllm"
 
 # A chart can be either an 'application' or a 'library' chart.
 #

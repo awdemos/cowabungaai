@@ -1,5 +1,5 @@
-## @section LeapfrogAI parameters
-## Parameters not defined in the upstream chart that are related to LeapfrogAI's specific configuration
+## @section CowabungaAI parameters
+## Parameters not defined in the upstream chart that are related to CowabungaAI's specific configuration
 leapfrogai:
   package:
     host: supabase-kong

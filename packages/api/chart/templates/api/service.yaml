@@ -4,7 +4,7 @@ metadata:
   name: {{ include "chart.fullname" . }}
   namespace: {{ .Release.Namespace | default "leapfrogai" }}
   annotations:
-    zarf.dev/connect-description: "Load the OpenAPI specification for the LeapfrogAI API"
+    zarf.dev/connect-description: "Load the OpenAPI specification for the CowabungaAI API"
     zarf.dev/connect-url: "/docs"
   labels:
     {{- include "chart.labels" . | nindent 4 }}

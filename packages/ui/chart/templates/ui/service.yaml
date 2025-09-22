@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace | default "leapfrogai" }}
   annotations:
     app: {{ include "chart.fullname" . }}
-    zarf.dev/connect-description: "Load the LeapfrogAI UI"
+    zarf.dev/connect-description: "Load the CowabungaAI UI"
     zarf.dev/connect-url: "/chat"
   labels:
     {{- include "chart.labels" . | nindent 4 }}

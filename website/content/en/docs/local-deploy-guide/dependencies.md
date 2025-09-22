@@ -4,9 +4,9 @@ type: docs
 weight: 2
 ---
 
-This documentation addresses the local deployment dependencies of LeapfrogAI, a self-hosted generative AI platform. LeapfrogAI extends the diverse capabilities and modalities of AI models to various environments, ranging from cloud-based deployments to servers with ingress and egress limitations. With LeapfrogAI, teams can deploy APIs aligned with OpenAI's API specifications, empowering teams to create and utilize tools compatible with nearly any model and code library available. Importantly, all operations take place locally, ensuring users can maintain the security of their information and sensitive data within their own environments
+This documentation addresses the local deployment dependencies of CowabungaAI, a self-hosted generative AI platform. CowabungaAI extends the diverse capabilities and modalities of AI models to various environments, ranging from cloud-based deployments to servers with ingress and egress limitations. With CowabungaAI, teams can deploy APIs aligned with OpenAI's API specifications, empowering teams to create and utilize tools compatible with nearly any model and code library available. Importantly, all operations take place locally, ensuring users can maintain the security of their information and sensitive data within their own environments
 
-Follow the outlined steps to ensure that your device is configured to execute LeapfrogAI workloads across local development scenarios. Please note that these instructions presume you have root access.
+Follow the outlined steps to ensure that your device is configured to execute CowabungaAI workloads across local development scenarios. Please note that these instructions presume you have root access.
 
 ### Host Dependencies
 
@@ -51,7 +51,7 @@ wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/$UDS_VE
 
 ## GPU Specific Instructions
 
-LeapfrogAI exclusively supports NVIDIA GPUs at this point in time. The following instructions are tailored for users utilizing an NVIDIA GPU.
+CowabungaAI exclusively supports NVIDIA GPUs at this point in time. The following instructions are tailored for users utilizing an NVIDIA GPU.
 
 If you are experiencing issues even after carefully following the instructions below, please refer to the [Developer Documentation](https://github.com/defenseunicorns/leapfrogai/tree/main/docs/DEVELOPMENT.md) troubleshooting section in the GitHub repository.
 
@@ -94,6 +94,6 @@ If you are experiencing issues even after carefully following the instructions b
   docker info | grep "Default Runtime"
   ```
 
-### Deploy LeapfrogAI
+### Deploy CowabungaAI
 
-- After ensuring that all system dependencies and requirements are fulfilled, refer to the Quick Start guide for comprehensive instructions on deploying LeapfrogAI within your local environment.
+- After ensuring that all system dependencies and requirements are fulfilled, refer to the Quick Start guide for comprehensive instructions on deploying CowabungaAI within your local environment.

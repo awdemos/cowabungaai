@@ -1,16 +1,16 @@
-# LeapfrogAI Text Embeddings Backend
+# CowabungaAI Text Embeddings Backend
 
-A LeapfrogAI API-compatible text embeddings wrapper for producing embeddings from text content.
+A CowabungaAI API-compatible text embeddings wrapper for producing embeddings from text content.
 
 ## Usage
 
 ### Pre-Requisites
 
-See the LeapfrogAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
+See the CowabungaAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
 
 #### Dependent Components
 
-- [LeapfrogAI API](../api/README.md) for a fully RESTful application
+- [CowabungaAI API](../api/README.md) for a fully RESTful application
 - [Supabase](../supabase/README.md) for a vector database to store resulting embeddings in
 
 ### Model Selection

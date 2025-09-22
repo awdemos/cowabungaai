@@ -3,7 +3,7 @@
 kind: UDSBundle
 metadata:
   name: leapfrogai
-  description: A UDS bundle for deploying LeapfrogAI with GPU support
+  description: A UDS bundle for deploying CowabungaAI with GPU support
   version: dev
 
 packages:

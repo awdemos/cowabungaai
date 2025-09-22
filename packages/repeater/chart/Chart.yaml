@@ -1,6 +1,6 @@
 apiVersion: v2
 name: leapfrogai-repeater
-description: "A LeapfrogAI compatible inferencing backend for testing-only, repeater"
+description: "A CowabungaAI compatible inferencing backend for testing-only, repeater"
 
 # A chart can be either an 'application' or a 'library' chart.
 #

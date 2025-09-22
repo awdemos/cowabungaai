@@ -2,13 +2,13 @@
 
 kind: ZarfPackageConfig
 metadata:
-  description: "LeapfrogAI API common"
+  description: "CowabungaAI API common"
   name: leapfrogai-api-common
   version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
 
 components:
   - name: leapfrogai-api
-    description: "The LeapfrogAI Python API that shadows the OpenAI API specification"
+    description: "The CowabungaAI Python API that shadows the OpenAI API specification"
     required: true
     charts:
       - name: leapfrogai

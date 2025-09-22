@@ -1,8 +1,8 @@
-# LeapfrogAI RAG Evaluation Framework MVP
+# CowabungaAI RAG Evaluation Framework MVP
 
 ## Table of Contents
 
-- [LeapfrogAI RAG Evaluation Framework MVP](#leapfrogai-rag-evaluation-framework-mvp)
+- [CowabungaAI RAG Evaluation Framework MVP](#cowabungaai-rag-evaluation-framework-mvp)
   - [Table of Contents](#table-of-contents)
   - [Status](#status)
   - [Context](#context)
@@ -23,7 +23,7 @@ ACCEPTED
 
 ## Context
 
-LeapfrogAI uses RAG to provide context-aware responses to users who have specific data they need to reference. In order to make sure RAG is operating at the levels we need it to, we need to get measurable feedback from our RAG pipeline to make it better. We also need a standard to show to mission heroes that we are in fact operating at that level. We do this with RAG-focused evaluations. Additionally, utilizing evaluations as a whole and developing a standard approach will allow customizations of RAG and its components (for various deployment scenarios) to be better tested and evaluated against. This ADR documents all of the decisions and lessons learned for enabling a full-scale RAG evaluations pipeline MVP.
+CowabungaAI uses RAG to provide context-aware responses to users who have specific data they need to reference. In order to make sure RAG is operating at the levels we need it to, we need to get measurable feedback from our RAG pipeline to make it better. We also need a standard to show to mission heroes that we are in fact operating at that level. We do this with RAG-focused evaluations. Additionally, utilizing evaluations as a whole and developing a standard approach will allow customizations of RAG and its components (for various deployment scenarios) to be better tested and evaluated against. This ADR documents all of the decisions and lessons learned for enabling a full-scale RAG evaluations pipeline MVP.
 
 ## Decisions and Rationale
 
@@ -62,9 +62,9 @@ This section covers all of the decision points that needed to be made along side
   - [LFAI_RAG_qa_v1](https://huggingface.co/datasets/defenseunicorns/LFAI_RAG_qa_v1)
   - [LFAI_RAG_niah_v1](https://huggingface.co/datasets/defenseunicorns/LFAI_RAG_niah_v1)
 
-  These two datasets will be used as the basis for MVP LeapfrogAI RAG evaluations that require data sources.
+  These two datasets will be used as the basis for MVP CowabungaAI RAG evaluations that require data sources.
 
-  Advanced versions of these datasets will be needed after MVP status as LeapfrogAI baseline performance grows. If baseline LeapfrogAI can pass all tests and score top marks on all metrics for these tests, then the tests lose their ability to assist in tracking growth over time.
+  Advanced versions of these datasets will be needed after MVP status as CowabungaAI baseline performance grows. If baseline CowabungaAI can pass all tests and score top marks on all metrics for these tests, then the tests lose their ability to assist in tracking growth over time.
   
   An advanced QA dataset differs in the following ways:
   - More documents to use as the basis for questions. This provides a larger pool that RAG has to perform retrieval on and provides more opportunities for question types
@@ -91,7 +91,7 @@ This section covers all of the decision points that needed to be made along side
 
   The three models that will initially be evaluated are going to be:
 
-  - [SynthIA-7B](https://huggingface.co/TheBloke/SynthIA-7B-v2.0-GPTQ) (the initial default model for LeapfrogAI)
+  - [SynthIA-7B](https://huggingface.co/TheBloke/SynthIA-7B-v2.0-GPTQ) (the initial default model for CowabungaAI)
   - [Hermes 2 Pro](https://huggingface.co/defenseunicorns/Hermes-2-Pro-Mistral-7B-4bit-32g-GPTQ) (Defense Unicorns quantization)
   - [Llama3.1-8B](https://huggingface.co/unsloth/Meta-Llama-3.1-8B-bnb-4bit) (using a 4 bit quantization)
 
@@ -99,9 +99,9 @@ This section covers all of the decision points that needed to be made along side
 
   #### Rationale
   Three models were chosen to evaluate against initially in order to balance the scale between complexity and variety. There are endless variations of models that could be evaluated against, but these ones were chosen with specific reasons in mind.
-  - **SynthIA-7B**: This model has been the default backbone of LeapfrogAI since the beginning and (at the time of writing this ADR) is still the default model deployment choice. It is a 4 bit QPTQ quantization, so it is small enough to load on edge deployments. It is also compatible with both backend deployment options: llama-cpp-python and vllm. As it is still the default model choice, it should be evaluated on to see how it performs as time has gone on.
+  - **SynthIA-7B**: This model has been the default backbone of CowabungaAI since the beginning and (at the time of writing this ADR) is still the default model deployment choice. It is a 4 bit QPTQ quantization, so it is small enough to load on edge deployments. It is also compatible with both backend deployment options: llama-cpp-python and vllm. As it is still the default model choice, it should be evaluated on to see how it performs as time has gone on.
   - **Hermes 2 Pro**: This model is a fine-tune of the Mistral-7b-Instruct model using the [OpenHermes-2.5](https://huggingface.co/datasets/teknium/OpenHermes-2.5) dataset. Hermes 2 Pro also includes [Hermes Function Calling](https://github.com/NousResearch/Hermes-Function-Calling). This particular model is a 4 bit GPTQ quantization on the [VMWare Open Instruct](https://huggingface.co/datasets/vmware/open-instruct) dataset that was generated by Defense Unicorns. Hermes 2 Pro advances on Mistral 7b with excellent general task and conversation capabilities and enhanced function calling and generation of JSON structured outputs. This model also meets the requirements of being small enough to load in edge deployment scenarios.
-  - **Llama3.1-8B**: This model has been shown to be an exemplary addition to the small model space [(Model Card)](https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md). With additional language capabilities (trained on 8 languages), the Llama3.1 family of models offers high performance under a variety of scenarios. The model that will be evaluated against is a 4 bit bnb quanitzation of LLama3.1-8B. This quantization again allows for smaller deployment scenarios and makes a more relevant comparison point to the models already in use within LeapfrogAI.
+  - **Llama3.1-8B**: This model has been shown to be an exemplary addition to the small model space [(Model Card)](https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/MODEL_CARD.md). With additional language capabilities (trained on 8 languages), the Llama3.1 family of models offers high performance under a variety of scenarios. The model that will be evaluated against is a 4 bit bnb quanitzation of LLama3.1-8B. This quantization again allows for smaller deployment scenarios and makes a more relevant comparison point to the models already in use within CowabungaAI.
 
 All of the above models have similar vRAM requirements (able to be run on < 16Gb of vRAM), similar parameter count (7-8 billion parameters), and the same quantization level (4-bit). By balancing these factors, we can verify that each of these models can be swapped out for another and the system requirements do not need to change. This will assist in being able to provide comparisons that are different by as few variables as possible.
 
@@ -142,7 +142,7 @@ As time goes on, additional models will be considered and added as comparison po
 
   #### Decision
   
-  The LeapfrogAI RAG evaluation framework will utilize the following evaluations:
+  The CowabungaAI RAG evaluation framework will utilize the following evaluations:
 
   LLM-as-a-judge metrics to use:
   - [Contextual Recall](https://docs.confident-ai.com/docs/metrics-contextual-recall) (for evaluating retrieval)
@@ -172,7 +172,7 @@ As time goes on, additional models will be considered and added as comparison po
   - MMLU: Evaluates an LLM's ability to reason on multiple task topics using multiple choice questions (not RAG-enabled, but useful as an established baseline to compare against)
   - Annotation Relevancy: A custom metric that measures how often documents that have nothing to do with the question are cited in the annotations. Higher is better
 
-  Established LLM benchmarks (MMLU and HumanEval) are included in this MVP evaluation framework despite not requiring information from a retrieval system. It's important that this framework have a few generation-only metrics to be better at diagnosing whether issues in performance are happening due to RAG or the model. The other metrics included in this MVP evaluate either the retrieval stage on its own or the information-assisted generation. If the metrics evaluated on the information-assisted generation (e.g Faithfulness or NIAH response) are scoring low, it is difficult to parse out whether or not the low score is caused by the information retrieval, the generation itself, or both. Having these benchmarks provides a way to validate whether or not the generation works as expected, indicating a potential problem with the retrieval. These benchmarks are also standard, and therefore used across many LLMs. Therefore, these values can be used when comparing what performance is expected of these models and what is being observed in LeapfrogAI. These benchmarks can assist in diagnosing problems with both quantization (which often don't have these benchmarks) and implementation differences.
+  Established LLM benchmarks (MMLU and HumanEval) are included in this MVP evaluation framework despite not requiring information from a retrieval system. It's important that this framework have a few generation-only metrics to be better at diagnosing whether issues in performance are happening due to RAG or the model. The other metrics included in this MVP evaluate either the retrieval stage on its own or the information-assisted generation. If the metrics evaluated on the information-assisted generation (e.g Faithfulness or NIAH response) are scoring low, it is difficult to parse out whether or not the low score is caused by the information retrieval, the generation itself, or both. Having these benchmarks provides a way to validate whether or not the generation works as expected, indicating a potential problem with the retrieval. These benchmarks are also standard, and therefore used across many LLMs. Therefore, these values can be used when comparing what performance is expected of these models and what is being observed in CowabungaAI. These benchmarks can assist in diagnosing problems with both quantization (which often don't have these benchmarks) and implementation differences.
 
   While these metrics are going to be utilized first to balance value-gained and time to implement, we will be adding additional evaluation metrics soon following MVP status. Potential options include:
   - RAG retrieval Hit Rate: non-LLM metric that evaluates how often a retrieved context matches the expected context for a question/answer scenario
@@ -205,7 +205,7 @@ As time goes on, additional models will be considered and added as comparison po
   The model card will ultimately exist in a few forms:
 
   - A tabular representation that shows for a given model (or hyperparameter configuration) as a row, the columns consist of all of the scored metrics that were applied to that configuration.
-  - **Assumption**: A deployed instance of LeapfrogAI will likely always accompany UDS runtime. The evaluation results for a deployment will live in a table under its corresponding UDS runtime page.
+  - **Assumption**: A deployed instance of CowabungaAI will likely always accompany UDS runtime. The evaluation results for a deployment will live in a table under its corresponding UDS runtime page.
     - The evaluation outputs themselves will eventually be provided in `json` format for easier ingestion into observability tools or other additional frameworks.
     - This will likely become more relevant after MVP status.
     - This assumption will need to be vetted by the UDS team and therefore may have to be adjusted in the future.
@@ -220,7 +220,7 @@ As time goes on, additional models will be considered and added as comparison po
     - Data format needed: raw numbers, potentially in tabular format for ease of ingesting
   - Mid-term: evaluations on default model options for mission heroes are part of the delivery process. These recommendations are provided to assist mission heroes in selecting the models they want in their deployments.
     - Data format needed: same as near-term, but a higher emphasis on the report will be necessary
-  - Long-term: evaluations are ingrained within all LeapfrogAI deployments to diagnose potential runtime issues and to evaluate multiple model options directly within the cluster
+  - Long-term: evaluations are ingrained within all CowabungaAI deployments to diagnose potential runtime issues and to evaluate multiple model options directly within the cluster
     - Data format needed: evaluations will need to be directly tied into other metrics-measuring tools, such as prometheus, to integrate directly into UDS runtime.
    
   By providing an iterable approach to delivering evaluation results, the model card's use-case will be able to evolve over time to scale to meet the needs of the product team, delivery team, and mission heroes.

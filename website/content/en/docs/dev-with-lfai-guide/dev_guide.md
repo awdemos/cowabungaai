@@ -1,28 +1,28 @@
 ---
-title: App Development with LeapfrogAI
+title: App Development with CowabungaAI
 type: docs
 weight: 1
 ---
 
-Prior to developing applications using LeapfrogAI, ensure that you have a valid instance of LeapfrogAI deployed in your environment. See the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) page for more info on how to get started.
+Prior to developing applications using CowabungaAI, ensure that you have a valid instance of CowabungaAI deployed in your environment. See the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) page for more info on how to get started.
 
-## OpenAI Compatibility in LeapfrogAI
+## OpenAI Compatibility in CowabungaAI
 
-The LeapfrogAI API is an OpenAI-compatible API, meaning that the endpoints built out within the LeapfrogAI API as what is found within the OpenAI API. **Note:** Not all endpoints/functionality in OpenAI is implemented in LeapfrogAI. To see what endpoints are implemented in your deployment, reference the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/#checking-deployment) guide for how to check the API reference.
+The CowabungaAI API is an OpenAI-compatible API, meaning that the endpoints built out within the CowabungaAI API as what is found within the OpenAI API. **Note:** Not all endpoints/functionality in OpenAI is implemented in CowabungaAI. To see what endpoints are implemented in your deployment, reference the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/#checking-deployment) guide for how to check the API reference.
 
-## Basic Usage of the OpenAI SDK with LeapfrogAI
+## Basic Usage of the OpenAI SDK with CowabungaAI
 
 ### OpenAI API Reference
 
 The best place to look for help with using the OpenAI SDK is to refer to the [OpenAI API Reference](https://platform.openai.com/docs/api-reference/introduction), so it is recommended to return to this reference when understanding how specific endpoints work.
 
-### Getting a LeapfrogAI API Key
+### Getting a CowabungaAI API Key
 
-In order to utilize the LeapfrogAI API outside of the User Interface, you'll need to get an API key. This can be done one of two ways:
+In order to utilize the CowabungaAI API outside of the User Interface, you'll need to get an API key. This can be done one of two ways:
 
 #### Via the UI
 
-The easiest way to create a LeapfrogAI API key is via the user interface. Perform the following in the UI (reference the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/#checking-deployment) guide for where the UI is deployed):
+The easiest way to create a CowabungaAI API key is via the user interface. Perform the following in the UI (reference the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/#checking-deployment) guide for where the UI is deployed):
 
 - Select the **Settings** icon ⚙️ in the top-right corner
 - Select **API Keys**
@@ -52,7 +52,7 @@ pip install openai
 
 ### Creating the Client
 
-Now that you have your API key, you can create an OpenAI client using LeapfrogAI on the backend in a Python script:
+Now that you have your API key, you can create an OpenAI client using CowabungaAI on the backend in a Python script:
 
 ```python
 import openai
@@ -87,7 +87,7 @@ This is just a basic example; check out the [chat completion reference](https://
 
 ## Building a RAG Pipeline using Assistants
 
-Now that we've seen a basic example, let's leverage OpenAI assistants using LeapfrogAI to handle a more complex task: [**Retrieval Augmented Generation (RAG)**](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/).
+Now that we've seen a basic example, let's leverage OpenAI assistants using CowabungaAI to handle a more complex task: [**Retrieval Augmented Generation (RAG)**](https://blogs.nvidia.com/blog/what-is-retrieval-augmented-generation/).
 
 We'll break this example down into a few steps:
 
@@ -95,9 +95,9 @@ We'll break this example down into a few steps:
 
 Referencing the [Basic Usage](#basic-usage-of-the-openai-sdk-with-leapfrogai) section, you'll need:
 
-- A LeapfrogAI API key
-- The URL of the LeapfrogAI API instance you'll be using
-- An OpenAI Client using LeapfrogAI
+- A CowabungaAI API key
+- The URL of the CowabungaAI API instance you'll be using
+- An OpenAI Client using CowabungaAI
 
 ### Create a Vector Store
 
@@ -218,10 +218,10 @@ The birthday of Joseph's pet frog, Milo, is on October 7th. 【4:0†doc_2.txt�
 
 As you can see, our Frog Buddy assistant was able to recieve the contextual information it needed in order to know how to answer the query. You'll also notice that the attached annotations correspond to the files we uploaded earlier, so we know we're pulling our information from the right place!
 
-This just scratches the surface of what you can create with the OpenAI SDK leveraging LeapfrogAI. This may be a simple example that doesn't necessarily require the added overhead of RAG, but when you need to search for information hidden in hundreds or thousands of documents, you may not be able to hand your LLM all the data at once, which is where RAG really comes in handy.
+This just scratches the surface of what you can create with the OpenAI SDK leveraging CowabungaAI. This may be a simple example that doesn't necessarily require the added overhead of RAG, but when you need to search for information hidden in hundreds or thousands of documents, you may not be able to hand your LLM all the data at once, which is where RAG really comes in handy.
 
-As a reminder, the [OpenAI API Reference](https://platform.openai.com/docs/api-reference/introduction) has lots of information on using the OpenAI SDK, and much of it is compatible with LeapfrogAI!
+As a reminder, the [OpenAI API Reference](https://platform.openai.com/docs/api-reference/introduction) has lots of information on using the OpenAI SDK, and much of it is compatible with CowabungaAI!
 
 ## Questions/Feedback
 
-If you have any questions, feedback, or specific update requests on this development guide, please open an issue on the [LeapfrogAI Github Repository](https://github.com/defenseunicorns/leapfrogai). Additionally, if you have specific feature requests for the LeapfrogAI API (for example, certain endpoints that are not yet compatible with OpenAI), please create an issue in Github.
+If you have any questions, feedback, or specific update requests on this development guide, please open an issue on the [CowabungaAI Github Repository](https://github.com/defenseunicorns/leapfrogai). Additionally, if you have specific feature requests for the CowabungaAI API (for example, certain endpoints that are not yet compatible with OpenAI), please create an issue in Github.

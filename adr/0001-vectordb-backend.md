@@ -31,7 +31,7 @@ ChromaDB
 
 ### Rationale
 
-We decided on ChromaDB due to it's simple implementation, performance, and Apache 2.0 license. At this maturity level, we expect individual capabilities on top of LeapfrogAI to maintain their own Vector DB with ChromaDB and will expand support as common themes surface.
+We decided on ChromaDB due to it's simple implementation, performance, and Apache 2.0 license. At this maturity level, we expect individual capabilities on top of CowabungaAI to maintain their own Vector DB with ChromaDB and will expand support as common themes surface.
 
 ### Status
 
@@ -79,7 +79,7 @@ SUPERSEDED by [0003-database](0003-database.md)
 
 ### Assumptions
 
-- We will start with a single preferred VectorDB, but LeapfrogAI should be extensible to accommodate other options.
+- We will start with a single preferred VectorDB, but CowabungaAI should be extensible to accommodate other options.
 - Not bundling the vector db with the app layer is desirable
 
 ### Constraints

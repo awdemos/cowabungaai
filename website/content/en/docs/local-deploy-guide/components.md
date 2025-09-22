@@ -6,13 +6,13 @@ weight: 4
 
 ## Components
 
-### LeapfrogAI API
+### CowabungaAI API
 
-LeapfrogAI offers an API closely aligned with OpenAI's, facilitating seamless compatibility for tools developed with OpenAI/ChatGPT to operate seamlessly with a LeapfrogAI backend. The LeapfrogAI API is a Python API that exposes LLM backends, via FastAPI and gRPC, in the OpenAI API specification.
+CowabungaAI offers an API closely aligned with OpenAI's, facilitating seamless compatibility for tools developed with OpenAI/ChatGPT to operate seamlessly with a CowabungaAI backend. The CowabungaAI API is a Python API that exposes LLM backends, via FastAPI and gRPC, in the OpenAI API specification.
 
 ### Backend
 
-LeapfrogAI offers several backends for a variety of use cases:
+CowabungaAI offers several backends for a variety of use cases:
 
 | Backend | AMD64 Support | ARM64 Support | Cuda Support | Docker Ready | K8s Ready | Zarf Ready |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -46,7 +46,7 @@ Flavors with any components labelled as 🚧 are not available as a quick start 
 
 ### Artifact Support
 
-LeapfrogAI contains built-in embeddings for RAG and transcription / translation solutions that can handle many different file types. Many of these capabilities are accessible via the LeapfrogAI API. The supported artifact types are as follows:
+CowabungaAI contains built-in embeddings for RAG and transcription / translation solutions that can handle many different file types. Many of these capabilities are accessible via the CowabungaAI API. The supported artifact types are as follows:
 
 #### Transcription / Translation
 
@@ -69,8 +69,8 @@ LeapfrogAI contains built-in embeddings for RAG and transcription / translation 
 
 ### Software Development Kit
 
-The LeapfrogAI SDK offers a standardized collection of Protobuf and Python utilities designed to facilitate the implementation of backends and gRPC. Please see the [LeapfrogAI SDK](https://github.com/defenseunicorns/leapfrogai/tree/main/src/leapfrogai_sdk) sub-directory for the source code and details.
+The CowabungaAI SDK offers a standardized collection of Protobuf and Python utilities designed to facilitate the implementation of backends and gRPC. Please see the [CowabungaAI SDK](https://github.com/defenseunicorns/leapfrogai/tree/main/src/leapfrogai_sdk) sub-directory for the source code and details.
 
 ### User Interface
 
-LeapfrogAI offers user-friendly interfaces tailored for common use-cases, including chat, summarization, and transcription, providing accessible options for users to initiate these tasks. Please see the [LeapfrogAI UI](https://github.com/defenseunicorns/leapfrogai/tree/main/src/leapfrogai_ui) GitHub repository for additional information.
+CowabungaAI offers user-friendly interfaces tailored for common use-cases, including chat, summarization, and transcription, providing accessible options for users to initiate these tasks. Please see the [CowabungaAI UI](https://github.com/defenseunicorns/leapfrogai/tree/main/src/leapfrogai_ui) GitHub repository for additional information.

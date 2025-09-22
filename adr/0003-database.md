@@ -1,8 +1,8 @@
-# LeapfrogAI Database
+# CowabungaAI Database
 
 ## Table of Contents
 
-- [LeapfrogAI Database](#leapfrogai-database)
+- [CowabungaAI Database](#cowabungaai-database)
   - [Table of Contents](#table-of-contents)
   - [Status](#status)
   - [Background](#background)
@@ -18,11 +18,11 @@ ACCEPTED
 
 ## Context
 
-LeapfrogAI began with a need for a basic vector store. As LeapfrogAI expands into providing a production ready front end the demands of the database expand to include authentication, user data, object storage, and additional data types for Retrieval Augmented Generation. This ADR proposes ***Supabase*** as a single database solution for all current LeapfrogAI needs.
+CowabungaAI began with a need for a basic vector store. As CowabungaAI expands into providing a production ready front end the demands of the database expand to include authentication, user data, object storage, and additional data types for Retrieval Augmented Generation. This ADR proposes ***Supabase*** as a single database solution for all current CowabungaAI needs.
 
 ## Decision
 
-Move to Supabase for all current LeapfrogAI Database needs.
+Move to Supabase for all current CowabungaAI Database needs.
 
 ## Rationale
 

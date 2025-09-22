@@ -1,12 +1,12 @@
-# LeapfrogAI Evaluations
+# CowabungaAI Evaluations
 
-This covers how to use the evaluations present in LeapfrogAI. As more evaluations get added, these instructions will be updated.
+This covers how to use the evaluations present in CowabungaAI. As more evaluations get added, these instructions will be updated.
 
 ## Running the Evaluations
-The LeapfrogAI RAG evaluation system assumes the following:
+The CowabungaAI RAG evaluation system assumes the following:
 
-- LeapfrogAI is deployed
-- A valid LeapfrogAI API key is set (for more info, see the [API README](/src/leapfrogai_api/README.md))
+- CowabungaAI is deployed
+- A valid CowabungaAI API key is set (for more info, see the [API README](/src/leapfrogai_api/README.md))
 - For all LLM-enabled metrics, a valid Anthropic API key is set
 
 For the easiest setup, copy the `.env.example` file:
@@ -18,8 +18,8 @@ cp .env.example .env
 Within `.env`, replace the necessary environment variables:
 
 ```bash
-LEAPFROGAI_API_URL=<LeapfrogAI API url, usually: https://leapfrogai-api.uds.dev for development>
-LEAPFROGAI_API_KEY=<LeapfrogAI API key>
+COWABUNGAAI_API_URL=<CowabungaAI API url, usually: https://leapfrogai-api.uds.dev for development>
+COWABUNGAAI_API_KEY=<CowabungaAI API key>
 ANTHROPIC_API_KEY=<Anthropic API key>
 ```
 
@@ -33,10 +33,10 @@ python main.py
 
 ## Question/Answer Evaluation
 
-Question and answer pairs are a valuable setup for evaluating LLM systems as a hole. Within LeapfrogAI, this type of evaluation takes an input question, expected context, and expected output, and compares them to the retrieved context from RAG and the system's final output.
+Question and answer pairs are a valuable setup for evaluating LLM systems as a hole. Within CowabungaAI, this type of evaluation takes an input question, expected context, and expected output, and compares them to the retrieved context from RAG and the system's final output.
 
 ### Data
-The LeapfrogAI QA evaluation uses a custom dataset available on HuggingFace: [defenseunicorns/LFAI_RAG_qa_v1](https://huggingface.co/datasets/defenseunicorns/LFAI_RAG_qa_v1)
+The CowabungaAI QA evaluation uses a custom dataset available on HuggingFace: [defenseunicorns/LFAI_RAG_qa_v1](https://huggingface.co/datasets/defenseunicorns/LFAI_RAG_qa_v1)
 
 LFAI_RAG_qa_v1 contains 36 question/answer/context entries that are intended to be used for LLM-as-a-judge enabled RAG Evaluations.
 
@@ -55,7 +55,7 @@ Example:
 ```
 
 ### Experimental Design
-The LeapfrogAI QA evaluation uses the following process:
+The CowabungaAI QA evaluation uses the following process:
 
 - build a vector store and upload the contextual documents from the qa dataset
 - for each row in the dataset:
@@ -72,7 +72,7 @@ Various metrics can then be calculated using these individual pieces.
 
 ## Needle in a Haystack (NIAH)
 
-A Needle in a Haystack evaluation is used to evaluate the performance of the LeapfrogAI RAG system in tasks that require finding a specific piece of information (the "needle") within a large body of text (the "haystack").
+A Needle in a Haystack evaluation is used to evaluate the performance of the CowabungaAI RAG system in tasks that require finding a specific piece of information (the "needle") within a large body of text (the "haystack").
 
 This evaluation can be used to evaluate both the retrieval and generation stages of RAG:
 
@@ -80,7 +80,7 @@ This evaluation can be used to evaluate both the retrieval and generation stages
 - If the needle is present in the final generated response, the generation process is functioning as expected
 
 ### Data
-The LeapfrogAI NIAH evaluation uses a custom dataset available on HuggingFace: [defenseunicorns/LFAI_RAG_niah_v1](https://huggingface.co/datasets/defenseunicorns/LFAI_RAG_niah_v1)
+The CowabungaAI NIAH evaluation uses a custom dataset available on HuggingFace: [defenseunicorns/LFAI_RAG_niah_v1](https://huggingface.co/datasets/defenseunicorns/LFAI_RAG_niah_v1)
 
 LFAI_RAG_niah_v1 contains 120 context entries that are intended to be used for Needle in a Haystack RAG Evaluations.
 
@@ -99,7 +99,7 @@ Example:
 ```
 
 ### Experimental Design
-The LeapfrogAI NIAH evaluation uses the following process:
+The CowabungaAI NIAH evaluation uses the following process:
 
 - build a vector store (the haystack) upload 10 contextless documents (as padding)
 - for a subset of the data (10 datapoints by default):
@@ -125,7 +125,7 @@ The [Massive Multitask Language Understanding (MMLU)](https://arxiv.org/abs/2009
 
 MMLU is a multiple-choice evaluation, meaning that it focuses more on the logical reasoning behind the questions and less about the specific generation process.
 
-Within the LeapfrogAI evaluation framework, The [DeepEval Implementation of MMLU](https://docs.confident-ai.com/docs/benchmarks-mmlu) is utilized. Additionally, a default subset of 6 topically relevant tasks out of the total 57 tasks are tested against, including: College Computer Science, US Foreign Policy, High School Government and Politics, Formal Logic, Computer Security, and Security Studies. This subset was chosen as the full MMLU evaluation takes a long time to process. Larger evaluation sessions should utilize the entire task set.
+Within the CowabungaAI evaluation framework, The [DeepEval Implementation of MMLU](https://docs.confident-ai.com/docs/benchmarks-mmlu) is utilized. Additionally, a default subset of 6 topically relevant tasks out of the total 57 tasks are tested against, including: College Computer Science, US Foreign Policy, High School Government and Politics, Formal Logic, Computer Security, and Security Studies. This subset was chosen as the full MMLU evaluation takes a long time to process. Larger evaluation sessions should utilize the entire task set.
 
 ### HumanEval
 
@@ -133,4 +133,4 @@ The [HumanEval](https://github.com/openai/human-eval) benchmark is a dataset des
 
 HumanEval code snippets are generated from docstrings into Python-executable code. The primary metric utilized is the pass@k metric, which measures the probability that at least one of the top k code snippets generated by the LLM passes all the test cases.
 
-Within the LeapfrogAI evaluation framework, The [DeepEval Implementation of HumanEval](https://docs.confident-ai.com/docs/benchmarks-human-eval) is utilized. Additionally, a default subset of 50 code generation tasks out of the total 164 are tested against. This was chosen as the full HumanEval evaluation takes a long time to process. Larger evaluation sessions should utilize the entire task set.
+Within the CowabungaAI evaluation framework, The [DeepEval Implementation of HumanEval](https://docs.confident-ai.com/docs/benchmarks-human-eval) is utilized. Additionally, a default subset of 50 code generation tasks out of the total 164 are tested against. This was chosen as the full HumanEval evaluation takes a long time to process. Larger evaluation sessions should utilize the entire task set.

@@ -4,11 +4,11 @@ type: docs
 weight: 1
 ---
 
-Prior to deploying LeapfrogAI, ensure that the following tools, packages, and requirements are met and present in your environment. See the [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/) page fro more details.
+Prior to deploying CowabungaAI, ensure that the following tools, packages, and requirements are met and present in your environment. See the [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/) page fro more details.
 
 ## System Requirements
 
-Please review the following table to ensure your system meets the minimum requirements. GPU requirements only apply when your system is capable of deploying a GPU-accelerated version of the LeapfrogAI stack.
+Please review the following table to ensure your system meets the minimum requirements. GPU requirements only apply when your system is capable of deploying a GPU-accelerated version of the CowabungaAI stack.
 
 |      | Minimum (CPU)      | Minimum (GPU)              | Recommended (Performance) |
 |------|--------------------|----------------------------|---------------------------|

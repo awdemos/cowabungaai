@@ -1,0 +1,538 @@
+openapi: 3.0.0
+info:
+  title: Feature Specification System API
+  description: API for managing feature specifications, templates, and validation
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Development server
+
+paths:
+  # Specifications
+  /specifications:
+    get:
+      summary: List all specifications
+      responses:
+        '200':
+          description: List of specifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Specification'
+
+    post:
+      summary: Create new specification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpecificationCreate'
+      responses:
+        '201':
+          description: Specification created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specification'
+
+  /specifications/{spec_id}:
+    get:
+      summary: Get specification by ID
+      parameters:
+        - name: spec_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Specification details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specification'
+
+    put:
+      summary: Update specification
+      parameters:
+        - name: spec_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpecificationUpdate'
+      responses:
+        '200':
+          description: Specification updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specification'
+
+  /specifications/{spec_id}/validate:
+    post:
+      summary: Validate specification
+      parameters:
+        - name: spec_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResult'
+
+  # Templates
+  /templates:
+    get:
+      summary: List all templates
+      responses:
+        '200':
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Template'
+
+    post:
+      summary: Create new template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreate'
+      responses:
+        '201':
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+
+  /templates/{template_id}:
+    get:
+      summary: Get template by ID
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Template'
+
+  # Branch Analysis
+  /branches/analyze:
+    post:
+      summary: Analyze branch patterns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_name:
+                  type: string
+                  description: Branch name to analyze
+      responses:
+        '200':
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BranchAnalysis'
+
+components:
+  schemas:
+    Specification:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "001-user-authentication"
+        name:
+          type: string
+          example: "User Authentication System"
+        description:
+          type: string
+          example: "Implement JWT-based authentication for user management"
+        status:
+          type: string
+          enum: [draft, approved, implemented, deprecated]
+          example: "draft"
+        category:
+          type: string
+          enum: [api, ui, architecture, infrastructure, migration]
+          example: "api"
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+          example: "high"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        author:
+          type: string
+          example: "john.doe@example.com"
+        user_stories:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStory'
+        requirements:
+          $ref: '#/components/schemas/Requirements'
+        acceptance_criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptanceCriterion'
+
+    UserStory:
+      type: object
+      properties:
+        role:
+          type: string
+          example: "developer"
+        need:
+          type: string
+          example: "authenticate users"
+        benefit:
+          type: string
+          example: "secure access to user data"
+
+    Requirements:
+      type: object
+      properties:
+        functional:
+          type: array
+          items:
+            $ref: '#/components/schemas/FunctionalRequirement'
+        non_functional:
+          type: array
+          items:
+            $ref: '#/components/schemas/NonFunctionalRequirement'
+
+    FunctionalRequirement:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "FR-001"
+        description:
+          type: string
+          example: "System must support JWT token validation"
+        acceptance_criteria:
+          type: array
+          items:
+            type: string
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        dependencies:
+          type: array
+          items:
+            type: string
+
+    NonFunctionalRequirement:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "NFR-001"
+        type:
+          type: string
+          enum: [performance, security, usability, reliability, maintainability]
+        criteria:
+          type: string
+          example: "Response time < 200ms"
+        metric:
+          type: string
+          example: "average_response_time"
+        target_value:
+          type: string
+          example: "<200ms"
+
+    AcceptanceCriterion:
+      type: object
+      properties:
+        scenario_id:
+          type: string
+          example: "AC-001"
+        given:
+          type: string
+          example: "User provides valid credentials"
+        when:
+          type: string
+          example: "User submits login form"
+        then:
+          type: string
+          example: "System returns JWT token"
+        edge_cases:
+          type: array
+          items:
+            type: string
+
+    Template:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "api-enhanced"
+        name:
+          type: string
+          example: "Enhanced API Template"
+        feature_type:
+          type: string
+          enum: [api, ui, architecture, infrastructure, migration]
+          example: "api"
+        version:
+          type: string
+          example: "1.0.0"
+        description:
+          type: string
+          example: "Comprehensive template for API features with OpenAPI integration"
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSection'
+        usage_count:
+          type: integer
+          example: 15
+        success_rate:
+          type: number
+          format: float
+          example: 0.95
+
+    TemplateSection:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "OpenAPI Contract"
+        required:
+          type: boolean
+          example: true
+        content_type:
+          type: string
+          enum: [markdown, yaml, json]
+          example: "yaml"
+        validation_rules:
+          type: array
+          items:
+            type: string
+        examples:
+          type: array
+          items:
+            type: string
+
+    ValidationResult:
+      type: object
+      properties:
+        spec_id:
+          type: string
+          example: "001-user-authentication"
+        timestamp:
+          type: string
+          format: date-time
+        validator_version:
+          type: string
+          example: "1.0.0"
+        overall_score:
+          type: number
+          format: float
+          example: 0.85
+        passed:
+          type: boolean
+          example: true
+        warnings:
+          type: array
+          items:
+            type: string
+        errors:
+          type: array
+          items:
+            type: string
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationCheck'
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recommendation'
+
+    ValidationCheck:
+      type: object
+      properties:
+        check_name:
+          type: string
+          example: "completeness_check"
+        category:
+          type: string
+          enum: [completeness, clarity, testability, consistency]
+          example: "completeness"
+        passed:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "All required sections are present"
+        severity:
+          type: string
+          enum: [info, warning, error]
+          example: "info"
+
+    Recommendation:
+      type: object
+      properties:
+        priority:
+          type: string
+          enum: [low, medium, high]
+          example: "medium"
+        category:
+          type: string
+          example: "documentation"
+        description:
+          type: string
+          example: "Add more detailed acceptance criteria"
+        effort:
+          type: string
+          example: "30 minutes"
+
+    BranchAnalysis:
+      type: object
+      properties:
+        branch_name:
+          type: string
+          example: "feature/user-authentication"
+        category:
+          type: string
+          enum: [api, ui, architecture, infrastructure, migration]
+          example: "api"
+        documentation_level:
+          type: string
+          enum: [none, minimal, adequate, comprehensive]
+          example: "adequate"
+        patterns:
+          type: object
+          properties:
+            commit_patterns:
+              type: array
+              items:
+                type: object
+                properties:
+                  pattern:
+                    type: string
+                    example: "feat(api):*"
+                  frequency:
+                    type: integer
+                    example: 5
+            best_practices:
+              type: array
+              items:
+                type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+        quality_score:
+          type: number
+          format: float
+          example: 0.75
+
+    SpecificationCreate:
+      type: object
+      required:
+        - name
+        - description
+        - category
+      properties:
+        name:
+          type: string
+          example: "User Authentication System"
+        description:
+          type: string
+          example: "Implement JWT-based authentication"
+        category:
+          type: string
+          enum: [api, ui, architecture, infrastructure, migration]
+          example: "api"
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        template_id:
+          type: string
+          example: "api-enhanced"
+        user_stories:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStory'
+
+    SpecificationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [draft, approved, implemented, deprecated]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        user_stories:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStory'
+        requirements:
+          $ref: '#/components/schemas/Requirements'
+        acceptance_criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptanceCriterion'
+
+    TemplateCreate:
+      type: object
+      required:
+        - name
+        - feature_type
+        - sections
+      properties:
+        name:
+          type: string
+          example: "Enhanced API Template"
+        feature_type:
+          type: string
+          enum: [api, ui, architecture, infrastructure, migration]
+          example: "api"
+        description:
+          type: string
+          example: "Comprehensive API template"
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSection'

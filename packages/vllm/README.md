@@ -1,16 +1,16 @@
-# LeapfrogAI vLLM Backend
+# CowabungaAI vLLM Backend
 
-A LeapfrogAI API-compatible [vllm](https://github.com/vllm-project/vllm) wrapper for quantized and un-quantized model inferencing across GPU infrastructures.
+A CowabungaAI API-compatible [vllm](https://github.com/vllm-project/vllm) wrapper for quantized and un-quantized model inferencing across GPU infrastructures.
 
 ## Usage
 
 ### Pre-Requisites
 
-See the LeapfrogAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
+See the CowabungaAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
 
 #### Dependent Components
 
-- [LeapfrogAI API](../api/README.md) for a fully RESTful application
+- [CowabungaAI API](../api/README.md) for a fully RESTful application
 
 ### Model Selection
 
