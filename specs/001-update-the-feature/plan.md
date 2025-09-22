@@ -1,261 +1,254 @@
 
-# Implementation Plan: Feature Specification System Modernization
+# Maintenance Plan: CowabungaAI System Updates
 
-**Branch**: `001-update-the-feature` | **Date**: 2025-09-21 | **Spec**: `/specs/001-update-the-feature/spec.md`
-**Input**: Feature specification from `/specs/001-update-the-feature/spec.md`
+**Branch**: `001-update-the-feature` | **Date**: 2025-09-21 | **Type**: Maintenance
+**Context**: Mature production system requiring ongoing maintenance and improvements
 
-## Execution Flow (/plan command scope)
+## Executive Summary
+CowabungaAI is a complete, production-ready AI platform with 132+ Python source files, comprehensive testing, and active deployment. This maintenance plan focuses on system health, bug fixes, dependency updates, and operational improvements rather than new feature development.
+
+## Current System State
+- **Status**: Production-ready with recent v0.14.0 release
+- **Architecture**: Monorepo with 4 main components (API, SDK, UI, Evals)
+- **Deployment**: Kubernetes via UDS (Unicorn Delivery Service)
+- **Testing**: Comprehensive unit, integration, and conformance tests
+- **Recent Changes**: Completed rebranding from LeapfrogAI to CowabungaAI
+
+## Maintenance Scope
+**IN SCOPE**: System health, bug fixes, dependency updates, documentation cleanup
+**OUT OF SCOPE**: New feature development, architectural changes, major refactoring
+
+## Technical Context (Existing System)
+**Language/Version**: Python 3.11+ (primary), SvelteKit for UI, Shell scripting for automation
+**Primary Dependencies**: FastAPI, gRPC, PostgreSQL, Supabase, UDS Kubernetes, OpenAI-compatible APIs
+**Storage**: PostgreSQL database via Supabase, local file storage, Kubernetes volumes
+**Testing**: pytest for unit/integration tests, conformance testing, GitHub Actions CI/CD
+**Target Platform**: Linux/macOS development environments, Kubernetes production deployment
+**Project Type**: Mature monorepo with 9 independent packages/components
+**Performance**: AI model serving, RAG processing, real-time API responses
+**Constraints**: Air-gapped deployment capability, government compliance requirements
+**Scale**: Production deployments with multiple AI backends (vLLM, llama-cpp-python, text-embeddings, whisper)
+
+## Maintenance Priorities
+
+### Priority 1: System Health (Critical)
+- **Dependency Updates**: Check 9+ pyproject.toml files for outdated/vulnerable packages
+- **Bug Fixes**: Address 10+ TODO/FIXME/BUG comments across codebase
+- **CI/CD Health**: Fix failing GitHub Actions workflows
+- **Security Patches**: Address CVEs in dependencies
+
+### Priority 2: Documentation Cleanup (High)
+- **Complete Rebranding**: Remove remaining "leapfrogai" references in source code
+- **Update READMEs**: Ensure all documentation reflects CowabungaAI branding
+- **API Documentation**: Update OpenAPI specs and developer guides
+- **Deployment Guides**: Fix broken links and outdated instructions
+
+### Priority 3: Code Quality (Medium)
+- **Linting Fixes**: Address any flake8/black formatting issues
+- **Test Coverage**: Improve coverage in weak areas
+- **Technical Debt**: Refactor problematic code patterns
+- **Performance**: Optimize slow-running operations
+
+### Priority 4: Operational Improvements (Low)
+- **Monitoring**: Enhanced logging and observability
+- **Backups**: Improve data backup and recovery procedures
+- **Documentation**: Add troubleshooting guides and FAQs
+
+## Identified Issues (Initial Assessment)
+- **10+ files** contain TODO/FIXME/BUG comments needing attention
+- **Incomplete rebranding** - source code still contains "leapfrogai" references
+- **Potential dependency** version conflicts across 9 packages
+- **Documentation inconsistencies** from recent rebranding effort
+
+## Current System Architecture (Existing)
+
+### Source Code Structure (Monorepo)
 ```
-1. Load feature spec from Input path
-   → If not found: ERROR "No feature spec at {path}"
-2. Fill Technical Context (scan for NEEDS CLARIFICATION)
-   → Detect Project Type from context (web=frontend+backend, mobile=app+api)
-   → Set Structure Decision based on project type
-3. Fill the Constitution Check section based on the content of the constitution document.
-4. Evaluate Constitution Check section below
-   → If violations exist: Document in Complexity Tracking
-   → If no justification possible: ERROR "Simplify approach first"
-   → Update Progress Tracking: Initial Constitution Check
-5. Execute Phase 0 → research.md
-   → If NEEDS CLARIFICATION remain: ERROR "Resolve unknowns"
-6. Execute Phase 1 → contracts, data-model.md, quickstart.md, agent-specific template file (e.g., `CLAUDE.md` for Claude Code, `.github/copilot-instructions.md` for GitHub Copilot, `GEMINI.md` for Gemini CLI, `QWEN.md` for Qwen Code or `AGENTS.md` for opencode).
-7. Re-evaluate Constitution Check section
-   → If new violations: Refactor design, return to Phase 1
-   → Update Progress Tracking: Post-Design Constitution Check
-8. Plan Phase 2 → Describe task generation approach (DO NOT create tasks.md)
-9. STOP - Ready for /tasks command
-```
-
-**IMPORTANT**: The /plan command STOPS at step 7. Phases 2-4 are executed by other commands:
-- Phase 2: /tasks command creates tasks.md
-- Phase 3-4: Implementation execution (manual or via tools)
-
-## Summary
-This plan modernizes the CowabungaAI feature specification system by analyzing existing branch patterns, creating standardized templates, and implementing automated specification generation. The approach includes addressing a critical bug in HuggingFace model downloads for TheBloke models while establishing comprehensive documentation standards.
-
-## Technical Context
-**Language/Version**: Python 3.11+ (primary), Shell scripting for automation
-**Primary Dependencies**: Git for branch analysis, PyYAML for template processing, Click for CLI tools
-**Storage**: Markdown files for specifications, JSON for configuration
-**Testing**: pytest for unit tests, integration tests for specification generation
-**Target Platform**: Linux/macOS development environments
-**Project Type**: Single project with automation tools and documentation templates
-**Performance Goals**: <1s spec generation time, support for 100+ concurrent branch analyses
-**Constraints**: Must work in air-gapped environments, no external API dependencies
-**Scale/Scope**: 20+ existing branches to analyze, 5+ feature types to template
-
-## Constitution Check
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
-
-**Code Quality Excellence**:
-- [ ] Code follows established patterns and best practices
-- [ ] Comprehensive documentation provided
-- [ ] Proper error handling, logging, and monitoring implemented
-
-**Testing Standards**:
-- [ ] TDD approach followed
-- [ ] Comprehensive test coverage (unit, integration, contract)
-- [ ] Performance testing for AI backends
-- [ ] Security testing conducted
-
-**User Experience Consistency**:
-- [ ] Consistent UI/UX across components
-- [ ] OpenAI API compatibility maintained
-- [ ] Clear and actionable error messages
-
-**Performance Requirements**:
-- [ ] Performance benchmarks met
-- [ ] Resource optimization for constrained environments
-- [ ] Scalability built into components
-- [ ] Memory and CPU utilization monitored
-
-**Security and Compliance**:
-- [ ] Data independence maintained
-- [ ] Air-gapped deployment capability
-- [ ] Compliance standards met
-
-## Project Structure
-
-### Documentation (this feature)
-```
-specs/[###-feature]/
-├── plan.md              # This file (/plan command output)
-├── research.md          # Phase 0 output (/plan command)
-├── data-model.md        # Phase 1 output (/plan command)
-├── quickstart.md        # Phase 1 output (/plan command)
-├── contracts/           # Phase 1 output (/plan command)
-└── tasks.md             # Phase 2 output (/tasks command - NOT created by /plan)
-```
-
-### Source Code (repository root)
-```
-# Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure]
+cowabungaai/
+├── src/                          # Main source code
+│   ├── leapfrogai_api/          # FastAPI backend (incomplete rebranding)
+│   ├── leapfrogai_evals/        # Evaluation framework
+│   ├── leapfrogai_sdk/          # gRPC SDK and protobufs
+│   └── leapfrogai_ui/           # SvelteKit frontend
+├── packages/                    # Deployable packages
+│   ├── api/                     # API package with UDS bundle
+│   ├── llama-cpp-python/        # CPU LLM backend
+│   ├── vllm/                    # GPU LLM backend
+│   ├── text-embeddings/         # Embedding service
+│   ├── whisper/                 # Speech-to-text service
+│   ├── repeater/                # Testing backend
+│   └── supabase/                # Database service
+├── bundles/                     # UDS deployment bundles
+│   ├── dev/                     # Development configs
+│   └── latest/                  # Production configs
+├── tests/                       # Comprehensive test suite
+│   ├── unit/                    # Unit tests
+│   ├── integration/             # Integration tests
+│   ├── conformance/             # OpenAI conformance
+│   ├── load/                    # Performance tests
+│   └── pytest/                  # API pytest tests
+├── adr/                         # Architecture Decision Records
+├── docs/                        # Documentation
+├── website/                     # Docusaurus website
+└── .github/                     # GitHub Actions workflows
 ```
 
-**Structure Decision**: [DEFAULT to Option 1 unless Technical Context indicates web/mobile app]
+### Package Dependencies (9 Total)
+- **Core Services**: API, SDK, UI, Evals
+- **AI Backends**: vLLM (GPU), llama-cpp-python (CPU), text-embeddings, whisper, repeater
+- **Infrastructure**: Supabase (database), UDS bundles (deployment)
 
-## Phase 0: Outline & Research
-1. **Extract unknowns from Technical Context** above:
-   - For each NEEDS CLARIFICATION → research task
-   - For each dependency → best practices task
-   - For each integration → patterns task
+### Key Technologies
+- **Backend**: FastAPI, gRPC, PostgreSQL, Supabase
+- **Frontend**: SvelteKit, TypeScript
+- **AI Models**: Multiple LLM backends with OpenAI-compatible API
+- **Deployment**: Kubernetes via UDS, air-gapped capable
+- **Testing**: pytest, conformance testing, performance testing
 
-2. **Generate and dispatch research agents**:
-   ```
-   For each unknown in Technical Context:
-     Task: "Research {unknown} for {feature context}"
-   For each technology choice:
-     Task: "Find best practices for {tech} in {domain}"
-   ```
+## Maintenance Research Approach
 
-3. **Consolidate findings** in `research.md` using format:
-   - Decision: [what was chosen]
-   - Rationale: [why chosen]
-   - Alternatives considered: [what else evaluated]
+### Phase 0: System Analysis
+1. **Audit current system state**:
+   - Scan for TODO/FIXME/BUG comments across all 132+ Python files
+   - Check dependency versions in all 9 pyproject.toml files
+   - Identify remaining "leapfrogai" references needing rebranding
+   - Review GitHub Actions workflow statuses
 
-**Output**: research.md with all NEEDS CLARIFICATION resolved
+2. **Prioritize maintenance tasks**:
+   - Critical: Security vulnerabilities, breaking bugs, CI/CD failures
+   - High: Outdated dependencies, documentation inconsistencies
+   - Medium: Code quality improvements, test coverage gaps
+   - Low: Performance optimizations, enhanced monitoring
 
-## Phase 1: Design & Contracts
+3. **Research best practices**:
+   - Dependency update strategies for monorepos
+   - Safe rebranding approaches for existing systems
+   - Maintenance testing protocols for production systems
+   - Government compliance requirements for AI systems
+
+**Output**: research.md with maintenance priorities and remediation strategies
+
+## Phase 1: Maintenance Strategy
 *Prerequisites: research.md complete*
 
-1. **Extract entities from feature spec** → `data-model.md`:
-   - Entity name, fields, relationships
-   - Validation rules from requirements
-   - State transitions if applicable
+1. **Assess maintenance impact** → `data-model.md`:
+   - Document current system components and their health status
+   - Identify dependencies between components
+   - Map maintenance tasks to affected components
 
-2. **Generate API contracts** from functional requirements:
-   - For each user action → endpoint
-   - Use standard REST/GraphQL patterns
-   - Output OpenAPI/GraphQL schema to `/contracts/`
+2. **Create maintenance contracts**:
+   - Define safe update procedures for each component
+   - Establish rollback criteria for dependency updates
+   - Document testing requirements for maintenance changes
 
-3. **Generate contract tests** from contracts:
-   - One test file per endpoint
-   - Assert request/response schemas
-   - Tests must fail (no implementation yet)
+3. **Generate maintenance checklists**:
+   - Component-specific health checks
+   - Validation procedures for rebranding changes
+   - Security and compliance verification steps
 
-4. **Extract test scenarios** from user stories:
-   - Each story → integration test scenario
-   - Quickstart test = story validation steps
-
-5. **Update agent file incrementally** (O(1) operation):
+4. **Update agent file incrementally** (O(1) operation):
    - Run `.specify/scripts/bash/update-agent-context.sh claude`
      **IMPORTANT**: Execute it exactly as specified above. Do not add or remove any arguments.
-   - If exists: Add only NEW tech from current plan
+   - Update maintenance approach for existing system
    - Preserve manual additions between markers
    - Update recent changes (keep last 3)
    - Keep under 150 lines for token efficiency
    - Output to repository root
 
-**Output**: data-model.md, /contracts/*, failing tests, quickstart.md, agent-specific file
+**Output**: data-model.md (system health), maintenance procedures, testing checklists, agent-specific file
 
-## Phase 2: Task Planning Approach
+## Phase 2: Maintenance Task Planning Approach
 *This section describes what the /tasks command will do - DO NOT execute during /plan*
 
 **Task Generation Strategy**:
 - Load `.specify/templates/tasks-template.md` as base
-- Generate tasks from Phase 1 design docs (contracts, data model, quickstart)
-- Each contract → contract test task [P]
-- Each entity → model creation task [P] 
-- Each user story → integration test task
-- Implementation tasks to make tests pass
+- Generate tasks from maintenance priorities and system analysis
+- Each identified issue → remediation task
+- Each outdated dependency → update task [P]
+- Each component → health check task
+- Documentation fixes → update tasks [P]
 
 **Ordering Strategy**:
-- TDD order: Tests before implementation
-- Dependency order: Models before services before UI
-- Mark [P] for parallel execution (independent files)
-- Prioritize HuggingFace bug fix for immediate resolution
+- Priority order: Critical → High → Medium → Low
+- Safety order: Low-risk changes first, higher-risk last
+- Mark [P] for parallel execution (independent components)
+- Prioritize system health and security fixes
 
-**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md
+**Estimated Output**: 40-50 numbered, ordered maintenance tasks in tasks.md
+
+**Task Categories**:
+1. **System Health**: Dependency updates, security patches, bug fixes
+2. **Documentation**: Rebranding completion, README updates, API docs
+3. **Code Quality**: Linting fixes, test improvements, refactoring
+4. **Operations**: Monitoring, backups, performance optimization
 
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
-## Phase 3+: Future Implementation
-*These phases are beyond the scope of the /plan command*
+## Maintenance Execution Phases
 
-**Phase 3**: Task execution (/tasks command creates tasks.md)  
-**Phase 4**: Implementation (execute tasks.md following constitutional principles)  
-**Phase 5**: Validation (run tests, execute quickstart.md, performance validation)
+**Phase 3**: Task execution (/tasks command creates maintenance tasks.md)
+**Phase 4**: Implementation (execute maintenance tasks following safety principles)
+**Phase 5**: Validation (comprehensive testing of maintenance changes)
 
-## Progress Tracking
+## Maintenance Progress Tracking
 
-*Updated by main() during processing*
+### Phase 0: System Analysis ⏳
+- [ ] Complete system audit (TODO/FIXME/BUG comments)
+- [ ] Dependency version analysis across 9 packages
+- [ ] Identify remaining rebranding issues
+- [ ] CI/CD workflow health check
 
-### Phase 0: Research ✅
-- [x] Branch pattern analysis completed
-- [x] HuggingFace bug identified
-- [x] Technical requirements documented
-- [x] Risk assessment completed
+### Phase 1: Maintenance Strategy ⏳
+- [ ] Component health assessment
+- [ ] Safe update procedures documentation
+- [ ] Maintenance checklists creation
+- [ ] Risk assessment for each change category
 
-### Phase 1: Design & Contracts ✅
-- [x] Data model definitions created
-- [x] API contracts generated
-- [x] Quick start guide written
-- [x] Template structure designed
+### Phase 2: Task Planning ⏳
+- [ ] Prioritize maintenance tasks by impact
+- [ ] Create safe execution order
+- [ ] Define rollback procedures
+- [ ] Establish testing requirements
 
-### Phase 2: Task Planning ✅
-- [x] Task generation strategy defined
-- [x] Ordering strategy established
-- [x] HuggingFace bug prioritization
+## Maintenance Success Criteria
 
-### Constitution Check Status ✅
-- [x] Code Quality Excellence addressed
-- [x] Testing Standards incorporated
-- [x] User Experience Consistency maintained
-- [x] Performance Requirements specified
-- [x] Security and Compliance ensured
+### System Health
+- [ ] All critical security patches applied
+- [ ] No CVEs in dependencies
+- [ ] All CI/CD workflows passing
+- [ ] All TODO/FIXME/BUG comments addressed
 
-**Next Phase**: Execute /tasks command to generate implementation tasks
+### Documentation Quality
+- [ ] Complete rebranding (no "leapfrogai" references)
+- [ ] All README files updated and consistent
+- [ ] API documentation current and accurate
+- [ ] Deployment guides functional
 
-## Complexity Tracking
-*Fill ONLY if Constitution Check has violations that must be justified*
+### Code Quality
+- [ ] No linting or formatting issues
+- [ ] Test coverage maintained or improved
+- [ ] Technical debt reduced
+- [ ] Performance benchmarks met
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
-- [ ] Phase 1: Design complete (/plan command)
-- [ ] Phase 2: Task planning complete (/plan command - describe approach only)
-- [ ] Phase 3: Tasks generated (/tasks command)
-- [ ] Phase 4: Implementation complete
-- [ ] Phase 5: Validation passed
+### Operational Readiness
+- [ ] Monitoring and logging enhanced
+- [ ] Backup procedures documented
+- [ ] Troubleshooting guides available
+- [ ] Compliance requirements met
 
-**Gate Status**:
-- [ ] Initial Constitution Check: PASS
-- [ ] Post-Design Constitution Check: PASS
-- [ ] All NEEDS CLARIFICATION resolved
-- [ ] Complexity deviations documented
+**Next Phase**: Execute /tasks command to generate maintenance task list
+
+## Maintenance Risk Assessment
+
+| Change Category | Risk Level | Rollback Strategy | Testing Requirements |
+|-----------------|------------|-------------------|---------------------|
+| Dependency Updates | Medium | Version pin rollback | Full test suite |
+| Bug Fixes | Low | Code revert | Targeted testing |
+| Rebranding | Low | Find/replace revert | Documentation checks |
+| Documentation | Low | Version control revert | Link validation |
+| Performance | High | Configuration revert | Load testing |
+
+**Safety First**: All maintenance changes must include rollback procedures and comprehensive testing.
 
 ---
-*Based on Constitution v1.0.0 - See `/memory/constitution.md`*
+*Maintenance-focused approach for existing production system*

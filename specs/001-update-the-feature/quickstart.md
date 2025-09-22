@@ -1,314 +1,377 @@
-# Quick Start Guide: Feature Specification System
+# Quick Start Guide: CowabungaAI Maintenance
 
 **Branch**: `001-update-the-feature` | **Date**: 2025-09-21
 
 ## Overview
 
-This guide provides a quick start for using the modernized CowabungaAI feature specification system. The system automates specification generation, provides standardized templates, and ensures comprehensive documentation for all feature types.
+This guide provides quick start procedures for maintaining CowabungaAI, a production-ready AI platform. The focus is on system health monitoring, dependency updates, bug fixes, and operational maintenance rather than new feature development.
 
 ## Prerequisites
 
 ### System Requirements
 - **Operating System**: Linux, macOS, or Windows with WSL2
-- **Python**: 3.11 or higher
+- **Python**: 3.11+ (existing system uses this version)
 - **Git**: Latest version
-- **Storage**: 100MB for templates and configuration
+- **Docker**: For local testing (optional)
+- **Kubernetes Access**: For deployment operations (if needed)
 
 ### Development Environment
 ```bash
-# Python environment setup
+# Clone the repository (already exists for maintainers)
+git clone https://github.com/defenseunicorns/leapfrogai.git
+cd leapfrogai
+
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
 
-# Install dependencies
-pip install click pyyaml jinja2 gitpython
+# Install development dependencies
+pip install -r requirements-dev.txt
 ```
 
 ## Quick Start
 
-### 1. Initialize the System
+### 1. System Health Check
+
+#### Basic System Status
 ```bash
-# Clone the repository
-git clone https://github.com/defenseunicorns/leapfrogai.git
-cd leapfrogai
+# Check overall system health
+python scripts/maintenance/health_check.py
 
-# Initialize specification system
-python -m spec_system init
+# Check individual component health
+python scripts/maintenance/health_check.py --component leapfrogai_api
+python scripts/maintenance/health_check.py --component leapfrogai_ui
+
+# Generate health report
+python scripts/maintenance/health_check.py --report health-report.json
 ```
 
-### 2. Create a New Feature Specification
+#### Dependency Audit
 ```bash
-# Basic spec creation
-python -m spec_system create --name "user-authentication" --type api
+# Check for outdated dependencies across all packages
+python scripts/maintenance/dependency_audit.py
 
-# Interactive spec creation
-python -m spec_system create --interactive
+# Check for security vulnerabilities
+python scripts/maintenance/dependency_audit.py --security
 
-# From existing branch
-python -m spec_system create --from-branch "feature/user-auth"
+# Focus on specific component
+python scripts/maintenance/dependency_audit.py --package leapfrogai_api
 ```
 
-### 3. Validate Existing Specifications
+#### TODO/FIXME Analysis
 ```bash
-# Validate all specs
-python -m spec_system validate --all
+# Scan for all TODO/FIXME/BUG comments
+python scripts/maintenance/scan_issues.py
 
-# Validate specific spec
-python -m spec_system validate --spec "specs/001-user-auth/spec.md"
+# Generate issue report
+python scripts/maintenance/scan_issues.py --report issues.json
 
-# Generate validation report
-python -m spec_system validate --all --report validation-report.json
+# Focus on critical issues
+python scripts/maintenance/scan_issues.py --severity critical
 ```
 
-### 4. Generate Templates
+### 2. Common Maintenance Tasks
+
+#### Update Dependencies (Safe Mode)
 ```bash
-# List available templates
-python -m spec_system templates --list
+# Dry run - see what would be updated
+python scripts/maintenance/update_dependencies.py --dry-run
 
-# Create custom template
-python -m spec_system templates --create --name "custom-api" --type api
+# Update specific package safely
+python scripts/maintenance/update_dependencies.py --package fastapi --test
 
-# Update existing template
-python -m spec_system templates --update --name "api"
+# Update all dependencies with automatic testing
+python scripts/maintenance/update_dependencies.py --auto-test
 ```
 
-## Common Workflows
-
-### Creating an API Feature
+#### Fix TODO/FIXME Comments
 ```bash
-# Create API feature specification
-python -m spec_system create \
-  --name "user-profile-api" \
-  --type api \
-  --template "enhanced-api" \
-  --openapi "contracts/user-profile-api.yaml"
+# List all issues by priority
+python scripts/maintenance/scan_issues.py --priority
 
-# The system will generate:
-# - specs/002-user-profile-api/spec.md
-# - specs/002-user-profile-api/contracts/api.yaml
-# - Validation and completeness checks
+# Fix specific issue by ID
+python scripts/maintenance/fix_issue.py --issue-id BUG-001
+
+# Batch fix low-risk issues
+python scripts/maintenance/fix_issue.py --batch --risk low
 ```
 
-### Creating a UI Feature
+#### Complete Rebranding
 ```bash
-# Create UI feature specification
-python -m spec_system create \
-  --name "dashboard-redesign" \
-  --type ui \
-  --template "component-based" \
-  --wireframes "design/wireframes/"
+# Find remaining "leapfrogai" references
+python scripts/maintenance/find_branding_issues.py
 
-# The system will generate:
-# - specs/003-dashboard-redesign/spec.md
-# - specs/003-dashboard-redesign/contracts/ui-components.yaml
-# - Accessibility and testing requirements
+# Update branding in specific component
+python scripts/maintenance/update_branding.py --component leapfrogai_api
+
+# Complete rebranding across all components
+python scripts/maintenance/update_branding.py --all
 ```
 
-### Creating Architecture Decision
+### 3. Testing and Validation
+
+#### Run Test Suite
 ```bash
-# Create ADR specification
-python -m spec_system create \
-  --name "database-migration" \
-  --type architecture \
-  --template "adr" \
-  --impact "high"
+# Run all tests
+pytest
 
-# The system will generate:
-# - specs/004-database-migration/spec.md
-# - specs/004-database-migration/contracts/decision-criteria.yaml
-# - Risk assessment and alternatives analysis
+# Run tests for specific component
+pytest src/leapfrogai_api/tests/
+
+# Run with coverage
+pytest --cov=src/leapfrogai_api --cov-report=html
 ```
 
-## Template Examples
+#### Integration Tests
+```bash
+# Run API integration tests
+pytest tests/integration/api/
 
-### API Feature Template Structure
-```markdown
-# API Feature: [Feature Name]
+# Run conformance tests
+pytest tests/conformance/
 
-## Overview
-[Brief description of the API feature]
-
-## OpenAPI Contract
-- **Endpoint**: `GET /api/v1/users`
-- **Authentication**: JWT required
-- **Rate Limiting**: 100 requests/minute
-
-## User Stories
-- **As a** developer, **I want to** user management endpoints **so that** I can integrate user functionality
-- **As a** system admin, **I want to** user listing **so that** I can monitor user activity
-
-## Acceptance Criteria
-- **Given** a valid JWT token, **When** I request users, **Then** I receive a paginated list
-- **Given** an invalid token, **When** I request users, **Then** I receive 401 Unauthorized
-
-## Technical Requirements
-- **FR-001**: System MUST support pagination with customizable page sizes
-- **FR-002**: System MUST validate JWT tokens using the configured secret
-- **NFR-001**: Response time MUST be <200ms for 100 concurrent requests
+# Performance tests
+pytest tests/load/
 ```
 
-### UI Feature Template Structure
-```markdown
-# UI Feature: [Feature Name]
+### 4. Documentation Updates
 
-## Overview
-[Brief description of the UI feature]
+#### Update README Files
+```bash
+# Generate consistent README template
+python scripts/maintenance/update_readme.py --template
 
-## Component Structure
-- **Parent Component**: DashboardPage
-- **Child Components**: UserProfile, UserTable, SearchBar
-- **State Management**: Redux store integration
+# Update specific component README
+python scripts/maintenance/update_readme.py --component api
 
-## User Stories
-- **As a** user, **I want to** search users **so that** I can find specific users quickly
-- **As a** user, **I want to** export user data **so that** I can analyze it offline
+# Validate all documentation links
+python scripts/maintenance/validate_docs.py --check-links
+```
 
-## Acceptance Criteria
-- **Given** I am on the dashboard, **When** I type in the search box, **Then** results filter in real-time
-- **Given** I select users, **When** I click export, **Then** I receive a CSV file
+#### API Documentation
+```bash
+# Generate OpenAPI documentation
+python scripts/maintenance/generate_api_docs.py
 
-## Accessibility Requirements
-- **WCAG 2.1 AA**: All interactive elements must be keyboard accessible
-- **Screen Reader**: Proper ARIA labels and descriptions
-- **Color Contrast**: Minimum 4.5:1 contrast ratio
+# Update developer guides
+python scripts/maintenance/update_docs.py --guides
+
+# Validate API specs
+python scripts/maintenance/validate_api.py
+```
+
+## Maintenance Workflows
+
+### Emergency Security Patch
+```bash
+# 1. Identify vulnerable dependencies
+python scripts/maintenance/dependency_audit.py --security --critical
+
+# 2. Create maintenance branch
+git checkout -b maintenance/security-patch-$(date +%Y%m%d)
+
+# 3. Apply security updates
+python scripts/maintenance/update_dependencies.py --security --auto-test
+
+# 4. Run full test suite
+pytest
+
+# 5. Deploy with monitoring
+python scripts/maintenance/deploy.py --monitor --rollback
+```
+
+### Regular Maintenance Cycle
+```bash
+# 1. Weekly health check
+python scripts/maintenance/health_check.py --weekly-report
+
+# 2. Monthly dependency updates
+python scripts/maintenance/update_dependencies.py --monthly --safe
+
+# 3. Quarterly documentation review
+python scripts/maintenance/update_docs.py --quarterly
+
+# 4. Bi-annual performance review
+python scripts/maintenance/performance_audit.py --full
+```
+
+### Post-Release Validation
+```bash
+# After deployment validation
+python scripts/maintenance/validate_deployment.py
+
+# Monitor system metrics
+python scripts/maintenance/monitor.py --post-deployment
+
+# Generate deployment report
+python scripts/maintenance/deployment_report.py --last-release
 ```
 
 ## Configuration
 
-### System Configuration
-Create `config/spec-system.yaml`:
+### Maintenance Settings
+Create `maintenance-config.yaml`:
 ```yaml
-system:
-  project_name: "CowabungaAI"
-  version: "1.0.0"
-  default_language: "en"
+maintenance:
+  # General Settings
+  automated_testing: true
+  rollback_on_failure: true
+  notification_channels: [email, slack]
 
-automation:
-  auto_validate: true
-  generate_tests: true
-  integration_mode: "pre_commit"
+  # Dependency Management
+  auto_update_safe_packages: true
+  security_patch_threshold: critical
+  dependency_retention_days: 180
 
-templates:
-  directory: "templates/"
-  custom_path: "custom-templates/"
+  # Testing Requirements
+  test_coverage_minimum: 80
+  performance_test_enabled: true
+  integration_test_required: true
 
-validation:
-  strict_mode: false
-  warning_threshold: 0.8
-  error_threshold: 0.6
-```
+  # Notifications
+  alerts:
+    critical: [email, slack, sms]
+    high: [email, slack]
+    medium: [email]
+    low: [slack]
 
-### Template Customization
-Create custom templates in `custom-templates/`:
-```yaml
-# custom-templates/api-enhanced.yaml
-name: "Enhanced API"
-type: "api"
-sections:
-  - name: "OpenAPI Contract"
-    required: true
-    content_type: "yaml"
-  - name: "Security Considerations"
-    required: true
-    content_type: "markdown"
-  - name: "Performance Requirements"
-    required: true
-    content_type: "markdown"
-```
-
-## Integration with Development Workflow
-
-### Pre-commit Integration
-Add to `.pre-commit-config.yaml`:
-```yaml
-repos:
-  - repo: local
-    hooks:
-      - id: spec-validation
-        name: Validate Feature Specifications
-        entry: python -m spec_system validate --all
-        language: system
-        files: ^specs/.*\.md$
-        pass_filenames: false
+  # Retention Policies
+  health_data_retention_days: 30
+  maintenance_log_retention_days: 365
+  issue_history_retention_days: 90
 ```
 
 ### CI/CD Integration
-Add to your CI pipeline:
+Add to maintenance workflow:
 ```yaml
-# .github/workflows/spec-validation.yml
-name: Specification Validation
-on: [pull_request]
+# .github/workflows/maintenance.yml
+name: System Maintenance
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly Monday 2 AM
+  workflow_dispatch:
 
 jobs:
-  validate-specs:
+  health-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Validate specifications
-        run: python -m spec_system validate --all --report validation-report.json
-      - name: Upload validation report
+      - name: Run Health Check
+        run: python scripts/maintenance/health_check.py --report
+      - name: Upload Health Report
         uses: actions/upload-artifact@v3
         with:
-          name: validation-report
-          path: validation-report.json
+          name: health-report
+          path: health-report.json
+
+  dependency-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit Dependencies
+        run: python scripts/maintenance/dependency_audit.py --security
+      - name: Create Issues if Needed
+        run: python scripts/maintenance/create_issues.py --dependencies
+```
+
+## Monitoring and Alerts
+
+### Health Dashboard
+```bash
+# Start local monitoring dashboard
+python scripts/maintenance/dashboard.py --start
+
+# Generate health trends
+python scripts/maintenance/health_trends.py --days 30
+
+# System metrics summary
+python scripts/maintenance/metrics.py --summary
+```
+
+### Alert Setup
+```bash
+# Configure alert notifications
+python scripts/maintenance/configure_alerts.py --slack-webhook $SLACK_URL
+
+# Test alert system
+python/scripts/maintenance/test_alerts.py --all
+
+# Set up health monitoring
+python scripts/maintenance/monitoring.py --setup
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-#### Specification Validation Fails
+#### Health Check Failures
 ```bash
-# Check validation details
-python -m spec_system validate --spec "specs/001-feature/spec.md" --verbose
+# Debug health check issues
+python scripts/maintenance/health_check.py --debug --component leapfrogai_api
 
-# Get recommendations
-python -m spec_system validate --spec "specs/001-feature/spec.md" --recommendations
+# Check component dependencies
+python scripts/maintenance/health_check.py --dependencies
+
+# Generate detailed diagnostics
+python scripts/maintenance/diagnostics.py --full
 ```
 
-#### Template Not Found
+#### Dependency Conflicts
 ```bash
-# List available templates
-python -m spec_system templates --list
+# Resolve dependency conflicts
+python scripts/maintenance/resolve_conflicts.py
 
-# Check template directory
-python -m spec_system config --show template_directories
+# Check dependency tree
+python scripts/maintenance/dependency_tree.py --package leapfrogai_api
+
+# Clean dependency cache
+python scripts/maintenance/clean_cache.py --dependencies
 ```
 
-#### Git Integration Issues
+#### Test Failures
 ```bash
-# Check git repository status
-git status
+# Debug test failures
+python scripts/maintenance/debug_tests.py --last-failure
 
-# Verify git integration
-python -m spec_system git --status
+# Run tests with verbose output
+pytest --tb=short -v
+
+# Generate test failure report
+python scripts/maintenance/test_report.py --failures-only
 ```
 
 ### Getting Help
 
+#### Documentation
 ```bash
-# Get help
-python -m spec_system --help
+# Access maintenance documentation
+python scripts/maintenance/docs.py --browse
 
-# Get specific command help
-python -m spec_system create --help
+# Generate maintenance manual
+python scripts/maintenance/docs.py --generate-pdf
 
-# Check system status
-python -m spec_system status
+# Check best practices
+python scripts/maintenance/best_practices.py
+```
+
+#### Support
+```bash
+# Create maintenance issue template
+python scripts/maintenance/issue_template.py --bug
+
+# Generate system report for support
+python scripts/maintenance/system_report.py --full
+
+# Check known issues
+python scripts/maintenance/known_issues.py --search
 ```
 
 ## Next Steps
 
-1. **Explore Templates**: Review existing templates and create custom ones
-2. **Integrate Workflow**: Set up pre-commit hooks and CI/CD integration
-3. **Team Training**: Conduct training sessions for development team
-4. **Backfill Existing**: Generate specifications for existing features
-5. **Continuous Improvement**: Monitor usage and refine templates
+1. **Setup Monitoring**: Configure health checks and alerts
+2. **Establish Schedule**: Set up regular maintenance cycles
+3. **Document Procedures**: Create team-specific maintenance guides
+4. **Train Team**: Ensure all team members know maintenance procedures
+5. **Automate**: Implement automated maintenance where possible
 
-For detailed documentation, see the full specification documentation or run `python -m spec_system docs`.
+For detailed maintenance procedures and advanced operations, see the full maintenance documentation or run `python scripts/maintenance/help.py`.
