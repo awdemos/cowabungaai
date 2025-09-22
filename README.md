@@ -9,10 +9,6 @@
 
 Thank you for your interest in CowabungaAI!
 
-**At this time, we are pausing new feature development as we explore other AI capabilities.** If you are working with CowabungaAI or looking to get started, we encourage you to use the resources within this repository.
-
-For any issues or feature requests, please reach out to us at: [https://defenseunicorns.com/contactus](https://defenseunicorns.com/contactus)
-
 ## Table of Contents
 
 - [Overview](#overview)
@@ -34,7 +30,7 @@ For any issues or feature requests, please reach out to us at: [https://defenseu
 
 ## Overview
 
-CowabungaAI is a self-hosted AI platform designed to be deployed in air-gapped environments. This project aims to bring sophisticated AI solutions to air-gapped resource-constrained environments, by enabling the hosting all requisite components of an AI stack.
+CowabungaAI (a fork of LeapfrogAI) is a self-hosted AI platform designed to be deployed in air-gapped environments. This project aims to bring sophisticated AI solutions to air-gapped resource-constrained environments, by enabling the hosting all requisite components of an AI stack.
 
 Our services include vector databases, model backends, API, and UI. These capabilities can be easily accessed and integrated with your existing infrastructure, ensuring the power of AI can be harnessed irrespective of your environment's limitations.
 
