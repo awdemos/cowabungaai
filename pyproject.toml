@@ -11,7 +11,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 
 dependencies = [ # Dev dependencies needed for all of LeapfrogAI
-    "openai == 1.32.1",
+    "openai == 1.45.0",
     "pip-tools == 7.3.0",
     "httpx == 0.27.2",
     "ruff == 0.4.3",
@@ -28,10 +28,10 @@ dev = [
     "pytest",
     "supabase == 2.6.0",
     "huggingface_hub[cli,hf_transfer] ==0.25.1",
-    "fastapi == 0.109.1",
+    "fastapi == 0.115.0",
 ]
 
-dev-whisper = ["ctranslate2 ==4.4.0", "transformers[torch] == 4.39.3"]
+dev-whisper = ["ctranslate2 ==4.4.0", "transformers[torch] == 4.45.1"]
 
 dev-vllm = ["confz == 2.0.1", "huggingface_hub ==0.25.1"]
 

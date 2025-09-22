@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/bash:latest
+FROM cgr.dev/chainguard/bash:latest AS runtime
 
 ARG TARGETPLATFORM \
     SUPABASE_CLI_VERSION="1.169.8" \
@@ -12,6 +12,17 @@ RUN mkdir -p /usr/local/bin && \
     curl -LO https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}/supabase_linux_${ARCH}.tar.gz && \
     tar -xzf supabase_linux_${ARCH}.tar.gz -C /usr/local/bin/ && \
     rm supabase_linux_${ARCH}.tar.gz
+
+# Add CowabungaAI labels
+LABEL org.opencontainers.image.title="CowabungaAI Database Migrations"
+LABEL org.opencontainers.image.description="Database migration scripts for CowabungaAI"
+LABEL org.opencontainers.image.vendor="CowabungaAI"
+LABEL org.opencontainers.image.authors="CowabungaAI Team"
+LABEL org.opencontainers.image.source="https://github.com/awdemos/cowabungaai"
+LABEL org.opencontainers.image.documentation="https://github.com/awdemos/cowabungaai"
+LABEL org.opencontainers.image.licenses="BSL-1.1"
+LABEL org.opencontainers.image.version="0.14.0"
+LABEL maintainer="CowabungaAI Team"
 
 # 65532 is the UID of the `nonroot` user in chainguard/static.  See: https://edu.chainguard.dev/chainguard/chainguard-images/reference/static/overview/#users
 USER 65532:65532

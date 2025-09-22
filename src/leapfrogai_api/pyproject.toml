@@ -7,17 +7,17 @@ version = "0.14.0"
 # x-release-please-end
 
 dependencies = [
-    "fastapi == 0.109.1",
+    "fastapi == 0.115.0",
     "pydantic == 2.8.2",
-    "openai == 1.32.1",
-    "uvicorn == 0.23.2",
+    "openai == 1.45.0",
+    "uvicorn == 0.30.6",
     "docx2txt == 0.8",
     "python-multipart ==0.0.10",            #indirect dep of FastAPI to receive form data for file uploads
     "watchdog == 5.0.2",
     "leapfrogai_sdk",
     "supabase == 2.6.0",
-    "langchain == 0.2.12",
-    "langchain-community == 0.2.11",
+    "langchain == 0.3.0",
+    "langchain-community == 0.3.0",
     "unstructured[md,xlsx,pptx] ==0.15.13", # Only specify necessary filetypes to prevent package bloat (e.g. 130MB vs 6GB)
     "nltk == 3.9.1",                        # Required for pickled code containing .pptx parsing dependencies
     "pylibmagic == 0.5.0",                  # Resolves issue with libmagic not being bundled with OS - https://github.com/ahupp/python-magic/issues/233, may not be needed after this is merged https://github.com/ahupp/python-magic/pull/294
