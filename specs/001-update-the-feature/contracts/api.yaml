@@ -1,65 +1,126 @@
 openapi: 3.0.0
 info:
-  title: Feature Specification System API
-  description: API for managing feature specifications, templates, and validation
+  title: CowabungaAI Maintenance API
+  description: API for system health monitoring, maintenance operations, and issue tracking
   version: 1.0.0
 
 servers:
   - url: http://localhost:8000/api/v1
     description: Development server
+  - url: https://api.cowabungaai.com/api/v1
+    description: Production server
 
 paths:
-  # Specifications
-  /specifications:
+  # System Health
+  /health:
     get:
-      summary: List all specifications
+      summary: Get overall system health status
       responses:
         '200':
-          description: List of specifications
+          description: System health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+
+  /health/components:
+    get:
+      summary: Get health status for all components
+      responses:
+        '200':
+          description: Component health status
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Specification'
+                  $ref: '#/components/schemas/ComponentHealth'
+
+  /health/components/{component_name}:
+    get:
+      summary: Get health status for specific component
+      parameters:
+        - name: component_name
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "leapfrogai_api"
+      responses:
+        '200':
+          description: Component health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentHealth'
+
+  # Maintenance Issues
+  /maintenance/issues:
+    get:
+      summary: List all maintenance issues
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, in_progress, resolved, deferred]
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [security, dependency, bug, documentation, performance]
+      responses:
+        '200':
+          description: List of maintenance issues
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MaintenanceIssue'
 
     post:
-      summary: Create new specification
+      summary: Create new maintenance issue
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SpecificationCreate'
+              $ref: '#/components/schemas/MaintenanceIssueCreate'
       responses:
         '201':
-          description: Specification created
+          description: Issue created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Specification'
+                $ref: '#/components/schemas/MaintenanceIssue'
 
-  /specifications/{spec_id}:
+  /maintenance/issues/{issue_id}:
     get:
-      summary: Get specification by ID
+      summary: Get maintenance issue by ID
       parameters:
-        - name: spec_id
+        - name: issue_id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Specification details
+          description: Issue details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Specification'
+                $ref: '#/components/schemas/MaintenanceIssue'
 
     put:
-      summary: Update specification
+      summary: Update maintenance issue
       parameters:
-        - name: spec_id
+        - name: issue_id
           in: path
           required: true
           schema:
@@ -69,83 +130,157 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SpecificationUpdate'
+              $ref: '#/components/schemas/MaintenanceIssueUpdate'
       responses:
         '200':
-          description: Specification updated
+          description: Issue updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Specification'
+                $ref: '#/components/schemas/MaintenanceIssue'
 
-  /specifications/{spec_id}/validate:
-    post:
-      summary: Validate specification
+  # Dependencies
+  /dependencies:
+    get:
+      summary: Get all dependency information
       parameters:
-        - name: spec_id
-          in: path
-          required: true
+        - name: component
+          in: query
           schema:
             type: string
+        - name: vulnerable
+          in: query
+          schema:
+            type: boolean
+        - name: outdated
+          in: query
+          schema:
+            type: boolean
       responses:
         '200':
-          description: Validation result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationResult'
-
-  # Templates
-  /templates:
-    get:
-      summary: List all templates
-      responses:
-        '200':
-          description: List of templates
+          description: Dependency information
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Template'
+                  $ref: '#/components/schemas/Dependency'
 
+  /dependencies/audit:
     post:
-      summary: Create new template
+      summary: Run dependency audit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                security_only:
+                  type: boolean
+                  description: Only check for security vulnerabilities
+                component:
+                  type: string
+                  description: Specific component to audit
+      responses:
+        '200':
+          description: Audit results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DependencyAuditResult'
+
+  /dependencies/update:
+    post:
+      summary: Update dependencies
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TemplateCreate'
+              $ref: '#/components/schemas/DependencyUpdateRequest'
       responses:
-        '201':
-          description: Template created
+        '200':
+          description: Update operation status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Template'
+                $ref: '#/components/schemas/DependencyUpdateResult'
 
-  /templates/{template_id}:
+  # Maintenance Records
+  /maintenance/records:
     get:
-      summary: Get template by ID
+      summary: Get maintenance records
       parameters:
-        - name: template_id
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [update, fix, security_patch, documentation, performance]
+      responses:
+        '200':
+          description: Maintenance records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MaintenanceRecord'
+
+  /maintenance/records/{record_id}:
+    get:
+      summary: Get maintenance record by ID
+      parameters:
+        - name: record_id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Template details
+          description: Maintenance record details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Template'
+                $ref: '#/components/schemas/MaintenanceRecord'
 
-  # Branch Analysis
-  /branches/analyze:
+  # System Operations
+  /system/backup:
     post:
-      summary: Analyze branch patterns
+      summary: Create system backup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                components:
+                  type: array
+                  items:
+                    type: string
+                include_database:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: Backup operation status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupResult'
+
+  /system/restart:
+    post:
+      summary: Restart system components
       requestBody:
         required: true
         content:
@@ -153,386 +288,560 @@ paths:
             schema:
               type: object
               properties:
-                branch_name:
-                  type: string
-                  description: Branch name to analyze
+                components:
+                  type: array
+                  items:
+                    type: string
+                graceful:
+                  type: boolean
+                  default: true
       responses:
         '200':
-          description: Analysis result
+          description: Restart operation status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BranchAnalysis'
+                $ref: '#/components/schemas/RestartResult'
+
+  # Monitoring
+  /monitoring/metrics:
+    get:
+      summary: Get system metrics
+      parameters:
+        - name: start_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: end_time
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: component
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: System metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemMetrics'
+
+  /monitoring/alerts:
+    get:
+      summary: Get active alerts
+      parameters:
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [critical, high, medium, low]
+      responses:
+        '200':
+          description: Active alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'
 
 components:
   schemas:
-    Specification:
+    SystemHealth:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+          example: "0.14.0"
+        overall_status:
+          type: string
+          enum: [healthy, warning, critical]
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComponentHealth'
+        metrics:
+          $ref: '#/components/schemas/SystemMetrics'
+        maintenance_mode:
+          type: boolean
+        next_maintenance:
+          type: string
+          format: date-time
+
+    ComponentHealth:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "leapfrogai_api"
+        version:
+          type: string
+          example: "0.14.0"
+        type:
+          type: string
+          enum: [api, ui, backend, sdk, infrastructure]
+        status:
+          type: string
+          enum: [healthy, warning, critical, unknown]
+        health_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+        last_health_check:
+          type: string
+          format: date-time
+        uptime_percentage:
+          type: number
+          format: float
+        error_rate:
+          type: number
+          format: float
+        response_time_ms:
+          type: integer
+        memory_usage_mb:
+          type: integer
+        cpu_usage_percent:
+          type: number
+          format: float
+        open_issues:
+          type: integer
+        critical_issues:
+          type: integer
+
+    MaintenanceIssue:
       type: object
       properties:
         id:
           type: string
-          example: "001-user-authentication"
-        name:
+          example: "SEC-2024-001"
+        title:
           type: string
-          example: "User Authentication System"
+          example: "Critical security vulnerability in FastAPI"
         description:
           type: string
-          example: "Implement JWT-based authentication for user management"
-        status:
+        type:
           type: string
-          enum: [draft, approved, implemented, deprecated]
-          example: "draft"
-        category:
+          enum: [security, dependency, bug, documentation, performance]
+        severity:
           type: string
-          enum: [api, ui, architecture, infrastructure, migration]
-          example: "api"
+          enum: [critical, high, medium, low]
         priority:
           type: string
-          enum: [low, medium, high, critical]
-          example: "high"
+          enum: [immediate, high, medium, low]
+        status:
+          type: string
+          enum: [open, in_progress, resolved, deferred]
+        affected_components:
+          type: array
+          items:
+            type: string
+        files_affected:
+          type: array
+          items:
+            type: string
+        assignee:
+          type: string
+        estimated_effort:
+          type: string
+        resolution_steps:
+          type: array
+          items:
+            type: string
+        testing_requirements:
+          type: array
+          items:
+            type: string
         created_at:
           type: string
           format: date-time
         updated_at:
           type: string
           format: date-time
-        author:
+        resolved_at:
           type: string
-          example: "john.doe@example.com"
-        user_stories:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserStory'
-        requirements:
-          $ref: '#/components/schemas/Requirements'
-        acceptance_criteria:
-          type: array
-          items:
-            $ref: '#/components/schemas/AcceptanceCriterion'
+          format: date-time
 
-    UserStory:
+    MaintenanceIssueCreate:
       type: object
+      required:
+        - title
+        - description
+        - type
+        - severity
       properties:
-        role:
+        title:
           type: string
-          example: "developer"
-        need:
-          type: string
-          example: "authenticate users"
-        benefit:
-          type: string
-          example: "secure access to user data"
-
-    Requirements:
-      type: object
-      properties:
-        functional:
-          type: array
-          items:
-            $ref: '#/components/schemas/FunctionalRequirement'
-        non_functional:
-          type: array
-          items:
-            $ref: '#/components/schemas/NonFunctionalRequirement'
-
-    FunctionalRequirement:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "FR-001"
         description:
           type: string
-          example: "System must support JWT token validation"
-        acceptance_criteria:
+        type:
+          type: string
+          enum: [security, dependency, bug, documentation, performance]
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        affected_components:
           type: array
           items:
             type: string
-        priority:
+        files_affected:
+          type: array
+          items:
+            type: string
+
+    MaintenanceIssueUpdate:
+      type: object
+      properties:
+        status:
           type: string
-          enum: [low, medium, high, critical]
+          enum: [open, in_progress, resolved, deferred]
+        assignee:
+          type: string
+        estimated_effort:
+          type: string
+        resolution_steps:
+          type: array
+          items:
+            type: string
+        testing_requirements:
+          type: array
+          items:
+            type: string
+
+    Dependency:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "fastapi"
+        version:
+          type: string
+          example: "0.104.1"
+        latest_version:
+          type: string
+          example: "0.104.2"
+        package_manager:
+          type: string
+          example: "pip"
+        component:
+          type: string
+          example: "leapfrogai_api"
+        cve_ids:
+          type: array
+          items:
+            type: string
+        vulnerability_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 10.0
+        patch_available:
+          type: boolean
+        compatibility:
+          type: string
+          enum: [compatible, incompatible, unknown]
+        breaking_changes:
+          type: array
+          items:
+            type: string
+        deprecated:
+          type: boolean
+        auto_update_safe:
+          type: boolean
+        update_risk:
+          type: string
+          enum: [none, low, medium, high]
+        last_updated:
+          type: string
+          format: date-time
+        next_review_date:
+          type: string
+          format: date-time
+
+    DependencyAuditResult:
+      type: object
+      properties:
+        audit_timestamp:
+          type: string
+          format: date-time
+        total_dependencies:
+          type: integer
+        vulnerable_dependencies:
+          type: integer
+        outdated_dependencies:
+          type: integer
+        deprecated_dependencies:
+          type: integer
+        security_issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityIssue'
+        recommendations:
+          type: array
+          items:
+            type: string
+
+    SecurityIssue:
+      type: object
+      properties:
+        package:
+          type: string
+        cve_id:
+          type: string
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        score:
+          type: number
+          format: float
+        description:
+          type: string
+        patch_available:
+          type: boolean
+        fixed_version:
+          type: string
+
+    DependencyUpdateRequest:
+      type: object
+      required:
+        - dependencies
+      properties:
         dependencies:
           type: array
           items:
-            type: string
-
-    NonFunctionalRequirement:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "NFR-001"
-        type:
-          type: string
-          enum: [performance, security, usability, reliability, maintainability]
-        criteria:
-          type: string
-          example: "Response time < 200ms"
-        metric:
-          type: string
-          example: "average_response_time"
-        target_value:
-          type: string
-          example: "<200ms"
-
-    AcceptanceCriterion:
-      type: object
-      properties:
-        scenario_id:
-          type: string
-          example: "AC-001"
-        given:
-          type: string
-          example: "User provides valid credentials"
-        when:
-          type: string
-          example: "User submits login form"
-        then:
-          type: string
-          example: "System returns JWT token"
-        edge_cases:
-          type: array
-          items:
-            type: string
-
-    Template:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "api-enhanced"
-        name:
-          type: string
-          example: "Enhanced API Template"
-        feature_type:
-          type: string
-          enum: [api, ui, architecture, infrastructure, migration]
-          example: "api"
-        version:
-          type: string
-          example: "1.0.0"
-        description:
-          type: string
-          example: "Comprehensive template for API features with OpenAPI integration"
-        sections:
-          type: array
-          items:
-            $ref: '#/components/schemas/TemplateSection'
-        usage_count:
-          type: integer
-          example: 15
-        success_rate:
-          type: number
-          format: float
-          example: 0.95
-
-    TemplateSection:
-      type: object
-      properties:
-        name:
-          type: string
-          example: "OpenAPI Contract"
-        required:
-          type: boolean
-          example: true
-        content_type:
-          type: string
-          enum: [markdown, yaml, json]
-          example: "yaml"
-        validation_rules:
-          type: array
-          items:
-            type: string
-        examples:
-          type: array
-          items:
-            type: string
-
-    ValidationResult:
-      type: object
-      properties:
-        spec_id:
-          type: string
-          example: "001-user-authentication"
-        timestamp:
-          type: string
-          format: date-time
-        validator_version:
-          type: string
-          example: "1.0.0"
-        overall_score:
-          type: number
-          format: float
-          example: 0.85
-        passed:
-          type: boolean
-          example: true
-        warnings:
-          type: array
-          items:
-            type: string
-        errors:
-          type: array
-          items:
-            type: string
-        checks:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationCheck'
-        recommendations:
-          type: array
-          items:
-            $ref: '#/components/schemas/Recommendation'
-
-    ValidationCheck:
-      type: object
-      properties:
-        check_name:
-          type: string
-          example: "completeness_check"
-        category:
-          type: string
-          enum: [completeness, clarity, testability, consistency]
-          example: "completeness"
-        passed:
-          type: boolean
-          example: true
-        message:
-          type: string
-          example: "All required sections are present"
-        severity:
-          type: string
-          enum: [info, warning, error]
-          example: "info"
-
-    Recommendation:
-      type: object
-      properties:
-        priority:
-          type: string
-          enum: [low, medium, high]
-          example: "medium"
-        category:
-          type: string
-          example: "documentation"
-        description:
-          type: string
-          example: "Add more detailed acceptance criteria"
-        effort:
-          type: string
-          example: "30 minutes"
-
-    BranchAnalysis:
-      type: object
-      properties:
-        branch_name:
-          type: string
-          example: "feature/user-authentication"
-        category:
-          type: string
-          enum: [api, ui, architecture, infrastructure, migration]
-          example: "api"
-        documentation_level:
-          type: string
-          enum: [none, minimal, adequate, comprehensive]
-          example: "adequate"
-        patterns:
-          type: object
-          properties:
-            commit_patterns:
-              type: array
-              items:
-                type: object
-                properties:
-                  pattern:
-                    type: string
-                    example: "feat(api):*"
-                  frequency:
-                    type: integer
-                    example: 5
-            best_practices:
-              type: array
-              items:
+            type: object
+            properties:
+              name:
                 type: string
-        recommendations:
-          type: array
-          items:
-            type: string
-        quality_score:
-          type: number
-          format: float
-          example: 0.75
+              version:
+                type: string
+        dry_run:
+          type: boolean
+          default: false
+        test_after_update:
+          type: boolean
+          default: true
+        component:
+          type: string
 
-    SpecificationCreate:
-      type: object
-      required:
-        - name
-        - description
-        - category
-      properties:
-        name:
-          type: string
-          example: "User Authentication System"
-        description:
-          type: string
-          example: "Implement JWT-based authentication"
-        category:
-          type: string
-          enum: [api, ui, architecture, infrastructure, migration]
-          example: "api"
-        priority:
-          type: string
-          enum: [low, medium, high, critical]
-        template_id:
-          type: string
-          example: "api-enhanced"
-        user_stories:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserStory'
-
-    SpecificationUpdate:
+    DependencyUpdateResult:
       type: object
       properties:
-        name:
-          type: string
-        description:
+        operation_id:
           type: string
         status:
           type: string
-          enum: [draft, approved, implemented, deprecated]
-        priority:
+          enum: [pending, running, completed, failed]
+        started_at:
           type: string
-          enum: [low, medium, high, critical]
-        user_stories:
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+        dependencies_updated:
           type: array
           items:
-            $ref: '#/components/schemas/UserStory'
-        requirements:
-          $ref: '#/components/schemas/Requirements'
-        acceptance_criteria:
-          type: array
-          items:
-            $ref: '#/components/schemas/AcceptanceCriterion'
+            type: string
+        test_results:
+          $ref: '#/components/schemas/TestResult'
+        rollback_available:
+          type: boolean
+        error_message:
+          type: string
 
-    TemplateCreate:
+    MaintenanceRecord:
       type: object
-      required:
-        - name
-        - feature_type
-        - sections
       properties:
-        name:
+        id:
           type: string
-          example: "Enhanced API Template"
-        feature_type:
+        title:
           type: string
-          enum: [api, ui, architecture, infrastructure, migration]
-          example: "api"
+        type:
+          type: string
+          enum: [update, fix, security_patch, documentation, performance]
         description:
           type: string
-          example: "Comprehensive API template"
-        sections:
+        performed_by:
+          type: string
+        performed_at:
+          type: string
+          format: date-time
+        duration_minutes:
+          type: integer
+        rollback_available:
+          type: boolean
+        files_modified:
           type: array
           items:
-            $ref: '#/components/schemas/TemplateSection'
+            type: string
+        dependencies_updated:
+          type: array
+          items:
+            type: string
+        tests_run:
+          type: array
+          items:
+            type: string
+        success:
+          type: boolean
+        issues_resolved:
+          type: array
+          items:
+            type: string
+        issues_introduced:
+          type: array
+          items:
+            type: string
+        test_results:
+          $ref: '#/components/schemas/TestResult'
+
+    TestResult:
+      type: object
+      properties:
+        test_suite:
+          type: string
+        tests_run:
+          type: integer
+        tests_passed:
+          type: integer
+        tests_failed:
+          type: integer
+        tests_skipped:
+          type: integer
+        line_coverage:
+          type: number
+          format: float
+        branch_coverage:
+          type: number
+          format: float
+        function_coverage:
+          type: number
+          format: float
+        duration_seconds:
+          type: number
+          format: float
+        failures:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestFailure'
+
+    TestFailure:
+      type: object
+      properties:
+        test_name:
+          type: string
+        failure_message:
+          type: string
+        file_path:
+          type: string
+        line_number:
+          type: integer
+
+    BackupResult:
+      type: object
+      properties:
+        backup_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [started, in_progress, completed, failed]
+        components_backed_up:
+          type: array
+          items:
+            type: string
+        backup_size_mb:
+          type: integer
+        backup_location:
+          type: string
+        retention_days:
+          type: integer
+        error_message:
+          type: string
+
+    RestartResult:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [started, in_progress, completed, failed]
+        components_restarted:
+          type: array
+          items:
+            type: string
+        downtime_seconds:
+          type: integer
+        rollback_performed:
+          type: boolean
+        error_message:
+          type: string
+
+    SystemMetrics:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        uptime_percentage:
+          type: number
+          format: float
+        response_time_ms:
+          type: integer
+        error_rate:
+          type: number
+          format: float
+        active_users:
+          type: integer
+        memory_usage_mb:
+          type: integer
+        cpu_usage_percent:
+          type: number
+          format: float
+        disk_usage_gb:
+          type: number
+          format: float
+        network_io_mbps:
+          type: number
+          format: float
+
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+        severity:
+          type: string
+          enum: [critical, high, medium, low]
+        title:
+          type: string
+        description:
+          type: string
+        component:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [active, acknowledged, resolved]
+        acknowledged_by:
+          type: string
+        resolved_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
