@@ -62,7 +62,7 @@ For commercial production use involving BSL-licensed components, organizations m
 
 To inquire about a commercial license, please create a GitHub issue at:
 
-https://github.com/defenseunicorns/leapfrogai/issues/new/choose
+https://github.com/awdemos/cowabungaai/issues/new/choose
 
 **Please include the following information in your inquiry:**
 
