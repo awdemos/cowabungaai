@@ -29,6 +29,7 @@ from leapfrogai_api.routers.openai import (
     threads,
     vector_stores,
 )
+from leapfrogai_api.routers import health
 from leapfrogai_api.utils import get_model_config
 from prometheus_fastapi_instrumentator import Instrumentator
 
@@ -105,3 +106,4 @@ app.include_router(lfai_models.router)
 # This should be at the bottom to prevent it preempting more specific runs endpoints
 # https://fastapi.tiangolo.com/tutorial/path-params/#order-matters
 app.include_router(threads.router)
+app.include_router(health.router)

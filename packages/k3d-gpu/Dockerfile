@@ -3,7 +3,7 @@ ARG CUDA_TAG=12.4.1-base-ubuntu22.04
 
 FROM rancher/k3s:$K3S_TAG AS k3s
 
-FROM nvidia/cuda:$CUDA_TAG
+FROM nvidia/cuda:$CUDA_TAG AS runtime
 
 # Install the NVIDIA container toolkit
 RUN apt-get update && \
@@ -21,6 +21,17 @@ COPY --from=k3s /bin /bin
 
 # Deploy the nvidia driver plugin on startup
 COPY plugin/device-plugin-daemonset.yaml /var/lib/rancher/k3s/server/manifests/nvidia-device-plugin-daemonset.yaml
+
+# Add CowabungaAI labels
+LABEL org.opencontainers.image.title="CowabungaAI K3s GPU Runtime"
+LABEL org.opencontainers.image.description="K3s Kubernetes runtime with NVIDIA GPU support for CowabungaAI"
+LABEL org.opencontainers.image.vendor="CowabungaAI"
+LABEL org.opencontainers.image.authors="CowabungaAI Team"
+LABEL org.opencontainers.image.source="https://github.com/awdemos/cowabungaai"
+LABEL org.opencontainers.image.documentation="https://github.com/awdemos/cowabungaai"
+LABEL org.opencontainers.image.licenses="BSL-1.1"
+LABEL org.opencontainers.image.version="0.14.0"
+LABEL maintainer="CowabungaAI Team"
 
 VOLUME /var/lib/kubelet
 VOLUME /var/lib/rancher/k3s

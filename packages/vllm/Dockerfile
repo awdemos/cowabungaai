@@ -1,5 +1,5 @@
 ARG LOCAL_VERSION
-FROM ghcr.io/defenseunicorns/leapfrogai/leapfrogai-sdk:${LOCAL_VERSION} AS sdk
+FROM ghcr.io/defenseunicorns/leapfrogai/cowabungaai-sdk:${LOCAL_VERSION} AS sdk
 
 FROM nvidia/cuda:12.2.2-devel-ubuntu22.04 AS builder
 

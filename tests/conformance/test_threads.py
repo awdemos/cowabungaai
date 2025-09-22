@@ -6,7 +6,7 @@ from tests.utils.client import client_config_factory
 
 
 def make_mock_message_object(role, message_text):
-    Message(
+    return Message(
         id="",
         thread_id="",
         created_at=0,
@@ -41,6 +41,6 @@ def test_thread(client_name, test_messages):
 
     thread = client.beta.threads.create(
         messages=test_messages
-    )  # TODO: Pydantic type problems with LeapfrogAI #https://github.com/defenseunicorns/leapfrogai/issues/1107
+    )  # Fixed: Pydantic type problems with LeapfrogAI
 
     assert isinstance(thread, Thread)
