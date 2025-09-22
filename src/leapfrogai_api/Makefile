@@ -21,9 +21,9 @@ api-key:
 	-H "apikey:  ${SUPABASE_ANON_KEY}" \
 	-H "Content-Type: application/json" \
 	-H "Authorization: Bearer  ${SUPABASE_ANON_KEY}" \
-	-d '{ "email": "leapfrogai@defenseunicorns.com", "password": "password", "confirmPassword": "password"}' | \
+	-d '{ "email": "test@cowabungaai.com", "password": "password", "confirmPassword": "password"}' | \
 	uds zarf tools yq '.access_token' | \
-	xargs -I {} curl -s --insecure -X POST '${API_BASE_URL}/leapfrogai/v1/auth/api-keys' \
+	xargs -I {} curl -s --insecure -X POST '${API_BASE_URL}/cowabungaai/v1/auth/api-keys' \
 	-H "apikey: {}" \
 	-H "Content-Type: application/json" \
 	-H "Authorization: Bearer {}" \
@@ -35,9 +35,9 @@ new-api-key:
 	-H "apikey:  ${SUPABASE_ANON_KEY}" \
 	-H "Content-Type: application/json" \
 	-H "Authorization: Bearer  ${SUPABASE_ANON_KEY}" \
-	-d '{ "email": "leapfrogai@defenseunicorns.com", "password": "password"}' | \
+	-d '{ "email": "test@cowabungaai.com", "password": "password"}' | \
 	uds zarf tools yq '.access_token' | \
-	xargs -I {} curl -s --insecure -X POST '${API_BASE_URL}/leapfrogai/v1/auth/api-keys' \
+	xargs -I {} curl -s --insecure -X POST '${API_BASE_URL}/cowabungaai/v1/auth/api-keys' \
 	-H "apikey: {}" \
 	-H "Content-Type: application/json" \
 	-H "Authorization: Bearer {}" \

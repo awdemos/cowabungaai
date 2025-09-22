@@ -60,8 +60,8 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-`leapfrogai [@] defenseunicorns.com`.
+reported to the community leaders responsible for enforcement by opening
+an issue in the repository or contacting maintainers through GitHub.
 
 All complaints will be reviewed and investigated promptly and fairly.
 

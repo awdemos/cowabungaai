@@ -29,7 +29,7 @@ This document is only applicable for spinning up the API in a local Python devel
     make dev API_PORT=8080
     ```
 
-4. Create an API key with test user "leapfrogai@defenseunicorns.com" and test password "password", lasting 30 days from creation time
+4. Create an API key with test user "test@cowabungaai.com" and test password "password", lasting 30 days from creation time
 
     ```bash
     # If the in-cluster API is up, and not testing the API workflow
@@ -59,13 +59,13 @@ See the [tests directory documentation](../../tests/README.md) for more details.
 
 ### Reranking Configuration
 
-The CowabungaAI API includes a Retrieval Augmented Generation (RAG) pipeline for enhanced question answering. This section details how to configure its reranking options. All RAG configurations are managed through the `/leapfrogai/v1/rag/configure` API endpoint.
+The CowabungaAI API includes a Retrieval Augmented Generation (RAG) pipeline for enhanced question answering. This section details how to configure its reranking options. All RAG configurations are managed through the `/cowabungaai/v1/rag/configure` API endpoint.
 
 #### 1. Enabling/Disabling Reranking
 
 Reranking improves the accuracy and relevance of RAG responses. You can enable or disable it using the `enable_reranking` parameter:
 
-* **Enable Reranking:** Send a PATCH request to `/leapfrogai/v1/rag/configure` with the following JSON payload:
+* **Enable Reranking:** Send a PATCH request to `/cowabungaai/v1/rag/configure` with the following JSON payload:
 
 ```json
 {
@@ -87,7 +87,7 @@ Multiple reranking models are supported, each offering different performance cha
 
 * **Supported Models:**  The system supports several models, including (but not limited to) `flashrank`, `rankllm`, `cross-encoder`, and `colbert`.  Refer to the [rerankers library documentation](https://github.com/AnswerDotAI/rerankers) for a complete list and details on their capabilities.
 
-* **Model Selection:** Use a PATCH request to `/leapfrogai/v1/rag/configure` with the desired model:
+* **Model Selection:** Use a PATCH request to `/cowabungaai/v1/rag/configure` with the desired model:
 
 ```json
 {
@@ -100,7 +100,7 @@ Multiple reranking models are supported, each offering different performance cha
 
 This parameter sets the number of top results retrieved from the vector database *before* the reranking process begins. A higher value increases the diversity of candidates considered for reranking but also increases processing time. A lower value can lead to missing relevant results if not carefully chosen. This setting is only relevant when reranking is enabled.
 
-* **Configuration:** Use a PATCH request to `/leapfrogai/v1/rag/configure` to set this value:
+* **Configuration:** Use a PATCH request to `/cowabungaai/v1/rag/configure` to set this value:
 
 ```json
 {
@@ -112,7 +112,7 @@ This parameter sets the number of top results retrieved from the vector database
 
 #### 4. Retrieving the Current RAG Configuration
 
-To check the current RAG configuration (including reranking status, model, and `rag_top_k_when_reranking`), send a GET request to `/leapfrogai/v1/rag/configure`. The response will be a JSON object containing all the current settings.
+To check the current RAG configuration (including reranking status, model, and `rag_top_k_when_reranking`), send a GET request to `/cowabungaai/v1/rag/configure`. The response will be a JSON object containing all the current settings.
 
 #### 5.  Example Configuration Flow
 
