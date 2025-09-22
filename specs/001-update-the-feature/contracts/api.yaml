@@ -45,7 +45,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "leapfrogai_api"
+            example: "cowabungaai_api"
       responses:
         '200':
           description: Component health status
@@ -380,7 +380,7 @@ components:
       properties:
         name:
           type: string
-          example: "leapfrogai_api"
+          example: "cowabungaai_api"
         version:
           type: string
           example: "0.14.0"
@@ -532,7 +532,7 @@ components:
           example: "pip"
         component:
           type: string
-          example: "leapfrogai_api"
+          example: "cowabungaai_api"
         cve_ids:
           type: array
           items:
