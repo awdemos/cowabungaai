@@ -14,7 +14,7 @@ See the CowabungaAI documentation website for [system requirements](https://docs
 
 ### Model Selection
 
-The default model that comes with this backend in this repository's officially released images is a [4-bit quantization of the Synthia-7b model](https://huggingface.co/TheBloke/SynthIA-7B-v2.0-GPTQ).
+The default model that comes with this backend in this repository's officially released images is a [4-bit quantization of the Qwen2.5 Coder 7B model](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct).
 
 All of the commands in this sub-section are executed within this `packages/vllm` sub-directory.
 

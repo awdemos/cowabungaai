@@ -14,14 +14,14 @@ See the CowabungaAI documentation website for [system requirements](https://docs
 
 ### Model Selection
 
-The default model that comes with this backend in this repository's officially released images is a [quantization of the Synthia-7b model](https://huggingface.co/TheBloke/SynthIA-7B-v2.0-GPTQ).
+The default model that comes with this backend in this repository's officially released images is a [quantization of the Qwen2.5 Coder 7B model](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF).
 
 Models are pulled from [HuggingFace Hub](https://huggingface.co/models) via the [model_download.py](/packages/llama-cpp-python/scripts/model_download.py) script. To change what model comes with the llama-cpp-python backend, set the following environment variables:
 
 ```bash
-REPO_ID   # eg: "TheBloke/SynthIA-7B-v2.0-GGUF"
-FILENAME  # eg: "synthia-7b-v2.0.Q4_K_M.gguf"
-REVISION  # eg: "3f65d882253d1f15a113dabf473a7c02a004d2b5"
+REPO_ID   # eg: "Qwen/Qwen2.5-Coder-7B-Instruct-GGUF"
+FILENAME  # eg: "qwen2.5-coder-7b-instruct-q4_k_m.gguf"
+REVISION  # eg: "main"
 ```
 
 If you choose a different model, make sure to modify the default [config.yaml](./config.yaml) using the Hugging Face model repository's model files and model card.
