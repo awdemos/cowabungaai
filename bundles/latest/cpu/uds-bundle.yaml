@@ -3,7 +3,7 @@
 kind: UDSBundle
 metadata:
   name: leapfrogai
-  description: A UDS bundle for deploying LeapfrogAI
+  description: A UDS bundle for deploying CowabungaAI
   version: 0.13.1-upstream
 
 packages:

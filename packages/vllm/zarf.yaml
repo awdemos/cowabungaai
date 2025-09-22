@@ -46,7 +46,7 @@ variables:
     description: "If None, allows vLLM to automatically detect via model files and configuration"
   - name: LOAD_FORMAT
     description: "If auto, allows vLLM to automatically detect via model files and configuration"
-  # LeapfrogAI SDK runtime configuration (usually influenced by config.yaml in development)
+  # CowabungaAI SDK runtime configuration (usually influenced by config.yaml in development)
   - name: MAX_CONTEXT_LENGTH
     description: "The maximum number of tokens the model can process in a single input before the inferencing engine's overflow strategy is used"
     pattern: "^[1-9][0-9]*$"
@@ -54,11 +54,11 @@ variables:
     description: "A set of special tokens that signal the model to stop producing further output, delimited using a comma and space"
     pattern: ^(<[^,]+>\s*,\s*)*<[^,]+>\s*$
   - name: PROMPT_FORMAT_CHAT_SYSTEM
-    description: "Prompt template format for the LeapfrogAI SDK to consume and wrap"
+    description: "Prompt template format for the CowabungaAI SDK to consume and wrap"
   - name: PROMPT_FORMAT_CHAT_USER
-    description: "Prompt template format for the LeapfrogAI SDK to consume and wrap"
+    description: "Prompt template format for the CowabungaAI SDK to consume and wrap"
   - name: PROMPT_FORMAT_CHAT_ASSISTANT
-    description: "Prompt template format for the LeapfrogAI SDK to consume and wrap"
+    description: "Prompt template format for the CowabungaAI SDK to consume and wrap"
   - name: TEMPERATURE
     description: "Controls the randomness of the model's output"
     pattern: ^(0(\.\d+)?|1(\.0+)?)$

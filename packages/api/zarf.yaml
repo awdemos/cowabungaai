@@ -2,7 +2,7 @@
 
 kind: ZarfPackageConfig
 metadata:
-  description: "LeapfrogAI API"
+  description: "CowabungaAI API"
   name: leapfrogai-api
   version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
 

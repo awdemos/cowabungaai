@@ -1,4 +1,4 @@
-# LeapfrogAI SDK
+# CowabungaAI SDK
 
 > [!IMPORTANT]
 > The SDK is not a functionally independent component! Please see the root README for more context.
@@ -9,7 +9,7 @@ This document is only applicable for integrating the SDK into an API and model b
 
 1. Make changes to the SDK code
 2. Re-install dependencies and spin-up a model backend (e.g., [vLLM](../../packages/vllm/README.md))
-3. Re-install dependencies and spin-up the [LeapfrogAI API](../leapfrogai_api/README.md)
+3. Re-install dependencies and spin-up the [CowabungaAI API](../leapfrogai_api/README.md)
 4. Test changes as required
 
 ## Integration Tests

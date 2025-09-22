@@ -21,7 +21,7 @@ jobs:
           LFAI_VERSION=$(jq -r '.["."]' .github/.release-please-manifest.json)
           echo "LFAI_VERSION=$LFAI_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Release LeapfrogAI ${{ steps.get_version.outputs.LFAI_VERSION }}
+      - name: Release CowabungaAI ${{ steps.get_version.outputs.LFAI_VERSION }}
         uses: ./.github/actions/release
         with:
           releaseTag: ${{ steps.get_version.outputs.LFAI_VERSION }}

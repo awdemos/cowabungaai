@@ -41,7 +41,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
 
-      - name: Release LeapfrogAI ${{ env.SNAPSHOT_VERSION }}
+      - name: Release CowabungaAI ${{ env.SNAPSHOT_VERSION }}
         uses: ./.github/actions/release
         with:
           releaseTag: ${{ env.SNAPSHOT_VERSION }}
@@ -170,7 +170,7 @@ jobs:
         env:
           ANON_KEY: ${{ steps.generate_secrets.outputs.ANON_KEY }}
           SERVICE_KEY: ${{ steps.generate_secrets.outputs.SERVICE_KEY }}
-          LEAPFROGAI_MODEL: llama-cpp-python
+          COWABUNGAAI_MODEL: llama-cpp-python
         run: |
           python -m pytest -vvv -s ./tests/e2e
 

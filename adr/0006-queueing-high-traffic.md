@@ -18,7 +18,7 @@ PROPOSED
 
 ## Context
 
-LeapfrogAI needs to handle a large volume of inference, file upload, and embeddings requests. To ensure that we can manage this level of activity without significant performance degradation, we need to implement systems that prevent overwhelming or blocking by a large volume or single long-running task.
+CowabungaAI needs to handle a large volume of inference, file upload, and embeddings requests. To ensure that we can manage this level of activity without significant performance degradation, we need to implement systems that prevent overwhelming or blocking by a large volume or single long-running task.
 
 Adding a Queue management component can help create a more efficient request management system to deal with high request volumes of long-running tasks. However, it may introduce a significant level of complexity to the system, and we must weigh the options carefully.
 

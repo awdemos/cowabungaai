@@ -1,15 +1,15 @@
-![LeapfrogAI](https://github.com/defenseunicorns/leapfrogai/raw/main/docs/imgs/leapfrogai.png)
+![CowabungaAI](https://github.com/defenseunicorns/leapfrogai/raw/main/docs/imgs/leapfrogai.png)
 
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai/badge)](https://api.securityscorecards.dev/projects/github.com/defenseunicorns/leapfrogai)
 [![Nightly Snapshot Tests](https://github.com/defenseunicorns/leapfrogai/actions/workflows/nightly-snapshot-release.yaml/badge.svg?branch=main)](https://github.com/defenseunicorns/leapfrogai/actions/workflows/nightly-snapshot-release.yaml)
 [![Nightly Made for UDS Test](https://github.com/defenseunicorns/leapfrogai/actions/workflows/nightly-uds-badge-verification.yaml/badge.svg?branch=main)](https://github.com/defenseunicorns/leapfrogai/actions/workflows/nightly-uds-badge-verification.yaml)
 [![Weekly Registry1 Test](https://github.com/defenseunicorns/leapfrogai/actions/workflows/weekly-registry1-flavor-test.yaml/badge.svg?branch=main)](https://github.com/defenseunicorns/leapfrogai/actions/workflows/weekly-registry1-flavor-test.yaml)
 
-## 📣 LeapfrogAI Status Update 📣
+## 📣 CowabungaAI Status Update 📣
 
-Thank you for your interest in LeapfrogAI!
+Thank you for your interest in CowabungaAI!
 
-**At this time, we are pausing new feature development as we explore other AI capabilities.** If you are working with LeapfrogAI or looking to get started, we encourage you to use the resources within this repository.
+**At this time, we are pausing new feature development as we explore other AI capabilities.** If you are working with CowabungaAI or looking to get started, we encourage you to use the resources within this repository.
 
 For any issues or feature requests, please reach out to us at: [https://defenseunicorns.com/contactus](https://defenseunicorns.com/contactus)
 
@@ -34,13 +34,13 @@ For any issues or feature requests, please reach out to us at: [https://defenseu
 
 ## Overview
 
-LeapfrogAI is a self-hosted AI platform designed to be deployed in air-gapped environments. This project aims to bring sophisticated AI solutions to air-gapped resource-constrained environments, by enabling the hosting all requisite components of an AI stack.
+CowabungaAI is a self-hosted AI platform designed to be deployed in air-gapped environments. This project aims to bring sophisticated AI solutions to air-gapped resource-constrained environments, by enabling the hosting all requisite components of an AI stack.
 
 Our services include vector databases, model backends, API, and UI. These capabilities can be easily accessed and integrated with your existing infrastructure, ensuring the power of AI can be harnessed irrespective of your environment's limitations.
 
 ## Why Host Your Own LLM?
 
-Large Language Models (LLMs) are a powerful resource for AI-driven decision making, content generation, and more. How can LeapfrogAI bring AI to your mission?
+Large Language Models (LLMs) are a powerful resource for AI-driven decision making, content generation, and more. How can CowabungaAI bring AI to your mission?
 
 - **Data Independence**: Sending sensitive information to a third-party service may not be suitable or permissible for all types of data or organizations. By hosting your own LLM, you retain full control over your data.
 
@@ -51,10 +51,10 @@ Large Language Models (LLMs) are a powerful resource for AI-driven decision maki
 ## Demo Video
 
 <a href="https://www.youtube.com/watch?v=BowOJttHyPU" target="_blank">
- <img src="docs/imgs/walkthrough_thumbnail.jpg" alt="2 minute demo of features of LeapfrogAI" width="540"/>
+ <img src="docs/imgs/walkthrough_thumbnail.jpg" alt="2 minute demo of features of CowabungaAI" width="540"/>
 </a>
 
-LeapfrogAI is built on top of [Unicorn Delivery Service (UDS)](https://github.com/defenseunicorns/uds-core), Defense Unicorns' secure runtime environment, and includes several features such as:
+CowabungaAI is built on top of [Unicorn Delivery Service (UDS)](https://github.com/defenseunicorns/uds-core), Defense Unicorns' secure runtime environment, and includes several features such as:
 
 - **Single Sign-On**
 - **Non-proprietary API Compatible with OpenAI's API**
@@ -64,13 +64,13 @@ LeapfrogAI is built on top of [Unicorn Delivery Service (UDS)](https://github.co
 
 ## Structure
 
-The LeapfrogAI repository follows a monorepo structure based around an [API](#api) with each of the [components](#components) included in a dedicated `packages` directory. The UDS bundles that handle the development and latest deployments of LeapfrogAI are in the `bundles` directory. The structure looks as follows:
+The CowabungaAI repository follows a monorepo structure based around an [API](#api) with each of the [components](#components) included in a dedicated `packages` directory. The UDS bundles that handle the development and latest deployments of CowabungaAI are in the `bundles` directory. The structure looks as follows:
 
 ```bash
-leapfrogai/
+cowabungaai/
 ├── src/
 │   ├── leapfrogai_api/   # source code for the API
-│   ├── leapfrogai_evals/ # source code for the LeapfrogAI evaluation framework
+│   ├── leapfrogai_evals/ # source code for the CowabungaAI evaluation framework
 │   ├── leapfrogai_sdk/   # source code for the SDK
 │   └── leapfrogai_ui/    # source code for the UI
 ├── packages/
@@ -93,27 +93,27 @@ leapfrogai/
 
 ## Getting Started
 
-The preferred method for running LeapfrogAI is a local [Kubernetes](https://kubernetes.io/) deployment using [UDS](https://github.com/defenseunicorns/uds-core).
+The preferred method for running CowabungaAI is a local [Kubernetes](https://kubernetes.io/) deployment using [UDS](https://github.com/defenseunicorns/uds-core).
 
-Please refer to the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) section of the LeapfrogAI documentation website for system requirements and instructions.
+Please refer to the [Quick Start](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) section of the CowabungaAI documentation website for system requirements and instructions.
 
 ## Components
 
 ### API
 
-LeapfrogAI provides an [API](src/leapfrogai_api/) that closely matches that of OpenAI's. This feature allows tools that have been built with OpenAI/ChatGPT to function seamlessly with a LeapfrogAI backend.
+CowabungaAI provides an [API](src/leapfrogai_api/) that closely matches that of OpenAI's. This feature allows tools that have been built with OpenAI/ChatGPT to function seamlessly with a CowabungaAI backend.
 
 ### SDK
 
-The LeapfrogAI [SDK](src/leapfrogai_sdk/) provides a standard set of protobufs and Python utilities for implementing backends with gRPC.
+The CowabungaAI [SDK](src/leapfrogai_sdk/) provides a standard set of protobufs and Python utilities for implementing backends with gRPC.
 
 ### UI
 
-LeapfrogAI provides a [UI](src/leapfrogai_ui/) with support for common use-cases such as general chat and "Q&A with your documents".
+CowabungaAI provides a [UI](src/leapfrogai_ui/) with support for common use-cases such as general chat and "Q&A with your documents".
 
 ### Backends
 
-LeapfrogAI provides several backends for a variety of use cases. Below is the backends support and compatibility matrix:
+CowabungaAI provides several backends for a variety of use cases. Below is the backends support and compatibility matrix:
 
 | Backend                                        |  AMD64  |  ARM64  |  CUDA  | Docker | Kubernetes |   UDS   |
 | ---------------------------------------------- | ------- | ------- | ------ | ------ | ---------- | ------- |
@@ -130,7 +130,7 @@ The [repeater](packages/repeater/) "model" is a basic "backend" that parrots all
 
 ### Evaluations
 
-LeapfrogAI comes with an evaluation framework that is integrated with [DeepEval](https://docs.confident-ai.com/). For more information on running and utilizing evaluations in LeapfrogAI, please see the [Evals README](/src/leapfrogai_evals/README.md).
+CowabungaAI comes with an evaluation framework that is integrated with [DeepEval](https://docs.confident-ai.com/). For more information on running and utilizing evaluations in CowabungaAI, please see the [Evals README](/src/leapfrogai_evals/README.md).
 
 ### Flavors
 
@@ -157,16 +157,16 @@ Flavors with any components labelled as 🚧 are not available as a quick start 
 
 ## Usage
 
-To build a LeapfrogAI UDS bundle and deploy it, please refer to the [LeapfrogAI Documentation Website](https://docs.leapfrog.ai/docs/). In the documentation website, you'll find system requirements and instructions for all things LeapfrogAI that aren't associated to local development and contributing.
+To build a CowabungaAI UDS bundle and deploy it, please refer to the [CowabungaAI Documentation Website](https://docs.leapfrog.ai/docs/). In the documentation website, you'll find system requirements and instructions for all things CowabungaAI that aren't associated to local development and contributing.
 
 For contributing and local deployment and development for each component in a local Python or Node.js environment please continue on to the [next section](#local-development).
 
 ## Local Development
 
 > [!NOTE]
-> Please start with the [LeapfrogAI documentation website](https://docs.leapfrog.ai/docs/local-deploy-guide/) prior to attempting local development
+> Please start with the [CowabungaAI documentation website](https://docs.leapfrog.ai/docs/local-deploy-guide/) prior to attempting local development
 
-Each of the LeapfrogAI components can also be run individually outside of a Kubernetes or Containerized environment. This is useful when testing changes to a specific component, but will not assist in a full deployment of LeapfrogAI. Please refer to the [above section](#usage) for deployment instructions. Please refer to the [next section](#contributing) for rules on contributing to LeapfrogAI.
+Each of the CowabungaAI components can also be run individually outside of a Kubernetes or Containerized environment. This is useful when testing changes to a specific component, but will not assist in a full deployment of CowabungaAI. Please refer to the [above section](#usage) for deployment instructions. Please refer to the [next section](#contributing) for rules on contributing to CowabungaAI.
 
 **_First_** refer to the [DEVELOPMENT.md](docs/DEVELOPMENT.md) document for general development details.
 
@@ -195,7 +195,7 @@ When submitting an issue or opening a PR, please first ensure that you have sear
 
 ## Community
 
-LeapfrogAI is supported by a community of users and contributors, including:
+CowabungaAI is supported by a community of users and contributors, including:
 
 - [Defense Unicorns](https://defenseunicorns.com)
 - [Beast Code](https://beast-code.com)

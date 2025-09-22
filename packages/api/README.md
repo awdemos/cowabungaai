@@ -1,4 +1,4 @@
-# LeapfrogAI Python API
+# CowabungaAI Python API
 
 A Python API that exposes AI backends, via FastAPI and gRPC, in the [OpenAI API specification](https://platform.openai.com/docs/api-reference).
 
@@ -6,7 +6,7 @@ A Python API that exposes AI backends, via FastAPI and gRPC, in the [OpenAI API 
 
 ### Pre-Requisites
 
-See the LeapfrogAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
+See the CowabungaAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
 
 #### Dependent Components
 

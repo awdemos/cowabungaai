@@ -6,21 +6,21 @@ A comprehensive relational and vector database operator and multi-functional API
 
 ### Pre-Requisites
 
-See the LeapfrogAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
+See the CowabungaAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
 
 #### Dependent Components
 
 - [UDS Kubernetes cluster bootstrapped with UDS Core Slim Dev](../k3d-gpu/README.md) for local KeyCloak authentication, Istio Service Mesh, and MetalLB advertisement
-- [LeapfrogAI API](../api/README.md) for RESTful interaction
+- [CowabungaAI API](../api/README.md) for RESTful interaction
 - [Text Embeddings](../text-embeddings/README.md) for vector generation
-- [LeapfrogAI UI](../ui/README.md) for a Supabase and API compatible frontend
+- [CowabungaAI UI](../ui/README.md) for a Supabase and API compatible frontend
 
 ### Deployment
 
 To build and deploy the Supabase Zarf package into an existing [UDS Kubernetes cluster](../k3d-gpu/README.md):
 
 > [!IMPORTANT]
-> Execute the following commands from the root of the LeapfrogAI repository
+> Execute the following commands from the root of the CowabungaAI repository
 
 ```bash
 make build-supabase LOCAL_VERSION=dev
@@ -35,7 +35,7 @@ Go to `https://supabase-kong.uds.dev`. The login username is `supabase-admin`, a
 uds zarf tools kubectl get secret -n leapfrogai supabase-dashboard-secret  -o json | uds zarf tools yq '.data.password' | base64 -d
 ```
 
-**NOTE:** The `uds.dev` domain is only used for locally deployed LeapfrogAI packages, so this domain will be unreachable without first manually deploying the UDS bundle.
+**NOTE:** The `uds.dev` domain is only used for locally deployed CowabungaAI packages, so this domain will be unreachable without first manually deploying the UDS bundle.
 
 ## Troubleshooting
 
@@ -54,7 +54,7 @@ uds zarf tools kubectl get secret -n leapfrogai supabase-dashboard-secret  -o js
     -d '{ "email": "<email>", "password": "<password>", "confirmPassword": "<confirmPassword>"}'
   ```
 
-- Longer term API tokens (30, 60, or 90 days) can be created from the API key workflow within the LeapfrogAI UI
+- Longer term API tokens (30, 60, or 90 days) can be created from the API key workflow within the CowabungaAI UI
 - Longer term API tokens (30 days) can also be created using the [API documentation](../../src/leapfrogai_api/README.md)
 
 ## Supabase Migrations
@@ -63,7 +63,7 @@ uds zarf tools kubectl get secret -n leapfrogai supabase-dashboard-secret  -o js
 
 A database migration is the process of modifying a database's schema in a controlled and versioned way. Migrations are used to modify the functionality of a database as its supported applications evolves over time. As time goes on, an application may require new tables, or tables may need new columns/indexes. Migrations allow for smooth changes to be applied to deployed databases, regardless of the current version the application is on.
 
-Migrations catalog a history of the database and provide an inherit form of database documentation, as each migration is stored in the Git repository chronologically (and by release). Migrations are automated on new deployments of LeapfrogAI such that all of the migrations (i.e database changes) are applied in order to ensure that the database has the most up to date schema. Migrations can also be run anytime a new version of LeapfrogAI is released, regardless of which version of LeapfrogAI is being updated from.
+Migrations catalog a history of the database and provide an inherit form of database documentation, as each migration is stored in the Git repository chronologically (and by release). Migrations are automated on new deployments of CowabungaAI such that all of the migrations (i.e database changes) are applied in order to ensure that the database has the most up to date schema. Migrations can also be run anytime a new version of CowabungaAI is released, regardless of which version of CowabungaAI is being updated from.
 
 ### Approach
 

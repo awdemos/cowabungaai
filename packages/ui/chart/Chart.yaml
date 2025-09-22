@@ -1,6 +1,6 @@
 apiVersion: v2
 name: leapfrogai-ui
-description: "A Svelte UI to interact with the LeapfrogAI stack"
+description: "A Svelte UI to interact with the CowabungaAI stack"
 
 # A chart can be either an 'application' or a 'library' chart.
 #

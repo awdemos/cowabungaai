@@ -1,5 +1,5 @@
 name: release
-description: "Cut a release of all LeapfrogAI artifacts"
+description: "Cut a release of all CowabungaAI artifacts"
 
 inputs:
   releaseTag:

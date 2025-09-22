@@ -4,9 +4,9 @@ type: docs
 weight: 3
 ---
 
-# LeapfrogAI UDS Deployment
+# CowabungaAI UDS Deployment
 
-The fastest and easiest way to get started with a deployment of LeapfrogAI is by using [UDS](https://github.com/defenseunicorns/uds-core). These quick start instructions show how to deploy LeapfrogAI in either a CPU or GPU-enabled environment.
+The fastest and easiest way to get started with a deployment of CowabungaAI is by using [UDS](https://github.com/defenseunicorns/uds-core). These quick start instructions show how to deploy CowabungaAI in either a CPU or GPU-enabled environment.
 
 ## Pre-Requisites
 
@@ -14,7 +14,7 @@ See the [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependen
 
 ## Default Models
 
-LeapfrogAI deploys with certain default models. The following models were selected to balance portability and performance for a base deployment:
+CowabungaAI deploys with certain default models. The following models were selected to balance portability and performance for a base deployment:
 
 | Backend            | CPU/GPU Support   | Default Model                                                                  |
 | ------------------ | ----------------- | ------------------------------------------------------------------------------ |
@@ -38,13 +38,13 @@ The default configuration when deploying with GPU support assumes a single GPU. 
 
 If you already have a pre-built UDS bundle, please skip to [Deploying the UDS Bundle](#deploying-the-uds-bundle)
 
-1. Start by cloning the [LeapfrogAI Repository](https://github.com/defenseunicorns/leapfrogai):
+1. Start by cloning the [CowabungaAI Repository](https://github.com/defenseunicorns/leapfrogai):
 
     ``` bash
     git clone https://github.com/defenseunicorns/leapfrogai.git
     ```
 
-2. From within the cloned repository create the LeapfrogAI bundle using **ONE** of the following:
+2. From within the cloned repository create the CowabungaAI bundle using **ONE** of the following:
 
     ```bash
     # For CPU-only
@@ -81,19 +81,19 @@ Once the cluster and LFAI have deployed, the cluster and pods can be inspected u
 uds zarf tools monitor
 ```
 
-These URLs will only be accessible *after* the UDS Kubernetes cluster and LeapfrogAI have been deployed:
+These URLs will only be accessible *after* the UDS Kubernetes cluster and CowabungaAI have been deployed:
 
 | Tool                  | URL                                   |
 | --------------------- | ------------------------------------- |
-| LeapfrogAI UI         | <https://ai.uds.dev>                  |
-| LeapfrogAI API        | <https://leapfrogai-api.uds.dev/docs> |
+| CowabungaAI UI         | <https://ai.uds.dev>                  |
+| CowabungaAI API        | <https://leapfrogai-api.uds.dev/docs> |
 | Supabase Console      | <https://supabase-kong.uds.dev>       |
 | KeyCloak User Page    | <https://sso.uds.dev>                 |
 | KeyCloak Admin Panel  | <https://keycloak.admin.uds.dev>      |
 
 ## Clean-up
 
-To clean-up or perform a fresh install, run the following commands in the context in which you had previously installed UDS Core and LeapfrogAI:
+To clean-up or perform a fresh install, run the following commands in the context in which you had previously installed UDS Core and CowabungaAI:
 
 ```bash
 k3d cluster delete uds  # kills a running uds cluster
@@ -110,4 +110,4 @@ docker volume prune -f # removes all hanging container volumes
 
 ## Further Tinkering
 
-For more LeapfrogAI customization options and developer-level documentation, please visit the [LeapfrogAI GitHub](https://github.com/defenseunicorns/leapfrogai) project for more details.
+For more CowabungaAI customization options and developer-level documentation, please visit the [CowabungaAI GitHub](https://github.com/defenseunicorns/leapfrogai) project for more details.

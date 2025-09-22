@@ -1,16 +1,16 @@
-# LeapfrogAI LLaMA C++ Python Backend
+# CowabungaAI LLaMA C++ Python Backend
 
-A LeapfrogAI API-compatible [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) wrapper for quantized and un-quantized model inferencing across CPU infrastructures.
+A CowabungaAI API-compatible [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) wrapper for quantized and un-quantized model inferencing across CPU infrastructures.
 
 ## Usage
 
 ### Pre-Requisites
 
-See the LeapfrogAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
+See the CowabungaAI documentation website for [system requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/).
 
 #### Dependent Components
 
-- [LeapfrogAI API](../api/README.md) for a fully RESTful application
+- [CowabungaAI API](../api/README.md) for a fully RESTful application
 
 ### Model Selection
 

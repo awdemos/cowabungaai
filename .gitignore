@@ -52,3 +52,6 @@ api/main
 
 # evaluation artifacts
 .deepeval-cache.json
+
+# claude.ai artifacts
+.claude/

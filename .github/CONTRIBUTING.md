@@ -1,6 +1,6 @@
-# Welcome to LeapfrogAI
+# Welcome to CowabungaAI
 
-Thank you for your interest in LeapfrogAI!
+Thank you for your interest in CowabungaAI!
 
 This document describes the process and requirements for contributing.
 

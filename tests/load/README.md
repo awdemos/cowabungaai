@@ -1,4 +1,4 @@
-# LeapfrogAI Load Tests
+# CowabungaAI Load Tests
 
 These tests check the API's ability to handle different amounts of load. The tests simulate a specified number of users hitting the endpoints with some number of requests per second.
 
