@@ -12,6 +12,7 @@ router = APIRouter(tags=["health"])
 
 class HealthResponse(BaseModel):
     """Health check response model."""
+
     status: str
     timestamp: str
     version: str
@@ -23,6 +24,7 @@ class HealthResponse(BaseModel):
 
 class ReadinessResponse(BaseModel):
     """Readiness check response model."""
+
     ready: bool
     timestamp: str
     checks: dict
@@ -46,10 +48,10 @@ async def health_check():
             "total": memory.total,
             "available": memory.available,
             "percent_used": memory.percent,
-            "used": memory.used
+            "used": memory.used,
         },
         cpu_usage=psutil.cpu_percent(interval=1),
-        models_loaded=models_loaded
+        models_loaded=models_loaded,
     )
 
 
@@ -57,18 +59,16 @@ async def health_check():
 async def readiness_check():
     """Readiness check endpoint."""
     checks = {
-        "database": True,  # TODO: Implement actual database check
-        "models": True,    # TODO: Implement actual model availability check
+        "database": True,  # TODO: Implement actual database connectivity check
+        "models": True,  # TODO: Implement actual model availability check
         "memory": psutil.virtual_memory().percent < 90,
-        "disk": psutil.disk_usage('/').percent < 90
+        "disk": psutil.disk_usage("/").percent < 90,
     }
 
     all_ready = all(checks.values())
 
     return ReadinessResponse(
-        ready=all_ready,
-        timestamp=datetime.utcnow().isoformat(),
-        checks=checks
+        ready=all_ready, timestamp=datetime.utcnow().isoformat(), checks=checks
     )
 
 

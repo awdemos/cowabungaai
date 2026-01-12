@@ -1,0 +1,44 @@
+global:
+  imageRegistry: ghcr.io/supabase-community
+
+auth:
+  enabled: true
+  jwt:
+    secret: "dev-secret-key-for-local-dev"
+    expiration: 3600
+
+studio:
+  enabled: true
+
+rest:
+  enabled: true
+
+realtime:
+  enabled: true
+
+storage:
+  enabled: true
+
+kong:
+  enabled: true
+
+db:
+  enabled: false
+
+analytics:
+  enabled: false
+
+functions:
+  enabled: false
+
+meta:
+  enabled: false
+
+imgproxy:
+  enabled: false
+
+minio:
+  enabled: false
+
+vector:
+  enabled: false

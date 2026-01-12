@@ -20,7 +20,7 @@ RUN rm -f packages/whisper/build/*.whl &&\
     pip install packages/whisper/build/lfai_whisper*.whl --no-index --find-links=packages/whisper/build/
 
 # Use hardened ffmpeg image to get compiled binaries
-FROM cgr.dev/chainguard/ffmpeg:latest AS ffmpeg
+FROM linuxserver/ffmpeg:latest AS ffmpeg
 
 # hardened and slim python image
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11 AS runtime
