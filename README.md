@@ -23,6 +23,7 @@ Thank you for your interest in CowabungaAI!
 - [Usage](#usage)
 - [Local Development](#local-development)
 - [Contributing](#contributing)
+- [Sponsorship](#sponsorship)
 - [Community](#community)
 
 ## Overview
@@ -186,6 +187,28 @@ All potential and current contributors must ensure that they have read the [Cont
 
 When submitting an issue or opening a PR, please first ensure that you have searched your potential issue or PR against the existing or closed issues and PRs. Perceived duplicates will be closed, so please reference and differentiate your contributions from tangential or similar issues and PRs.
 
+## Sponsorship
+
+**Want to support CowabungaAI?** [Become a sponsor](https://github.com/sponsors/awdemos)
+
+CowabungaAI is free forever, but your sponsorship helps us:
+- Fix bugs faster
+- Add new features
+- Maintain compatibility with new models
+- Keep the project alive and thriving
+
+Every dollar matters. Every sponsor gets our eternal gratitude. 🚀
+
+### How to Become a Sponsor
+
+1. Visit our [GitHub Sponsors page](https://github.com/sponsors/awdemos)
+2. Choose a sponsorship tier that fits your budget and needs
+3. Complete the sponsorship setup
+
+All sponsors receive priority support, recognition in our documentation, and the satisfaction of supporting open-source AI development.
+
+See [SPONSORS.md](./SPONSORS.md) for sponsorship tiers and our amazing supporters.
+
 ## Community
 
 CowabungaAI is supported by a community of users and contributors, including:
@@ -203,4 +226,4 @@ CowabungaAI is supported by a community of users and contributors, including:
 
 [![Defense Unicorns logo](/docs/imgs/user-logos/defense-unicorns.png)](https://defenseunicorns.com)[![Beast Code logo](/docs/imgs/user-logos/beast-code.png)](https://beast-code.com)[![Hypergiant logo](/docs/imgs/user-logos/hypergiant.png)](https://hypergiant.com)[![Pulze logo](/docs/imgs/user-logos/pulze.png)](https://pulze.ai)
 
-_Want to add your organization or logo to this list? [Open a PR!](https://github.com/defenseunicorns/leapfrogai/edit/main/README.md)_
+_Want to add your organization or logo to this list? [Open a PR!](https://github.com/awdemos/cowabungaai/edit/main/README.md)_
