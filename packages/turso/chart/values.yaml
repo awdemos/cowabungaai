@@ -1,0 +1,122 @@
+# Default values for turso
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/tursodatabase/libsql-server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Turso-specific configuration
+turso:
+  # Database file path
+  databasePath: /data/cowabunga.db
+  
+  # Listen address
+  listenAddr: 0.0.0.0:8080
+  
+  # Authentication settings
+  auth:
+    enabled: true
+    # Use existing secret for auth token
+    existingSecret: ""
+    # Or specify token directly (not recommended for production)
+    token: ""
+  
+  # Enable extensions
+  extensions:
+    enableVector: true
+    enableFts: true
+
+# Persistence settings
+persistence:
+  enabled: true
+  # Use existing PVC
+  existingClaim: ""
+  # Or create new PVC
+  size: 10Gi
+  storageClass: "local-path"
+  accessModes:
+    - ReadWriteOnce
+
+# Migration settings
+migrations:
+  enabled: true
+  # Run migrations on startup
+  runOnStartup: true
+
+# Backup settings
+backup:
+  enabled: false
+  # Cron schedule for backups
+  schedule: "0 2 * * *"
+  # Number of backups to keep
+  retention: 7
+  # Backup storage
+  storage:
+    # Use PVC for backups
+    pvc:
+      enabled: false
+      size: 5Gi
+      storageClass: "local-path"
+    # Or use S3-compatible storage
+    s3:
+      enabled: false
+      bucket: ""
+      endpoint: ""
+      accessKey: ""
+      secretKey: ""
