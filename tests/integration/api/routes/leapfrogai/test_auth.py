@@ -39,7 +39,7 @@ def create_api_key():
         "expires_at": int(time.time()) + THIRTY_DAYS_SECONDS,
     }
 
-    response = client.post("/leapfrogai/v1/auth/api-keys", json=request)
+    response = client.post("/cowabunga/v1/auth/api-keys", json=request)
     return response
 
 
@@ -62,7 +62,7 @@ def test_list_api_keys(create_api_key):
 
     id_ = create_api_key.json()["id"]
 
-    response = client.get("/leapfrogai/v1/auth/api-keys")
+    response = client.get("/cowabunga/v1/auth/api-keys")
     assert response.status_code is status.HTTP_200_OK
     assert len(response.json()) > 0, "List should return at least one API key."
     for api_key in response.json():
@@ -83,7 +83,7 @@ def test_update_api_key(create_api_key):
         "expires_at": int(time.time()) + 100,
     }
 
-    response = client.patch(f"/leapfrogai/v1/auth/api-keys/{id_}", json=request)
+    response = client.patch(f"/cowabunga/v1/auth/api-keys/{id_}", json=request)
     assert response.status_code is status.HTTP_200_OK
     assert APIKeyItem.model_validate(response.json()), "API key should be valid."
     assert response.json()["id"] == id_, "Update should return the created API key."
@@ -94,9 +94,9 @@ def test_revoke_api_key(create_api_key):
 
     api_key_id = create_api_key.json()["id"]
 
-    response = client.delete(f"/leapfrogai/v1/auth/api-keys/{api_key_id}")
+    response = client.delete(f"/cowabunga/v1/auth/api-keys/{api_key_id}")
     assert response.status_code is status.HTTP_204_NO_CONTENT
 
     with pytest.raises(HTTPException):
-        response = client.delete(f"/leapfrogai/v1/auth/api-keys/{api_key_id}")
+        response = client.delete(f"/cowabunga/v1/auth/api-keys/{api_key_id}")
         assert response.status_code is status.HTTP_404_NOT_FOUND

@@ -38,7 +38,7 @@ def make_test_search_response(leapfrogai_client, make_test_vector_store):
     }
 
     return leapfrogai_client.post(
-        endpoint="/leapfrogai/v1/vector_stores/search", params=params
+        endpoint="/cowabunga/v1/vector_stores/search", params=params
     )
 
 
@@ -58,7 +58,7 @@ def test_get_vector(leapfrogai_client, make_test_search_response):
     vector_id = search_item.id
 
     get_vector_response = leapfrogai_client.get(
-        f"/leapfrogai/v1/vector_stores/vector/{vector_id}"
+        f"/cowabunga/v1/vector_stores/vector/{vector_id}"
     )
 
     assert get_vector_response.status_code == status.HTTP_200_OK

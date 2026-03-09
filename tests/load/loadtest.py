@@ -184,7 +184,7 @@ class CowabungaAIUser(HttpUser):
 
     @task
     def test_list_api_keys(self):
-        self.client.get("/leapfrogai/v1/auth/list-api-keys")
+        self.client.get("/cowabunga/v1/auth/list-api-keys")
 
     @task
     def test_openai_models(self):
@@ -244,4 +244,4 @@ class CowabungaAIUser(HttpUser):
     @task
     def test_create_api_key(self):
         payload = {"name": "Test API Key"}
-        self.client.post("/leapfrogai/v1/auth/create-api-key", json=payload)
+        self.client.post("/cowabunga/v1/auth/create-api-key", json=payload)

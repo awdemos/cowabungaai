@@ -79,7 +79,7 @@ def dummy_auth_middleware():
 def test_config_load():
     """Test that the config is loaded correctly."""
     with TestClient(app) as client:
-        response = client.get("/leapfrogai/v1/models")
+        response = client.get("/cowabunga/v1/models")
 
         assert response.status_code == 200
         expected_response = {
@@ -101,7 +101,7 @@ def test_config_delete(tmp_path):
 
     with TestClient(app) as client:
         # Ensure the API loads the temp config
-        response = client.get("/leapfrogai/v1/models")
+        response = client.get("/cowabunga/v1/models")
         assert response.status_code == 200
 
         expected_response = {
@@ -119,7 +119,7 @@ def test_config_delete(tmp_path):
         time.sleep(0.5)
 
         # Assert response is now empty
-        response = client.get("/leapfrogai/v1/models")
+        response = client.get("/cowabunga/v1/models")
         assert response.status_code == 200
         expected_empty_response = {
             "config_sources": {},
@@ -138,7 +138,7 @@ def test_routes():
     expected_routes = {
         "/docs": ["GET", "HEAD"],
         "/healthz": ["GET"],
-        "/leapfrogai/v1/models": ["GET"],
+        "/cowabunga/v1/models": ["GET"],
         "/openai/v1/models": ["GET"],
         "/openai/v1/completions": ["POST"],
         "/openai/v1/chat/completions": ["POST"],
@@ -147,8 +147,8 @@ def test_routes():
         "/openai/v1/audio/translations": ["POST"],
         "/openai/v1/files": ["POST"],
         "/openai/v1/assistants": ["POST"],
-        "/leapfrogai/v1/count/tokens": ["POST"],
-        "/leapfrogai/v1/rag/configure": ["GET", "PATCH"],
+        "/cowabunga/v1/count/tokens": ["POST"],
+        "/cowabunga/v1/rag/configure": ["GET", "PATCH"],
     }
 
     openai_routes = [
@@ -532,7 +532,7 @@ def test_token_count(dummy_auth_middleware):
     with TestClient(app) as client:
         input_text = "This is a test sentence for token counting."
         token_count_request = {"model": "repeater", "text": input_text}
-        response = client.post("/leapfrogai/v1/count/tokens", json=token_count_request)
+        response = client.post("/cowabunga/v1/count/tokens", json=token_count_request)
         assert response.status_code == 200
 
         response_data = response.json()
@@ -555,11 +555,11 @@ def test_configure(dummy_auth_middleware):
             "rag_top_k_when_reranking": 50,
         }
         response = client.patch(
-            "/leapfrogai/v1/rag/configure", json=rag_configuration_request
+            "/cowabunga/v1/rag/configure", json=rag_configuration_request
         )
         assert response.status_code == 200
 
-        response = client.get("/leapfrogai/v1/rag/configure")
+        response = client.get("/cowabunga/v1/rag/configure")
         assert response.status_code == 200
         response_data = response.json()
         assert "enable_reranking" in response_data
@@ -575,11 +575,11 @@ def test_configure(dummy_auth_middleware):
         # Update only some of the configs to see if the existing ones persist
         rag_configuration_request = {"ranking_model": "flashrank"}
         response = client.patch(
-            "/leapfrogai/v1/rag/configure", json=rag_configuration_request
+            "/cowabunga/v1/rag/configure", json=rag_configuration_request
         )
         assert response.status_code == 200
 
-        response = client.get("/leapfrogai/v1/rag/configure")
+        response = client.get("/cowabunga/v1/rag/configure")
         assert response.status_code == 200
         response_data = response.json()
         assert "enable_reranking" in response_data
