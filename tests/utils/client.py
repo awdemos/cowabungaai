@@ -7,13 +7,13 @@ import requests
 
 
 def get_leapfrogai_model() -> str:
-    """Get the model to use for LeapfrogAI.
+    """Get the model to use for CowabungaAI.
 
     Returns:
-        str: The model to use for LeapfrogAI. (default: "vllm")
+        str: The model to use for CowabungaAI. (default: "vllm")
     """
 
-    return os.getenv("LEAPFROGAI_MODEL", "vllm")
+    return os.getenv("COWABUNGA_MODEL", "vllm")
 
 
 def get_openai_key() -> str:
@@ -43,47 +43,47 @@ def get_openai_model() -> str:
     return os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 
-def get_leapfrogai_api_key() -> str:
-    """Get the API key for the LeapfrogAI API.
+def get_cowabunga_api_key() -> str:
+    """Get the API key for the CowabungaAI API.
 
-    Set via the LEAPFROGAI_API_KEY environment variable or the SUPABASE_USER_JWT environment variable in that order.
+    Set via the COWABUNGA_API_KEY environment variable or the SUPABASE_USER_JWT environment variable in that order.
 
     Returns:
-        str: The API key for the LeapfrogAI API.
+        str: The API key for the CowabungaAI API.
     Raises:
-        ValueError: If LEAPFROGAI_API_KEY or SUPABASE_USER_JWT is not set.
+        ValueError: If COWABUNGA_API_KEY or SUPABASE_USER_JWT is not set.
     """
 
-    api_key = os.getenv("LEAPFROGAI_API_KEY") or os.getenv("SUPABASE_USER_JWT")
+    api_key = os.getenv("COWABUNGA_API_KEY") or os.getenv("SUPABASE_USER_JWT")
 
     if api_key is None:
-        raise ValueError("LEAPFROGAI_API_KEY or SUPABASE_USER_JWT not set")
+        raise ValueError("COWABUNGA_API_KEY or SUPABASE_USER_JWT not set")
 
     return api_key
 
 
-def get_leapfrogai_api_url() -> str:
-    """Get the URL for the LeapfrogAI API.
+def get_cowabunga_api_url() -> str:
+    """Get the URL for the CowabungaAI API.
 
     Returns:
-        str: The URL for the LeapfrogAI API. (default: "https://leapfrogai-api.uds.dev/openai/v1")
+        str: The URL for the CowabungaAI API. (default: "https://cowabunga-api.uds.dev/openai/v1")
     """
 
-    return os.getenv("LEAPFROGAI_API_URL", "https://leapfrogai-api.uds.dev/openai/v1")
+    return os.getenv("COWABUNGA_API_URL", "https://cowabunga-api.uds.dev/openai/v1")
 
 
-def get_leapfrogai_api_url_base() -> str:
-    """Get the base URL for the LeapfrogAI API.
+def get_cowabunga_api_url_base() -> str:
+    """Get the base URL for the CowabungaAI API.
 
     Set via the LEAPFRAGAI_API_URL environment variable.
 
-    If LEAPFRAGAI_API_URL is set to "https://leapfrogai-api.uds.dev/openai/v1", this will trim off the "/openai/v1" part.
+    If LEAPFRAGAI_API_URL is set to "https://cowabunga-api.uds.dev/openai/v1", this will trim off the "/openai/v1" part.
 
     Returns:
-        str: The base URL for the LeapfrogAI API. (default: "https://leapfrogai-api.uds.dev")
+        str: The base URL for the CowabungaAI API. (default: "https://cowabunga-api.uds.dev")
     """
 
-    url = os.getenv("LEAPFROGAI_API_URL", "https://leapfrogai-api.uds.dev")
+    url = os.getenv("COWABUNGA_API_URL", "https://cowabunga-api.uds.dev")
     if url.endswith("/openai/v1"):
         return url[:-9]
     return url
@@ -99,14 +99,14 @@ def openai_client() -> OpenAI:
 
 
 def leapfrogai_client() -> OpenAI:
-    """Create an OpenAI client using the LEAPFROGAI_API_URL and LEAPFROGAI_API_KEY or SUPABASE_USER_JWT.
+    """Create an OpenAI client using the COWABUNGA_API_URL and COWABUNGA_API_KEY or SUPABASE_USER_JWT.
 
     returns:
         OpenAI: An OpenAI client.
     """
     return OpenAI(
-        base_url=get_leapfrogai_api_url(),
-        api_key=get_leapfrogai_api_key(),
+        base_url=get_cowabunga_api_url(),
+        api_key=get_cowabunga_api_key(),
     )
 
 
@@ -131,18 +131,18 @@ def client_config_factory(client_name: str) -> ClientConfig:
         raise ValueError(f"Unknown client name: {client_name}")
 
 
-class LeapfrogAIClient:
-    """Client for handling queries in the LeapfrogAI namespace that are not handled by the OpenAI SDK.
+class CowabungaAIClient:
+    """Client for handling queries in the CowabungaAI namespace that are not handled by the OpenAI SDK.
 
-    Wraps the requests library to make HTTP requests to the LeapfrogAI API.
+    Wraps the requests library to make HTTP requests to the CowabungaAI API.
 
     Raises:
         requests.HTTPError: If the response status code is not a 2xx status code.
     """
 
     def __init__(self, base_url: str | None = None, api_key: str | None = None):
-        self.base_url = base_url or get_leapfrogai_api_url_base()
-        self.api_key = api_key or get_leapfrogai_api_key()
+        self.base_url = base_url or get_cowabunga_api_url_base()
+        self.api_key = api_key or get_cowabunga_api_key()
         self.headers = {
             "accept": "application/json",
             "Authorization": f"Bearer {self.api_key}",

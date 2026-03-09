@@ -1,0 +1,125 @@
+"""Main FastAPI application for the CowabungaAI API."""
+
+import asyncio
+import logging
+import os
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.exception_handlers import request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import RedirectResponse
+from cowabunga_api.routers.base import router as base_router
+from cowabunga_api.routers.leapfrogai import auth
+from cowabunga_api.routers.leapfrogai import models as lfai_models
+from cowabunga_api.routers.leapfrogai import vector_stores as lfai_vector_stores
+from cowabunga_api.routers.leapfrogai import count as lfai_token_count
+from cowabunga_api.routers.leapfrogai import rag as lfai_rag
+from cowabunga_api.routers.leapfrogai import tokens as lfai_tokens
+from cowabunga_api.routers.openai import (
+    assistants,
+    audio,
+    chat,
+    completions,
+    embeddings,
+    files,
+    messages,
+    models,
+    runs,
+    runs_steps,
+    threads,
+    vector_stores,
+)
+from cowabunga_api.routers import health
+from cowabunga_api.utils import get_model_config
+from prometheus_fastapi_instrumentator import Instrumentator
+
+logging.basicConfig(
+    level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),
+    format="%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s >>> %(message)s",
+)
+logger = logging.getLogger(__name__)
+
+
+# Handle startup & shutdown tasks
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Handle startup and shutdown tasks for the FastAPI app."""
+    # Startup
+    logger.info("Starting to watch for configs.")
+    config = get_model_config()
+    config_task = asyncio.create_task(config.watch_and_load_configs())
+    try:
+        yield
+    finally:
+        # Shutdown
+        logger.info("Stopping config watcher and clearing model configs.")
+        config_task.cancel()
+        try:
+            await config_task
+        except asyncio.CancelledError:
+            pass  # Task was cancelled, which is expected during shutdown
+        await config.clear_all_models()
+
+
+app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/", include_in_schema=False)
+async def root():
+    """Intercepts the root path and redirects to the API documentation."""
+    return RedirectResponse(url="/docs")
+
+
+Instrumentator(
+    excluded_handlers=["/healthz", "/metrics"],
+    should_group_status_codes=False,
+).instrument(app).expose(
+    app,
+    include_in_schema=False,
+)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    # Log the request details
+    body = await request.body()
+    query_params = request.query_params
+    path_params = request.path_params
+
+    logger.error(
+        f"RequestValidationError: \n"
+        f"URL: {request.url}\n"
+        f"Method: {request.method}\n"
+        f"Headers: {request.headers}\n"
+        f"Path Params: {path_params}\n"
+        f"Query Params: {query_params}\n"
+        f"Body: {body.decode()}\n"
+        f"Error: {exc}"
+    )
+    return await request_validation_exception_handler(request, exc)
+
+
+app.include_router(base_router)
+app.include_router(auth.router)
+app.include_router(models.router)
+app.include_router(completions.router)
+app.include_router(chat.router)
+app.include_router(audio.router)
+app.include_router(embeddings.router)
+app.include_router(assistants.router)
+app.include_router(files.router)
+app.include_router(vector_stores.router)
+app.include_router(runs.router)
+app.include_router(messages.router)
+app.include_router(runs_steps.router)
+app.include_router(lfai_vector_stores.router)
+if os.environ.get("DEV"):
+    app.include_router(lfai_rag.router)
+app.include_router(lfai_token_count.router)
+app.include_router(lfai_models.router)
+app.include_router(lfai_tokens.router)
+# This should be at the bottom to prevent it preempting more specific runs endpoints
+# https://fastapi.tiangolo.com/tutorial/path-params/#order-matters
+app.include_router(threads.router)
+app.include_router(health.router)

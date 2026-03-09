@@ -12,13 +12,13 @@ from leapfrogai_sdk import (
 )
 
 logging.basicConfig(
-    level=os.getenv("LFAI_LOG_LEVEL", logging.INFO),
+    level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),
     format="%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s >>> %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 
-model_dir = os.environ.get("LFAI_MODEL_PATH", ".model")
+model_dir = os.environ.get("COWABUNGA_MODEL_PATH", ".model")
 model = INSTRUCTOR(model_dir)
 
 

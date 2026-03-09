@@ -21,7 +21,7 @@ from leapfrogai_sdk.llm import GenerationConfig, LLM
 load_dotenv()
 
 logging.basicConfig(
-    level=os.getenv("LFAI_LOG_LEVEL", logging.INFO),
+    level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),
     format="%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s >>> %(message)s",
 )
 logger = logging.getLogger(__name__)

@@ -23,7 +23,7 @@ from leapfrogai_sdk import (
 from leapfrogai_sdk.llm import LLM, GenerationConfig
 
 logging.basicConfig(
-    level=os.getenv("LFAI_LOG_LEVEL", logging.INFO),
+    level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),
     format="%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s >>> %(message)s",
 )
 logger = logging.getLogger(__name__)

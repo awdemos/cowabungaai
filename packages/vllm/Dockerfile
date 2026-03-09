@@ -5,7 +5,7 @@ FROM nvidia/cuda:12.2.2-devel-ubuntu22.04 AS builder
 
 # set SDK location
 # set the pyenv and Python versions
-ARG SDK_DEST=src/leapfrogai_sdk/build \
+ARG SDK_DEST=src/cowabunga_sdk/build \
     PYTHON_VERSION=3.11.9 \
     PYENV_GIT_TAG=v2.4.8\
     COMPONENT_DIRECTORY="packages/vllm"
@@ -75,7 +75,7 @@ RUN rm -f packages/vllm/build/*.whl && \
 FROM nvidia/cuda:12.2.2-runtime-ubuntu22.04
 
 # set SDK location
-ARG SDK_DEST=src/leapfrogai_sdk/build
+ARG SDK_DEST=src/cowabunga_sdk/build
 
 # setup nonroot user and permissions
 USER root

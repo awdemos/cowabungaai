@@ -3,7 +3,7 @@
 kind: ZarfPackageConfig
 metadata:
   description: "CowabungaAI API"
-  name: leapfrogai-api
+  name: cowabunga-api
   version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
 
 constants:
@@ -21,7 +21,7 @@ variables:
     description: "Flag to enable development endpoints."
 
 components:
-  - name: leapfrogai-api
+  - name: cowabunga-api
     description: "A Python API that shadows the OpenAI API specification"
     only:
       flavor: upstream
@@ -29,7 +29,7 @@ components:
     import:
       path: common
     charts:
-      - name: leapfrogai
+      - name: cowabunga
         namespace: leapfrogai
         valuesFiles:
           - "values/upstream-values.yaml"
@@ -38,14 +38,14 @@ components:
       - "ghcr.io/defenseunicorns/leapfrogai/api-migrations:###ZARF_PKG_TMPL_IMAGE_VERSION###"
       - "kiwigrid/k8s-sidecar:1.23.3"
 
-  - name: leapfrogai-api
+  - name: cowabunga-api
     only:
       flavor: registry1
     required: true
     import:
       path: common
     charts:
-      - name: leapfrogai
+      - name: cowabunga
         namespace: leapfrogai
         valuesFiles:
           - "values/registry1-values.yaml"

@@ -4,7 +4,7 @@ FROM ghcr.io/defenseunicorns/leapfrogai/leapfrogai-sdk:${LOCAL_VERSION} AS sdk
 # hardened and slim python w/ developer tools image
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev AS builder
 
-ARG SDK_DEST=src/leapfrogai_sdk/build
+ARG SDK_DEST=src/cowabunga_sdk/build
 
 USER root
 

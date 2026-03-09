@@ -25,8 +25,8 @@ def make_test_run(client, assistant, thread):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_NIAH_TESTS") != "true",
-    reason="LFAI_RUN_NIAH_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_NIAH_TESTS") != "true",
+    reason="COWABUNGA_RUN_NIAH_TESTS envvar was not set to true",
 )
 def test_rag_needle_haystack():
     config = client_config_factory("leapfrogai")

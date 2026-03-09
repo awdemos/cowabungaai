@@ -4,7 +4,7 @@ import pytest
 from requests import HTTPError
 from fastapi import Response, status
 from openai.types import FileDeleted, FileObject
-from leapfrogai_api.backend.rag.document_loader import load_file, split
+from cowabunga_api.backend.rag.document_loader import load_file, split
 from tests.utils.data_path import (
     data_path,
     TXT_FILE_NAME,
@@ -12,12 +12,12 @@ from tests.utils.data_path import (
     WAV_FILE_NAME,
     XLSX_FILE_NAME,
 )
-from tests.utils.client import LeapfrogAIClient
+from tests.utils.client import CowabungaAIClient
 
 
 @pytest.fixture(scope="session")
 def client():
-    yield LeapfrogAIClient()
+    yield CowabungaAIClient()
 
 
 file_response: Response

@@ -6,11 +6,11 @@ api:
   expose: "###ZARF_VAR_EXPOSE_API###"
 
   env:
-    - name: LFAI_LOG_LEVEL
+    - name: COWABUNGA_LOG_LEVEL
       value: "INFO"
-    - name: LFAI_CONFIG_PATH
+    - name: COWABUNGA_CONFIG_PATH
       value: /config/
-    - name: LFAI_CONFIG_FILENAME
+    - name: COWABUNGA_CONFIG_FILENAME
       value: "*.toml"
     - name: DEFAULT_EMBEDDINGS_MODEL
       value: "###ZARF_VAR_DEFAULT_EMBEDDINGS_MODEL###"

@@ -12,13 +12,13 @@ from openai.types.beta import VectorStore, VectorStoreDeleted
 from openai.types.beta.vector_store import ExpiresAfter
 from langchain_core.embeddings.fake import FakeEmbeddings
 
-import leapfrogai_api.backend.rag.index
-from leapfrogai_api.typedef.vectorstores import (
+import cowabunga_api.backend.rag.index
+from cowabunga_api.typedef.vectorstores import (
     CreateVectorStoreRequest,
     ModifyVectorStoreRequest,
 )
-from leapfrogai_api.routers.openai.vector_stores import router as vector_store_router
-from leapfrogai_api.routers.openai.files import router as files_router
+from cowabunga_api.routers.openai.vector_stores import router as vector_store_router
+from cowabunga_api.routers.openai.files import router as files_router
 from tests.utils.data_path import data_path, TXT_FILE_NAME
 
 INSTRUCTOR_XL_EMBEDDING_SIZE: int = 768
@@ -88,7 +88,7 @@ def create_vector_store(create_file):
     global expired_vector_store_response  # pylint: disable=global-statement
 
     # Mock out the embeddings creation using a fake
-    leapfrogai_api.backend.rag.index.embeddings_type = FakeEmbeddingsWrapper
+    cowabunga_api.backend.rag.index.embeddings_type = FakeEmbeddingsWrapper
 
     request = CreateVectorStoreRequest(
         file_ids=[create_file["id"]],

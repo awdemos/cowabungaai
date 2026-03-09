@@ -107,7 +107,7 @@ class DownloadConfig(BaseConfig):
     CONFIG_SOURCES = [
         EnvSource(
             allow_all=True,
-            prefix="LFAI_",
+            prefix="COWABUNGA_",
             remap={
                 "repo_id": "download_options.repo_id",
                 "revision": "download_options.revision",
