@@ -7,10 +7,6 @@ from fastapi.responses import StreamingResponse
 
 import leapfrogai_sdk as lfai
 from leapfrogai_api.backend.helpers import recv_chat, recv_completion
-from leapfrogai_sdk.chat.chat_pb2 import (
-    ChatCompletionResponse as ProtobufChatCompletionResponse,
-)
-from leapfrogai_api.utils.config import Model
 from leapfrogai_api.typedef.audio import (
     CreateTranscriptionResponse,
     CreateTranslationResponse,
@@ -32,6 +28,10 @@ from leapfrogai_api.typedef.embeddings import (
 )
 from leapfrogai_api.typedef.counting import (
     TokenCountResponse,
+)
+from leapfrogai_api.utils.config import Model
+from leapfrogai_sdk.chat.chat_pb2 import (
+    ChatCompletionResponse as ProtobufChatCompletionResponse,
 )
 
 
@@ -103,7 +103,6 @@ async def stream_chat_completion_raw(
             yield response
 
 
-# TODO: Clean up completion() and stream_completion() to reduce code duplication
 async def chat_completion(model: Model, request: lfai.ChatCompletionRequest):
     """Complete chat using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
@@ -187,4 +186,6 @@ async def create_token_count(model: Model, request: lfai.TokenCountRequest):
 
         return TokenCountResponse(
             token_count=response.count,
+            model=model.name,
+            text=request.text,
         )
