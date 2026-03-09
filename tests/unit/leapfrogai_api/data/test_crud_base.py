@@ -3,7 +3,7 @@ from pydantic import BaseModel, ValidationError
 from tests.utils.crud_utils import MockAPIResponse
 from tests.mocks.mock_tables import mock_data_model, MockModel
 
-from src.leapfrogai_api.data.crud_base import CRUDBase
+from src.cowabunga_api.data.crud_base import CRUDBase
 
 
 class MockModelNoID(BaseModel):

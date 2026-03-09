@@ -1,16 +1,16 @@
-from leapfrogai_api.typedef.vectorstores.search_types import SearchItem
+from cowabunga_api.typedef.vectorstores.search_types import SearchItem
 from tests.utils.client import client_config_factory
 from tests.utils.data_path import data_path, TXT_FILE_NAME
-from leapfrogai_api.typedef.vectorstores import SearchResponse
-from leapfrogai_api.typedef.vectorstores import Vector
+from cowabunga_api.typedef.vectorstores import SearchResponse
+from cowabunga_api.typedef.vectorstores import Vector
 import pytest
-from tests.utils.client import LeapfrogAIClient
+from tests.utils.client import CowabungaAIClient
 from fastapi import status
 
 
 @pytest.fixture(scope="session")
 def leapfrogai_client():
-    return LeapfrogAIClient()
+    return CowabungaAIClient()
 
 
 @pytest.fixture(scope="session")

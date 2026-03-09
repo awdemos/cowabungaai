@@ -3,8 +3,8 @@
 import pytest
 import tempfile
 import os
-from leapfrogai_api.data.database.turso_client import TursoClient, TursoQueryBuilder
-from leapfrogai_api.data.database.base import DatabaseClient
+from cowabunga_api.data.database.turso_client import TursoClient, TursoQueryBuilder
+from cowabunga_api.data.database.base import DatabaseClient
 
 
 @pytest.fixture

@@ -164,7 +164,7 @@ class RAGTasks(SequentialTaskSet):
         self.interrupt()
 
 
-class LeapfrogAIUser(HttpUser):
+class CowabungaAIUser(HttpUser):
     """This class represents a user that will kick off tasks over the life of the test"""
 
     # Root url to use for all client requests

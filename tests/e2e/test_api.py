@@ -11,22 +11,22 @@ logger = logging.getLogger(__name__)
 test_id = str(uuid.uuid4())
 
 get_urls = {
-    "assistants_url": "https://leapfrogai-api.uds.dev/openai/v1/assistants",
-    "assistants_id_url": f"https://leapfrogai-api.uds.dev/openai/v1/assistants/{test_id}",
-    "files_url": "https://leapfrogai-api.uds.dev/openai/v1/files",
-    "files_specific_url": f"https://leapfrogai-api.uds.dev/openai/v1/files/{test_id}",
-    "files_specific_content_url": f"https://leapfrogai-api.uds.dev/openai/v1/files/{test_id}/content",
+    "assistants_url": "https://cowabunga-api.uds.dev/openai/v1/assistants",
+    "assistants_id_url": f"https://cowabunga-api.uds.dev/openai/v1/assistants/{test_id}",
+    "files_url": "https://cowabunga-api.uds.dev/openai/v1/files",
+    "files_specific_url": f"https://cowabunga-api.uds.dev/openai/v1/files/{test_id}",
+    "files_specific_content_url": f"https://cowabunga-api.uds.dev/openai/v1/files/{test_id}/content",
 }
 
 post_urls = {
-    "assistants_url": "https://leapfrogai-api.uds.dev/openai/v1/assistants",
-    "assistants_id_url": f"https://leapfrogai-api.uds.dev/openai/v1/assistants/{test_id}",
-    "files_url": "https://leapfrogai-api.uds.dev/openai/v1/files",
+    "assistants_url": "https://cowabunga-api.uds.dev/openai/v1/assistants",
+    "assistants_id_url": f"https://cowabunga-api.uds.dev/openai/v1/assistants/{test_id}",
+    "files_url": "https://cowabunga-api.uds.dev/openai/v1/files",
 }
 
 delete_urls = {
-    "assistants_id_url": f"https://leapfrogai-api.uds.dev/openai/v1/assistants/{test_id}",
-    "files_specific_url": f"https://leapfrogai-api.uds.dev/openai/v1/files/{test_id}",
+    "assistants_id_url": f"https://cowabunga-api.uds.dev/openai/v1/assistants/{test_id}",
+    "files_specific_url": f"https://cowabunga-api.uds.dev/openai/v1/files/{test_id}",
 }
 
 

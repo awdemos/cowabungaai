@@ -2,7 +2,7 @@
 
 kind: ZarfPackageConfig
 metadata:
-  name: leapfrogai-ui
+  name: cowabunga-ui
   version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
   description: >
     A UI for CowabungaAI
@@ -12,7 +12,7 @@ constants:
     value: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
 
 variables:
-  - name: LEAPFROGAI_API_BASE_URL
+  - name: COWABUNGA_API_BASE_URL
     description: The base URL for the CowabungaAI API
     default: http://leapfrogai-api.leapfrogai.svc.cluster.local:8080
     prompt: true
@@ -62,13 +62,13 @@ variables:
     sensitive: false
 
 components:
-  - name: leapfrogai-ui
+  - name: cowabunga-ui
     required: true
     only:
       flavor: upstream
     charts:
-      - name: leapfrogai-ui
-        namespace: leapfrogai
+      - name: cowabunga-ui
+        namespace: cowabunga
         localPath: chart
         valuesFiles:
           - "values/upstream-values.yaml"
@@ -84,12 +84,12 @@ components:
           - wait:
               cluster:
                 kind: Job
-                name: leapfrogai-ui-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
-                namespace: leapfrogai
+                name: cowabunga-ui-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
+                namespace: cowabunga
                 condition: complete
           - wait:
               cluster:
                 kind: Deployment
-                name: leapfrogai-ui
-                namespace: leapfrogai
+                name: cowabunga-ui
+                namespace: cowabunga
                 condition: Available

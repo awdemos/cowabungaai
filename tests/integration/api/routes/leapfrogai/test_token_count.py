@@ -4,19 +4,19 @@ from fastapi import status
 from requests import HTTPError
 import pytest
 
-# from leapfrogai_api.routers.leapfrogai.count import router
-from leapfrogai_api.typedef.counting import (
+# from cowabunga_api.routers.leapfrogai.count import router
+from cowabunga_api.typedef.counting import (
     TokenCountRequest,
     TokenCountResponse,
 )
-from tests.utils.client import get_leapfrogai_model, LeapfrogAIClient
+from tests.utils.client import get_leapfrogai_model, CowabungaAIClient
 
 INVALID_MODEL = "invalid-model"
 
 
 @pytest.fixture(scope="session")
 def client():
-    return LeapfrogAIClient()
+    return CowabungaAIClient()
 
 
 def test_token_count(client):

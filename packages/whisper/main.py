@@ -8,12 +8,12 @@ import leapfrogai_sdk as lfai
 from faster_whisper import WhisperModel
 
 logging.basicConfig(
-    level=os.getenv("LFAI_LOG_LEVEL", logging.INFO),
+    level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),
     format="%(name)s: %(asctime)s | %(levelname)s | %(filename)s:%(lineno)s >>> %(message)s",
 )
 logger = logging.getLogger(__name__)
 
-model_path = os.environ.get("LFAI_MODEL_PATH", ".model")
+model_path = os.environ.get("COWABUNGA_MODEL_PATH", ".model")
 
 GPU_ENABLED = True if int(os.environ.get("GPU_REQUEST", 0)) > 0 else False
 

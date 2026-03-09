@@ -10,21 +10,21 @@ from fastapi.security import HTTPBearer
 from fastapi.testclient import TestClient
 from starlette.middleware.base import _CachedRequest
 from supabase import ClientOptions
-from leapfrogai_api.typedef.chat import ChatCompletionRequest, ChatMessage
-from leapfrogai_api.typedef.completion import CompletionRequest
-from leapfrogai_api.typedef.embeddings import CreateEmbeddingRequest
-from leapfrogai_api.main import app
-from leapfrogai_api.routers.supabase_session import init_supabase_client
+from cowabunga_api.typedef.chat import ChatCompletionRequest, ChatMessage
+from cowabunga_api.typedef.completion import CompletionRequest
+from cowabunga_api.typedef.embeddings import CreateEmbeddingRequest
+from cowabunga_api.main import app
+from cowabunga_api.routers.supabase_session import init_supabase_client
 from tests.utils.data_path import data_path, WAV_FILE, WAV_FILE_ARABIC
 
 security = HTTPBearer()
 
 # Set environment variables that the TestClient will use
-LFAI_CONFIG_FILENAME = os.environ["LFAI_CONFIG_FILENAME"] = "repeater-test-config.yaml"
-LFAI_CONFIG_PATH = os.environ["LFAI_CONFIG_PATH"] = os.path.join(
+COWABUNGA_CONFIG_FILENAME = os.environ["COWABUNGA_CONFIG_FILENAME"] = "repeater-test-config.yaml"
+COWABUNGA_CONFIG_PATH = os.environ["COWABUNGA_CONFIG_PATH"] = os.path.join(
     os.path.dirname(__file__), "fixtures"
 )
-LFAI_CONFIG_FILEPATH = os.path.join(LFAI_CONFIG_PATH, LFAI_CONFIG_FILENAME)
+COWABUNGA_CONFIG_FILEPATH = os.path.join(COWABUNGA_CONFIG_PATH, COWABUNGA_CONFIG_FILENAME)
 
 MODEL = "repeater"
 TEXT_INPUT = (
@@ -85,8 +85,8 @@ def test_config_load():
         expected_response = {
             "config_sources": {"repeater-test-config.yaml": [MODEL]},
             "models": {MODEL: {"backend": "localhost:50051", "name": MODEL}},
-            "directory": LFAI_CONFIG_PATH,
-            "filename": LFAI_CONFIG_FILENAME,
+            "directory": COWABUNGA_CONFIG_PATH,
+            "filename": COWABUNGA_CONFIG_FILENAME,
         }
         assert response.json() == expected_response
 
@@ -95,9 +95,9 @@ def test_config_delete(tmp_path):
     """Test that the config is deleted correctly."""
     # Move repeater-test-config.yaml to temp dir so that we can remove it at a later step
     tmp_config_filepath = shutil.copyfile(
-        LFAI_CONFIG_FILEPATH, os.path.join(tmp_path, LFAI_CONFIG_FILENAME)
+        COWABUNGA_CONFIG_FILEPATH, os.path.join(tmp_path, COWABUNGA_CONFIG_FILENAME)
     )
-    os.environ["LFAI_CONFIG_PATH"] = str(tmp_path)
+    os.environ["COWABUNGA_CONFIG_PATH"] = str(tmp_path)
 
     with TestClient(app) as client:
         # Ensure the API loads the temp config
@@ -107,8 +107,8 @@ def test_config_delete(tmp_path):
         expected_response = {
             "config_sources": {"repeater-test-config.yaml": [MODEL]},
             "models": {MODEL: {"backend": "localhost:50051", "name": MODEL}},
-            "directory": os.environ["LFAI_CONFIG_PATH"],
-            "filename": LFAI_CONFIG_FILENAME,
+            "directory": os.environ["COWABUNGA_CONFIG_PATH"],
+            "filename": COWABUNGA_CONFIG_FILENAME,
         }
         assert response.json() == expected_response
 
@@ -124,13 +124,13 @@ def test_config_delete(tmp_path):
         expected_empty_response = {
             "config_sources": {},
             "models": {},
-            "directory": os.environ["LFAI_CONFIG_PATH"],
-            "filename": LFAI_CONFIG_FILENAME,
+            "directory": os.environ["COWABUNGA_CONFIG_PATH"],
+            "filename": COWABUNGA_CONFIG_FILENAME,
         }
         assert response.json() == expected_empty_response
 
     # Reset the environment variable
-    os.environ["LFAI_CONFIG_PATH"] = os.path.join(os.path.dirname(__file__), "fixtures")
+    os.environ["COWABUNGA_CONFIG_PATH"] = os.path.join(os.path.dirname(__file__), "fixtures")
 
 
 def test_routes():
@@ -230,8 +230,8 @@ def test_healthz():
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_embedding(dummy_auth_middleware):
     """Test the embedding endpoint."""
@@ -260,8 +260,8 @@ def test_embedding(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_transcription(dummy_auth_middleware):
     """Test the transcription endpoint."""
@@ -282,8 +282,8 @@ def test_transcription(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_translation(dummy_auth_middleware):
     """Test the translation endpoint."""
@@ -304,8 +304,8 @@ def test_translation(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_completion(dummy_auth_middleware):
     """Test the completion endpoint."""
@@ -347,8 +347,8 @@ def test_completion(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_stream_completion(dummy_auth_middleware):
     """Test the stream completion endpoint."""
@@ -407,8 +407,8 @@ def test_stream_completion(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_chat_completion(dummy_auth_middleware):
     """Test the chat completion endpoint."""
@@ -453,8 +453,8 @@ def test_chat_completion(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_stream_chat_completion(dummy_auth_middleware):
     """Test the stream chat completion endpoint."""
@@ -524,8 +524,8 @@ def test_stream_chat_completion(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_token_count(dummy_auth_middleware):
     """Test the token count endpoint."""
@@ -542,9 +542,9 @@ def test_token_count(dummy_auth_middleware):
 
 
 @pytest.mark.skipif(
-    os.environ.get("LFAI_RUN_REPEATER_TESTS") != "true"
+    os.environ.get("COWABUNGA_RUN_REPEATER_TESTS") != "true"
     or os.environ.get("DEV") != "true",
-    reason="LFAI_RUN_REPEATER_TESTS envvar was not set to true",
+    reason="COWABUNGA_RUN_REPEATER_TESTS envvar was not set to true",
 )
 def test_configure(dummy_auth_middleware):
     """Test the RAG configuration endpoints."""

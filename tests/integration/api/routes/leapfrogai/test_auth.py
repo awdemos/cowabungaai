@@ -5,12 +5,12 @@ import time
 import pytest
 from fastapi import status, HTTPException
 from fastapi.testclient import TestClient
-from leapfrogai_api.routers.leapfrogai.auth import (
+from cowabunga_api.routers.leapfrogai.auth import (
     router,
     APIKeyItem,
 )
-from leapfrogai_api.backend.security.api_key import APIKey
-from leapfrogai_api.backend.constants import THIRTY_DAYS_SECONDS
+from cowabunga_api.backend.security.api_key import APIKey
+from cowabunga_api.backend.constants import THIRTY_DAYS_SECONDS
 
 
 class MissingEnvironmentVariable(Exception):
