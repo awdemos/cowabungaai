@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/uds.schema.json
+
+kind: UDSBundle
+metadata:
+  name: leapfrogai-turso
+  description: A UDS bundle for deploying CowabungaAI with CPU-only support and Turso database
+  version: dev
+
+packages:
+  # Turso/libSQL database (replaces Supabase)
+  - name: turso
+    path: ../../../packages/turso/
+    ref: dev
+
+  # API
+  - name: leapfrogai-api
+    path: ../../../packages/api/
+    ref: dev
+    overrides:
+      leapfrogai-api:
+        variables:
+          - name: DATABASE_TYPE
+            value: "turso"
+          - name: TURSO_URL
+            value: "http://turso.leapfrogai.svc.cluster.local:8080"
+
+  # Chat Model
+  - name: llama-cpp-python
+    path: ../../../packages/llama-cpp-python/
+    ref: dev
+
+  # Text Embeddings Model
+  - name: text-embeddings
+    path: ../../../packages/text-embeddings/
+    ref: dev
+
+  # Transcription Model
+  - name: whisper
+    path: ../../../packages/whisper/
+    ref: dev
+
+  # UI
+  - name: leapfrogai-ui
+    path: ../../../packages/ui/
+    ref: dev

@@ -1,45 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
   name: turso
+  version: '###ZARF_PKG_TMPL_IMAGE_VERSION###'
   description: Turso/libSQL database server for CowabungaAI (replaces Supabase)
-  version: 0.1.0
 
 components:
   - name: turso
     required: true
     description: "Turso database server"
     
-    # Helm chart deployment
     charts:
       - name: turso
         version: 0.1.0
-        namespace: cowabunga
+        namespace: leapfrogai
         localPath: chart
     
-    # Container images
     images:
       - ghcr.io/tursodatabase/libsql-server:latest
-    
-    # Data files (migrations, scripts)
-    files:
-      - source: migrations/
-        target: /migrations/
-      - source: scripts/init-db.sh
-        target: /scripts/init-db.sh
-    
-    # Actions to run during deployment
-    actions:
-      onStart:
-        - cmd: echo "Starting Turso deployment..."
-      onSuccess:
-        - cmd: echo "Turso deployed successfully!"
-          # Verify database is accessible
-          - cmd: kubectl exec -n cowabunga deployment/turso -- sqlite3 /data/cowabunga.db "SELECT 1;"
-      onFailure:
-        - cmd: echo "Turso deployment failed!"
-    
-    # Health checks
-    healthCheck:
-      namespace: cowabunga
-      deployments:
-        - name: turso
+      - alpine:3.19

@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "turso.fullname" . }}-migrations
+  labels:
+    {{- include "turso.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "turso.serviceAccountName" . }}
+      containers:
+        - name: migrations
+          image: curlimages/curl:8.7.0
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              echo "Waiting for turso service..."
+              until curl -s -X POST http://turso:8080 -H "Content-Type: application/json" -d '{"statements":["SELECT 1"]}' | grep -q '"results"'; do
+                sleep 2
+              done
+              echo "Turso service is ready"
+              echo "Running migrations..."
+              for migration in {{ .Values.migrations.sql | default "001_initial_schema.sql" }}; do
+                echo "Applying migration: $migration"
+                curl -s -X POST http://turso:8080 -H "Content-Type: application/json" --data-binary @/migrations/$migration
+              done
+              echo "All migrations complete"
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+              readOnly: true
+      volumes:
+        - name: migrations
+          configMap:
+            name: {{ include "turso.fullname" . }}-migrations
