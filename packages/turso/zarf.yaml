@@ -19,3 +19,4 @@ components:
     images:
       - ghcr.io/tursodatabase/libsql-server:latest
       - alpine:3.19
+      - curlimages/curl:latest
