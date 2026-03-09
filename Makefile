@@ -52,6 +52,17 @@ build-supabase: local-registry docker-supabase
 	## Build the Zarf package
 	uds zarf package create packages/supabase --flavor ${FLAVOR} -a ${ARCH} -o packages/supabase --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
+docker-turso:
+	## Build the turso database image with API server
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
+	docker tag ghcr.io/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION}
+
+build-turso: local-registry docker-turso
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/turso --flavor ${FLAVOR} -a ${ARCH} -o packages/turso --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
 docker-api: local-registry sdk-wheel
 	@echo $(DOCKER_FLAGS)
 	@echo $(ZARF_FLAGS)
@@ -174,6 +185,12 @@ silent-build-supabase-parallel:
 	@$(MAKE) build-supabase DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-supabase.log 2>&1
 	@echo "Supabase build completed"
 
+silent-build-turso-parallel:
+	@echo "Turso build started"
+	@mkdir -p .logs
+	@$(MAKE) build-turso DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-turso.log 2>&1
+	@echo "Turso build completed"
+
 silent-build-ui-parallel:
 	@echo "UI build started"
 	@mkdir -p .logs
@@ -231,6 +248,12 @@ silent-deploy-supabase-package:
 	@mkdir -p .logs
 	@uds zarf package deploy packages/supabase/zarf-package-supabase-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-supabase.log 2>&1
 	@echo "Supabase deployment completed"
+
+silent-deploy-turso-package:
+	@echo "Starting Turso deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/turso/zarf-package-turso-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-turso.log 2>&1
+	@echo "Turso deployment completed"
 
 silent-deploy-api-package:
 	@echo "Starting API deployment..."
@@ -328,3 +351,41 @@ silent-fresh-leapfrogai-cpu:
 	@echo "Done!"
 	@echo "UI is available at https://ai.uds.dev"
 	@echo "API is available at https://leapfrogai-api.uds.dev"
+
+# Turso-specific targets (alternative to Supabase)
+silent-build-cpu-turso:
+	@echo "Starting parallel builds (Turso variant)..."
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-turso-parallel silent-build-ui-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@echo "All builds completed"
+
+silent-deploy-cpu-turso:
+	@echo "Logs at .logs/*.log"
+	@echo "Starting parallel deployments (Turso variant)..."
+	@echo "Deploying Turso first..."
+	@$(MAKE) silent-deploy-turso-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
+	@echo "Deploying the rest of the packages..."
+	@$(MAKE) -j${MAX_JOBS} \
+		silent-deploy-api-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-ui-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-llama-cpp-python-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-text-embeddings-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-whisper-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
+	@echo "All deployments completed"
+
+silent-fresh-leapfrogai-cpu-turso:
+	@echo "Cleaning up previous artifacts..."
+	@$(MAKE) clean-artifacts > /dev/null 2>&1
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@echo "Creating a uds cpu-only cluster..."
+	@$(MAKE) create-uds-cpu-cluster DOCKER_FLAGS="${SILENT_DOCKER_FLAGS}" ZARF_FLAGS="${SILENT_ZARF_FLAGS}" > .logs/create-uds-cpu-cluster.log 2>&1
+	@echo "Building all packages (Turso variant)..."
+	@$(MAKE) silent-build-cpu-turso
+	@echo "Deploying all packages..."
+	@$(MAKE) silent-deploy-cpu-turso
+	@echo "Done!"
+	@echo "UI is available at https://ai.uds.dev"
+	@echo "API is available at https://leapfrogai-api.uds.dev"
+	@echo "Turso database is available at turso.leapfrogai.svc.cluster.local:8080"
