@@ -1,6 +1,7 @@
 """Test the API endpoints for assistants."""
 
 import json
+import os
 import time
 
 import pytest
@@ -18,8 +19,7 @@ from leapfrogai_api.typedef.vectorstores import (
 )
 from leapfrogai_api.routers.openai.vector_stores import router as vector_store_router
 from leapfrogai_api.routers.openai.files import router as files_router
-from tests.utils.client import create_test_user
-from tests.utils.data_path import data_path, TXT_FILE
+from tests.utils.data_path import data_path, TXT_FILE_NAME
 
 INSTRUCTOR_XL_EMBEDDING_SIZE: int = 768
 
@@ -37,11 +37,11 @@ class MissingEnvironmentVariable(Exception):
 headers: dict[str, str] = {}
 
 try:
-    headers = {"Authorization": f"Bearer {create_test_user()}"}
+    headers = {"Authorization": f"Bearer {os.environ['SUPABASE_USER_JWT']}"}
 except KeyError as exc:
     raise MissingEnvironmentVariable(
         "SUPABASE_USER_JWT must be defined for the test to pass. "
-        "Please check the packages/api and src/leapfrogai_api READMEs for instructions on obtaining this token."
+        "Please check the api README for instructions on obtaining this token."
     ) from exc
 
 vector_store_client = TestClient(vector_store_router, headers=headers)
@@ -53,7 +53,7 @@ files_client = TestClient(files_router, headers=headers)
 def read_testfile():
     """Read the test file content."""
 
-    with open(data_path(TXT_FILE), "rb") as testfile:
+    with open(data_path(TXT_FILE_NAME), "rb") as testfile:
         testfile_content = testfile.read()
 
     return testfile_content
@@ -66,7 +66,7 @@ def create_file(read_testfile):  # pylint: disable=redefined-outer-name, unused-
 
     file_response = files_client.post(
         "/openai/v1/files",
-        files={"file": (TXT_FILE, read_testfile, "text/plain")},
+        files={"file": (TXT_FILE_NAME, read_testfile, "text/plain")},
         data={"purpose": "assistants"},
     )
 

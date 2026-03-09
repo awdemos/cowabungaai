@@ -82,7 +82,21 @@ Instrumentator(
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
-    logger.error(f"The client sent invalid data!: {exc}")
+    # Log the request details
+    body = await request.body()
+    query_params = request.query_params
+    path_params = request.path_params
+
+    logger.error(
+        f"RequestValidationError: \n"
+        f"URL: {request.url}\n"
+        f"Method: {request.method}\n"
+        f"Headers: {request.headers}\n"
+        f"Path Params: {path_params}\n"
+        f"Query Params: {query_params}\n"
+        f"Body: {body.decode()}\n"
+        f"Error: {exc}"
+    )
     return await request_validation_exception_handler(request, exc)
 
 

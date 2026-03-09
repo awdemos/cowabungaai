@@ -1,0 +1,2792 @@
+{
+  "version": 8,
+  "created": "2026-03-08T00:49:05+00:00",
+  "updated": "2026-03-08T00:54:21+00:00",
+  "queue_order": [
+    "subjective::abstraction_fitness",
+    "subjective::ai_generated_debt",
+    "subjective::api_surface_coherence",
+    "subjective::authorization_consistency",
+    "subjective::contract_coherence",
+    "subjective::convention_outlier",
+    "subjective::cross_module_architecture",
+    "subjective::dependency_health",
+    "subjective::design_coherence",
+    "subjective::error_consistency",
+    "subjective::high_level_elegance",
+    "subjective::incomplete_migration",
+    "subjective::initialization_coupling",
+    "subjective::logic_clarity",
+    "subjective::low_level_elegance",
+    "subjective::mid_level_elegance",
+    "subjective::naming_quality",
+    "subjective::package_organization",
+    "subjective::test_strategy",
+    "subjective::type_safety"
+  ],
+  "deferred": [],
+  "skipped": {},
+  "active_cluster": null,
+  "overrides": {
+    "orphaned::src/leapfrogai_evals/runners/niah_runner.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/runners/niah_runner.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/rag/index.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/rag/index.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/composer.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/composer.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/runners/qa_runner.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/runners/qa_runner.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/vllm/src/main.py": {
+      "issue_id": "orphaned::packages/vllm/src/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/llm.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/llm.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::tests/load/loadtest.py": {
+      "issue_id": "orphaned::tests/load/loadtest.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/vector_stores.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/vector_stores.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/assistants.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/assistants.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/grpc_client.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/grpc_client.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::.github/scripts/uds_verification_report.py": {
+      "issue_id": "orphaned::.github/scripts/uds_verification_report.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_api_key.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_api_key.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/supabase_session.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/supabase_session.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/runs_steps.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/runs_steps.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/metrics/niah_metrics.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/metrics/niah_metrics.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/files.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/files.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/runs.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/runs.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/completion/completion_pb2_grpc.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/completion/completion_pb2_grpc.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/chat/chat_pb2_grpc.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/chat/chat_pb2_grpc.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/whisper/main.py": {
+      "issue_id": "orphaned::packages/whisper/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/converters.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/converters.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_vector_content.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_vector_content.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/helpers.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/helpers.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/audio/audio_pb2_grpc.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/audio/audio_pb2_grpc.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/leapfrogai/auth.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/leapfrogai/auth.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/messages.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/messages.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/utils.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/utils.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/rag/query.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/rag/query.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/main.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/threads.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/threads.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/rag/document_loader.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/rag/document_loader.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_vector_store.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_vector_store.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/repeater/main.py": {
+      "issue_id": "orphaned::packages/repeater/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/serve.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/serve.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/counting/counting_pb2_grpc.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/counting/counting_pb2_grpc.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/embeddings/embeddings_pb2_grpc.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/embeddings/embeddings_pb2_grpc.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/name/name_pb2_grpc.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/name/name_pb2_grpc.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/chat.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/chat.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/evals/qa_eval.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/evals/qa_eval.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/health.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/health.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/audio.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/audio.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/models/lfai.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/models/lfai.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/security/api_key.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/security/api_key.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/llama-cpp-python/scripts/model_download.py": {
+      "issue_id": "orphaned::packages/llama-cpp-python/scripts/model_download.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/main.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/metrics/annotation_relevancy.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/metrics/annotation_relevancy.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_vector_store_file.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_vector_store_file.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/leapfrogai/vector_stores.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/leapfrogai/vector_stores.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/leapfrogai/rag.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/leapfrogai/rag.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/embeddings.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/embeddings.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/evals/niah_eval.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/evals/niah_eval.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/models/claude_sonnet.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/models/claude_sonnet.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/chat/chat_pb2.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/chat/chat_pb2.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/evals/human_eval.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/evals/human_eval.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/llama-cpp-python/main.py": {
+      "issue_id": "orphaned::packages/llama-cpp-python/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/completion/completion_pb2.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/completion/completion_pb2.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/text-embeddings/main.py": {
+      "issue_id": "orphaned::packages/text-embeddings/main.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/audio/audio_pb2.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/audio/audio_pb2.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/completions.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/completions.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/utils/validate_tools.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/utils/validate_tools.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/embeddings/embeddings_pb2.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/embeddings/embeddings_pb2.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/counting/counting_pb2.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/counting/counting_pb2.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_assistant.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_assistant.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_sdk/name/name_pb2.py": {
+      "issue_id": "orphaned::src/leapfrogai_sdk/name/name_pb2.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/leapfrogai/count.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/leapfrogai/count.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_file_object.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_file_object.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_file_bucket.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_file_bucket.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_run.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_run.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/evals/mmlu.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/evals/mmlu.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/openai/models.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/openai/models.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_evals/metrics/correctness.py": {
+      "issue_id": "orphaned::src/leapfrogai_evals/metrics/correctness.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::tests/mocks/mock_crud.py": {
+      "issue_id": "orphaned::tests/mocks/mock_crud.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_message.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_message.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/vllm/src/model_download.py": {
+      "issue_id": "orphaned::packages/vllm/src/model_download.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::packages/text-embeddings/scripts/model_download.py": {
+      "issue_id": "orphaned::packages/text-embeddings/scripts/model_download.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/data/crud_thread.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/data/crud_thread.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/base.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/base.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/utils/logging_tools.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/utils/logging_tools.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "orphaned::src/leapfrogai_api/routers/leapfrogai/models.py": {
+      "issue_id": "orphaned::src/leapfrogai_api/routers/leapfrogai/models.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/orphaned",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/vectorstores/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/vectorstores/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_evals/metrics/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_evals/metrics/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/chat/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/chat/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_evals/evals/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_evals/evals/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/audio/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/audio/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/completion/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/completion/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/assistants/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/assistants/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/embeddings/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/embeddings/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/models/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/models/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/threads/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/threads/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_evals/models/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_evals/models/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_evals/runners/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_evals/runners/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/auth/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/auth/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/counting/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/counting/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/files/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/files/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/messages/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/messages/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::tests/unit/leapfrogai_api/conftest.py": {
+      "issue_id": "facade::tests/unit/leapfrogai_api/conftest.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/rag/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/rag/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "facade::src/leapfrogai_api/typedef/runs/__init__.py": {
+      "issue_id": "facade::src/leapfrogai_api/typedef/runs/__init__.py",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/facade-file",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/grpc_client.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/grpc_client.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/chat/chat_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/chat/chat_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/evals/mmlu.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/evals/mmlu.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/messages/message_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/messages/message_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::packages/llama-cpp-python/main.py::untested_module": {
+      "issue_id": "test_coverage::packages/llama-cpp-python/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_sdk/cli.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_sdk/cli.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/supabase_session.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/supabase_session.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/rag/query.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/rag/query.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/threads/thread_create.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/threads/thread_create.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::packages/llama-cpp-python/scripts/model_download.py::untested_module": {
+      "issue_id": "test_coverage::packages/llama-cpp-python/scripts/model_download.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_file_object.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_file_object.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/openai/runs_steps.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/openai/runs_steps.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/main.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/audio/audio_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/audio/audio_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/models/lfai.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/models/lfai.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_assistant.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_assistant.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::packages/repeater/main.py::untested_module": {
+      "issue_id": "test_coverage::packages/repeater/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/leapfrogai/count.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/leapfrogai/count.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/openai/models.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/openai/models.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/runners/niah_runner.py::untested_critical": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/runners/niah_runner.py::untested_critical",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/converters.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/converters.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/runners/qa_runner.py::untested_critical": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/runners/qa_runner.py::untested_critical",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/rag/index.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/rag/index.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/evals/niah_eval.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/evals/niah_eval.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/composer.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/composer.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/evals/human_eval.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/evals/human_eval.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_sdk/utils.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_sdk/utils.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/completion/completion_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/completion/completion_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_sdk/llm.py::untested_critical": {
+      "issue_id": "test_coverage::src/leapfrogai_sdk/llm.py::untested_critical",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/metrics/correctness.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/metrics/correctness.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/base.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/base.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/security/api_key.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/security/api_key.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/files/file_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/files/file_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/vectorstores/vectorstore_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/vectorstores/vectorstore_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/runs/run_create.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/runs/run_create.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/leapfrogai/models.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/leapfrogai/models.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::.github/scripts/uds_verification_report.py::untested_critical": {
+      "issue_id": "test_coverage::.github/scripts/uds_verification_report.py::untested_critical",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::packages/text-embeddings/main.py::untested_module": {
+      "issue_id": "test_coverage::packages/text-embeddings/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/metrics/niah_metrics.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/metrics/niah_metrics.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/models/model_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/models/model_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/rag/document_loader.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/rag/document_loader.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/rag/rag_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/rag/rag_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/helpers.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/helpers.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_run.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_run.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_thread.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_thread.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/runs/run_create_base.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/runs/run_create_base.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::packages/whisper/main.py::untested_module": {
+      "issue_id": "test_coverage::packages/whisper/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_file_bucket.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_file_bucket.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/main.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/leapfrogai/rag.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/leapfrogai/rag.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::packages/vllm/src/main.py::untested_module": {
+      "issue_id": "test_coverage::packages/vllm/src/main.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/utils/validate_tools.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/utils/validate_tools.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/openai/audio.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/openai/audio.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_vector_store.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_vector_store.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/common.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/common.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/evals/qa_eval.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/evals/qa_eval.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/metrics/annotation_relevancy.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/metrics/annotation_relevancy.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_vector_store_file.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_vector_store_file.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_api_key.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_api_key.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/openai/embeddings.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/openai/embeddings.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_sdk/serve.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_sdk/serve.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/openai/chat.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/openai/chat.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/typedef/assistants/assistant_types.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/typedef/assistants/assistant_types.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_evals/models/claude_sonnet.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_evals/models/claude_sonnet.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_vector_content.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_vector_content.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/health.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/health.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/routers/openai/vector_stores.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/routers/openai/vector_stores.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "test_coverage::src/leapfrogai_api/data/crud_message.py::untested_module": {
+      "issue_id": "test_coverage::src/leapfrogai_api/data/crud_message.py::untested_module",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/test_coverage",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/runs.py::stderr_traceback": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/runs.py::stderr_traceback",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-stderr_traceback",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/vector_stores.py::stderr_traceback": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/vector_stores.py::stderr_traceback",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-stderr_traceback",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/messages/message_types.py::stderr_traceback": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/messages/message_types.py::stderr_traceback",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-stderr_traceback",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/runs/run_create_base.py::stderr_traceback": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/runs/run_create_base.py::stderr_traceback",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-stderr_traceback",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/threads/thread_create.py::stderr_traceback": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/threads/thread_create.py::stderr_traceback",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-stderr_traceback",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/runners/niah_runner.py::monster_function": {
+      "issue_id": "smells::src/leapfrogai_evals/runners/niah_runner.py::monster_function",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-monster_function",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/llm.py::monster_function": {
+      "issue_id": "smells::src/leapfrogai_sdk/llm.py::monster_function",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-monster_function",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/vllm/src/main.py::silent_except": {
+      "issue_id": "smells::packages/vllm/src/main.py::silent_except",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-silent_except",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/main.py::silent_except": {
+      "issue_id": "smells::src/leapfrogai_api/main.py::silent_except",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-silent_except",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::.github/scripts/uds_verification_report.py::annotation_quality": {
+      "issue_id": "smells::.github/scripts/uds_verification_report.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/llama-cpp-python/scripts/model_download.py::annotation_quality": {
+      "issue_id": "smells::packages/llama-cpp-python/scripts/model_download.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/text-embeddings/main.py::annotation_quality": {
+      "issue_id": "smells::packages/text-embeddings/main.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/vllm/src/main.py::annotation_quality": {
+      "issue_id": "smells::packages/vllm/src/main.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/whisper/main.py::annotation_quality": {
+      "issue_id": "smells::packages/whisper/main.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/composer.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/backend/composer.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/grpc_client.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/backend/grpc_client.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/helpers.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/backend/helpers.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/main.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/main.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/health.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/routers/health.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/leapfrogai/auth.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/routers/leapfrogai/auth.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/chat.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/chat.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/completions.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/completions.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/files.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/files.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/assistants/assistant_types.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/assistants/assistant_types.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/audio/audio_types.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/audio/audio_types.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/runs/run_create.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/runs/run_create.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/threads/thread_create.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/threads/thread_create.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/utils/config.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_api/utils/config.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/evals/human_eval.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_evals/evals/human_eval.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/evals/mmlu.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_evals/evals/mmlu.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/evals/niah_eval.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_evals/evals/niah_eval.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/evals/qa_eval.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_evals/evals/qa_eval.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/audio/audio_pb2_grpc.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_sdk/audio/audio_pb2_grpc.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/chat/chat_pb2_grpc.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_sdk/chat/chat_pb2_grpc.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/completion/completion_pb2_grpc.py::annotation_quality": {
+      "issue_id": "smells::src/leapfrogai_sdk/completion/completion_pb2_grpc.py::annotation_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-annotation_quality",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/audio/audio_types.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/audio/audio_types.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/models/lfai.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_evals/models/lfai.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/runners/niah_runner.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_evals/runners/niah_runner.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/runners/qa_runner.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_evals/runners/qa_runner.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/audio/audio_pb2_grpc.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_sdk/audio/audio_pb2_grpc.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/chat/chat_pb2_grpc.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_sdk/chat/chat_pb2_grpc.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/completion/completion_pb2_grpc.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_sdk/completion/completion_pb2_grpc.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/counting/counting_pb2_grpc.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_sdk/counting/counting_pb2_grpc.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/embeddings/embeddings_pb2_grpc.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_sdk/embeddings/embeddings_pb2_grpc.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/name/name_pb2_grpc.py::optional_param_sprawl": {
+      "issue_id": "smells::src/leapfrogai_sdk/name/name_pb2_grpc.py::optional_param_sprawl",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-optional_param_sprawl",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/llama-cpp-python/main.py::import_runtime_init": {
+      "issue_id": "smells::packages/llama-cpp-python/main.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/repeater/main.py::import_runtime_init": {
+      "issue_id": "smells::packages/repeater/main.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/text-embeddings/main.py::import_runtime_init": {
+      "issue_id": "smells::packages/text-embeddings/main.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/vllm/src/main.py::import_runtime_init": {
+      "issue_id": "smells::packages/vllm/src/main.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/whisper/main.py::import_runtime_init": {
+      "issue_id": "smells::packages/whisper/main.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/main.py::import_runtime_init": {
+      "issue_id": "smells::src/leapfrogai_api/main.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/utils/logging_tools.py::import_runtime_init": {
+      "issue_id": "smells::src/leapfrogai_api/utils/logging_tools.py::import_runtime_init",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_runtime_init",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::.github/scripts/uds_verification_report.py::high_cyclomatic_complexity": {
+      "issue_id": "smells::.github/scripts/uds_verification_report.py::high_cyclomatic_complexity",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-high_cyclomatic_complexity",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/llama-cpp-python/scripts/model_download.py::high_cyclomatic_complexity": {
+      "issue_id": "smells::packages/llama-cpp-python/scripts/model_download.py::high_cyclomatic_complexity",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-high_cyclomatic_complexity",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/assistants/assistant_types.py::high_cyclomatic_complexity": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/assistants/assistant_types.py::high_cyclomatic_complexity",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-high_cyclomatic_complexity",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/llm.py::high_cyclomatic_complexity": {
+      "issue_id": "smells::src/leapfrogai_sdk/llm.py::high_cyclomatic_complexity",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-high_cyclomatic_complexity",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/utils.py::high_cyclomatic_complexity": {
+      "issue_id": "smells::src/leapfrogai_sdk/utils.py::high_cyclomatic_complexity",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-high_cyclomatic_complexity",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/audio.py::vestigial_parameter": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/audio.py::vestigial_parameter",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-vestigial_parameter",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/chat.py::vestigial_parameter": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/chat.py::vestigial_parameter",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-vestigial_parameter",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/completions.py::vestigial_parameter": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/completions.py::vestigial_parameter",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-vestigial_parameter",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/embeddings.py::vestigial_parameter": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/embeddings.py::vestigial_parameter",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-vestigial_parameter",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/openai/models.py::vestigial_parameter": {
+      "issue_id": "smells::src/leapfrogai_api/routers/openai/models.py::vestigial_parameter",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-vestigial_parameter",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/vllm/src/main.py::import_env_mutation": {
+      "issue_id": "smells::packages/vllm/src/main.py::import_env_mutation",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_env_mutation",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/utils/logging_tools.py::import_env_mutation": {
+      "issue_id": "smells::src/leapfrogai_api/utils/logging_tools.py::import_env_mutation",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-import_env_mutation",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/converters.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_api/backend/converters.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/grpc_client.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_api/backend/grpc_client.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/rag/document_loader.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_api/backend/rag/document_loader.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/routers/health.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_api/routers/health.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/typedef/runs/run_create_base.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_api/typedef/runs/run_create_base.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/evals/niah_eval.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_evals/evals/niah_eval.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/evals/qa_eval.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_evals/evals/qa_eval.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_evals/runners/niah_runner.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_evals/runners/niah_runner.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_sdk/serve.py::todo_fixme": {
+      "issue_id": "smells::src/leapfrogai_sdk/serve.py::todo_fixme",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-todo_fixme",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::packages/llama-cpp-python/scripts/model_download.py::deferred_import": {
+      "issue_id": "smells::packages/llama-cpp-python/scripts/model_download.py::deferred_import",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-deferred_import",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "smells::src/leapfrogai_api/backend/rag/document_loader.py::deferred_import": {
+      "issue_id": "smells::src/leapfrogai_api/backend/rag/document_loader.py::deferred_import",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/smells-deferred_import",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::packages/vllm/src/main.py::security::B311::packages/vllm/src/main.py::50": {
+      "issue_id": "security::packages/vllm/src/main.py::security::B311::packages/vllm/src/main.py::50",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_evals/main.py::security::B307::src/leapfrogai_evals/main.py::49": {
+      "issue_id": "security::src/leapfrogai_evals/main.py::security::B307::src/leapfrogai_evals/main.py::49",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_evals/runners/niah_runner.py::security::B113::src/leapfrogai_evals/runners/niah_runner.py::180": {
+      "issue_id": "security::src/leapfrogai_evals/runners/niah_runner.py::security::B113::src/leapfrogai_evals/runners/niah_runner.py::180",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_evals/runners/niah_runner.py::security::B615::src/leapfrogai_evals/runners/niah_runner.py::287": {
+      "issue_id": "security::src/leapfrogai_evals/runners/niah_runner.py::security::B615::src/leapfrogai_evals/runners/niah_runner.py::287",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_evals/runners/qa_runner.py::security::B113::src/leapfrogai_evals/runners/qa_runner.py::147": {
+      "issue_id": "security::src/leapfrogai_evals/runners/qa_runner.py::security::B113::src/leapfrogai_evals/runners/qa_runner.py::147",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_evals/runners/qa_runner.py::security::B615::src/leapfrogai_evals/runners/qa_runner.py::228": {
+      "issue_id": "security::src/leapfrogai_evals/runners/qa_runner.py::security::B615::src/leapfrogai_evals/runners/qa_runner.py::228",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_evals/runners/qa_runner.py::security::B615::src/leapfrogai_evals/runners/qa_runner.py::292": {
+      "issue_id": "security::src/leapfrogai_evals/runners/qa_runner.py::security::B615::src/leapfrogai_evals/runners/qa_runner.py::292",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_sdk/cli.py::security::B104::src/leapfrogai_sdk/cli.py::14": {
+      "issue_id": "security::src/leapfrogai_sdk/cli.py::security::B104::src/leapfrogai_sdk/cli.py::14",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "security::src/leapfrogai_sdk/serve.py::security::B104::src/leapfrogai_sdk/serve.py::17": {
+      "issue_id": "security::src/leapfrogai_sdk/serve.py::security::B104::src/leapfrogai_sdk/serve.py::17",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/security",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::packages/llama-cpp-python/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/llama-cpp-python/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::packages/repeater/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/repeater/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::packages/text-embeddings/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/text-embeddings/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::packages/vllm/src/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/vllm/src/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::packages/whisper/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/whisper/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/composer.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/composer.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/converters.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/converters.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/grpc_client.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/grpc_client.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/helpers.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/helpers.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/rag/document_loader.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/rag/document_loader.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/rag/query.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/rag/query.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/backend/security/api_key.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/backend/security/api_key.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_api_key.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_api_key.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_assistant.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_assistant.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_base.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_base.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_file_bucket.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_file_bucket.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_file_object.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_file_object.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_run.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_run.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_vector_content.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_vector_content.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_vector_store.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_vector_store.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/data/crud_vector_store_file.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/data/crud_vector_store_file.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/main.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/health.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/health.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/leapfrogai/auth.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/leapfrogai/auth.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/leapfrogai/count.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/leapfrogai/count.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/leapfrogai/rag.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/leapfrogai/rag.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/leapfrogai/vector_stores.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/leapfrogai/vector_stores.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/assistants.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/assistants.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/audio.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/audio.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/chat.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/chat.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/completions.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/completions.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/embeddings.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/embeddings.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/files.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/files.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/messages.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/messages.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/models.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/models.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/runs.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/runs.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/runs_steps.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/runs_steps.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/threads.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/threads.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/openai/vector_stores.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/openai/vector_stores.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/routers/supabase_session.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/routers/supabase_session.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/assistants/assistant_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/assistants/assistant_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/audio/audio_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/audio/audio_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/auth/auth_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/auth/auth_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/chat/chat_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/chat/chat_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/common.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/common.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/completion/completion_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/completion/completion_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/counting/token_count_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/counting/token_count_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/embeddings/embedding_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/embeddings/embedding_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/files/file_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/files/file_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/messages/message_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/messages/message_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/models/model_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/models/model_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/rag/rag_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/rag/rag_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/runs/run_create.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/runs/run_create.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/runs/run_create_base.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/runs/run_create_base.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/threads/thread_create.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/threads/thread_create.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/vectorstores/search_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/vectorstores/search_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/typedef/vectorstores/vectorstore_types.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/typedef/vectorstores/vectorstore_types.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_api/utils/validate_tools.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_api/utils/validate_tools.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/evals/human_eval.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/evals/human_eval.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/evals/mmlu.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/evals/mmlu.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/evals/niah_eval.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/evals/niah_eval.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/evals/qa_eval.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/evals/qa_eval.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/main.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/main.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/metrics/annotation_relevancy.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/metrics/annotation_relevancy.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/metrics/correctness.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/metrics/correctness.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/metrics/niah_metrics.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/metrics/niah_metrics.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/models/claude_sonnet.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/models/claude_sonnet.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/models/lfai.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/models/lfai.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/runners/niah_runner.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/runners/niah_runner.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_evals/runners/qa_runner.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_evals/runners/qa_runner.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_sdk/__init__.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_sdk/__init__.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_sdk/cli.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_sdk/cli.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_sdk/llm.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_sdk/llm.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_sdk/serve.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_sdk/serve.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::src/leapfrogai_sdk/utils.py::unreviewed": {
+      "issue_id": "subjective_review::src/leapfrogai_sdk/utils.py::unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective_review::.::holistic_unreviewed": {
+      "issue_id": "subjective_review::.::holistic_unreviewed",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/subjective_review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "stale_exclude::.logs::.logs": {
+      "issue_id": "stale_exclude::.logs::.logs",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/stale_exclude",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "stale_exclude::src/leapfrogai_sdk/build::src/leapfrogai_sdk/build": {
+      "issue_id": "stale_exclude::src/leapfrogai_sdk/build::src/leapfrogai_sdk/build",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/stale_exclude",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "stale_exclude::.claude/pairup_sessions::.claude/pairup_sessions/": {
+      "issue_id": "stale_exclude::.claude/pairup_sessions::.claude/pairup_sessions/",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/stale_exclude",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::abstraction_fitness": {
+      "issue_id": "subjective::abstraction_fitness",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::ai_generated_debt": {
+      "issue_id": "subjective::ai_generated_debt",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::api_surface_coherence": {
+      "issue_id": "subjective::api_surface_coherence",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::authorization_consistency": {
+      "issue_id": "subjective::authorization_consistency",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::contract_coherence": {
+      "issue_id": "subjective::contract_coherence",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::convention_outlier": {
+      "issue_id": "subjective::convention_outlier",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::cross_module_architecture": {
+      "issue_id": "subjective::cross_module_architecture",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::dependency_health": {
+      "issue_id": "subjective::dependency_health",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::design_coherence": {
+      "issue_id": "subjective::design_coherence",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::error_consistency": {
+      "issue_id": "subjective::error_consistency",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::high_level_elegance": {
+      "issue_id": "subjective::high_level_elegance",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::incomplete_migration": {
+      "issue_id": "subjective::incomplete_migration",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::initialization_coupling": {
+      "issue_id": "subjective::initialization_coupling",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::logic_clarity": {
+      "issue_id": "subjective::logic_clarity",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::low_level_elegance": {
+      "issue_id": "subjective::low_level_elegance",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::mid_level_elegance": {
+      "issue_id": "subjective::mid_level_elegance",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::naming_quality": {
+      "issue_id": "subjective::naming_quality",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::package_organization": {
+      "issue_id": "subjective::package_organization",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::test_strategy": {
+      "issue_id": "subjective::test_strategy",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    },
+    "subjective::type_safety": {
+      "issue_id": "subjective::type_safety",
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "cluster": "auto/initial-review",
+      "updated_at": "2026-03-08T00:54:21+00:00"
+    }
+  },
+  "clusters": {
+    "auto/orphaned": {
+      "name": "auto/orphaned",
+      "description": "Fix 80 orphaned issues",
+      "issue_ids": [
+        "orphaned::src/leapfrogai_evals/runners/niah_runner.py",
+        "orphaned::src/leapfrogai_api/backend/rag/index.py",
+        "orphaned::src/leapfrogai_api/backend/composer.py",
+        "orphaned::src/leapfrogai_evals/runners/qa_runner.py",
+        "orphaned::packages/vllm/src/main.py",
+        "orphaned::src/leapfrogai_sdk/llm.py",
+        "orphaned::tests/load/loadtest.py",
+        "orphaned::src/leapfrogai_api/routers/openai/vector_stores.py",
+        "orphaned::src/leapfrogai_api/routers/openai/assistants.py",
+        "orphaned::src/leapfrogai_api/backend/grpc_client.py",
+        "orphaned::.github/scripts/uds_verification_report.py",
+        "orphaned::src/leapfrogai_api/data/crud_api_key.py",
+        "orphaned::src/leapfrogai_api/routers/supabase_session.py",
+        "orphaned::src/leapfrogai_api/routers/openai/runs_steps.py",
+        "orphaned::src/leapfrogai_evals/metrics/niah_metrics.py",
+        "orphaned::src/leapfrogai_api/routers/openai/files.py",
+        "orphaned::src/leapfrogai_api/routers/openai/runs.py",
+        "orphaned::src/leapfrogai_sdk/completion/completion_pb2_grpc.py",
+        "orphaned::src/leapfrogai_sdk/chat/chat_pb2_grpc.py",
+        "orphaned::packages/whisper/main.py",
+        "orphaned::src/leapfrogai_api/backend/converters.py",
+        "orphaned::src/leapfrogai_api/data/crud_vector_content.py",
+        "orphaned::src/leapfrogai_api/backend/helpers.py",
+        "orphaned::src/leapfrogai_sdk/audio/audio_pb2_grpc.py",
+        "orphaned::src/leapfrogai_api/routers/leapfrogai/auth.py",
+        "orphaned::src/leapfrogai_api/routers/openai/messages.py",
+        "orphaned::src/leapfrogai_sdk/utils.py",
+        "orphaned::src/leapfrogai_api/backend/rag/query.py",
+        "orphaned::src/leapfrogai_api/main.py",
+        "orphaned::src/leapfrogai_api/routers/openai/threads.py",
+        "orphaned::src/leapfrogai_api/backend/rag/document_loader.py",
+        "orphaned::src/leapfrogai_api/data/crud_vector_store.py",
+        "orphaned::packages/repeater/main.py",
+        "orphaned::src/leapfrogai_sdk/serve.py",
+        "orphaned::src/leapfrogai_sdk/counting/counting_pb2_grpc.py",
+        "orphaned::src/leapfrogai_sdk/embeddings/embeddings_pb2_grpc.py",
+        "orphaned::src/leapfrogai_sdk/name/name_pb2_grpc.py",
+        "orphaned::src/leapfrogai_api/routers/openai/chat.py",
+        "orphaned::src/leapfrogai_evals/evals/qa_eval.py",
+        "orphaned::src/leapfrogai_api/routers/health.py",
+        "orphaned::src/leapfrogai_api/routers/openai/audio.py",
+        "orphaned::src/leapfrogai_evals/models/lfai.py",
+        "orphaned::src/leapfrogai_api/backend/security/api_key.py",
+        "orphaned::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py",
+        "orphaned::packages/llama-cpp-python/scripts/model_download.py",
+        "orphaned::src/leapfrogai_evals/main.py",
+        "orphaned::src/leapfrogai_evals/metrics/annotation_relevancy.py",
+        "orphaned::src/leapfrogai_api/data/crud_vector_store_file.py",
+        "orphaned::src/leapfrogai_api/routers/leapfrogai/vector_stores.py",
+        "orphaned::src/leapfrogai_api/routers/leapfrogai/rag.py",
+        "orphaned::src/leapfrogai_api/routers/openai/embeddings.py",
+        "orphaned::src/leapfrogai_evals/evals/niah_eval.py",
+        "orphaned::src/leapfrogai_evals/models/claude_sonnet.py",
+        "orphaned::src/leapfrogai_sdk/chat/chat_pb2.py",
+        "orphaned::src/leapfrogai_evals/evals/human_eval.py",
+        "orphaned::packages/llama-cpp-python/main.py",
+        "orphaned::src/leapfrogai_sdk/completion/completion_pb2.py",
+        "orphaned::packages/text-embeddings/main.py",
+        "orphaned::src/leapfrogai_sdk/audio/audio_pb2.py",
+        "orphaned::src/leapfrogai_api/routers/openai/completions.py",
+        "orphaned::src/leapfrogai_api/utils/validate_tools.py",
+        "orphaned::src/leapfrogai_sdk/embeddings/embeddings_pb2.py",
+        "orphaned::src/leapfrogai_sdk/counting/counting_pb2.py",
+        "orphaned::src/leapfrogai_api/data/crud_assistant.py",
+        "orphaned::src/leapfrogai_sdk/name/name_pb2.py",
+        "orphaned::src/leapfrogai_api/routers/leapfrogai/count.py",
+        "orphaned::src/leapfrogai_api/data/crud_file_object.py",
+        "orphaned::src/leapfrogai_api/data/crud_file_bucket.py",
+        "orphaned::src/leapfrogai_api/data/crud_run.py",
+        "orphaned::src/leapfrogai_evals/evals/mmlu.py",
+        "orphaned::src/leapfrogai_api/routers/openai/models.py",
+        "orphaned::src/leapfrogai_evals/metrics/correctness.py",
+        "orphaned::tests/mocks/mock_crud.py",
+        "orphaned::src/leapfrogai_api/data/crud_message.py",
+        "orphaned::packages/vllm/src/model_download.py",
+        "orphaned::packages/text-embeddings/scripts/model_download.py",
+        "orphaned::src/leapfrogai_api/data/crud_thread.py",
+        "orphaned::src/leapfrogai_api/routers/base.py",
+        "orphaned::src/leapfrogai_api/utils/logging_tools.py",
+        "orphaned::src/leapfrogai_api/routers/leapfrogai/models.py"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "detector::orphaned",
+      "action": "desloppify move",
+      "user_modified": false
+    },
+    "auto/facade-file": {
+      "name": "auto/facade-file",
+      "description": "Fix 20 file issues",
+      "issue_ids": [
+        "facade::src/leapfrogai_api/typedef/vectorstores/__init__.py",
+        "facade::src/leapfrogai_evals/metrics/__init__.py",
+        "facade::src/leapfrogai_api/typedef/chat/__init__.py",
+        "facade::src/leapfrogai_evals/evals/__init__.py",
+        "facade::src/leapfrogai_api/typedef/audio/__init__.py",
+        "facade::src/leapfrogai_api/typedef/completion/__init__.py",
+        "facade::src/leapfrogai_api/typedef/assistants/__init__.py",
+        "facade::src/leapfrogai_api/typedef/embeddings/__init__.py",
+        "facade::src/leapfrogai_api/typedef/models/__init__.py",
+        "facade::src/leapfrogai_api/typedef/threads/__init__.py",
+        "facade::src/leapfrogai_evals/models/__init__.py",
+        "facade::src/leapfrogai_evals/runners/__init__.py",
+        "facade::src/leapfrogai_api/typedef/__init__.py",
+        "facade::src/leapfrogai_api/typedef/auth/__init__.py",
+        "facade::src/leapfrogai_api/typedef/counting/__init__.py",
+        "facade::src/leapfrogai_api/typedef/files/__init__.py",
+        "facade::src/leapfrogai_api/typedef/messages/__init__.py",
+        "facade::tests/unit/leapfrogai_api/conftest.py",
+        "facade::src/leapfrogai_api/typedef/rag/__init__.py",
+        "facade::src/leapfrogai_api/typedef/runs/__init__.py"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::facade::file",
+      "action": "desloppify move",
+      "user_modified": false
+    },
+    "auto/test_coverage": {
+      "name": "auto/test_coverage",
+      "description": "Fix 70 test coverage issues",
+      "issue_ids": [
+        "test_coverage::src/leapfrogai_api/backend/grpc_client.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/chat/chat_types.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/evals/mmlu.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/messages/message_types.py::untested_module",
+        "test_coverage::packages/llama-cpp-python/main.py::untested_module",
+        "test_coverage::src/leapfrogai_sdk/cli.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/supabase_session.py::untested_module",
+        "test_coverage::src/leapfrogai_api/backend/rag/query.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/threads/thread_create.py::untested_module",
+        "test_coverage::packages/llama-cpp-python/scripts/model_download.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_file_object.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/openai/runs_steps.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/main.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/audio/audio_types.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/models/lfai.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_assistant.py::untested_module",
+        "test_coverage::packages/repeater/main.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/leapfrogai/count.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/openai/models.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/runners/niah_runner.py::untested_critical",
+        "test_coverage::src/leapfrogai_api/backend/converters.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/runners/qa_runner.py::untested_critical",
+        "test_coverage::src/leapfrogai_api/backend/rag/index.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/evals/niah_eval.py::untested_module",
+        "test_coverage::src/leapfrogai_api/backend/composer.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/evals/human_eval.py::untested_module",
+        "test_coverage::src/leapfrogai_sdk/utils.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/completion/completion_types.py::untested_module",
+        "test_coverage::src/leapfrogai_sdk/llm.py::untested_critical",
+        "test_coverage::src/leapfrogai_evals/metrics/correctness.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/base.py::untested_module",
+        "test_coverage::src/leapfrogai_api/backend/security/api_key.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/files/file_types.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/vectorstores/vectorstore_types.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/runs/run_create.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/leapfrogai/models.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::untested_module",
+        "test_coverage::.github/scripts/uds_verification_report.py::untested_critical",
+        "test_coverage::packages/text-embeddings/main.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/metrics/niah_metrics.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/models/model_types.py::untested_module",
+        "test_coverage::src/leapfrogai_api/backend/rag/document_loader.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/rag/rag_types.py::untested_module",
+        "test_coverage::src/leapfrogai_api/backend/helpers.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_run.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_thread.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/runs/run_create_base.py::untested_module",
+        "test_coverage::packages/whisper/main.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_file_bucket.py::untested_module",
+        "test_coverage::src/leapfrogai_api/main.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/leapfrogai/rag.py::untested_module",
+        "test_coverage::packages/vllm/src/main.py::untested_module",
+        "test_coverage::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py::untested_module",
+        "test_coverage::src/leapfrogai_api/utils/validate_tools.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/openai/audio.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_vector_store.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/common.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/evals/qa_eval.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/metrics/annotation_relevancy.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_vector_store_file.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_api_key.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/openai/embeddings.py::untested_module",
+        "test_coverage::src/leapfrogai_sdk/serve.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/openai/chat.py::untested_module",
+        "test_coverage::src/leapfrogai_api/typedef/assistants/assistant_types.py::untested_module",
+        "test_coverage::src/leapfrogai_evals/models/claude_sonnet.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_vector_content.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/health.py::untested_module",
+        "test_coverage::src/leapfrogai_api/routers/openai/vector_stores.py::untested_module",
+        "test_coverage::src/leapfrogai_api/data/crud_message.py::untested_module"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "detector::test_coverage",
+      "action": "add tests for untested production modules \u2014 prioritize by import count",
+      "user_modified": false
+    },
+    "auto/smells-stderr_traceback": {
+      "name": "auto/smells-stderr_traceback",
+      "description": "Fix 5 stderr traceback issues",
+      "issue_ids": [
+        "smells::src/leapfrogai_api/routers/openai/runs.py::stderr_traceback",
+        "smells::src/leapfrogai_api/routers/openai/vector_stores.py::stderr_traceback",
+        "smells::src/leapfrogai_api/typedef/messages/message_types.py::stderr_traceback",
+        "smells::src/leapfrogai_api/typedef/runs/run_create_base.py::stderr_traceback",
+        "smells::src/leapfrogai_api/typedef/threads/thread_create.py::stderr_traceback"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::stderr_traceback",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-monster_function": {
+      "name": "auto/smells-monster_function",
+      "description": "Fix 2 monster function issues",
+      "issue_ids": [
+        "smells::src/leapfrogai_evals/runners/niah_runner.py::monster_function",
+        "smells::src/leapfrogai_sdk/llm.py::monster_function"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::monster_function",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-silent_except": {
+      "name": "auto/smells-silent_except",
+      "description": "Fix 2 silent except issues",
+      "issue_ids": [
+        "smells::packages/vllm/src/main.py::silent_except",
+        "smells::src/leapfrogai_api/main.py::silent_except"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::silent_except",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-annotation_quality": {
+      "name": "auto/smells-annotation_quality",
+      "description": "Fix 27 annotation quality issues",
+      "issue_ids": [
+        "smells::.github/scripts/uds_verification_report.py::annotation_quality",
+        "smells::packages/llama-cpp-python/scripts/model_download.py::annotation_quality",
+        "smells::packages/text-embeddings/main.py::annotation_quality",
+        "smells::packages/vllm/src/main.py::annotation_quality",
+        "smells::packages/whisper/main.py::annotation_quality",
+        "smells::src/leapfrogai_api/backend/composer.py::annotation_quality",
+        "smells::src/leapfrogai_api/backend/grpc_client.py::annotation_quality",
+        "smells::src/leapfrogai_api/backend/helpers.py::annotation_quality",
+        "smells::src/leapfrogai_api/main.py::annotation_quality",
+        "smells::src/leapfrogai_api/routers/health.py::annotation_quality",
+        "smells::src/leapfrogai_api/routers/leapfrogai/auth.py::annotation_quality",
+        "smells::src/leapfrogai_api/routers/openai/chat.py::annotation_quality",
+        "smells::src/leapfrogai_api/routers/openai/completions.py::annotation_quality",
+        "smells::src/leapfrogai_api/routers/openai/files.py::annotation_quality",
+        "smells::src/leapfrogai_api/typedef/assistants/assistant_types.py::annotation_quality",
+        "smells::src/leapfrogai_api/typedef/audio/audio_types.py::annotation_quality",
+        "smells::src/leapfrogai_api/typedef/runs/run_create.py::annotation_quality",
+        "smells::src/leapfrogai_api/typedef/threads/thread_create.py::annotation_quality",
+        "smells::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::annotation_quality",
+        "smells::src/leapfrogai_api/utils/config.py::annotation_quality",
+        "smells::src/leapfrogai_evals/evals/human_eval.py::annotation_quality",
+        "smells::src/leapfrogai_evals/evals/mmlu.py::annotation_quality",
+        "smells::src/leapfrogai_evals/evals/niah_eval.py::annotation_quality",
+        "smells::src/leapfrogai_evals/evals/qa_eval.py::annotation_quality",
+        "smells::src/leapfrogai_sdk/audio/audio_pb2_grpc.py::annotation_quality",
+        "smells::src/leapfrogai_sdk/chat/chat_pb2_grpc.py::annotation_quality",
+        "smells::src/leapfrogai_sdk/completion/completion_pb2_grpc.py::annotation_quality"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::annotation_quality",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-optional_param_sprawl": {
+      "name": "auto/smells-optional_param_sprawl",
+      "description": "Fix 10 optional param sprawl issues",
+      "issue_ids": [
+        "smells::src/leapfrogai_api/typedef/audio/audio_types.py::optional_param_sprawl",
+        "smells::src/leapfrogai_evals/models/lfai.py::optional_param_sprawl",
+        "smells::src/leapfrogai_evals/runners/niah_runner.py::optional_param_sprawl",
+        "smells::src/leapfrogai_evals/runners/qa_runner.py::optional_param_sprawl",
+        "smells::src/leapfrogai_sdk/audio/audio_pb2_grpc.py::optional_param_sprawl",
+        "smells::src/leapfrogai_sdk/chat/chat_pb2_grpc.py::optional_param_sprawl",
+        "smells::src/leapfrogai_sdk/completion/completion_pb2_grpc.py::optional_param_sprawl",
+        "smells::src/leapfrogai_sdk/counting/counting_pb2_grpc.py::optional_param_sprawl",
+        "smells::src/leapfrogai_sdk/embeddings/embeddings_pb2_grpc.py::optional_param_sprawl",
+        "smells::src/leapfrogai_sdk/name/name_pb2_grpc.py::optional_param_sprawl"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::optional_param_sprawl",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-import_runtime_init": {
+      "name": "auto/smells-import_runtime_init",
+      "description": "Fix 7 import runtime init issues",
+      "issue_ids": [
+        "smells::packages/llama-cpp-python/main.py::import_runtime_init",
+        "smells::packages/repeater/main.py::import_runtime_init",
+        "smells::packages/text-embeddings/main.py::import_runtime_init",
+        "smells::packages/vllm/src/main.py::import_runtime_init",
+        "smells::packages/whisper/main.py::import_runtime_init",
+        "smells::src/leapfrogai_api/main.py::import_runtime_init",
+        "smells::src/leapfrogai_api/utils/logging_tools.py::import_runtime_init"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::import_runtime_init",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-high_cyclomatic_complexity": {
+      "name": "auto/smells-high_cyclomatic_complexity",
+      "description": "Fix 5 high cyclomatic complexity issues",
+      "issue_ids": [
+        "smells::.github/scripts/uds_verification_report.py::high_cyclomatic_complexity",
+        "smells::packages/llama-cpp-python/scripts/model_download.py::high_cyclomatic_complexity",
+        "smells::src/leapfrogai_api/typedef/assistants/assistant_types.py::high_cyclomatic_complexity",
+        "smells::src/leapfrogai_sdk/llm.py::high_cyclomatic_complexity",
+        "smells::src/leapfrogai_sdk/utils.py::high_cyclomatic_complexity"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::high_cyclomatic_complexity",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-vestigial_parameter": {
+      "name": "auto/smells-vestigial_parameter",
+      "description": "Fix 5 vestigial parameter issues",
+      "issue_ids": [
+        "smells::src/leapfrogai_api/routers/openai/audio.py::vestigial_parameter",
+        "smells::src/leapfrogai_api/routers/openai/chat.py::vestigial_parameter",
+        "smells::src/leapfrogai_api/routers/openai/completions.py::vestigial_parameter",
+        "smells::src/leapfrogai_api/routers/openai/embeddings.py::vestigial_parameter",
+        "smells::src/leapfrogai_api/routers/openai/models.py::vestigial_parameter"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::vestigial_parameter",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-import_env_mutation": {
+      "name": "auto/smells-import_env_mutation",
+      "description": "Fix 2 import env mutation issues",
+      "issue_ids": [
+        "smells::packages/vllm/src/main.py::import_env_mutation",
+        "smells::src/leapfrogai_api/utils/logging_tools.py::import_env_mutation"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::import_env_mutation",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-todo_fixme": {
+      "name": "auto/smells-todo_fixme",
+      "description": "Fix 9 todo fixme issues",
+      "issue_ids": [
+        "smells::src/leapfrogai_api/backend/converters.py::todo_fixme",
+        "smells::src/leapfrogai_api/backend/grpc_client.py::todo_fixme",
+        "smells::src/leapfrogai_api/backend/rag/document_loader.py::todo_fixme",
+        "smells::src/leapfrogai_api/routers/health.py::todo_fixme",
+        "smells::src/leapfrogai_api/typedef/runs/run_create_base.py::todo_fixme",
+        "smells::src/leapfrogai_evals/evals/niah_eval.py::todo_fixme",
+        "smells::src/leapfrogai_evals/evals/qa_eval.py::todo_fixme",
+        "smells::src/leapfrogai_evals/runners/niah_runner.py::todo_fixme",
+        "smells::src/leapfrogai_sdk/serve.py::todo_fixme"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::todo_fixme",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/smells-deferred_import": {
+      "name": "auto/smells-deferred_import",
+      "description": "Fix 2 deferred import issues",
+      "issue_ids": [
+        "smells::packages/llama-cpp-python/scripts/model_download.py::deferred_import",
+        "smells::src/leapfrogai_api/backend/rag/document_loader.py::deferred_import"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "typed::smells::deferred_import",
+      "action": "fix code smells",
+      "user_modified": false
+    },
+    "auto/security": {
+      "name": "auto/security",
+      "description": "Fix 9 security issues",
+      "issue_ids": [
+        "security::packages/vllm/src/main.py::security::B311::packages/vllm/src/main.py::50",
+        "security::src/leapfrogai_evals/main.py::security::B307::src/leapfrogai_evals/main.py::49",
+        "security::src/leapfrogai_evals/runners/niah_runner.py::security::B113::src/leapfrogai_evals/runners/niah_runner.py::180",
+        "security::src/leapfrogai_evals/runners/niah_runner.py::security::B615::src/leapfrogai_evals/runners/niah_runner.py::287",
+        "security::src/leapfrogai_evals/runners/qa_runner.py::security::B113::src/leapfrogai_evals/runners/qa_runner.py::147",
+        "security::src/leapfrogai_evals/runners/qa_runner.py::security::B615::src/leapfrogai_evals/runners/qa_runner.py::228",
+        "security::src/leapfrogai_evals/runners/qa_runner.py::security::B615::src/leapfrogai_evals/runners/qa_runner.py::292",
+        "security::src/leapfrogai_sdk/cli.py::security::B104::src/leapfrogai_sdk/cli.py::14",
+        "security::src/leapfrogai_sdk/serve.py::security::B104::src/leapfrogai_sdk/serve.py::17"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "detector::security",
+      "action": "review and fix security issues \u2014 prioritize by severity",
+      "user_modified": false
+    },
+    "auto/subjective_review": {
+      "name": "auto/subjective_review",
+      "description": "Address 78 subjective_review review issues",
+      "issue_ids": [
+        "subjective_review::packages/llama-cpp-python/main.py::unreviewed",
+        "subjective_review::packages/repeater/main.py::unreviewed",
+        "subjective_review::packages/text-embeddings/main.py::unreviewed",
+        "subjective_review::packages/vllm/src/main.py::unreviewed",
+        "subjective_review::packages/whisper/main.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/composer.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/converters.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/grpc_client.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/helpers.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/rag/document_loader.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/rag/leapfrogai_embeddings.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/rag/query.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/backend/security/api_key.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_api_key.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_assistant.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_base.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_file_bucket.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_file_object.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_run.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_vector_content.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_vector_store.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/data/crud_vector_store_file.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/main.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/health.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/leapfrogai/auth.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/leapfrogai/count.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/leapfrogai/rag.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/leapfrogai/vector_stores.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/assistants.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/audio.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/chat.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/completions.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/embeddings.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/files.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/messages.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/models.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/runs.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/runs_steps.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/threads.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/openai/vector_stores.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/routers/supabase_session.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/assistants/assistant_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/audio/audio_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/auth/auth_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/chat/chat_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/common.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/completion/completion_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/counting/token_count_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/embeddings/embedding_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/files/file_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/messages/message_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/models/model_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/rag/rag_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/runs/run_create.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/runs/run_create_base.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/threads/thread_create.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/threads/thread_run_create_params_request.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/vectorstores/search_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/typedef/vectorstores/vectorstore_types.py::unreviewed",
+        "subjective_review::src/leapfrogai_api/utils/validate_tools.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/evals/human_eval.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/evals/mmlu.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/evals/niah_eval.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/evals/qa_eval.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/main.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/metrics/annotation_relevancy.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/metrics/correctness.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/metrics/niah_metrics.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/models/claude_sonnet.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/models/lfai.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/runners/niah_runner.py::unreviewed",
+        "subjective_review::src/leapfrogai_evals/runners/qa_runner.py::unreviewed",
+        "subjective_review::src/leapfrogai_sdk/__init__.py::unreviewed",
+        "subjective_review::src/leapfrogai_sdk/cli.py::unreviewed",
+        "subjective_review::src/leapfrogai_sdk/llm.py::unreviewed",
+        "subjective_review::src/leapfrogai_sdk/serve.py::unreviewed",
+        "subjective_review::src/leapfrogai_sdk/utils.py::unreviewed",
+        "subjective_review::.::holistic_unreviewed"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "detector::subjective_review",
+      "action": "run `desloppify review --prepare` to evaluate files against quality dimensions",
+      "user_modified": false
+    },
+    "auto/stale_exclude": {
+      "name": "auto/stale_exclude",
+      "description": "Fix 3 stale exclude issues",
+      "issue_ids": [
+        "stale_exclude::.logs::.logs",
+        "stale_exclude::src/leapfrogai_sdk/build::src/leapfrogai_sdk/build",
+        "stale_exclude::.claude/pairup_sessions::.claude/pairup_sessions/"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "detector::stale_exclude",
+      "action": "remove stale exclusion or verify it's still needed",
+      "user_modified": false
+    },
+    "auto/initial-review": {
+      "name": "auto/initial-review",
+      "description": "Initial review of 20 unscored subjective dimensions",
+      "issue_ids": [
+        "subjective::abstraction_fitness",
+        "subjective::ai_generated_debt",
+        "subjective::api_surface_coherence",
+        "subjective::authorization_consistency",
+        "subjective::contract_coherence",
+        "subjective::convention_outlier",
+        "subjective::cross_module_architecture",
+        "subjective::dependency_health",
+        "subjective::design_coherence",
+        "subjective::error_consistency",
+        "subjective::high_level_elegance",
+        "subjective::incomplete_migration",
+        "subjective::initialization_coupling",
+        "subjective::logic_clarity",
+        "subjective::low_level_elegance",
+        "subjective::mid_level_elegance",
+        "subjective::naming_quality",
+        "subjective::package_organization",
+        "subjective::test_strategy",
+        "subjective::type_safety"
+      ],
+      "created_at": "2026-03-08T00:49:05+00:00",
+      "updated_at": "2026-03-08T00:49:05+00:00",
+      "auto": true,
+      "cluster_key": "subjective::unscored",
+      "action": "desloppify review --prepare --dimensions abstraction_fitness,ai_generated_debt,api_surface_coherence,authorization_consistency,contract_coherence,convention_outlier,cross_module_architecture,dependency_health,design_coherence,error_consistency,high_level_elegance,incomplete_migration,initialization_coupling,logic_clarity,low_level_elegance,mid_level_elegance,naming_quality,package_organization,test_strategy,type_safety",
+      "user_modified": false
+    }
+  },
+  "superseded": {},
+  "promoted_ids": [],
+  "plan_start_scores": {},
+  "execution_log": [
+    {
+      "timestamp": "2026-03-08T00:49:05+00:00",
+      "action": "sync_unscored",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {
+        "changes": true
+      }
+    },
+    {
+      "timestamp": "2026-03-08T00:49:05+00:00",
+      "action": "auto_cluster",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {
+        "changes": true
+      }
+    },
+    {
+      "timestamp": "2026-03-08T00:49:05+00:00",
+      "action": "seed_start_scores",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {}
+    },
+    {
+      "timestamp": "2026-03-08T00:54:21+00:00",
+      "action": "clear_start_scores",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {}
+    }
+  ],
+  "epic_triage_meta": {},
+  "commit_log": [],
+  "uncommitted_issues": [],
+  "commit_tracking_branch": null,
+  "scan_count_at_plan_start": 1
+}

@@ -1,42 +1,28 @@
 """Test the API endpoints for token counting."""
 
-import os
 from fastapi import status
-from fastapi.testclient import TestClient
+from requests import HTTPError
 import pytest
-from fastapi import HTTPException
 
-from leapfrogai_api.routers.leapfrogai.count import router
+# from leapfrogai_api.routers.leapfrogai.count import router
 from leapfrogai_api.typedef.counting import (
     TokenCountRequest,
     TokenCountResponse,
 )
+from tests.utils.client import get_leapfrogai_model, LeapfrogAIClient
 
-CHAT_MODEL = "test-chat"
 INVALID_MODEL = "invalid-model"
 
 
-class MissingEnvironmentVariable(Exception):
-    pass
+@pytest.fixture(scope="session")
+def client():
+    return LeapfrogAIClient()
 
 
-headers: dict[str, str] = {}
-
-try:
-    headers = {"Authorization": f"Bearer {os.environ['SUPABASE_USER_JWT']}"}
-except KeyError as exc:
-    raise MissingEnvironmentVariable(
-        "SUPABASE_USER_JWT must be defined for the test to pass. "
-        "Please check the api README for instructions on obtaining this token."
-    ) from exc
-
-client = TestClient(router, headers=headers)
-
-
-def test_token_count():
+def test_token_count(client):
     """Test token counting"""
     request = TokenCountRequest(
-        model=CHAT_MODEL, text="This is a test sentence for token counting."
+        model=get_leapfrogai_model(), text="This is a test sentence for token counting."
     )
 
     response = client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
@@ -46,12 +32,11 @@ def test_token_count():
     assert token_count_response.token_count > 0, "Token count should be greater than 0"
 
 
-def test_token_count_empty_text():
+def test_token_count_empty_text(client):
     """Test token counting with empty text"""
-    request = TokenCountRequest(model=CHAT_MODEL, text="")
+    request = TokenCountRequest(model=get_leapfrogai_model(), text="")
 
     response = client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
-
     assert response.status_code == status.HTTP_200_OK
     token_count_response = TokenCountResponse.model_validate(response.json())
     assert (
@@ -59,18 +44,20 @@ def test_token_count_empty_text():
     ), "Token count should be 0 for empty text"
 
 
-def test_token_count_invalid_model():
+def test_token_count_invalid_model(client):
     """Test token counting with an invalid model"""
     request = TokenCountRequest(model=INVALID_MODEL, text="This is a test sentence.")
 
-    with pytest.raises(HTTPException) as excinfo:
+    with pytest.raises(HTTPError) as excinfo:
         client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
 
-    assert excinfo.value.status_code == status.HTTP_404_NOT_FOUND
-    assert excinfo.value.detail == f"Model '{INVALID_MODEL}' not found"
+    assert excinfo.value.response.status_code == status.HTTP_404_NOT_FOUND
+    assert excinfo.value.response.json() == {
+        "detail": f"Model '{INVALID_MODEL}' not found"
+    }
 
 
-def test_token_count_various_lengths():
+def test_token_count_various_lengths(client):
     """Test token counting with various text lengths, comparing shorter to longer texts."""
     texts = [
         "Short text",
@@ -81,7 +68,7 @@ def test_token_count_various_lengths():
     token_counts = []
 
     for text in texts:
-        request = TokenCountRequest(model=CHAT_MODEL, text=text)
+        request = TokenCountRequest(model=get_leapfrogai_model(), text=text)
 
         response = client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
 
