@@ -1,0 +1,8 @@
+# Override to disable JWT auto-generation that requires bitnami/jwt-cli
+jwt:
+  autoGenerate:
+    enabled: false
+
+global:
+  jwt:
+    existingSecret: "supabase-bootstrap-jwt"

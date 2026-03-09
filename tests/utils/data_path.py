@@ -1,31 +1,26 @@
 import os
 from pathlib import Path
 
-TXT_FILE = "test.txt"
-TXT_DATA_FILE = "test_with_data.txt"
-PPTX_FILE = "test.pptx"
-WAV_FILE = "0min12sec.wav"
-WAV_FILE_ARABIC = "arabic-audio.wav"
-MP3_FILE_RUSSIAN = "russian.mp3"
-XLSX_FILE = "test.xlsx"
+TXT_FILE_NAME = "test_with_data.txt"
+PPTX_FILE_NAME = "test.pptx"
+WAV_FILE_NAME = "0min12sec.wav"
+XLSX_FILE_NAME = "test.xlsx"
 
 
-def data_path(filename: str) -> Path:
-    """Return the path to a test file in the data directory. (See constants for specific files.)
+def data_path(filename: str | None = None):
+    """Return the path to the data directory or a specific file within it.
 
     Args:
-        filename (str): The name of the file to return the path.
+        filename (str): The name of the file to return the path to (see constants). Defaults to None.
 
     Returns:
-        Path: The path to the file in the data directory.
+        Path: The path to the data directory or a specific file within it.
 
     Raises:
         FileNotFoundError: If the file does not exist in the data directory.
     """
 
-    data_path = Path(
-        os.path.realpath(os.path.dirname(__file__) + f"/../data/{filename}")
-    )
+    data_path = Path(os.path.dirname(__file__) + f"/../data/{filename}")
 
     try:
         # Check if the file exists
