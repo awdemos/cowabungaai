@@ -4,6 +4,8 @@
 
 ## 📣 CowabungaAI Status Update 📣
 
+> ⚠️ **WIP: Breaking changes underway** - We're adding Turso database support as an alternative to Supabase. Expect schema changes and configuration updates. See `TURSO_INTEGRATION_PLAN.md` for details.
+
 Thank you for your interest in CowabungaAI!
 
 ## Table of Contents
