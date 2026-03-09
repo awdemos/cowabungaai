@@ -11,11 +11,11 @@ import _thread
 
 from supabase import AClient as AsyncClient, acreate_client
 from realtime import Socket
-from leapfrogai_api.data.crud_file_bucket import CRUDFileBucket
-from leapfrogai_api.data.crud_file_object import CRUDFileObject
-from leapfrogai_api.data.crud_vector_store import CRUDVectorStore
+from cowabunga_api.data.crud_file_bucket import CRUDFileBucket
+from cowabunga_api.data.crud_file_object import CRUDFileObject
+from cowabunga_api.data.crud_vector_store import CRUDVectorStore
 
-from leapfrogai_api.data.crud_vector_store_file import CRUDVectorStoreFile
+from cowabunga_api.data.crud_vector_store_file import CRUDVectorStoreFile
 
 from tests.utils.client import ANON_KEY, create_test_user, SERVICE_KEY
 from openai.types import FileObject

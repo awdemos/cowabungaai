@@ -1,5 +1,5 @@
 image:
-  repository: "ghcr.io/defenseunicorns/leapfrogai/leapfrogai-ui"
+  repository: "ghcr.io/defenseunicorns/leapfrogai/cowabunga-ui"
   pullPolicy: Always
   # x-release-please-start-version
   tag: 0.14.0
@@ -9,7 +9,7 @@ service:
   port: 3000
 
 serviceAccount:
-  name: leapfrogai-ui
+  name: cowabunga-ui
   create: true
 
 podSecurityContext:
@@ -25,8 +25,8 @@ securityContext:
       - ALL
 
 env:
-  - name: LEAPFROGAI_API_BASE_URL
-    value: "http://leapfrogai-api.leapfrogai.svc.cluster.local:8080"
+  - name: COWABUNGA_API_BASE_URL
+    value: "http://cowabunga-api.leapfrogai.svc.cluster.local:8080"
   - name: ORIGIN
     value: "https://ai.uds.dev"
   - name: DEFAULT_MODEL

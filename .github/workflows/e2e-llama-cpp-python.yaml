@@ -92,6 +92,6 @@ jobs:
 
       - name: Test llama-cpp-python
         env:
-          LEAPFROGAI_MODEL: llama-cpp-python
+          COWABUNGA_MODEL: llama-cpp-python
         run: |
           python -m pytest ./tests/e2e/test_llm_generation.py -vv

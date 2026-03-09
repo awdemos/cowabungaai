@@ -3,8 +3,8 @@ image:
   tag: "###ZARF_CONST_IMAGE_VERSION###"
 
 env:
-  - name: LEAPFROGAI_API_BASE_URL
-    value: "###ZARF_VAR_LEAPFROGAI_API_BASE_URL###"
+  - name: COWABUNGA_API_BASE_URL
+    value: "###ZARF_VAR_COWABUNGA_API_BASE_URL###"
   - name: ORIGIN
     value: "https://###ZARF_VAR_SUBDOMAIN###.###ZARF_VAR_DOMAIN###"
   - name: DEFAULT_MODEL

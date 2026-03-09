@@ -3,15 +3,15 @@
 kind: ZarfPackageConfig
 metadata:
   description: "CowabungaAI API common"
-  name: leapfrogai-api-common
+  name: cowabunga-api-common
   version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
 
 components:
-  - name: leapfrogai-api
+  - name: cowabunga-api
     description: "The CowabungaAI Python API that shadows the OpenAI API specification"
     required: true
     charts:
-      - name: leapfrogai
+      - name: cowabunga
         namespace: leapfrogai
         localPath: ../chart
         # x-release-please-start-version
@@ -23,6 +23,6 @@ components:
           - wait:
               cluster:
                 kind: Job
-                name: leapfrogai-api-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
+                name: cowabunga-api-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
                 namespace: leapfrogai
                 condition: complete

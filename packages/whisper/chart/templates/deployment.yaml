@@ -73,7 +73,7 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           env:
-            - name: LFAI_MODEL_PATH
+            - name: COWABUNGA_MODEL_PATH
               value: "/data/.model"
             - name: GPU_REQUEST
               value: "{{ (index .Values.resources.limits "nvidia.com/gpu") | default "0" }}"

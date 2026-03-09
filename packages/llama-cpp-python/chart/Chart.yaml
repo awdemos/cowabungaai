@@ -1,5 +1,5 @@
 apiVersion: v2
-name: leapfrogai-model
+name: cowabunga-model
 description: "A CowabungaAI compatible inferencing backend, llama-cpp-python"
 
 # A chart can be either an 'application' or a 'library' chart.

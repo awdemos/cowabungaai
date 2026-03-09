@@ -9,10 +9,10 @@ from openai.types.beta.thread import (
     ToolResourcesFileSearch,
 )
 
-from leapfrogai_api.typedef.threads import ModifyThreadRequest, CreateThreadRequest
-from leapfrogai_api.data.crud_thread import CRUDThread
-from leapfrogai_api.data.crud_message import CRUDMessage
-from leapfrogai_api.routers.openai.threads import (
+from cowabunga_api.typedef.threads import ModifyThreadRequest, CreateThreadRequest
+from cowabunga_api.data.crud_thread import CRUDThread
+from cowabunga_api.data.crud_message import CRUDMessage
+from cowabunga_api.routers.openai.threads import (
     create_thread,
     retrieve_thread,
     modify_thread,

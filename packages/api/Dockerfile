@@ -3,7 +3,7 @@ FROM ghcr.io/defenseunicorns/leapfrogai/leapfrogai-sdk:${LOCAL_VERSION} AS sdk
 
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev AS builder
 
-ARG SDK_DEST=src/leapfrogai_sdk/build
+ARG SDK_DEST=src/cowabunga_sdk/build
 
 USER root
 
@@ -11,14 +11,14 @@ WORKDIR /cowabungaai
 
 # copy the api dependencies over
 COPY --from=sdk /cowabungaai/${SDK_DEST} ${SDK_DEST}
-COPY src/leapfrogai_api src/leapfrogai_api
+COPY src/cowabunga_api src/cowabunga_api
 
 RUN python -m venv .venv
 ENV PATH="/cowabungaai/.venv/bin:$PATH"
 
 RUN rm -f packages/api/build/*.whl && \
-    python -m pip wheel src/leapfrogai_api -w packages/api/build --find-links=${SDK_DEST} && \
-    pip install packages/api/build/leapfrogai_api*.whl --no-index --find-links=packages/api/build/
+    python -m pip wheel src/cowabunga_api -w packages/api/build --find-links=${SDK_DEST} && \
+    pip install packages/api/build/cowabunga_api*.whl --no-index --find-links=packages/api/build/
 
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11 AS runtime
 ENV PATH="/cowabungaai/.venv/bin:$PATH"

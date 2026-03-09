@@ -14,7 +14,7 @@ nameOverride: "text-embeddings"
 fullnameOverride: ""
 
 env:
-  - name: LFAI_LOG_LEVEL
+  - name: COWABUNGA_LOG_LEVEL
     value: "INFO"
 
 podSecurityContext:

@@ -3,12 +3,12 @@
 import pytest
 import os
 from unittest.mock import AsyncMock, patch
-from leapfrogai_api.utils.database_factory import (
+from cowabunga_api.utils.database_factory import (
     create_database_client,
     get_session,
     DatabaseType
 )
-from leapfrogai_api.data.database import SupabaseClient, TursoClient
+from cowabunga_api.data.database import SupabaseClient, TursoClient
 
 
 @pytest.mark.asyncio
@@ -39,7 +39,7 @@ class TestDatabaseFactory:
         os.environ["SUPABASE_ANON_KEY"] = "test-key"
         
         # Mock Supabase client creation
-        with patch('leapfrogai_api.utils.database_factory.SupabaseClient.create') as mock_create:
+        with patch('cowabunga_api.utils.database_factory.SupabaseClient.create') as mock_create:
             mock_client = AsyncMock()
             mock_create.return_value = mock_client
             
@@ -63,7 +63,7 @@ class TestDatabaseFactory:
             del os.environ["DATABASE_TYPE"]
         
         # Mock Supabase client creation
-        with patch('leapfrogai_api.utils.database_factory.SupabaseClient.create') as mock_create:
+        with patch('cowabunga_api.utils.database_factory.SupabaseClient.create') as mock_create:
             mock_client = AsyncMock()
             mock_create.return_value = mock_client
             

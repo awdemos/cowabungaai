@@ -24,7 +24,7 @@ dev = ["confz == 2.0.1", "huggingface_hub[cli,hf_transfer] ==0.25.1"]
 generate-hashes = true
 
 [tool.setuptools]
-packages = ["leapfrogai_sdk"]
+packages = ["cowabunga_sdk"]
 package-dir = { "" = "../../src" }
 
 [tool.pytest.ini_options]

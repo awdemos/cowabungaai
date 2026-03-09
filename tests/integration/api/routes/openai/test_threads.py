@@ -6,19 +6,19 @@ from openai.types.beta import Thread, ThreadDeleted
 from openai.types.beta.thread import ToolResourcesCodeInterpreter, ToolResources
 from openai.types.beta.threads import TextContentBlock, Text
 from requests import HTTPError
-from leapfrogai_api.typedef.threads import (
+from cowabunga_api.typedef.threads import (
     CreateThreadRequest,
     ModifyThreadRequest,
 )
-from leapfrogai_api.typedef.messages import (
+from cowabunga_api.typedef.messages import (
     CreateMessageRequest,
 )
-from tests.utils.client import LeapfrogAIClient
+from tests.utils.client import CowabungaAIClient
 
 
 @pytest.fixture(scope="session")
 def app_client():
-    yield LeapfrogAIClient()
+    yield CowabungaAIClient()
 
 
 # Create a thread with the previously created file and fake embeddings

@@ -97,7 +97,7 @@ components:
       flavor: upstream
     charts:
       - name: "###ZARF_PKG_TMPL_NAME_OVERRIDE###-model"
-        namespace: leapfrogai
+        namespace: cowabunga
         localPath: chart
         releaseName: "###ZARF_PKG_TMPL_NAME_OVERRIDE###-model"
         # x-release-please-start-version
@@ -124,5 +124,5 @@ components:
           # NOTE: This assumes python is installed and in $PATH and 'huggingface_hub[cli,hf_transfer]' has been installed
           - cmd: "python src/model_download.py"
             env:
-              - LFAI_REPO_ID=###ZARF_PKG_TMPL_MODEL_REPO_ID###
-              - LFAI_REVISION=###ZARF_PKG_TMPL_MODEL_REVISION###
+              - COWABUNGA_REPO_ID=###ZARF_PKG_TMPL_MODEL_REPO_ID###
+              - COWABUNGA_REVISION=###ZARF_PKG_TMPL_MODEL_REVISION###
