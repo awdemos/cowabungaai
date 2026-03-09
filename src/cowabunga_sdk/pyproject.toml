@@ -1,0 +1,43 @@
+[project]
+name = "cowabunga-sdk"
+description = "A tool for building gRPC-based model backends for LeapfrogAI"
+
+# x-release-please-start-version
+version = "0.14.0"
+# x-release-please-end
+
+dependencies = [
+    "grpcio ==1.66.1",
+    "grpcio-tools == 1.62.1",
+    "protobuf == 4.25.8",
+    "grpcio-reflection == 1.62.1.0",
+    "grpcio-health-checking == 1.62.1",
+    "confz == 2.0.1",
+    "pydantic == 2.8.2",
+    "click == 8.1.7",
+]
+requires-python = "~=3.11"
+
+[project.scripts]
+lfai-cli = "cowabunga_sdk.cli:cli"
+
+[tool.pip-tools]
+generate-hashes = true
+
+[tool.setuptools.packages.find]
+where = ["../"]
+include = ["cowabunga_sdk*"]
+exclude = ["cowabunga_sdk/proto"]
+namespaces = false
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+
+[tool.ruff]
+target-version = "py311"
+# exclude generated grpc code
+exclude = ["audio", "chat", "completion", "embeddings", "name"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

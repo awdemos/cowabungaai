@@ -13,7 +13,7 @@ components:
     charts:
       - name: turso
         version: 0.1.0
-        namespace: leapfrogai
+        namespace: cowabunga
         localPath: chart
     
     images:

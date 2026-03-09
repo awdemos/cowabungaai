@@ -25,7 +25,7 @@ def test_file_upload(client_name):
     assert isinstance(vector_store_file, VectorStoreFile)
 
 
-@pytest.mark.xfail(reason="File Batch Upload is not yet implemented in LeapfrogAI")
+@pytest.mark.xfail(reason="File Batch Upload is not yet implemented in CowabungaAI")
 @pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
 def test_file_delete(client_name):
     config = client_config_factory(client_name)

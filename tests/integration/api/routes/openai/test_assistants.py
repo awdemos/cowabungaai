@@ -12,12 +12,12 @@ from openai.types.beta import Assistant, AssistantDeleted
 from openai.types.beta.assistant import ToolResources
 from openai.types.beta.vector_store import ExpiresAfter
 
-import leapfrogai_api.backend.rag.index
-from leapfrogai_api.routers.openai.vector_stores import router as vector_store_router
-from leapfrogai_api.routers.openai.files import router as files_router
-from leapfrogai_api.routers.openai.assistants import router as assistants_router
-from leapfrogai_api.typedef.vectorstores import CreateVectorStoreRequest
-from leapfrogai_api.typedef.assistants import (
+import cowabunga_api.backend.rag.index
+from cowabunga_api.routers.openai.vector_stores import router as vector_store_router
+from cowabunga_api.routers.openai.files import router as files_router
+from cowabunga_api.routers.openai.assistants import router as assistants_router
+from cowabunga_api.typedef.vectorstores import CreateVectorStoreRequest
+from cowabunga_api.typedef.assistants import (
     CreateAssistantRequest,
     ModifyAssistantRequest,
 )
@@ -131,7 +131,7 @@ def create_vector_store(create_file):
     global expired_vector_store_response  # pylint: disable=global-statement
 
     # Mock out the embeddings creation using a fake
-    leapfrogai_api.backend.rag.index.embeddings_type = FakeEmbeddingsWrapper
+    cowabunga_api.backend.rag.index.embeddings_type = FakeEmbeddingsWrapper
 
     request = CreateVectorStoreRequest(
         file_ids=[create_file["id"]],

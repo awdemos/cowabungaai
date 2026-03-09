@@ -6,20 +6,20 @@ from openai.types.beta import Assistant, Thread, AssistantDeleted, ThreadDeleted
 from openai.types.beta.thread import ToolResources, ToolResourcesFileSearch
 from openai.types.beta.threads import Message, Text, TextContentBlock, Run
 
-from leapfrogai_api.typedef.assistants import (
+from cowabunga_api.typedef.assistants import (
     CreateAssistantRequest,
 )
-from leapfrogai_api.typedef.messages import (
+from cowabunga_api.typedef.messages import (
     CreateMessageRequest,
 )
-from leapfrogai_api.typedef.runs import (
+from cowabunga_api.typedef.runs import (
     RunCreateParamsRequest,
 )
-from leapfrogai_api.typedef.threads import (
+from cowabunga_api.typedef.threads import (
     CreateThreadRequest,
     ThreadRunCreateParamsRequest,
 )
-from tests.utils.client import LeapfrogAIClient, get_leapfrogai_model
+from tests.utils.client import CowabungaAIClient, get_leapfrogai_model
 
 starting_assistant = Assistant(
     id="",
@@ -40,7 +40,7 @@ starting_assistant = Assistant(
 
 @pytest.fixture(scope="session")
 def app_client():
-    yield LeapfrogAIClient()
+    yield CowabungaAIClient()
 
 
 @pytest.fixture(scope="session")

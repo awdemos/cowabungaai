@@ -77,7 +77,7 @@ spec:
             - name: leapfrogai-pv-storage
               mountPath: "/data"
           env:
-            - name: LFAI_MODEL_PATH
+            - name: COWABUNGA_MODEL_PATH
               value: '/data/.model'
       {{- with .Values.nodeSelector }}
       nodeSelector:

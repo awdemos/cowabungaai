@@ -5,7 +5,7 @@ from unittest.mock import AsyncMock, patch
 @pytest.fixture
 async def mock_crud_base():
     with patch(
-        "leapfrogai_api.data.crud_message.CRUDBase", autospec=True
+        "cowabunga_api.data.crud_message.CRUDBase", autospec=True
     ) as mock_crud_base:
         mock_crud_base.create = AsyncMock()
         mock_crud_base.get = AsyncMock()

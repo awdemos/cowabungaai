@@ -22,7 +22,7 @@ dev = ["ctranslate2 ==4.4.0", "transformers[torch] == 4.39.3"]
 generate-hashes = true
 
 [tool.setuptools]
-packages = ["leapfrogai_sdk"]
+packages = ["cowabunga_sdk"]
 package-dir = { "" = "../../src" }
 
 [tool.pytest.ini_options]

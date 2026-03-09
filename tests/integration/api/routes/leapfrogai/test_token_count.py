@@ -4,19 +4,19 @@ from fastapi import status
 from requests import HTTPError
 import pytest
 
-# from leapfrogai_api.routers.leapfrogai.count import router
-from leapfrogai_api.typedef.counting import (
+# from cowabunga_api.routers.leapfrogai.count import router
+from cowabunga_api.typedef.counting import (
     TokenCountRequest,
     TokenCountResponse,
 )
-from tests.utils.client import get_leapfrogai_model, LeapfrogAIClient
+from tests.utils.client import get_leapfrogai_model, CowabungaAIClient
 
 INVALID_MODEL = "invalid-model"
 
 
 @pytest.fixture(scope="session")
 def client():
-    return LeapfrogAIClient()
+    return CowabungaAIClient()
 
 
 def test_token_count(client):
@@ -25,7 +25,7 @@ def test_token_count(client):
         model=get_leapfrogai_model(), text="This is a test sentence for token counting."
     )
 
-    response = client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
+    response = client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
 
     assert response.status_code == status.HTTP_200_OK
     token_count_response = TokenCountResponse.model_validate(response.json())
@@ -36,7 +36,7 @@ def test_token_count_empty_text(client):
     """Test token counting with empty text"""
     request = TokenCountRequest(model=get_leapfrogai_model(), text="")
 
-    response = client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
+    response = client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
     assert response.status_code == status.HTTP_200_OK
     token_count_response = TokenCountResponse.model_validate(response.json())
     assert (
@@ -49,7 +49,7 @@ def test_token_count_invalid_model(client):
     request = TokenCountRequest(model=INVALID_MODEL, text="This is a test sentence.")
 
     with pytest.raises(HTTPError) as excinfo:
-        client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
+        client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
 
     assert excinfo.value.response.status_code == status.HTTP_404_NOT_FOUND
     assert excinfo.value.response.json() == {
@@ -70,7 +70,7 @@ def test_token_count_various_lengths(client):
     for text in texts:
         request = TokenCountRequest(model=get_leapfrogai_model(), text=text)
 
-        response = client.post("/leapfrogai/v1/count/tokens", json=request.model_dump())
+        response = client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
 
         assert response.status_code == status.HTTP_200_OK
         token_count_response = TokenCountResponse.model_validate(response.json())
