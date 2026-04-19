@@ -1,7 +1,7 @@
 {
   "version": 8,
   "created": "2026-03-08T00:49:05+00:00",
-  "updated": "2026-04-19T14:22:23+00:00",
+  "updated": "2026-04-19T14:27:14+00:00",
   "queue_order": [
     "review::.::holistic::abstraction_fitness::backward_compat_alias_get_session",
     "review::.::holistic::abstraction_fitness::overbroad_metadata_object",
@@ -2806,7 +2806,12 @@
   },
   "superseded": {},
   "promoted_ids": [],
-  "plan_start_scores": {},
+  "plan_start_scores": {
+    "strict": 71.0,
+    "overall": 73.6,
+    "objective": 86.0,
+    "verified": 86.0
+  },
   "execution_log": [
     {
       "timestamp": "2026-03-08T00:49:05+00:00",
@@ -3250,16 +3255,36 @@
         "sync_status": "synced",
         "sync_message": null
       }
+    },
+    {
+      "timestamp": "2026-04-19T14:27:14+00:00",
+      "action": "seed_start_scores",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {}
+    },
+    {
+      "timestamp": "2026-04-19T14:27:14+00:00",
+      "action": "complete_postflight_scan",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {
+        "scan_count": 6
+      }
     }
   ],
   "epic_triage_meta": {},
   "commit_log": [],
   "uncommitted_issues": [],
   "commit_tracking_branch": null,
-  "scan_count_at_plan_start": 3,
+  "scan_count_at_plan_start": 6,
   "refresh_state": {
     "_subjective_migration_pruned": true,
     "lifecycle_phase": "plan",
-    "postflight_scan_completed_at_scan_count": 4
+    "postflight_scan_completed_at_scan_count": 6
   }
 }

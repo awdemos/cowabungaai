@@ -7,82 +7,38 @@ import requests
 
 
 def get_cowabunga_model() -> str:
-    """Get the model to use for CowabungaAI.
-
-    Returns:
-        str: The model to use for CowabungaAI. (default: "vllm")
-    """
-
+    """Return the model to use for CowabungaAI (default: 'vllm')."""
     return os.getenv("COWABUNGA_MODEL", "vllm")
 
 
 def get_openai_key() -> str:
-    """Get the API key for OpenAI.
-
-    Returns:
-        str: The API key for OpenAI.
-
-    Raises:
-        ValueError: If OPENAI_API_KEY is not set.
-    """
-
+    """Return the OpenAI API key or raise ValueError."""
     api_key = os.getenv("OPENAI_API_KEY")
     if api_key is None:
         raise ValueError("OPENAI_API_KEY not set")
-
     return api_key
 
 
 def get_openai_model() -> str:
-    """Get the model to use for OpenAI.
-
-    Returns:
-        str: The model to use for OpenAI. (default: "gpt-4o-mini")
-    """
-
+    """Return the OpenAI model (default: 'gpt-4o-mini')."""
     return os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 
 def get_cowabunga_api_key() -> str:
-    """Get the API key for the CowabungaAI API.
-
-    Set via the COWABUNGA_API_KEY environment variable or the SUPABASE_USER_JWT environment variable in that order.
-
-    Returns:
-        str: The API key for the CowabungaAI API.
-    Raises:
-        ValueError: If COWABUNGA_API_KEY or SUPABASE_USER_JWT is not set.
-    """
-
+    """Return the CowabungaAI API key or raise ValueError."""
     api_key = os.getenv("COWABUNGA_API_KEY") or os.getenv("SUPABASE_USER_JWT")
-
     if api_key is None:
         raise ValueError("COWABUNGA_API_KEY or SUPABASE_USER_JWT not set")
-
     return api_key
 
 
 def get_cowabunga_api_url() -> str:
-    """Get the URL for the CowabungaAI API.
-
-    Returns:
-        str: The URL for the CowabungaAI API. (default: "https://cowabunga-api.uds.dev/openai/v1")
-    """
-
+    """Return the CowabungaAI API URL (default: 'https://cowabunga-api.uds.dev/openai/v1')."""
     return os.getenv("COWABUNGA_API_URL", "https://cowabunga-api.uds.dev/openai/v1")
 
 
 def get_cowabunga_api_url_base() -> str:
-    """Get the base URL for the CowabungaAI API.
-
-    Set via the LEAPFRAGAI_API_URL environment variable.
-
-    If LEAPFRAGAI_API_URL is set to "https://cowabunga-api.uds.dev/openai/v1", this will trim off the "/openai/v1" part.
-
-    Returns:
-        str: The base URL for the CowabungaAI API. (default: "https://cowabunga-api.uds.dev")
-    """
-
+    """Return the CowabungaAI API base URL, stripping '/openai/v1' if present."""
     url = os.getenv("COWABUNGA_API_URL", "https://cowabunga-api.uds.dev")
     if url.endswith("/openai/v1"):
         return url[:-9]
@@ -90,20 +46,12 @@ def get_cowabunga_api_url_base() -> str:
 
 
 def openai_client() -> OpenAI:
-    """Create an OpenAI client using the OPENAI_API_KEY.
-
-    returns:
-        OpenAI: An OpenAI client.
-    """
+    """Return an OpenAI client authenticated with OPENAI_API_KEY."""
     return OpenAI(api_key=get_openai_key())
 
 
 def cowabunga_client() -> OpenAI:
-    """Create an OpenAI client using the COWABUNGA_API_URL and COWABUNGA_API_KEY or SUPABASE_USER_JWT.
-
-    returns:
-        OpenAI: An OpenAI client.
-    """
+    """Return an OpenAI-compatible client for the CowabungaAI API."""
     return OpenAI(
         base_url=get_cowabunga_api_url(),
         api_key=get_cowabunga_api_key(),

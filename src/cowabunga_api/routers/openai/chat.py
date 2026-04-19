@@ -2,6 +2,7 @@
 
 from typing import Annotated, AsyncGenerator, Any
 from fastapi import HTTPException, APIRouter, Depends
+from fastapi.responses import StreamingResponse
 import cowabunga_sdk as lfai
 from cowabunga_api.backend.grpc_client import (
     chat_completion,
@@ -9,7 +10,7 @@ from cowabunga_api.backend.grpc_client import (
     stream_chat_completion_raw,
 )
 from cowabunga_api.backend.helpers import grpc_chat_role
-from cowabunga_api.typedef.chat import ChatCompletionRequest
+from cowabunga_api.typedef.chat import ChatCompletionRequest, ChatCompletionResponse
 from cowabunga_api.routers.supabase_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
@@ -20,12 +21,12 @@ from cowabunga_sdk.chat.chat_pb2 import (
 router = APIRouter(prefix="/openai/v1/chat", tags=["openai/chat"])
 
 
-@router.post("/completions")
+@router.post("/completions", response_model=None)
 async def chat_complete(
     req: ChatCompletionRequest,
     model_config: Annotated[Config, Depends(get_model_config)],
     session: Session,  # pylint: disable=unused-argument # required for authorizing endpoint
-):
+) -> ChatCompletionResponse | StreamingResponse:
     """Complete a chat conversation with the given model."""
 
     model = model_config.get_model_backend(req.model)

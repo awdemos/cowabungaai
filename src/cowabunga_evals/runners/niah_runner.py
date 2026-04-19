@@ -12,7 +12,7 @@ from tqdm import tqdm
 from openai.types.beta.assistant import Assistant
 from openai.types.beta.vector_store import VectorStore
 
-from utils.defaults import DEFAULT_INSTRUCTION_TEMPLATE
+from cowabunga_evals.utils.defaults import DEFAULT_INSTRUCTION_TEMPLATE
 
 
 class NIAH_Runner:

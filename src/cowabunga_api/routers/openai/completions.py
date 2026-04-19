@@ -2,11 +2,12 @@
 
 from typing import Annotated
 from fastapi import HTTPException, APIRouter, Depends
+from fastapi.responses import StreamingResponse
 from cowabunga_api.backend.grpc_client import (
     completion,
     stream_completion,
 )
-from cowabunga_api.typedef.completion import CompletionRequest
+from cowabunga_api.typedef.completion import CompletionRequest, CompletionResponse
 from cowabunga_api.routers.supabase_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
@@ -15,12 +16,12 @@ import cowabunga_sdk as lfai
 router = APIRouter(prefix="/openai/v1/completions", tags=["openai/completions"])
 
 
-@router.post("")
+@router.post("", response_model=None)
 async def complete(
     session: Session,  # pylint: disable=unused-argument # required for authorizing endpoint
     req: CompletionRequest,
     model_config: Annotated[Config, Depends(get_model_config)],
-):
+) -> CompletionResponse | StreamingResponse:
     """Complete a prompt with the given model."""
     # Get the model backend configuration
     model = model_config.get_model_backend(req.model)

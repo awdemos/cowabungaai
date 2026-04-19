@@ -1,6 +1,8 @@
 """Tests for NIAH metrics."""
 
 import pytest
+
+deepeval = pytest.importorskip("deepeval")
 from deepeval.test_case import LLMTestCase
 from cowabunga_evals.metrics.niah_metrics import NIAH_Retrieval
 

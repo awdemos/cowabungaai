@@ -9,8 +9,11 @@ from cowabunga_api.typedef.audio.audio_types import (
 
 def test_create_transcription_request_defaults():
     """Test CreateTranscriptionRequest default values."""
+    import io
+    from fastapi import UploadFile
+    mock_file = UploadFile(filename="test.wav", file=io.BytesIO(b"audio"))
     req = CreateTranscriptionRequest(
-        file=None,  # type: ignore
+        file=mock_file,  # type: ignore
         model="whisper-1",
     )
     assert req.model == "whisper-1"
@@ -23,8 +26,11 @@ def test_create_transcription_request_defaults():
 
 def test_create_transcription_request_custom_values():
     """Test CreateTranscriptionRequest with custom values."""
+    import io
+    from fastapi import UploadFile
+    mock_file = UploadFile(filename="test.wav", file=io.BytesIO(b"audio"))
     req = CreateTranscriptionRequest(
-        file=None,  # type: ignore
+        file=mock_file,  # type: ignore
         model="whisper-1",
         language="en",
         prompt="test prompt",

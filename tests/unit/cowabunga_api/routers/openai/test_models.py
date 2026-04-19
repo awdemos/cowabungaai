@@ -1,12 +1,19 @@
 """Tests for the OpenAI models router."""
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from cowabunga_api.routers.openai.models import router
-from unittest.mock import patch, MagicMock
+from cowabunga_api.routers.supabase_session import init_supabase_client
+from unittest.mock import patch, MagicMock, AsyncMock
 
 
-client = TestClient(router)
+def _client_with_auth_override():
+    app = FastAPI()
+    app.include_router(router)
+    async def _mock_session(): return MagicMock()
+    app.dependency_overrides[init_supabase_client] = _mock_session
+    return TestClient(app)
 
 
 @pytest.fixture
@@ -21,24 +28,22 @@ def mock_config():
 
 def test_list_models(mock_config):
     """Test listing available models."""
-    with patch("cowabunga_api.routers.openai.models.Session") as mock_session:
-        mock_session.return_value = MagicMock()
-        response = client.get("/openai/v1/models")
-        assert response.status_code == 200
-        data = response.json()
-        assert "data" in data
-        assert len(data["data"]) == 3
-        assert data["data"][0]["id"] == "model1"
-        assert data["data"][1]["id"] == "model2"
-        assert data["data"][2]["id"] == "model3"
+    client = _client_with_auth_override()
+    response = client.get("/openai/v1/models")
+    assert response.status_code == 200
+    data = response.json()
+    assert "data" in data
+    assert len(data["data"]) == 3
+    assert data["data"][0]["id"] == "model1"
+    assert data["data"][1]["id"] == "model2"
+    assert data["data"][2]["id"] == "model3"
 
 
 def test_list_models_empty(mock_config):
     """Test listing models when none are configured."""
     mock_config.return_value = MagicMock(models=[])
-    with patch("cowabunga_api.routers.openai.models.Session") as mock_session:
-        mock_session.return_value = MagicMock()
-        response = client.get("/openai/v1/models")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["data"] == []
+    client = _client_with_auth_override()
+    response = client.get("/openai/v1/models")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["data"] == []

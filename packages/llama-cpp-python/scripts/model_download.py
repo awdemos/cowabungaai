@@ -17,11 +17,9 @@ def download_model():
         print("Please provide REPO_ID and FILENAME environment variables.")
         return
 
-    # Create .model directory if it doesn't exist
     if not os.path.exists(".model"):
         os.makedirs(".model", exist_ok=True)
 
-    # Check if the model is already downloaded
     if os.path.exists(OUTPUT_FILE) and CHECKSUM != "":
         import hashlib
         with open(OUTPUT_FILE, "rb") as f:
@@ -32,7 +30,6 @@ def download_model():
         else:
             print("Model file exists but checksum mismatch. Redownloading...")
 
-    # Download the model using huggingface_hub
     print(f"Downloading {FILENAME} from {REPO_ID} (revision: {REVISION})...")
     try:
         downloaded_path = hf_hub_download(
@@ -43,13 +40,11 @@ def download_model():
             local_dir_use_symlinks=False
         )
 
-        # Rename to expected output file if different
         if downloaded_path != OUTPUT_FILE:
             os.rename(downloaded_path, OUTPUT_FILE)
 
         print(f"Model downloaded successfully to: {OUTPUT_FILE}")
 
-        # Verify checksum if provided
         if CHECKSUM:
             import hashlib
             with open(OUTPUT_FILE, "rb") as f:
