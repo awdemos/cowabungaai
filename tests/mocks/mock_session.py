@@ -80,11 +80,13 @@ def mock_table(table_name=None):
 def mock_execute_data(table_name):
     mock_map = dict(
         thread=mock_thread,
+        thread_objects=mock_thread,
         run=mock_run,
         run_objects=mock_run,
         assistant=mock_assistant,
         assistant_objects=mock_assistant,
         message=mock_message,
+        message_objects=mock_message,
         dummy_table=mock_data_model,
         api_keys=mock_api_key,
         file_objects=mock_file_object,

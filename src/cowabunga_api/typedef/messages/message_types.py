@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import time
-import traceback
+import logging
 from typing import Literal
 from fastapi import HTTPException, status
 from openai.types.beta.threads import MessageContent, TextContentBlock, Text, Message
 from openai.types.beta.threads.message import Attachment
+logger = logging.getLogger(__name__)
+
 from pydantic import BaseModel, Field
 from cowabunga_api.data.crud_message import CRUDMessage
 from cowabunga_api.routers.supabase_session import Session
@@ -68,7 +70,7 @@ class CreateMessageRequest(BaseModel):
                 )
             return response
         except Exception as exc:
-            traceback.print_exc()
+            logger.exception("Failed to create message")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Unable to create message",

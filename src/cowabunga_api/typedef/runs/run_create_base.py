@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-import traceback
 
 from openai.types.beta import (
     AssistantResponseFormatOption,
@@ -134,10 +133,7 @@ class RunCreateParamsRequestBase(BaseModel):
                     if isinstance(self.tool_choice, AssistantToolChoice):
                         return self.tool_choice.type == "file_search"
                 except ValidationError:
-                    traceback.print_exc()
-                    logger.error(
-                        "Cannot use RAG for request, failed to validate tool for thread"
-                    )
+                    logger.exception("Cannot use RAG for request, failed to validate tool for thread")
                     return False
 
         return False

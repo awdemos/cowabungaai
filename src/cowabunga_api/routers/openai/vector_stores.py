@@ -1,7 +1,6 @@
 """OpenAI Compliant Vector Store API Router."""
 
 import logging
-import traceback
 
 from fastapi import APIRouter, HTTPException, status, BackgroundTasks
 from openai.pagination import SyncCursorPage
@@ -56,7 +55,7 @@ async def create_vector_store(
             request, background_tasks=background_tasks
         )
     except Exception as exc:
-        traceback.print_exc()
+        logger.exception("Failed to create vector store")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unable to create vector store",
@@ -82,7 +81,7 @@ async def modify_vector_store(
     except HTTPException as exc:
         raise exc
     except Exception as exc:
-        traceback.print_exc()
+        logger.exception("Failed to modify vector store")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unable to modify vector store",
