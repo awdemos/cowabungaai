@@ -1,6 +1,6 @@
 """OpenAI Compliant Threads API Router."""
 
-import traceback
+import logging
 from fastapi import HTTPException, APIRouter, status
 from fastapi.responses import StreamingResponse
 from openai.types.beta.threads import Run
@@ -62,7 +62,7 @@ async def create_run(
             session=session,
         )
     except Exception as exc:
-        traceback.print_exc()
+        logging.exception("Failed to create run")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unable to create run",
@@ -93,7 +93,7 @@ async def create_thread_and_run(
             session=session,
         )
     except Exception as exc:
-        traceback.print_exc()
+        logging.exception("Failed to create thread and run")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unable to create thread and run",
