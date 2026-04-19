@@ -1,8 +1,12 @@
 {
   "version": 8,
   "created": "2026-03-08T00:49:05+00:00",
-  "updated": "2026-04-19T14:27:14+00:00",
+  "updated": "2026-04-19T15:59:44+00:00",
   "queue_order": [
+    "subjective::convention_outlier",
+    "subjective::design_coherence",
+    "subjective::error_consistency",
+    "subjective::logic_clarity",
     "review::.::holistic::abstraction_fitness::backward_compat_alias_get_session",
     "review::.::holistic::abstraction_fitness::overbroad_metadata_object",
     "review::.::holistic::abstraction_fitness::unearned_helper_object_or_default",
@@ -125,24 +129,88 @@
     "subjective::api_surface_coherence",
     "subjective::authorization_consistency",
     "subjective::contract_coherence",
-    "subjective::convention_outlier",
     "subjective::cross_module_architecture",
     "subjective::dependency_health",
-    "subjective::design_coherence",
-    "subjective::error_consistency",
     "subjective::high_level_elegance",
     "subjective::incomplete_migration",
     "subjective::initialization_coupling",
-    "subjective::logic_clarity",
     "subjective::low_level_elegance",
     "subjective::mid_level_elegance",
     "subjective::naming_quality",
     "subjective::package_organization",
     "subjective::test_strategy",
-    "subjective::type_safety"
+    "subjective::type_safety",
+    "triage::strategize",
+    "triage::observe",
+    "triage::reflect",
+    "triage::organize",
+    "triage::enrich",
+    "triage::sense-check",
+    "triage::commit"
   ],
   "deferred": [],
-  "skipped": {},
+  "skipped": {
+    "subjective_review::packages/llama-cpp-python/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/llama-cpp-python/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/repeater/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/repeater/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/text-embeddings/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/text-embeddings/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/vllm/src/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/vllm/src/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/whisper/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/whisper/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::.::holistic_unreviewed": {
+      "issue_id": "subjective_review::.::holistic_unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    }
+  },
   "active_cluster": null,
   "overrides": {
     "orphaned::src/leapfrogai_evals/runners/niah_runner.py": {
@@ -3275,16 +3343,72 @@
       "detail": {
         "scan_count": 6
       }
+    },
+    {
+      "timestamp": "2026-04-19T15:59:22+00:00",
+      "action": "skip",
+      "issue_ids": [
+        "subjective_review::packages/llama-cpp-python/main.py::unreviewed",
+        "subjective_review::packages/repeater/main.py::unreviewed",
+        "subjective_review::packages/text-embeddings/main.py::unreviewed",
+        "subjective_review::packages/vllm/src/main.py::unreviewed",
+        "subjective_review::packages/whisper/main.py::unreviewed",
+        "subjective_review::.::holistic_unreviewed"
+      ],
+      "cluster_name": null,
+      "actor": "user",
+      "note": null,
+      "detail": {
+        "kind": "temporary",
+        "reason": "Already completed 20 holistic review batches; these are stale prep items"
+      }
+    },
+    {
+      "timestamp": "2026-04-19T15:59:44+00:00",
+      "action": "sync_subjective",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {
+        "changes": true
+      }
+    },
+    {
+      "timestamp": "2026-04-19T15:59:44+00:00",
+      "action": "sync_triage",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {
+        "injected": true
+      }
+    },
+    {
+      "timestamp": "2026-04-19T15:59:44+00:00",
+      "action": "seed_start_scores",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {}
     }
   ],
   "epic_triage_meta": {},
   "commit_log": [],
   "uncommitted_issues": [],
   "commit_tracking_branch": null,
-  "scan_count_at_plan_start": 6,
+  "scan_count_at_plan_start": 7,
   "refresh_state": {
     "_subjective_migration_pruned": true,
     "lifecycle_phase": "plan",
     "postflight_scan_completed_at_scan_count": 6
+  },
+  "previous_plan_start_scores": {
+    "strict": 71.0,
+    "overall": 73.6,
+    "objective": 86.0,
+    "verified": 86.0
   }
 }
