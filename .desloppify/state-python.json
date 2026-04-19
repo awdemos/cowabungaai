@@ -1,19 +1,19 @@
 {
   "version": 3,
   "created": "2026-03-08T00:46:53+00:00",
-  "last_scan": "2026-04-19T14:27:11+00:00",
-  "scan_count": 6,
+  "last_scan": "2026-04-19T15:59:44+00:00",
+  "scan_count": 7,
   "overall_score": 73.6,
   "objective_score": 86.0,
   "strict_score": 71.0,
   "verified_strict_score": 86.0,
   "stats": {
-    "total": 758,
+    "total": 761,
     "auto_resolved": 328,
-    "deferred": 0,
+    "deferred": 6,
     "false_positive": 0,
     "fixed": 20,
-    "open": 410,
+    "open": 407,
     "triaged_out": 0,
     "wontfix": 0,
     "by_tier": {
@@ -40,16 +40,16 @@
         "deferred": 0,
         "false_positive": 0,
         "fixed": 0,
-        "open": 245,
+        "open": 248,
         "triaged_out": 0,
         "wontfix": 0
       },
       "4": {
         "auto_resolved": 72,
-        "deferred": 0,
+        "deferred": 6,
         "false_positive": 0,
         "fixed": 20,
-        "open": 9,
+        "open": 3,
         "triaged_out": 0,
         "wontfix": 0
       }
@@ -72,7 +72,7 @@
         }
       },
       "warnings": [],
-      "updated_at": "2026-04-19T14:27:11+00:00"
+      "updated_at": "2026-04-19T15:59:44+00:00"
     }
   },
   "score_confidence": {
@@ -1016,6 +1016,135 @@
           "strict": 65.0
         }
       }
+    },
+    {
+      "timestamp": "2026-04-19T15:59:44+00:00",
+      "lang": "python",
+      "strict_score": 71.0,
+      "verified_strict_score": 86.0,
+      "objective_score": 86.0,
+      "overall_score": 73.6,
+      "open": 407,
+      "diff_new": 3,
+      "diff_resolved": 20,
+      "ignored": 0,
+      "raw_issues": 249,
+      "suppressed_pct": 0.0,
+      "ignore_patterns": 0,
+      "subjective_integrity": {
+        "status": "disabled",
+        "matched_count": 0,
+        "reset_count": 0,
+        "target_score": 95.0
+      },
+      "score_confidence": {
+        "status": "full",
+        "confidence": 1.0,
+        "detector_count": 0,
+        "dimension_count": 0
+      },
+      "dimension_scores": {
+        "Code quality": {
+          "score": 89.1,
+          "strict": 80.3
+        },
+        "Security": {
+          "score": 98.1,
+          "strict": 96.9
+        },
+        "File health": {
+          "score": 98.8,
+          "strict": 96.2
+        },
+        "Duplication": {
+          "score": 98.4,
+          "strict": 97.1
+        },
+        "Test health": {
+          "score": 40.7,
+          "strict": 0.0
+        },
+        "Abstraction fit": {
+          "score": 84.0,
+          "strict": 84.0
+        },
+        "AI generated debt": {
+          "score": 72.0,
+          "strict": 72.0
+        },
+        "API coherence": {
+          "score": 68.0,
+          "strict": 68.0
+        },
+        "Auth consistency": {
+          "score": 75.0,
+          "strict": 75.0
+        },
+        "Contracts": {
+          "score": 72.0,
+          "strict": 72.0
+        },
+        "Convention drift": {
+          "score": 75.0,
+          "strict": 75.0
+        },
+        "Cross-module arch": {
+          "score": 58.0,
+          "strict": 58.0
+        },
+        "Dep health": {
+          "score": 78.0,
+          "strict": 78.0
+        },
+        "Design coherence": {
+          "score": 62.0,
+          "strict": 62.0
+        },
+        "Error consistency": {
+          "score": 58.0,
+          "strict": 58.0
+        },
+        "High elegance": {
+          "score": 68.5,
+          "strict": 68.5
+        },
+        "Stale migration": {
+          "score": 76.0,
+          "strict": 76.0
+        },
+        "Init coupling": {
+          "score": 60.0,
+          "strict": 60.0
+        },
+        "Logic clarity": {
+          "score": 79.0,
+          "strict": 79.0
+        },
+        "Low elegance": {
+          "score": 70.0,
+          "strict": 70.0
+        },
+        "Mid elegance": {
+          "score": 67.0,
+          "strict": 67.0
+        },
+        "Naming quality": {
+          "score": 84.0,
+          "strict": 84.0
+        },
+        "Structure nav": {
+          "score": 74.0,
+          "strict": 74.0
+        },
+        "Test strategy": {
+          "score": 42.0,
+          "strict": 42.0
+        },
+        "Type safety": {
+          "score": 65.0,
+          "strict": 65.0
+        }
+      }
     }
   ],
   "lang_capabilities": {
@@ -1029,7 +1158,7 @@
     "production": 134,
     "config": 4,
     "generated": 12,
-    "test": 71
+    "test": 72
   },
   "tool_hash": "9790f983f730",
   "scan_path": ".",
@@ -1049,11 +1178,11 @@
       "facade": 137,
       "coupling": 0,
       "uncalled_functions": 0,
-      "test_coverage": 850,
+      "test_coverage": 852,
       "signature": 15,
       "smells": 137,
       "global_mutable_config": 137,
-      "security": 224,
+      "security": 225,
       "private_imports": 137,
       "dict_keys": 137,
       "unused_enums": 137,
@@ -1065,18 +1194,18 @@
   },
   "codebase_metrics": {
     "python": {
-      "total_files": 224,
-      "total_loc": 18329,
+      "total_files": 225,
+      "total_loc": 18354,
       "total_directories": 71
     }
   },
   "dimension_scores": {
     "Code quality": {
       "score": 89.1,
-      "strict": 80.4,
+      "strict": 80.3,
       "verified_strict_score": 89.1,
       "checks": 1039,
-      "failing": 170,
+      "failing": 171,
       "tier": 3,
       "detectors": {
         "unused": {
@@ -1087,9 +1216,9 @@
         },
         "smells": {
           "potential": 137,
-          "pass_rate": 0.6919708029197079,
-          "failing": 78,
-          "weighted_failures": 42.20000000000001
+          "pass_rate": 0.686861313868613,
+          "failing": 79,
+          "weighted_failures": 42.90000000000001
         },
         "orphaned": {
           "potential": 137,
@@ -1133,7 +1262,7 @@
       "score": 98.1,
       "strict": 96.9,
       "verified_strict_score": 98.1,
-      "checks": 361,
+      "checks": 362,
       "failing": 13,
       "tier": 4,
       "detectors": {
@@ -1144,8 +1273,8 @@
           "weighted_failures": 0.0
         },
         "security": {
-          "potential": 224,
-          "pass_rate": 0.9700892857142858,
+          "potential": 225,
+          "pass_rate": 0.9702222222222223,
           "failing": 13,
           "weighted_failures": 6.7
         }
@@ -1190,18 +1319,18 @@
       }
     },
     "Test health": {
-      "score": 40.9,
+      "score": 40.7,
       "strict": 0.0,
-      "verified_strict_score": 40.9,
-      "checks": 850,
-      "failing": 57,
+      "verified_strict_score": 40.7,
+      "checks": 852,
+      "failing": 58,
       "tier": 4,
       "detectors": {
         "test_coverage": {
-          "potential": 850,
-          "pass_rate": 0.4094040220779279,
-          "failing": 57,
-          "weighted_failures": 502.00658123376127
+          "potential": 852,
+          "pass_rate": 0.40719486291540385,
+          "failing": 58,
+          "weighted_failures": 505.06997679607593
         }
       }
     },
@@ -1628,11 +1757,11 @@
   },
   "reminder_history": {
     "zone_classification": 3,
-    "report_scores": 5,
+    "report_scores": 6,
     "feedback_nudge": 3,
     "stagnant_nudge": 20,
     "wontfix_growing": 3,
-    "review_issues_pending": 1
+    "review_issues_pending": 2
   },
   "work_items": {
     "structural::tests/integration/api/test_assistants.py": {
@@ -1845,7 +1974,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:46:57+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -1874,7 +2003,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:46:57+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -2460,7 +2589,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -3735,7 +3864,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -3785,7 +3914,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -4210,7 +4339,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -5087,7 +5216,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -5217,17 +5346,17 @@
       "file": "packages/llama-cpp-python/scripts/model_download.py",
       "tier": 3,
       "confidence": "high",
-      "summary": "Untested module (68 LOC, 0 importers)",
+      "summary": "Untested module (63 LOC, 0 importers)",
       "detail": {
         "kind": "untested_module",
-        "loc": 68,
+        "loc": 63,
         "importer_count": 0,
-        "loc_weight": 8.246211251235321
+        "loc_weight": 7.937253933193772
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -6015,7 +6144,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -6407,7 +6536,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:10+00:00",
-      "last_seen": "2026-04-19T12:56:26+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -6957,7 +7086,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7003,7 +7132,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7026,7 +7155,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7118,7 +7247,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7360,7 +7489,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7481,7 +7610,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7511,7 +7640,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7541,7 +7670,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7572,7 +7701,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -7602,7 +7731,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8617,7 +8746,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8647,7 +8776,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8677,7 +8806,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8707,7 +8836,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8737,7 +8866,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8828,7 +8957,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -8858,7 +8987,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -9128,7 +9257,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -9514,13 +9643,13 @@
         "severity": "low",
         "count": 1,
         "lines": [
-          26
+          24
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -9568,17 +9697,18 @@
       "file": "tests/mocks/mock_session.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Module-level mutable '_mocks_cache' (line 14) modified from 1 site(s)",
+      "summary": "Module-level mutable '_mocks_cache' (line 15) modified from 2 site(s)",
       "detail": {
-        "mutation_count": 1,
+        "mutation_count": 2,
         "mutation_lines": [
-          60
+          20,
+          76
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:19+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -9609,7 +9739,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:47:38+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "zone": "production",
@@ -9880,11 +10010,11 @@
         "reason": "unreviewed",
         "loc": 49
       },
-      "status": "open",
-      "note": null,
+      "status": "deferred",
+      "note": "",
       "first_seen": "2026-03-08T00:47:47+00:00",
       "last_seen": "2026-03-08T00:54:20+00:00",
-      "resolved_at": null,
+      "resolved_at": "2026-04-19T15:59:21+00:00",
       "reopen_count": 0,
       "lang": "python",
       "zone": "production",
@@ -9893,7 +10023,13 @@
       "suppression_pattern": null,
       "work_item_kind": "assessment_request",
       "issue_kind": "assessment_request",
-      "origin": "synthetic_task"
+      "origin": "synthetic_task",
+      "resolution_attestation": {
+        "kind": "manual",
+        "text": "I have actually reflected and I am not deferring this for lazy reasons.",
+        "attested_at": "2026-04-19T15:59:21+00:00",
+        "scan_verified": false
+      }
     },
     "subjective_review::packages/repeater/main.py::unreviewed": {
       "id": "subjective_review::packages/repeater/main.py::unreviewed",
@@ -9906,11 +10042,11 @@
         "reason": "unreviewed",
         "loc": 88
       },
-      "status": "open",
-      "note": null,
+      "status": "deferred",
+      "note": "",
       "first_seen": "2026-03-08T00:47:47+00:00",
       "last_seen": "2026-03-08T00:54:20+00:00",
-      "resolved_at": null,
+      "resolved_at": "2026-04-19T15:59:21+00:00",
       "reopen_count": 0,
       "lang": "python",
       "zone": "production",
@@ -9919,7 +10055,13 @@
       "suppression_pattern": null,
       "work_item_kind": "assessment_request",
       "issue_kind": "assessment_request",
-      "origin": "synthetic_task"
+      "origin": "synthetic_task",
+      "resolution_attestation": {
+        "kind": "manual",
+        "text": "I have actually reflected and I am not deferring this for lazy reasons.",
+        "attested_at": "2026-04-19T15:59:21+00:00",
+        "scan_verified": false
+      }
     },
     "subjective_review::packages/text-embeddings/main.py::unreviewed": {
       "id": "subjective_review::packages/text-embeddings/main.py::unreviewed",
@@ -9932,11 +10074,11 @@
         "reason": "unreviewed",
         "loc": 45
       },
-      "status": "open",
-      "note": null,
+      "status": "deferred",
+      "note": "",
       "first_seen": "2026-03-08T00:47:47+00:00",
       "last_seen": "2026-03-08T00:54:20+00:00",
-      "resolved_at": null,
+      "resolved_at": "2026-04-19T15:59:21+00:00",
       "reopen_count": 0,
       "lang": "python",
       "zone": "production",
@@ -9945,7 +10087,13 @@
       "suppression_pattern": null,
       "work_item_kind": "assessment_request",
       "issue_kind": "assessment_request",
-      "origin": "synthetic_task"
+      "origin": "synthetic_task",
+      "resolution_attestation": {
+        "kind": "manual",
+        "text": "I have actually reflected and I am not deferring this for lazy reasons.",
+        "attested_at": "2026-04-19T15:59:21+00:00",
+        "scan_verified": false
+      }
     },
     "subjective_review::packages/vllm/src/main.py::unreviewed": {
       "id": "subjective_review::packages/vllm/src/main.py::unreviewed",
@@ -9958,11 +10106,11 @@
         "reason": "unreviewed",
         "loc": 265
       },
-      "status": "open",
-      "note": null,
+      "status": "deferred",
+      "note": "",
       "first_seen": "2026-03-08T00:47:47+00:00",
       "last_seen": "2026-03-08T00:54:20+00:00",
-      "resolved_at": null,
+      "resolved_at": "2026-04-19T15:59:21+00:00",
       "reopen_count": 0,
       "lang": "python",
       "zone": "production",
@@ -9971,7 +10119,13 @@
       "suppression_pattern": null,
       "work_item_kind": "assessment_request",
       "issue_kind": "assessment_request",
-      "origin": "synthetic_task"
+      "origin": "synthetic_task",
+      "resolution_attestation": {
+        "kind": "manual",
+        "text": "I have actually reflected and I am not deferring this for lazy reasons.",
+        "attested_at": "2026-04-19T15:59:21+00:00",
+        "scan_verified": false
+      }
     },
     "subjective_review::packages/whisper/main.py::unreviewed": {
       "id": "subjective_review::packages/whisper/main.py::unreviewed",
@@ -9984,11 +10138,11 @@
         "reason": "unreviewed",
         "loc": 132
       },
-      "status": "open",
-      "note": null,
+      "status": "deferred",
+      "note": "",
       "first_seen": "2026-03-08T00:47:47+00:00",
       "last_seen": "2026-03-08T00:54:20+00:00",
-      "resolved_at": null,
+      "resolved_at": "2026-04-19T15:59:22+00:00",
       "reopen_count": 0,
       "lang": "python",
       "zone": "production",
@@ -9997,7 +10151,13 @@
       "suppression_pattern": null,
       "work_item_kind": "assessment_request",
       "issue_kind": "assessment_request",
-      "origin": "synthetic_task"
+      "origin": "synthetic_task",
+      "resolution_attestation": {
+        "kind": "manual",
+        "text": "I have actually reflected and I am not deferring this for lazy reasons.",
+        "attested_at": "2026-04-19T15:59:22+00:00",
+        "scan_verified": false
+      }
     },
     "subjective_review::src/leapfrogai_api/backend/composer.py::unreviewed": {
       "id": "subjective_review::src/leapfrogai_api/backend/composer.py::unreviewed",
@@ -11881,11 +12041,11 @@
       "detail": {
         "reason": "unreviewed"
       },
-      "status": "open",
-      "note": null,
+      "status": "deferred",
+      "note": "",
       "first_seen": "2026-03-08T00:47:47+00:00",
       "last_seen": "2026-03-08T00:54:20+00:00",
-      "resolved_at": null,
+      "resolved_at": "2026-04-19T15:59:22+00:00",
       "reopen_count": 0,
       "lang": "python",
       "zone": "production",
@@ -11894,7 +12054,13 @@
       "suppression_pattern": null,
       "work_item_kind": "assessment_request",
       "issue_kind": "assessment_request",
-      "origin": "synthetic_task"
+      "origin": "synthetic_task",
+      "resolution_attestation": {
+        "kind": "manual",
+        "text": "I have actually reflected and I am not deferring this for lazy reasons.",
+        "attested_at": "2026-04-19T15:59:22+00:00",
+        "scan_verified": false
+      }
     },
     "boilerplate_duplication::src/leapfrogai_evals/runners/niah_runner.py::159c73307195462c": {
       "id": "boilerplate_duplication::src/leapfrogai_evals/runners/niah_runner.py::159c73307195462c",
@@ -12162,7 +12328,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:49:03+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -12212,7 +12378,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-03-08T00:49:03+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "lang": "python",
@@ -12236,7 +12402,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:04+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12261,7 +12427,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:04+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12291,7 +12457,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:04+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12323,7 +12489,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:04+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12356,7 +12522,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12413,7 +12579,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12466,7 +12632,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:05+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12491,7 +12657,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12516,7 +12682,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12541,7 +12707,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12566,7 +12732,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12591,7 +12757,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12616,7 +12782,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12641,7 +12807,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12666,7 +12832,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12684,14 +12850,14 @@
       "file": "src/cowabunga_api/routers/openai/assistants.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (193 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (177 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 193
+        "loc": 177
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12716,7 +12882,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12741,7 +12907,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12766,7 +12932,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12791,7 +12957,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12816,7 +12982,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12834,14 +13000,14 @@
       "file": "src/cowabunga_api/routers/openai/files.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (161 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (160 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 161
+        "loc": 160
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12859,14 +13025,14 @@
       "file": "src/cowabunga_api/routers/openai/runs.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (161 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (155 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 161
+        "loc": 155
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12891,7 +13057,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12916,7 +13082,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12934,14 +13100,14 @@
       "file": "src/cowabunga_api/backend/helpers.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (126 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (121 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 126
+        "loc": 121
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12966,7 +13132,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -12991,7 +13157,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13016,7 +13182,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13034,14 +13200,14 @@
       "file": "src/cowabunga_api/routers/openai/messages.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (121 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (119 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 121
+        "loc": 119
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13066,7 +13232,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13091,7 +13257,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13116,7 +13282,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13134,14 +13300,14 @@
       "file": "src/cowabunga_api/routers/openai/threads.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (109 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (94 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 109
+        "loc": 94
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13166,7 +13332,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13191,7 +13357,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13216,7 +13382,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13234,14 +13400,14 @@
       "file": "src/cowabunga_api/routers/openai/chat.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (80 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (81 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 80
+        "loc": 81
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13266,7 +13432,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13291,7 +13457,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13316,7 +13482,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13341,7 +13507,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13366,7 +13532,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13391,7 +13557,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13416,7 +13582,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13441,7 +13607,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13466,7 +13632,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13491,7 +13657,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13516,7 +13682,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13541,7 +13707,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13566,7 +13732,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13591,7 +13757,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13616,7 +13782,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13641,7 +13807,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13659,14 +13825,14 @@
       "file": "src/cowabunga_api/routers/openai/completions.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Orphaned file (42 LOC): zero importers, not an entry point",
+      "summary": "Orphaned file (43 LOC): zero importers, not an entry point",
       "detail": {
-        "loc": 42
+        "loc": 43
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13691,7 +13857,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13716,7 +13882,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13741,7 +13907,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13766,7 +13932,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13791,7 +13957,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13816,7 +13982,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13841,7 +14007,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13866,7 +14032,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13891,7 +14057,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13916,7 +14082,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13941,7 +14107,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13966,7 +14132,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -13991,7 +14157,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14016,7 +14182,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14041,7 +14207,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14066,7 +14232,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14097,7 +14263,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14129,7 +14295,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14161,7 +14327,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14191,7 +14357,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14224,7 +14390,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14254,7 +14420,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14284,7 +14450,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14314,7 +14480,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14344,7 +14510,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14374,7 +14540,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14406,7 +14572,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14468,7 +14634,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14498,7 +14664,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14528,7 +14694,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14558,7 +14724,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14588,7 +14754,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14618,7 +14784,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14648,7 +14814,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14680,7 +14846,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:07+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14792,7 +14958,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14848,7 +15014,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14866,17 +15032,17 @@
       "file": "src/cowabunga_api/routers/openai/chat.py",
       "tier": 3,
       "confidence": "high",
-      "summary": "Untested module (80 LOC, 0 importers)",
+      "summary": "Untested module (81 LOC, 0 importers)",
       "detail": {
         "kind": "untested_module",
-        "loc": 80,
+        "loc": 81,
         "importer_count": 0,
-        "loc_weight": 8.94427190999916
+        "loc_weight": 9.0
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -14989,7 +15155,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15045,7 +15211,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15101,7 +15267,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15185,7 +15351,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15213,7 +15379,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15241,7 +15407,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15381,7 +15547,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15437,7 +15603,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15494,7 +15660,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15522,7 +15688,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15550,7 +15716,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15578,7 +15744,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15634,7 +15800,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15718,7 +15884,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15746,7 +15912,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15774,7 +15940,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15802,7 +15968,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15830,7 +15996,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15943,7 +16109,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15966,7 +16132,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -15989,7 +16155,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16012,7 +16178,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16035,7 +16201,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16058,7 +16224,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16081,7 +16247,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16104,7 +16270,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16127,7 +16293,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16150,7 +16316,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16173,7 +16339,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16196,7 +16362,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:08+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16258,7 +16424,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16288,7 +16454,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16318,7 +16484,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16348,7 +16514,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16378,7 +16544,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16408,7 +16574,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16438,7 +16604,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16468,7 +16634,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16498,7 +16664,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16558,7 +16724,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16588,7 +16754,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16606,20 +16772,19 @@
       "file": "src/cowabunga_api/backend/composer.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "2x Loose type annotation \u2014 use specific types",
+      "summary": "1x Loose type annotation \u2014 use specific types",
       "detail": {
         "smell_id": "annotation_quality",
         "severity": "medium",
-        "count": 2,
+        "count": 1,
         "lines": [
-          170,
-          368
+          170
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16654,7 +16819,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16678,13 +16843,13 @@
         "severity": "medium",
         "count": 1,
         "lines": [
-          23
+          25
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16714,7 +16879,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16745,7 +16910,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16775,7 +16940,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16806,7 +16971,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16890,13 +17055,13 @@
         "severity": "medium",
         "count": 1,
         "lines": [
-          125
+          124
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16928,7 +17093,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16959,7 +17124,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -16990,7 +17155,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17021,7 +17186,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17051,7 +17216,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17085,7 +17250,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17115,7 +17280,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17145,7 +17310,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17175,7 +17340,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17205,7 +17370,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17237,7 +17402,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17255,20 +17420,22 @@
       "file": "src/cowabunga_sdk/chat/chat_pb2_grpc.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "2x Loose type annotation \u2014 use specific types",
+      "summary": "4x Loose type annotation \u2014 use specific types",
       "detail": {
         "smell_id": "annotation_quality",
         "severity": "medium",
-        "count": 2,
+        "count": 4,
         "lines": [
           34,
-          52
+          52,
+          95,
+          113
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17299,7 +17466,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17329,7 +17496,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17359,7 +17526,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17389,7 +17556,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17420,7 +17587,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17451,7 +17618,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17482,7 +17649,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17512,7 +17679,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17542,7 +17709,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17572,7 +17739,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17602,7 +17769,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17632,7 +17799,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17662,7 +17829,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17692,7 +17859,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17722,7 +17889,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17752,7 +17919,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17776,13 +17943,13 @@
         "severity": "medium",
         "count": 1,
         "lines": [
-          27
+          28
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17806,13 +17973,13 @@
         "severity": "medium",
         "count": 1,
         "lines": [
-          20
+          21
         ]
       },
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17842,7 +18009,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17872,7 +18039,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17903,7 +18070,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17933,7 +18100,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17963,7 +18130,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -17993,7 +18160,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18023,7 +18190,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18053,7 +18220,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18084,7 +18251,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18114,7 +18281,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18144,7 +18311,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18175,7 +18342,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18205,7 +18372,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18235,7 +18402,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18265,7 +18432,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18295,7 +18462,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18325,7 +18492,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18355,7 +18522,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18385,7 +18552,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:10+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18445,7 +18612,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18507,7 +18674,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18538,7 +18705,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18569,7 +18736,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18600,7 +18767,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18631,7 +18798,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18662,7 +18829,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18693,7 +18860,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18724,7 +18891,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -18766,7 +18933,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -18800,7 +18967,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -18834,7 +19001,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -18868,7 +19035,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -18902,7 +19069,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -18936,7 +19103,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -18970,7 +19137,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19004,7 +19171,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19038,7 +19205,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19072,7 +19239,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19106,7 +19273,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19140,7 +19307,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19174,7 +19341,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19208,7 +19375,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19242,7 +19409,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19276,7 +19443,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19310,7 +19477,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19344,7 +19511,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19378,7 +19545,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19412,7 +19579,7 @@
         "text": "Dimension assessment imported; coverage marker superseded",
         "attested_at": "2026-04-19T14:22:22+00:00",
         "scan_verified": true,
-        "scan_verified_at": "2026-04-19T14:27:11+00:00",
+        "scan_verified_at": "2026-04-19T15:59:44+00:00",
         "scan_verification_text": "Absent from detector output in latest scan"
       }
     },
@@ -19446,7 +19613,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -19488,7 +19655,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -19530,7 +19697,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -19572,7 +19739,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -19590,14 +19757,14 @@
       "file": "src/cowabunga_api/routers/openai/messages.py",
       "tier": 3,
       "confidence": "medium",
-      "summary": "Boilerplate block repeated across 2 files (window 13 lines): src/cowabunga_api/routers/openai/messages.py:109, src/cowabunga_api/typedef/threads/thread_create.py:102",
+      "summary": "Boilerplate block repeated across 2 files (window 13 lines): src/cowabunga_api/routers/openai/messages.py:107, src/cowabunga_api/typedef/threads/thread_create.py:102",
       "detail": {
         "distinct_files": 2,
         "window_size": 13,
         "locations": [
           {
             "file": "src/cowabunga_api/routers/openai/messages.py",
-            "line": 109
+            "line": 107
           },
           {
             "file": "src/cowabunga_api/typedef/threads/thread_create.py",
@@ -19614,7 +19781,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -19656,7 +19823,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:45:17+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -19684,7 +19851,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T12:56:03+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24018,7 +24185,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T14:26:24+00:00",
-      "last_seen": "2026-04-19T14:26:24+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24047,7 +24214,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T14:26:30+00:00",
-      "last_seen": "2026-04-19T14:26:30+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24164,7 +24331,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T14:26:42+00:00",
-      "last_seen": "2026-04-19T14:26:42+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24194,7 +24361,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T14:26:42+00:00",
-      "last_seen": "2026-04-19T14:26:42+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24223,7 +24390,7 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T14:26:46+00:00",
-      "last_seen": "2026-04-19T14:26:46+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24265,7 +24432,95 @@
       "status": "open",
       "note": null,
       "first_seen": "2026-04-19T14:27:11+00:00",
-      "last_seen": "2026-04-19T14:27:11+00:00",
+      "last_seen": "2026-04-19T15:59:44+00:00",
+      "resolved_at": null,
+      "reopen_count": 0,
+      "work_item_kind": "mechanical_defect",
+      "issue_kind": "mechanical_defect",
+      "origin": "scan",
+      "lang": "python",
+      "zone": "production",
+      "suppressed": false,
+      "suppressed_at": null,
+      "suppression_pattern": null
+    },
+    "test_coverage::src/cowabunga_api/routers/openai/__init__.py::untested_module": {
+      "id": "test_coverage::src/cowabunga_api/routers/openai/__init__.py::untested_module",
+      "detector": "test_coverage",
+      "file": "src/cowabunga_api/routers/openai/__init__.py",
+      "tier": 3,
+      "confidence": "high",
+      "summary": "Untested module (11 LOC, 0 importers)",
+      "detail": {
+        "kind": "untested_module",
+        "loc": 11,
+        "importer_count": 0,
+        "loc_weight": 3.3166247903554
+      },
+      "status": "open",
+      "note": null,
+      "first_seen": "2026-04-19T15:59:37+00:00",
+      "last_seen": "2026-04-19T15:59:37+00:00",
+      "resolved_at": null,
+      "reopen_count": 0,
+      "work_item_kind": "mechanical_defect",
+      "issue_kind": "mechanical_defect",
+      "origin": "scan",
+      "lang": "python",
+      "zone": "production",
+      "suppressed": false,
+      "suppressed_at": null,
+      "suppression_pattern": null
+    },
+    "smells::src/cowabunga_sdk/completion/completion_pb2_grpc.py::annotation_quality": {
+      "id": "smells::src/cowabunga_sdk/completion/completion_pb2_grpc.py::annotation_quality",
+      "detector": "smells",
+      "file": "src/cowabunga_sdk/completion/completion_pb2_grpc.py",
+      "tier": 3,
+      "confidence": "medium",
+      "summary": "1x Loose type annotation \u2014 use specific types",
+      "detail": {
+        "smell_id": "annotation_quality",
+        "severity": "medium",
+        "count": 1,
+        "lines": [
+          34
+        ]
+      },
+      "status": "open",
+      "note": null,
+      "first_seen": "2026-04-19T15:59:39+00:00",
+      "last_seen": "2026-04-19T15:59:39+00:00",
+      "resolved_at": null,
+      "reopen_count": 0,
+      "work_item_kind": "mechanical_defect",
+      "issue_kind": "mechanical_defect",
+      "origin": "scan",
+      "lang": "python",
+      "zone": "generated",
+      "suppressed": false,
+      "suppressed_at": null,
+      "suppression_pattern": null
+    },
+    "smells::src/cowabunga_api/routers/openai/assistants.py::high_cyclomatic_complexity": {
+      "id": "smells::src/cowabunga_api/routers/openai/assistants.py::high_cyclomatic_complexity",
+      "detector": "smells",
+      "file": "src/cowabunga_api/routers/openai/assistants.py",
+      "tier": 3,
+      "confidence": "medium",
+      "summary": "1x High cyclomatic complexity (>12 decision points)",
+      "detail": {
+        "smell_id": "high_cyclomatic_complexity",
+        "severity": "medium",
+        "count": 1,
+        "lines": [
+          86
+        ]
+      },
+      "status": "open",
+      "note": null,
+      "first_seen": "2026-04-19T15:59:39+00:00",
+      "last_seen": "2026-04-19T15:59:39+00:00",
       "resolved_at": null,
       "reopen_count": 0,
       "work_item_kind": "mechanical_defect",
@@ -24285,7 +24540,7 @@
     "detectors": {
       "boilerplate": {
         "version": 1,
-        "fingerprint": "add92b249c933919aa7370efdff2faf49a853490",
+        "fingerprint": "99070cd1d59f0b998a69bfc2374120d2c1e3aaf2",
         "entries": [
           {
             "id": "35d0e33a4222176b",
@@ -24582,6 +24837,31 @@
               "      nodeSelector:",
               "        {{- toYaml . | nindent 8 }}",
               "      {{- end }}"
+            ]
+          },
+          {
+            "id": "09abc2c1920fcd73",
+            "distinct_files": 3,
+            "window_size": 17,
+            "locations": [
+              {
+                "file": "tests/unit/cowabunga_api/routers/cowabunga/test_rag.py",
+                "line": 6
+              },
+              {
+                "file": "tests/unit/cowabunga_api/routers/openai/test_audio.py",
+                "line": 7
+              },
+              {
+                "file": "tests/unit/cowabunga_api/routers/openai/test_models.py",
+                "line": 6
+              }
+            ],
+            "sample": [
+              "import router",
+              "from cowabunga_api.routers.supabase_session import init_supabase_client",
+              "from unittest.mock import patch, MagicMock, AsyncMock",
+              ""
             ]
           },
           {
@@ -25846,7 +26126,7 @@
             "locations": [
               {
                 "file": "src/cowabunga_api/routers/openai/messages.py",
-                "line": 109
+                "line": 107
               },
               {
                 "file": "src/cowabunga_api/typedef/threads/thread_create.py",
@@ -26005,6 +26285,27 @@
               "",
               "",
               "# Create a vector store with the previously created file and fake embeddings"
+            ]
+          },
+          {
+            "id": "b31ca7c879969da6",
+            "distinct_files": 2,
+            "window_size": 17,
+            "locations": [
+              {
+                "file": "tests/unit/cowabunga_api/routers/cowabunga/test_models.py",
+                "line": 6
+              },
+              {
+                "file": "tests/unit/cowabunga_api/routers/openai/test_models.py",
+                "line": 6
+              }
+            ],
+            "sample": [
+              ".models import router",
+              "from cowabunga_api.routers.supabase_session import init_supabase_client",
+              "from unittest.mock import patch, MagicMock, AsyncMock",
+              ""
             ]
           },
           {
@@ -26578,7 +26879,7 @@
       },
       "security": {
         "version": 1,
-        "fingerprint": "bdbf6f1104ce41210f01884a9c494d57fe3bb96f",
+        "fingerprint": "d809a5c56fa92e96f6f5239abe5a425d0b3935ec",
         "entries": [
           {
             "file": "packages/turso/api.py",
@@ -26741,7 +27042,7 @@
             }
           }
         ],
-        "files_scanned": 224,
+        "files_scanned": 225,
         "coverage": null
       },
       "dupes": {
@@ -26772,9 +27073,9 @@
             "body_hash": "3535e7712edade184090f1508302cb56",
             "loc": 4
           },
-          "packages/llama-cpp-python/scripts/model_download.py:download_model:14:64": {
+          "packages/llama-cpp-python/scripts/model_download.py:download_model:14:59": {
             "body_hash": "d4163273f3eeaf2d248cf19c15dac3b0",
-            "loc": 51
+            "loc": 46
           },
           "packages/repeater/main.py:generate:41:47": {
             "body_hash": "2d2a30063ee7290ff879f1de2cda9b47",
@@ -26873,7 +27174,7 @@
             "loc": 130
           },
           "src/cowabunga_api/backend/composer.py:generate_response:368:403": {
-            "body_hash": "d44863bb8429922090b6706dac16e2ed",
+            "body_hash": "1dc86a5863a50f33497a2af8816cc38c",
             "loc": 36
           },
           "src/cowabunga_api/backend/converters.py:from_content_param_to_content:29:48": {
@@ -26924,25 +27225,21 @@
             "body_hash": "2eb94d0edb572739b4b9037845b5e22e",
             "loc": 11
           },
-          "src/cowabunga_api/backend/helpers.py:recv_completion:23:54": {
+          "src/cowabunga_api/backend/helpers.py:recv_completion:25:56": {
             "body_hash": "a90916cdbcb8eea5a6d33828879b8443",
             "loc": 32
           },
-          "src/cowabunga_api/backend/helpers.py:recv_chat:57:92": {
+          "src/cowabunga_api/backend/helpers.py:recv_chat:59:94": {
             "body_hash": "4400f7fdf8c1145b32af228e716797d5",
             "loc": 36
           },
-          "src/cowabunga_api/backend/helpers.py:grpc_chat_role:95:107": {
+          "src/cowabunga_api/backend/helpers.py:grpc_chat_role:97:109": {
             "body_hash": "80f3314fb41006febda1534a809add3c",
             "loc": 13
           },
-          "src/cowabunga_api/backend/helpers.py:read_chunks:111:117": {
+          "src/cowabunga_api/backend/helpers.py:read_chunks:113:119": {
             "body_hash": "cc7c9381d8f6d2c99ca0beef2e9a26fa",
             "loc": 7
-          },
-          "src/cowabunga_api/backend/helpers.py:object_or_default:121:126": {
-            "body_hash": "47f358e4a279e1e3eb7b6224cfe48f3e",
-            "loc": 6
           },
           "src/cowabunga_api/backend/rag/document_loader.py:get_mime_type_from_filename:51:56": {
             "body_hash": "5a5cbbab72d3b0db8843dd250f708c49",
@@ -27412,23 +27709,27 @@
             "body_hash": "783c8101d1ccf278e9008d8402fc7541",
             "loc": 14
           },
-          "src/cowabunga_api/routers/openai/assistants.py:create_assistant:22:60": {
-            "body_hash": "fb6d58245b70fc9f536295a27bb34051",
-            "loc": 39
+          "src/cowabunga_api/routers/openai/__init__.py:raise_parse_error:6:11": {
+            "body_hash": "cbc201975ea374f36e197a9160eff0a0",
+            "loc": 6
           },
-          "src/cowabunga_api/routers/openai/assistants.py:list_assistants:64:74": {
+          "src/cowabunga_api/routers/openai/assistants.py:create_assistant:22:57": {
+            "body_hash": "33ec79adae37ca4060cc2af99c480dd6",
+            "loc": 36
+          },
+          "src/cowabunga_api/routers/openai/assistants.py:list_assistants:61:71": {
             "body_hash": "6c755ace4b2c8a75131e2b03701d3311",
             "loc": 11
           },
-          "src/cowabunga_api/routers/openai/assistants.py:retrieve_assistant:78:85": {
+          "src/cowabunga_api/routers/openai/assistants.py:retrieve_assistant:75:82": {
             "body_hash": "76950b1efb4834f4f7429f3122bf4696",
             "loc": 8
           },
-          "src/cowabunga_api/routers/openai/assistants.py:modify_assistant:89:176": {
-            "body_hash": "da10617df82baa262a7165c55654fbc3",
-            "loc": 88
+          "src/cowabunga_api/routers/openai/assistants.py:modify_assistant:86:160": {
+            "body_hash": "6d7bb08cbeac14312f16552f3b7a9ce1",
+            "loc": 75
           },
-          "src/cowabunga_api/routers/openai/assistants.py:delete_assistant:180:193": {
+          "src/cowabunga_api/routers/openai/assistants.py:delete_assistant:164:177": {
             "body_hash": "5e230864f2db2fb24304ea15d8f49aa9",
             "loc": 14
           },
@@ -27440,16 +27741,16 @@
             "body_hash": "c939f92f62894fe21581205fa83dcbea",
             "loc": 24
           },
-          "src/cowabunga_api/routers/openai/chat.py:chat_complete:24:52": {
-            "body_hash": "32d8d5e5d0eeebd6364be287db10dffc",
+          "src/cowabunga_api/routers/openai/chat.py:chat_complete:25:53": {
+            "body_hash": "741be41c397fb19463777cdb626b174c",
             "loc": 29
           },
-          "src/cowabunga_api/routers/openai/chat.py:chat_complete_stream_raw:55:80": {
+          "src/cowabunga_api/routers/openai/chat.py:chat_complete_stream_raw:56:81": {
             "body_hash": "4663924e695256e29c86d5eb7d787a11",
             "loc": 26
           },
-          "src/cowabunga_api/routers/openai/completions.py:complete:19:42": {
-            "body_hash": "26ff0de8d7dfd8b5efa0505c1d281332",
+          "src/cowabunga_api/routers/openai/completions.py:complete:20:43": {
+            "body_hash": "ed6e3decdeb76be101e164ddf70d9106",
             "loc": 24
           },
           "src/cowabunga_api/routers/openai/embeddings.py:embeddings:20:43": {
@@ -27460,43 +27761,43 @@
             "body_hash": "c68e39dc3564ff63d7660cd4f06fba84",
             "loc": 11
           },
-          "src/cowabunga_api/routers/openai/files.py:upload_file:20:73": {
-            "body_hash": "be99692a519257e7d307f0b901bcbc09",
-            "loc": 54
+          "src/cowabunga_api/routers/openai/files.py:upload_file:21:72": {
+            "body_hash": "a503e1dc5210c99856e7d922b804c4e6",
+            "loc": 52
           },
-          "src/cowabunga_api/routers/openai/files.py:list_files:77:87": {
+          "src/cowabunga_api/routers/openai/files.py:list_files:76:86": {
             "body_hash": "16cffda0416326ad7a8f281e8e265f5d",
             "loc": 11
           },
-          "src/cowabunga_api/routers/openai/files.py:retrieve_file:91:97": {
+          "src/cowabunga_api/routers/openai/files.py:retrieve_file:90:96": {
             "body_hash": "de9ffc294dd243547d345a8abe094aa1",
             "loc": 7
           },
-          "src/cowabunga_api/routers/openai/files.py:delete_file:101:121": {
+          "src/cowabunga_api/routers/openai/files.py:delete_file:100:120": {
             "body_hash": "5b1b2ed42e307d69ba4e02b7d5fb0461",
             "loc": 21
           },
-          "src/cowabunga_api/routers/openai/files.py:retrieve_file_content:125:161": {
+          "src/cowabunga_api/routers/openai/files.py:retrieve_file_content:124:160": {
             "body_hash": "563ad6296eea859db15c71c378bfc965",
             "loc": 37
           },
-          "src/cowabunga_api/routers/openai/messages.py:create_message:14:47": {
-            "body_hash": "cc9f2fcd21ddf3424862bbf1fc0a5f6c",
-            "loc": 34
+          "src/cowabunga_api/routers/openai/messages.py:create_message:15:45": {
+            "body_hash": "645a286b905e61617c1f244b4396d990",
+            "loc": 31
           },
-          "src/cowabunga_api/routers/openai/messages.py:list_messages:51:67": {
+          "src/cowabunga_api/routers/openai/messages.py:list_messages:49:65": {
             "body_hash": "662e9896a645c1b3d7f60680d2bd84c9",
             "loc": 17
           },
-          "src/cowabunga_api/routers/openai/messages.py:retrieve_message:71:76": {
+          "src/cowabunga_api/routers/openai/messages.py:retrieve_message:69:74": {
             "body_hash": "1269b86455a8526ec92f8f97dba191c3",
             "loc": 6
           },
-          "src/cowabunga_api/routers/openai/messages.py:modify_message:80:104": {
+          "src/cowabunga_api/routers/openai/messages.py:modify_message:78:102": {
             "body_hash": "44f5a85c9d495f1867cdc97561f86a1e",
             "loc": 25
           },
-          "src/cowabunga_api/routers/openai/messages.py:delete_message:108:121": {
+          "src/cowabunga_api/routers/openai/messages.py:delete_message:106:119": {
             "body_hash": "2a9d67b6256b645c91158646b5312283",
             "loc": 14
           },
@@ -27520,9 +27821,9 @@
             "body_hash": "09613c79a6acf35276e6863c1280afe1",
             "loc": 10
           },
-          "src/cowabunga_api/routers/openai/runs.py:modify_run:134:161": {
-            "body_hash": "b4e5b59529aecb1e4257a57a3d2b74e6",
-            "loc": 28
+          "src/cowabunga_api/routers/openai/runs.py:modify_run:134:155": {
+            "body_hash": "14b897446fa6e92b30d44d75c9f7a6fc",
+            "loc": 22
           },
           "src/cowabunga_api/routers/openai/runs_steps.py:submit_tool_outputs:15:74": {
             "body_hash": "0ba098374b6d764f6186556d904a52de",
@@ -27548,13 +27849,13 @@
             "body_hash": "084b38dc900a068b8cea84ba40875a76",
             "loc": 11
           },
-          "src/cowabunga_api/routers/openai/threads.py:modify_thread:54:90": {
-            "body_hash": "ab940506a4ce1c373ff30339089e98af",
-            "loc": 37
+          "src/cowabunga_api/routers/openai/threads.py:modify_thread:54:82": {
+            "body_hash": "772e57094fde29ddcd0caa1f4618b972",
+            "loc": 29
           },
-          "src/cowabunga_api/routers/openai/threads.py:delete_thread:94:109": {
-            "body_hash": "637c60691d3aa4966319db782d149158",
-            "loc": 16
+          "src/cowabunga_api/routers/openai/threads.py:delete_thread:86:94": {
+            "body_hash": "3ce7784c88eb4dbb6a047b88e5fccc42",
+            "loc": 9
           },
           "src/cowabunga_api/routers/openai/vector_stores.py:list_vector_stores:31:42": {
             "body_hash": "f89d34fbf813736b25bd2ff965aeeee2",
@@ -27652,9 +27953,9 @@
             "body_hash": "18a2b3800fddc75ffd04bec728e8f687",
             "loc": 41
           },
-          "src/cowabunga_api/typedef/models/model_types.py:__init__:9:11": {
-            "body_hash": "3463847be885e4851a985759e490bba5",
-            "loc": 3
+          "src/cowabunga_api/typedef/models/model_types.py:__init__:10:13": {
+            "body_hash": "69e1bc1bcb6f3baad1754842e0d93cc7",
+            "loc": 4
           },
           "src/cowabunga_api/typedef/rag/rag_types.py:get_instance:10:16": {
             "body_hash": "22f3ca2f1038d37c9ccb266d07c39b2f",
@@ -27716,11 +28017,11 @@
             "body_hash": "a0d6de7275af352c7f5a38e4ca028e72",
             "loc": 33
           },
-          "src/cowabunga_api/typedef/vectorstores/vectorstore_types.py:add_days_to_timestamp:76:97": {
+          "src/cowabunga_api/typedef/vectorstores/vectorstore_types.py:add_days_to_timestamp:74:95": {
             "body_hash": "4fff868bf3f767802f5d684a21463ead",
             "loc": 22
           },
-          "src/cowabunga_api/typedef/vectorstores/vectorstore_types.py:get_expiry:99:114": {
+          "src/cowabunga_api/typedef/vectorstores/vectorstore_types.py:get_expiry:97:112": {
             "body_hash": "645600dab2539bf5cf197b22a5254dff",
             "loc": 16
           },

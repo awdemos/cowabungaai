@@ -1,7 +1,7 @@
 {
   "version": 8,
   "created": "2026-03-08T00:49:05+00:00",
-  "updated": "2026-04-19T14:22:23+00:00",
+  "updated": "2026-04-19T15:59:22+00:00",
   "queue_order": [
     "review::.::holistic::abstraction_fitness::backward_compat_alias_get_session",
     "review::.::holistic::abstraction_fitness::overbroad_metadata_object",
@@ -142,7 +142,68 @@
     "subjective::type_safety"
   ],
   "deferred": [],
-  "skipped": {},
+  "skipped": {
+    "subjective_review::packages/llama-cpp-python/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/llama-cpp-python/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/repeater/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/repeater/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/text-embeddings/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/text-embeddings/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/vllm/src/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/vllm/src/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::packages/whisper/main.py::unreviewed": {
+      "issue_id": "subjective_review::packages/whisper/main.py::unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    },
+    "subjective_review::.::holistic_unreviewed": {
+      "issue_id": "subjective_review::.::holistic_unreviewed",
+      "kind": "temporary",
+      "reason": "Already completed 20 holistic review batches; these are stale prep items",
+      "note": null,
+      "attestation": "I have actually reflected and I am not deferring this for lazy reasons.",
+      "created_at": "2026-04-19T15:59:22+00:00",
+      "review_after": null,
+      "skipped_at_scan": 6
+    }
+  },
   "active_cluster": null,
   "overrides": {
     "orphaned::src/leapfrogai_evals/runners/niah_runner.py": {
@@ -2806,7 +2867,12 @@
   },
   "superseded": {},
   "promoted_ids": [],
-  "plan_start_scores": {},
+  "plan_start_scores": {
+    "strict": 71.0,
+    "overall": 73.6,
+    "objective": 86.0,
+    "verified": 86.0
+  },
   "execution_log": [
     {
       "timestamp": "2026-03-08T00:49:05+00:00",
@@ -3250,16 +3316,55 @@
         "sync_status": "synced",
         "sync_message": null
       }
+    },
+    {
+      "timestamp": "2026-04-19T14:27:14+00:00",
+      "action": "seed_start_scores",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {}
+    },
+    {
+      "timestamp": "2026-04-19T14:27:14+00:00",
+      "action": "complete_postflight_scan",
+      "issue_ids": [],
+      "cluster_name": null,
+      "actor": "system",
+      "note": null,
+      "detail": {
+        "scan_count": 6
+      }
+    },
+    {
+      "timestamp": "2026-04-19T15:59:22+00:00",
+      "action": "skip",
+      "issue_ids": [
+        "subjective_review::packages/llama-cpp-python/main.py::unreviewed",
+        "subjective_review::packages/repeater/main.py::unreviewed",
+        "subjective_review::packages/text-embeddings/main.py::unreviewed",
+        "subjective_review::packages/vllm/src/main.py::unreviewed",
+        "subjective_review::packages/whisper/main.py::unreviewed",
+        "subjective_review::.::holistic_unreviewed"
+      ],
+      "cluster_name": null,
+      "actor": "user",
+      "note": null,
+      "detail": {
+        "kind": "temporary",
+        "reason": "Already completed 20 holistic review batches; these are stale prep items"
+      }
     }
   ],
   "epic_triage_meta": {},
   "commit_log": [],
   "uncommitted_issues": [],
   "commit_tracking_branch": null,
-  "scan_count_at_plan_start": 3,
+  "scan_count_at_plan_start": 6,
   "refresh_state": {
     "_subjective_migration_pruned": true,
     "lifecycle_phase": "plan",
-    "postflight_scan_completed_at_scan_count": 4
+    "postflight_scan_completed_at_scan_count": 6
   }
 }

@@ -256,14 +256,14 @@
   "noise_budget": 10,
   "noise_global_budget": 0,
   "narrative": {
-    "phase": "middle_grind",
-    "headline": "\u26a0 13 security issues \u2014 review before other cleanup. 410 issues open. Test health (0.0%) needs attention \u2014 run `desloppify next` to start. (117 review work items \u2014 run `desloppify show review --status open`)",
+    "phase": "stagnation",
+    "headline": "\u26a0 13 security issues \u2014 review before other cleanup. Score plateaued at 71.0 for 5 scans. Test health (0.0%) is where the breakthrough is. (117 review work items \u2014 run `desloppify show review --status open`)",
     "dimensions": {
       "lowest_dimensions": [
         {
           "name": "Test health",
           "strict": 0.0,
-          "failing": 57,
+          "failing": 58,
           "impact": 0.0
         },
         {
@@ -286,16 +286,16 @@
       "biggest_gap_dimensions": [
         {
           "name": "Test health",
-          "lenient": 40.9,
+          "lenient": 40.7,
           "strict": 0.0,
-          "gap": 40.9,
+          "gap": 40.7,
           "wontfix_count": 0
         },
         {
           "name": "Code quality",
           "lenient": 89.1,
-          "strict": 80.4,
-          "gap": 8.7,
+          "strict": 80.3,
+          "gap": 8.8,
           "wontfix_count": 0
         },
         {
@@ -306,7 +306,33 @@
           "wontfix_count": 0
         }
       ],
-      "stagnant_dimensions": []
+      "stagnant_dimensions": [
+        {
+          "name": "Code quality",
+          "strict": 80.3,
+          "stuck_scans": 5
+        },
+        {
+          "name": "Security",
+          "strict": 96.9,
+          "stuck_scans": 5
+        },
+        {
+          "name": "File health",
+          "strict": 96.2,
+          "stuck_scans": 5
+        },
+        {
+          "name": "Duplication",
+          "strict": 97.1,
+          "stuck_scans": 5
+        },
+        {
+          "name": "Test health",
+          "strict": 0.0,
+          "stuck_scans": 5
+        }
+      ]
     },
     "actions": [
       {
@@ -356,8 +382,8 @@
       {
         "type": "refactor",
         "detector": "test_coverage",
-        "count": 57,
-        "description": "57 test_coverage work items \u2014 review test coverage gaps \u2014 focus on critical modules with many importers first; defer test writing until code quality issues are resolved",
+        "count": 58,
+        "description": "58 test_coverage work items \u2014 review test coverage gaps \u2014 focus on critical modules with many importers first; defer test writing until code quality issues are resolved",
         "command": "desloppify show test_coverage --status open",
         "impact": 0.0,
         "dimension": "Test health",
@@ -406,13 +432,13 @@
         "impact": 0.0,
         "dimension": "Unknown",
         "priority": 9,
-        "lane": "refactor_0"
+        "lane": "refactor_1"
       },
       {
         "type": "manual_fix",
         "detector": "smells",
-        "count": 89,
-        "description": "89 smells issues \u2014 inspect with `desloppify next` and fix manually",
+        "count": 91,
+        "description": "91 smells issues \u2014 inspect with `desloppify next` and fix manually",
         "command": "desloppify show smells --status open",
         "impact": 0.0,
         "dimension": "Code quality",
@@ -428,7 +454,7 @@
         "impact": 0.0,
         "dimension": "Code quality",
         "priority": 11,
-        "lane": "refactor_1"
+        "lane": "refactor_2"
       },
       {
         "type": "manual_fix",
@@ -439,7 +465,7 @@
         "impact": 0.0,
         "dimension": "Code quality",
         "priority": 12,
-        "lane": "refactor_2"
+        "lane": "refactor_3"
       },
       {
         "type": "manual_fix",
@@ -453,30 +479,19 @@
         "lane": "refactor_0"
       },
       {
-        "type": "manual_fix",
-        "detector": "subjective_review",
-        "count": 6,
-        "description": "6 assessment requests need review \u2014 run holistic review to refresh subjective scores",
-        "command": "desloppify review --prepare",
-        "impact": 0.0,
-        "dimension": "Unknown",
-        "priority": 14,
-        "lane": "refactor_0"
-      },
-      {
         "type": "debt_review",
         "detector": null,
         "description": "2.1 pts of wontfix debt \u2014 review stale decisions",
         "command": "desloppify show --status wontfix",
         "gap": 2.1,
-        "priority": 15,
+        "priority": 14,
         "lane": "debt_review"
       }
     ],
     "strategy": {
       "fixer_leverage": {
         "auto_fixable_count": 0,
-        "total_count": 650,
+        "total_count": 641,
         "coverage": 0.0,
         "impact_ratio": 0.0,
         "recommendation": "none"
@@ -499,17 +514,24 @@
             6,
             7,
             8,
-            9,
             10,
-            13,
-            14
+            13
           ],
-          "file_count": 70,
+          "file_count": 69,
           "total_impact": 0.0,
           "automation": "manual",
           "run_first": false
         },
         "refactor_1": {
+          "actions": [
+            9
+          ],
+          "file_count": 1,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "refactor_2": {
           "actions": [
             11
           ],
@@ -518,7 +540,7 @@
           "automation": "manual",
           "run_first": false
         },
-        "refactor_2": {
+        "refactor_3": {
           "actions": [
             12
           ],
@@ -531,14 +553,14 @@
           "actions": [
             5
           ],
-          "file_count": 53,
+          "file_count": 54,
           "total_impact": 0.0,
           "automation": "manual",
           "run_first": false
         },
         "debt_review": {
           "actions": [
-            15
+            14
           ],
           "file_count": 0,
           "total_impact": 0.0,
@@ -547,7 +569,7 @@
         }
       },
       "can_parallelize": true,
-      "hint": "5 independent workstreams, safe to parallelize. Rescan after each phase to verify. Review: 117 issue(s) \u2014 `desloppify show review --status open`."
+      "hint": "6 independent workstreams, safe to parallelize. Rescan after each phase to verify. Review: 117 issue(s) \u2014 `desloppify show review --status open`."
     },
     "tools": {
       "fixers": [],
@@ -572,15 +594,15 @@
       "overall_gap": 2.1,
       "wontfix_count": 0,
       "worst_dimension": "Test health",
-      "worst_gap": 40.9,
-      "trend": "growing"
+      "worst_gap": 40.7,
+      "trend": "stable"
     },
     "milestone": null,
     "primary_action": {
       "command": "desloppify show orphaned --status open",
       "description": "70 orphaned issues \u2014 delete dead files or relocate with `desloppify move`"
     },
-    "why_now": "5 independent workstreams, safe to parallelize. Rescan after each phase to verify. Review: 117 issue(s) \u2014 `desloppify show review --status open`.",
+    "why_now": "6 independent workstreams, safe to parallelize. Rescan after each phase to verify. Review: 117 issue(s) \u2014 `desloppify show review --status open`.",
     "verification_step": {
       "command": "desloppify scan",
       "reason": "revalidate after changes"
@@ -610,11 +632,11 @@
     ],
     "reminder_history": {
       "zone_classification": 3,
-      "report_scores": 5,
+      "report_scores": 6,
       "feedback_nudge": 3,
       "stagnant_nudge": 20,
       "wontfix_growing": 3,
-      "review_issues_pending": 2
+      "review_issues_pending": 3
     }
   },
   "config": {
