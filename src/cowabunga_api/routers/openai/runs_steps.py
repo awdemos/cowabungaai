@@ -24,7 +24,7 @@ async def submit_tool_outputs(
     "submit_tool_outputs", this endpoint submits outputs from tool calls.
     """
     crud_run = CRUDRun(db=session)
-    run = await crud_run.get(id_=run_id)
+    run = await crud_run.get(filters={"id": run_id})
 
     if not run:
         raise HTTPException(
@@ -81,7 +81,7 @@ async def cancel_run(thread_id: str, run_id: str, session: Session) -> Run:
     Cancels a run that is in_progress or queued.
     """
     crud_run = CRUDRun(db=session)
-    run = await crud_run.get(id_=run_id)
+    run = await crud_run.get(filters={"id": run_id})
 
     if not run:
         raise HTTPException(
@@ -126,7 +126,7 @@ async def list_run_steps(
     Returns empty list for now.
     """
     crud_run = CRUDRun(db=session)
-    run = await crud_run.get(id_=run_id)
+    run = await crud_run.get(filters={"id": run_id})
 
     if not run:
         raise HTTPException(
@@ -149,7 +149,7 @@ async def retrieve_run_step(
     Returns 404 for now.
     """
     crud_run = CRUDRun(db=session)
-    run = await crud_run.get(id_=run_id)
+    run = await crud_run.get(filters={"id": run_id})
 
     if not run:
         raise HTTPException(
