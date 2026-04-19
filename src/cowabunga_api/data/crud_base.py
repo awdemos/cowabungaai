@@ -100,10 +100,7 @@ class CRUDBase(Generic[ModelType]):
 
         result = await query.execute()
 
-        try:
-            return True if result.data else False
-        except Exception:
-            return False
+        return True if result.data else False
 
     async def _get_user_id(self) -> str:
         """Get the user_id from the API key."""
