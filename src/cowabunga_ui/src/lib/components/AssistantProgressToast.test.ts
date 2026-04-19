@@ -3,7 +3,7 @@ Note - fully testing the assistant progress toast has proven difficult with Play
  connection for the Supabase realtime listeners works, and sometimes it does not. Due to the dynamic nature of
  how this component updates in realtime, unit testing is limited.
  There is an issue in the backlog to re-address at some point:
- TODO - https://github.com/defenseunicorns/leapfrogai/issues/981
+ TODO - https://github.com/defenseunicorns/cowabunga/issues/981
 */
 
 import AssistantProgressToast from '$components/AssistantProgressToast.svelte';

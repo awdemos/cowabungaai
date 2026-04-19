@@ -19,7 +19,7 @@ from cowabunga_api.typedef.threads import (
     CreateThreadRequest,
     ThreadRunCreateParamsRequest,
 )
-from tests.utils.client import CowabungaAIClient, get_leapfrogai_model
+from tests.utils.client import CowabungaAIClient, get_cowabunga_model
 
 starting_assistant = Assistant(
     id="",
@@ -27,7 +27,7 @@ starting_assistant = Assistant(
     name="test",
     description="test",
     instructions="test",
-    model=get_leapfrogai_model(),
+    model=get_cowabunga_model(),
     object="assistant",
     tools=[],
     tool_resources=None,

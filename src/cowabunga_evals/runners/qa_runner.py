@@ -146,7 +146,7 @@ class QA_Runner:
                     for chunk_id in chunk_ids:
                         vector_response = requests.get(
                             url=os.getenv("COWABUNGA_API_URL")
-                            + "/leapfrogai/v1/vector_stores/vector/"
+                            + "/cowabungaai/v1/vector_stores/vector/"
                             + chunk_id,
                             headers={
                                 "accept": "application/json",

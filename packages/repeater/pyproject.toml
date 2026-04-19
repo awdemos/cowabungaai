@@ -6,7 +6,7 @@ description = "A LeapfrogAI API-compatible pseudo-model for testing the API."
 version = "0.14.0"
 # x-release-please-end
 
-dependencies = ["leapfrogai-sdk"]
+dependencies = ["cowabunga-sdk"]
 requires-python = "~=3.11"
 readme = "README.md"
 
@@ -14,8 +14,8 @@ readme = "README.md"
 generate-hashes = true
 
 [tool.setuptools]
-packages = ["cowabunga_sdk"]
-package-dir = { "" = "../../src" }
+py-modules = ["main"]
+
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

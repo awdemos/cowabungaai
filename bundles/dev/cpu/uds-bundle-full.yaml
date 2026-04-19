@@ -2,7 +2,7 @@
 
 kind: UDSBundle
 metadata:
-  name: leapfrogai
+  name: cowabungaai
   description: A UDS bundle for deploying CowabungaAI with CPU-only support
   version: dev
 
@@ -13,7 +13,7 @@ packages:
     ref: dev
 
   # API
-  - name: leapfrogai-api
+  - name: cowabunga-api
     path: ../../../packages/api/
     ref: dev
 
@@ -33,6 +33,6 @@ packages:
     ref: dev
 
   # UI
-  - name: leapfrogai-ui
+  - name: cowabunga-ui
     path: ../../../packages/ui/
     ref: dev

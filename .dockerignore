@@ -1,3 +1,4 @@
+.git/
 **/*.tar.zst
 **/*.log*
 **/__pycache__
@@ -9,3 +10,16 @@
 **/.svelte-kit
 **/zarf-sbom/
 **/zarf-*.tar.zst
+**/.venv
+**/.env
+**/.env.*
+**/.model
+**/build
+**/*.egg-info
+**/.pytest_cache
+**/.mypy_cache
+**/.logs
+.bundles/
+website/
+logs/
+

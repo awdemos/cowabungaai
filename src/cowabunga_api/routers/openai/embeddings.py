@@ -3,7 +3,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 from cowabunga_api.backend.grpc_client import create_embeddings
 from cowabunga_api.typedef.embeddings import (
     CreateEmbeddingRequest,

@@ -70,7 +70,7 @@ repos:
       - id: eslint
         name: ESLint
         language: system
-        entry: sh -c 'npm --prefix src/leapfrogai_ui/ run lint'
+        entry: sh -c 'npm --prefix src/cowabunga_ui/ run lint'
         files: \.(js|jsx|ts|tsx|svelte|cjs|mjs)$ # *.js, *.jsx, *.ts, *.tsx, *.svelte, *.cjs, *.mjs
 
   - repo: https://github.com/astral-sh/ruff-pre-commit

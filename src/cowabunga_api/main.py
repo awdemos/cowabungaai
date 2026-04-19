@@ -10,12 +10,12 @@ from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import RedirectResponse
 from cowabunga_api.routers.base import router as base_router
-from cowabunga_api.routers.leapfrogai import auth
-from cowabunga_api.routers.leapfrogai import models as lfai_models
-from cowabunga_api.routers.leapfrogai import vector_stores as lfai_vector_stores
-from cowabunga_api.routers.leapfrogai import count as lfai_token_count
-from cowabunga_api.routers.leapfrogai import rag as lfai_rag
-from cowabunga_api.routers.leapfrogai import tokens as lfai_tokens
+from cowabunga_api.routers.cowabunga import auth
+from cowabunga_api.routers.cowabunga import models as lfai_models
+from cowabunga_api.routers.cowabunga import vector_stores as lfai_vector_stores
+from cowabunga_api.routers.cowabunga import count as lfai_token_count
+from cowabunga_api.routers.cowabunga import rag as lfai_rag
+from cowabunga_api.routers.cowabunga import tokens as lfai_tokens
 from cowabunga_api.routers.openai import (
     assistants,
     audio,

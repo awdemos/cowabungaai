@@ -1,6 +1,6 @@
 ## @section CowabungaAI parameters
 ## Parameters not defined in the upstream chart that are related to CowabungaAI's specific configuration
-leapfrogai:
+cowabungaai:
   package:
     host: supabase-kong
     name: supabase
@@ -8,7 +8,7 @@ leapfrogai:
   sso:
     clientId: ###ZARF_CONST_EXTERNAL_KEYCLOAK_CLIENT_ID###
     redirectUris:
-      - "https://{{ .Values.leapfrogai.package.host }}.###ZARF_VAR_DOMAIN###/auth/v1/callback"
+      - "https://{{ .Values.cowabungaai.package.host }}.###ZARF_VAR_DOMAIN###/auth/v1/callback"
     webOrigins:
       - "https://ai.###ZARF_VAR_DOMAIN###"
 
@@ -52,8 +52,8 @@ auth:
     GOTRUE_MAILER_URLPATHS_RECOVERY: "{{ include "supabase.studio.publicURL" . }}/auth/v1/verify"
     GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE: "{{ include "supabase.studio.publicURL" . }}/auth/v1/verify"
     GOTRUE_EXTERNAL_KEYCLOAK_ENABLED: "###ZARF_VAR_ENABLE_EXTERNAL_KEYCLOAK###"
-    GOTRUE_EXTERNAL_KEYCLOAK_CLIENT_ID: "{{ .Values.leapfrogai.sso.clientId }}"
-    GOTRUE_EXTERNAL_KEYCLOAK_REDIRECT_URI: "https://{{ .Values.leapfrogai.package.host }}.###ZARF_VAR_DOMAIN###/auth/v1/callback"
+    GOTRUE_EXTERNAL_KEYCLOAK_CLIENT_ID: "{{ .Values.cowabungaai.sso.clientId }}"
+    GOTRUE_EXTERNAL_KEYCLOAK_REDIRECT_URI: "https://{{ .Values.cowabungaai.package.host }}.###ZARF_VAR_DOMAIN###/auth/v1/callback"
     GOTRUE_EXTERNAL_KEYCLOAK_URL: "https://sso.###ZARF_VAR_DOMAIN###/realms/uds"
   resourcesPreset: "none"
   podLabels:

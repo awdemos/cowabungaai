@@ -61,7 +61,7 @@ components:
   charts:
     # VastIO Helm chart uses official Supabase images instead of deprecated Bitnami images
     - name: supabase
-        namespace: leapfrogai
+        namespace: cowabungaai
         url: oci://ghcr.io/vast-io/helm-charts/supabase
         releaseName: supabase
         version: 0.23.9
@@ -85,17 +85,17 @@ components:
       onDeploy:
         before:
           # Deletes the initial kong config created by the upstream chart
-          - cmd: ./zarf tools kubectl delete cm supabase-kong-declarative-config -n leapfrogai
+          - cmd: ./zarf tools kubectl delete cm supabase-kong-declarative-config -n cowabungaai
         after:
           # Restarts supabase-kong after the new kong config has been applied
           # so that it can be loaded into the kong container
-          - cmd: ./zarf tools kubectl rollout restart deployment supabase-kong -n leapfrogai
-          - cmd: ./zarf tools kubectl rollout status deployment supabase-kong -n leapfrogai
+          - cmd: ./zarf tools kubectl rollout restart deployment supabase-kong -n cowabungaai
+          - cmd: ./zarf tools kubectl rollout status deployment supabase-kong -n cowabungaai
     manifests:
       # Applies an update kong config that includes basic auth, this gets applied
       # after the kong pods have started so the original config needs to be deleted and pod restarted
       - name: supabase-manifests
-        namespace: leapfrogai
+        namespace: cowabungaai
         files:
           - "manifests/declarative-conf-configmap.yaml"
 
@@ -106,14 +106,14 @@ components:
       flavor: upstream
     charts:
       - name: supabase-migrations
-        namespace: leapfrogai
+        namespace: cowabungaai
         localPath: migrationChart/
         releaseName: supabase-migrations
         version: 0.0.1
         valuesFiles:
           - "migration-values.yaml"
     images:
-      - "ghcr.io/defenseunicorns/leapfrogai/supabase-migrations:###ZARF_PKG_TMPL_IMAGE_VERSION###"
+      - "ghcr.io/defenseunicorns/cowabungaai/supabase-migrations:###ZARF_PKG_TMPL_IMAGE_VERSION###"
     actions:
       onDeploy:
         after:
@@ -121,5 +121,5 @@ components:
               cluster:
                 kind: Job
                 name: supabase-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
-                namespace: leapfrogai
+                namespace: cowabungaai
                 condition: complete

@@ -23,7 +23,7 @@ export const uploadFileWithApi = async (
   });
 
   // This can also be done IAW the OpenAI API documentation with fs.createReadStream, but LeapfrogAI API does not currently
-  // support a ReadStream. Open Issue: https://github.com/defenseunicorns/leapfrogai/issues/710
+  // support a ReadStream. Open Issue: https://github.com/defenseunicorns/cowabunga/issues/710
 
   return openAIClient.files.create({
     file,

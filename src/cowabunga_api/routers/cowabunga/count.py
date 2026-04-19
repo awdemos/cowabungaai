@@ -8,7 +8,7 @@ from cowabunga_api.typedef.counting import (
     TokenCountResponse,
 )
 from cowabunga_api.backend.grpc_client import create_token_count
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 
 router = APIRouter(prefix="/cowabunga/v1/count", tags=["cowabunga/count"])
 

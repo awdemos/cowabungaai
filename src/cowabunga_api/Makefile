@@ -34,7 +34,7 @@ get-supabase-config: check-tools
 # Install dependencies
 install: .env
 	@echo "Installing Python dependencies"
-	python -m pip install ../../src/leapfrogai_sdk
+	python -m pip install ../../src/cowabunga_sdk
 	python -m pip install -e ".[dev]"
 
 # Development server

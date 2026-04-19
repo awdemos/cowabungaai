@@ -12,7 +12,7 @@ import { mockCreateApiKeyFormActionError } from '$lib/mocks/api-key-mocks';
 
 // TODO - this test will not work until we get a response to this question:
 // https://github.com/ciscoheat/sveltekit-superforms/issues/394
-// This is currently blocking this issue: https://github.com/defenseunicorns/leapfrogai/issues/636
+// This is currently blocking this issue: https://github.com/defenseunicorns/cowabunga/issues/636
 describe.skip('Create API Key Modal', () => {
   let form: APIKeysForm;
 

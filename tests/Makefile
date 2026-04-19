@@ -4,12 +4,12 @@ LFAI_RUN_NIAH_TESTS ?= false
 LFAI_RUN_REPEATER_TESTS ?= true
 
 install:
-	pip install ".[dev]" "src/leapfrogai_api" "src/leapfrogai_sdk" "packages/repeater"
+	pip install ".[dev]" "src/cowabunga_api" "src/cowabunga_sdk" "packages/repeater"
 
 set-supabase:
 	$(eval SUPABASE_URL := $(SUPABASE_URL))
-	$(eval SUPABASE_ANON_KEY := $(shell uds zarf tools kubectl get secret -n leapfrogai supabase-bootstrap-jwt -o json | uds zarf tools yq '.data.anon-key' | base64 -d))
-	$(eval SUPABASE_SERVICE_KEY := $(shell uds zarf tools kubectl get secret supabase-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.service-key}' | base64 -d))
+	$(eval SUPABASE_ANON_KEY := $(shell uds zarf tools kubectl get secret -n cowabungaai supabase-bootstrap-jwt -o json | uds zarf tools yq '.data.anon-key' | base64 -d))
+	$(eval SUPABASE_SERVICE_KEY := $(shell uds zarf tools kubectl get secret supabase-bootstrap-jwt -n cowabungaai -o jsonpath='{.data.service-key}' | base64 -d))
 
 # .env file covers all possible tests use cases where the same variable is named differently
 define get_jwt_token

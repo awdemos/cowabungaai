@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: "ghcr.io/defenseunicorns/leapfrogai/text-embeddings"
+  repository: "ghcr.io/defenseunicorns/cowabungaai/text-embeddings"
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   # x-release-please-start-version
@@ -83,5 +83,5 @@ modelInjectionContainer:
       cpu: "200m"
 
   volumeMounts:
-    - name: leapfrogai-pv-storage
+    - name: cowabungaai-pv-storage
       mountPath: /data

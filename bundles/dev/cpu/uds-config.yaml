@@ -10,7 +10,7 @@ variables:
   supabase:
     domain: "uds.dev"
 
-  leapfrogai-ui:
+  cowabunga-ui:
     subdomain: ai
     domain: uds.dev
     model: llama-cpp-python

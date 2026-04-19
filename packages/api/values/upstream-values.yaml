@@ -1,6 +1,6 @@
 api:
   image:
-    repository: "ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api"
+    repository: "ghcr.io/defenseunicorns/cowabungaai/cowabunga-api"
     tag: "###ZARF_CONST_IMAGE_VERSION###"
 
   expose: "###ZARF_VAR_EXPOSE_API###"
@@ -19,7 +19,7 @@ api:
     - name: PORT
       value: "8080"
     - name: SUPABASE_URL
-      value: "http://supabase-kong.leapfrogai.svc.cluster.local:80"
+      value: "http://supabase-kong.cowabungaai.svc.cluster.local:80"
     - name: SUPABASE_ANON_KEY
       valueFrom:
         secretKeyRef:
@@ -29,7 +29,7 @@ api:
 
   migration:
     image:
-      repository: "ghcr.io/defenseunicorns/leapfrogai/api-migrations"
+      repository: "ghcr.io/defenseunicorns/cowabungaai/api-migrations"
       tag: "###ZARF_CONST_IMAGE_VERSION###"
 
 kiwigrid:

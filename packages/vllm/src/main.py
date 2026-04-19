@@ -15,8 +15,8 @@ from vllm.outputs import RequestOutput
 from vllm.utils import random_uuid
 
 from config import AppConfig
-from leapfrogai_sdk import BackendConfig
-from leapfrogai_sdk.llm import GenerationConfig, LLM
+from cowabunga_sdk import BackendConfig
+from cowabunga_sdk.llm import GenerationConfig, LLM
 
 load_dotenv()
 

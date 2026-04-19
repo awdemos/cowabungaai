@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: supabase-migrations-{{ .Values.leapfrogai.migration.imageTag }}
+  name: supabase-migrations-{{ .Values.cowabungaai.migration.imageTag }}
 spec:
   template:
     spec:
       containers:
       - name: supabase-cli
-        image: "ghcr.io/defenseunicorns/leapfrogai/supabase-migrations:{{ .Values.leapfrogai.migration.imageTag }}"
+        image: "ghcr.io/defenseunicorns/cowabungaai/supabase-migrations:{{ .Values.cowabungaai.migration.imageTag }}"
         env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -15,11 +15,11 @@ spec:
                   name: supabase-postgresql
                   key: postgres-password
             - name: MIGRATION_NAMESPACE
-              value: "{{ .Values.leapfrogai.migration.namespace }}"
+              value: "{{ .Values.cowabungaai.migration.namespace }}"
             - name: MIGRATION_SERVICE_NAME
-              value: "{{ .Values.leapfrogai.migration.serviceName }}"
+              value: "{{ .Values.cowabungaai.migration.serviceName }}"
             - name: MIGRATION_SERVICE_PORT
-              value: "{{ .Values.leapfrogai.migration.servicePort }}"
+              value: "{{ .Values.cowabungaai.migration.servicePort }}"
 
         # NOTE: This command is assuming the default username.
         command: ["/bin/sh"]
@@ -29,9 +29,9 @@ spec:
             supabase migration fetch --db-url="postgresql://supabase_admin:$POSTGRES_PASSWORD@$MIGRATION_SERVICE_NAME.$MIGRATION_NAMESPACE.svc.cluster.local:$MIGRATION_SERVICE_PORT/postgres" --debug || true &&
             supabase db push --db-url="postgresql://supabase_admin:$POSTGRES_PASSWORD@$MIGRATION_SERVICE_NAME.$MIGRATION_NAMESPACE.svc.cluster.local:$MIGRATION_SERVICE_PORT/postgres" --include-all --debug
         securityContext:
-          runAsUser: {{ .Values.leapfrogai.securityContext.runAsUser }}
-          runAsGroup: {{ .Values.leapfrogai.securityContext.runAsGroup }}
+          runAsUser: {{ .Values.cowabungaai.securityContext.runAsUser }}
+          runAsGroup: {{ .Values.cowabungaai.securityContext.runAsGroup }}
       securityContext:
-        fsGroup: {{ .Values.leapfrogai.securityContext.fsGroup }}
+        fsGroup: {{ .Values.cowabungaai.securityContext.fsGroup }}
       restartPolicy: Never
   backoffLimit: 4

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "chart.fullname" . }}
-  namespace: {{ .Release.Namespace | default "leapfrogai" }}
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
   annotations:
     app: {{ include "chart.fullname" . }}
     zarf.dev/connect-description: "Load the CowabungaAI UI"

@@ -4,7 +4,7 @@ import time
 import uuid
 import grpc
 from typing import BinaryIO, Iterator, AsyncGenerator, Any
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 from cowabunga_api.typedef.chat import (
     ChatCompletionResponse,
     ChatDelta,

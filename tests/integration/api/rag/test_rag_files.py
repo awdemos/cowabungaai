@@ -29,7 +29,7 @@ def make_test_run(client, assistant, thread):
     reason="COWABUNGA_RUN_NIAH_TESTS envvar was not set to true",
 )
 def test_rag_needle_haystack():
-    config = client_config_factory("leapfrogai")
+    config = client_config_factory("cowabunga")
     client = config.client
 
     vector_store = client.beta.vector_stores.create(name="Test data")

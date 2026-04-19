@@ -1,5 +1,5 @@
 ARG LOCAL_VERSION
-FROM ghcr.io/defenseunicorns/leapfrogai/cowabungaai-sdk:${LOCAL_VERSION} AS sdk
+FROM ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
 
 FROM nvidia/cuda:12.2.2-devel-ubuntu22.04 AS builder
 
@@ -40,8 +40,8 @@ RUN groupadd -g 65532 vglusers && \
 USER nonroot
 
 # copy-in SDK from sdk stage and vllm source code from host
-WORKDIR /home/leapfrogai
-COPY --from=sdk --chown=nonroot:nonroot /leapfrogai/${SDK_DEST} ./${SDK_DEST}
+WORKDIR /home/cowabungaai
+COPY --from=sdk --chown=nonroot:nonroot /cowabungaai/${SDK_DEST} ./${SDK_DEST}
 COPY --chown=nonroot:nonroot ${COMPONENT_DIRECTORY} packages/vllm
 
 # create virtual environment for light-weight portability and minimal libraries
@@ -62,7 +62,7 @@ RUN . ~/.bashrc && \
     pyenv exec python -m venv .venv
 
 # set path to venv python
-ENV PATH="/home/leapfrogai/.venv/bin:$PATH"
+ENV PATH="/home/cowabungaai/.venv/bin:$PATH"
 
 RUN rm -f packages/vllm/build/*.whl && \
     python -m pip wheel packages/vllm -w packages/vllm/build --find-links=${SDK_DEST} && \
@@ -84,20 +84,20 @@ RUN groupadd -g 65532 vglusers && \
     usermod -a -G video,sudo nonroot
 USER nonroot
 
-WORKDIR /home/leapfrogai
+WORKDIR /home/cowabungaai
 
 # copy-in SDK from sdk stagem model and vllm source code from builder
-COPY --from=sdk --chown=nonroot:nonroot /leapfrogai/${SDK_DEST} ./${SDK_DEST}
-COPY --from=builder --chown=nonroot:nonroot /home/leapfrogai/.venv /home/leapfrogai/.venv
-COPY --from=builder --chown=nonroot:nonroot /home/leapfrogai/packages/vllm/src /home/leapfrogai/packages/vllm/src
+COPY --from=sdk --chown=nonroot:nonroot /cowabungaai/${SDK_DEST} ./${SDK_DEST}
+COPY --from=builder --chown=nonroot:nonroot /home/cowabungaai/.venv /home/cowabungaai/.venv
+COPY --from=builder --chown=nonroot:nonroot /home/cowabungaai/packages/vllm/src /home/cowabungaai/packages/vllm/src
 # copy-in python binaries
 COPY --from=builder --chown=nonroot:nonroot /home/nonroot/.pyenv/versions/${PYTHON_VERSION}/ /home/nonroot/.pyenv/versions/${PYTHON_VERSION}/
 
 # remove vLLM callback to stats server
 ENV VLLM_NO_USAGE_STATS=1
 
-ENV PATH="/home/leapfrogai/.venv/bin:$PATH"
+ENV PATH="/home/cowabungaai/.venv/bin:$PATH"
 
 EXPOSE 50051
 
-ENTRYPOINT ["python", "-m", "leapfrogai_sdk.cli", "--app-dir=packages/vllm/src/", "main:Model"]
+ENTRYPOINT ["python", "-m", "cowabunga_sdk.cli", "--app-dir=packages/vllm/src/", "main:Model"]

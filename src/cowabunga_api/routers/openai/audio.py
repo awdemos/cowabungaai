@@ -14,7 +14,7 @@ from cowabunga_api.typedef.audio import (
 from cowabunga_api.routers.supabase_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 
 router = APIRouter(prefix="/openai/v1/audio", tags=["openai/audio"])
 

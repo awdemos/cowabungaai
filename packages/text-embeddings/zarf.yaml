@@ -39,7 +39,7 @@ components:
       flavor: upstream
     charts:
       - name: text-embeddings-model
-        namespace: leapfrogai
+        namespace: cowabungaai
         localPath: chart
         releaseName: text-embeddings-model
         # x-release-please-start-version
@@ -48,12 +48,12 @@ components:
         valuesFiles:
           - "values/upstream-values.yaml"
     images:
-      - ghcr.io/defenseunicorns/leapfrogai/text-embeddings:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/text-embeddings:###ZARF_PKG_TMPL_IMAGE_VERSION###
       - cgr.dev/chainguard/bash:latest
     dataInjections:
       - source: .model/
         target:
-          namespace: leapfrogai
+          namespace: cowabungaai
           selector: app=lfai-text-embeddings
           container: data-loader
           path: /data/.model

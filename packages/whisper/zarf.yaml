@@ -40,7 +40,7 @@ components:
       flavor: upstream
     charts:
       - name: whisper-model
-        namespace: leapfrogai
+        namespace: cowabungaai
         localPath: chart
         releaseName: whisper-model
         # x-release-please-start-version
@@ -49,12 +49,12 @@ components:
         valuesFiles:
           - "values/upstream-values.yaml"
     images:
-      - ghcr.io/defenseunicorns/leapfrogai/whisper:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/whisper:###ZARF_PKG_TMPL_IMAGE_VERSION###
       - cgr.dev/chainguard/bash:latest
     dataInjections:
       - source: .model/
         target:
-          namespace: leapfrogai
+          namespace: cowabungaai
           selector: app=lfai-whisper
           container: data-loader
           path: /data/.model

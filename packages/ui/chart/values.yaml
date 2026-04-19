@@ -1,5 +1,5 @@
 image:
-  repository: "ghcr.io/defenseunicorns/leapfrogai/cowabunga-ui"
+  repository: "ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui"
   pullPolicy: Always
   # x-release-please-start-version
   tag: 0.14.0
@@ -26,7 +26,7 @@ securityContext:
 
 env:
   - name: COWABUNGA_API_BASE_URL
-    value: "http://cowabunga-api.leapfrogai.svc.cluster.local:8080"
+    value: "http://cowabunga-api.cowabungaai.svc.cluster.local:8080"
   - name: ORIGIN
     value: "https://ai.uds.dev"
   - name: DEFAULT_MODEL
@@ -64,7 +64,7 @@ extraEnv:
 
 migration:
   image:
-    repository: ghcr.io/defenseunicorns/leapfrogai/ui-migrations
+    repository: ghcr.io/defenseunicorns/cowabungaai/ui-migrations
     # x-release-please-start-version
     tag: 0.14.0
     # x-release-please-end

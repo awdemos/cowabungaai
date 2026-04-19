@@ -5,7 +5,7 @@ from typing import Iterator, AsyncGenerator, Any, List
 import grpc
 from fastapi.responses import StreamingResponse
 
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 from cowabunga_api.backend.helpers import recv_chat, recv_completion
 from cowabunga_api.typedef.audio import (
     CreateTranscriptionResponse,

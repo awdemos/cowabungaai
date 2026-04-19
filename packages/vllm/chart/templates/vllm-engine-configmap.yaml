@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: "{{ .Values.nameOverride }}-engine-configmap"
-  namespace: {{ .Release.Namespace | default "leapfrogai" }}
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
 data:
   VLLM_TRUST_REMOTE_CODE: "{{ .Values.vllmConfig.trustRemoteCode }}"
   VLLM_TENSOR_PARALLEL_SIZE: "{{ .Values.vllmConfig.tensorParallelSize }}"

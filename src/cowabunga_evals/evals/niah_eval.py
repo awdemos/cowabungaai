@@ -3,8 +3,8 @@ import numpy as np
 
 from deepeval.test_case import LLMTestCase
 
-from leapfrogai_evals.metrics import NIAH_Retrieval, NIAH_Response, NIAH_Chunk_Rank
-from leapfrogai_evals.runners import NIAH_Runner
+from cowabunga_evals.metrics import NIAH_Retrieval, NIAH_Response, NIAH_Chunk_Rank
+from cowabunga_evals.runners import NIAH_Runner
 
 
 def niah_eval(*args, **kwargs) -> dict:

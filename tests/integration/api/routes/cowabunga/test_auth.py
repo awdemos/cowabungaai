@@ -5,7 +5,7 @@ import time
 import pytest
 from fastapi import status, HTTPException
 from fastapi.testclient import TestClient
-from cowabunga_api.routers.leapfrogai.auth import (
+from cowabunga_api.routers.cowabunga.auth import (
     router,
     APIKeyItem,
 )

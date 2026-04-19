@@ -1,5 +1,5 @@
 ARG LOCAL_VERSION
-FROM ghcr.io/defenseunicorns/leapfrogai/leapfrogai-sdk:${LOCAL_VERSION} AS sdk
+FROM ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
 
 # hardened and slim python w/ developer tools image
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev AS builder
@@ -50,4 +50,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:50051/health || exit 1
 
 # Run the repeater model
-ENTRYPOINT ["python", "-m", "leapfrogai_sdk.cli", "--app-dir=.", "main:Model"]
+ENTRYPOINT ["python", "-m", "cowabunga_sdk.cli", "--app-dir=.", "main:Model"]

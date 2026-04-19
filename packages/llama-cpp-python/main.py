@@ -4,8 +4,8 @@ from typing import Any, AsyncGenerator
 
 from llama_cpp import Llama
 
-from leapfrogai_sdk import BackendConfig
-from leapfrogai_sdk.llm import LLM, GenerationConfig
+from cowabunga_sdk import BackendConfig
+from cowabunga_sdk.llm import LLM, GenerationConfig
 
 logging.basicConfig(
     level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),

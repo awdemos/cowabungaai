@@ -5,7 +5,7 @@ from deepeval.benchmarks import MMLU
 from deepeval.benchmarks.tasks import MMLUTask
 from typing import Optional
 
-from leapfrogai_evals.models import COWABUNGA_Model
+from cowabunga_evals.models import COWABUNGA_Model
 
 
 def mmlu(num_tasks: Optional[int] = None, n_shots: Optional[int] = None) -> dict:
