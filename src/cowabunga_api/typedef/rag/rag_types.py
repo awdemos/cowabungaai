@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel, Field
 
 
@@ -21,7 +19,7 @@ class ConfigurationSingleton:
 class ConfigurationPayload(BaseModel):
     """Response for RAG configuration."""
 
-    enable_reranking: Optional[bool] = Field(
+    enable_reranking: bool | None = Field(
         default=None,
         examples=[True, False],
         description="Enables reranking for RAG queries",
@@ -29,12 +27,12 @@ class ConfigurationPayload(BaseModel):
     # More model info can be found here:
     # https://github.com/AnswerDotAI/rerankers?tab=readme-ov-file
     # https://pypi.org/project/rerankers/
-    ranking_model: Optional[str] = Field(
+    ranking_model: str | None = Field(
         default=None,
         description="What model to use for reranking. Some options may require additional python dependencies.",
         examples=["flashrank", "rankllm", "cross-encoder", "colbert"],
     )
-    rag_top_k_when_reranking: Optional[int] = Field(
+    rag_top_k_when_reranking: int | None = Field(
         default=None,
         description="The top-k results returned from the RAG call before reranking",
     )
