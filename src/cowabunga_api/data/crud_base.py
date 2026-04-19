@@ -33,13 +33,10 @@ class CRUDBase(Generic[ModelType]):
 
         result = await self.db.table(self.table_name).insert(dict_).execute()
 
-        try:
-            response = result.data
-            if "user_id" in response[0]:
-                del response[0]["user_id"]
-            return self.model(**response[0])
-        except Exception as e:
-            raise e
+        response = result.data
+        if "user_id" in response[0]:
+            del response[0]["user_id"]
+        return self.model(**response[0])
 
     async def get(self, filters: dict | None = None) -> ModelType | None:
         """Get row by filters."""
@@ -58,8 +55,6 @@ class CRUDBase(Generic[ModelType]):
             return self.model(**response[0])
         except IndexError:
             return None
-        except Exception as e:
-            raise e
 
     async def list(self, filters: dict | None = None) -> list[ModelType]:
         """List all rows."""
@@ -71,14 +66,11 @@ class CRUDBase(Generic[ModelType]):
 
         result = await query.execute()
 
-        try:
-            response = result.data
-            for item in response:
-                if "user_id" in item:
-                    del item["user_id"]
-            return [self.model(**item) for item in response]
-        except Exception as e:
-            raise e
+        response = result.data
+        for item in response:
+            if "user_id" in item:
+                del item["user_id"]
+        return [self.model(**item) for item in response]
 
     async def update(self, id_: str, object_: ModelType) -> ModelType | None:
         """Update a row by its ID."""
@@ -97,8 +89,6 @@ class CRUDBase(Generic[ModelType]):
             return self.model(**response[0])
         except IndexError:
             return None
-        except Exception as e:
-            raise e
 
     async def delete(self, filters: dict | None = None) -> bool:
         """Delete a row by filters."""
