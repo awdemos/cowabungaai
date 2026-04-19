@@ -47,7 +47,7 @@ def validate_annotation_format(annotation):
     return match is not None
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_thread_file_annotations(client_name):
     config = client_config_factory(client_name)
     client = config.client

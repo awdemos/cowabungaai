@@ -4,7 +4,7 @@ from openai.types.beta.assistant import Assistant
 from tests.utils.client import client_config_factory
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_assistant(client_name):
     config = client_config_factory(client_name)
     client = config.client
@@ -24,7 +24,7 @@ def test_assistant(client_name):
     client.beta.assistants.delete(assistant.id)
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_modify_assistant(client_name):
     config = client_config_factory(client_name)
     client = config.client

@@ -6,7 +6,7 @@ from openai.types.beta.vector_store_deleted import VectorStoreDeleted
 from tests.utils.client import client_config_factory
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_vector_store_create(client_name):
     config = client_config_factory(client_name)
     client = config.client
@@ -16,7 +16,7 @@ def test_vector_store_create(client_name):
     assert isinstance(vector_store, VectorStore)
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_vector_store_list(client_name):
     config = client_config_factory(client_name)
     client = config.client
@@ -31,7 +31,7 @@ def test_vector_store_list(client_name):
     )
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_vector_store_delete(client_name):
     config = client_config_factory(client_name)
     client = config.client
