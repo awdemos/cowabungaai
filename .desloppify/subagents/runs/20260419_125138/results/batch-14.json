@@ -1,0 +1,163 @@
+{
+  "batch": "incomplete_migration",
+  "batch_index": 14,
+  "assessments": {
+    "incomplete_migration": 76.0
+  },
+  "dimension_notes": {
+    "incomplete_migration": {
+      "evidence": [
+        "import cowabunga_sdk as lfai used in 8 production files (routers/openai/{chat,completions,embeddings,audio}, routers/cowabunga/count, backend/grpc_client, backend/helpers, backend/rag/leapfrogai_embeddings)",
+        "get_session() backward-compatibility alias in database_factory.py has zero callers; all consumers use create_database_client() directly",
+        "leapfrogai_embeddings.py module filename retains old project name and is actively imported by index.py and query.py",
+        "lfai_models, lfai_vector_stores, lfai_token_count, lfai_rag, lfai_tokens local aliases in main.py disambiguate cowabunga routers using old brand prefix",
+        "TODO comment in converters.py references https://github.com/defenseunicorns/leapfrogai/issues/1110 (old project org)",
+        "protobuf generated files embed github.com/defenseunicorns/leapfrogai/ package paths (skipped as generated code)"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high",
+      "issues_preventing_higher_score": "The persistent lfai alias for cowabunga_sdk forces developers to mentally map an obsolete brand name across the API layer. Removing it would require a coordinated refactor of 8+ files and the associated test references."
+    }
+  },
+  "dimension_judgment": {
+    "incomplete_migration": {
+      "dimension_character": "The codebase carries localized but consistent residue from a rebrand leapfrogai→cowabunga. The SDK alias lfai, a stale backward-compatibility shim, and an old project name in a module filename are the main remnants. These do not break functionality but create persistent cognitive overhead for new developers.",
+      "score_rationale": "A 76.0 reflects that the migration is functionally complete but the branding rename did not propagate to internal identifiers. The lfai alias is the dominant friction point. No mixed JS/TS modules, no deprecated symbols still called, and no stale migration TODOs were found. The issues are narrow and fixable with a single coordinated refactor."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "incomplete_migration",
+      "identifier": "lfai_sdk_alias",
+      "summary": "cowabunga_sdk imported as lfai across API layer — incomplete rebrand from leapfrogai",
+      "related_files": [
+        "src/cowabunga_api/routers/openai/chat.py",
+        "src/cowabunga_api/routers/openai/completions.py",
+        "src/cowabunga_api/routers/openai/embeddings.py",
+        "src/cowabunga_api/routers/openai/audio.py",
+        "src/cowabunga_api/routers/cowabunga/count.py",
+        "src/cowabunga_api/backend/grpc_client.py",
+        "src/cowabunga_api/backend/helpers.py",
+        "src/cowabunga_api/backend/rag/leapfrogai_embeddings.py"
+      ],
+      "evidence": [
+        "8 production files contain 'import cowabunga_sdk as lfai' or reference lfai.CompletionRequest, lfai.ChatItem, lfai.EmbeddingRequest, etc.",
+        "The alias forces every reader to mentally map 'lfai' (leapfrogai) to the current 'cowabunga_sdk' module name."
+      ],
+      "suggestion": "Remove the 'as lfai' alias and use 'cowabunga_sdk' directly (or a domain-neutral alias like 'sdk'). Update all call sites in a single coordinated change.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "root_cause_cluster": "leapfrogai_rebrand_residue"
+    },
+    {
+      "dimension": "incomplete_migration",
+      "identifier": "stale_get_session_shim",
+      "summary": "get_session() backward-compatibility alias has no callers and is documented as legacy shim",
+      "related_files": [
+        "src/cowabunga_api/utils/database_factory.py"
+      ],
+      "evidence": [
+        "database_factory.py defines get_session() with docstring: 'This function maintains compatibility with existing code that expects a Supabase-like session.'",
+        "Zero callers found across the codebase; all consumers invoke create_database_client() directly."
+      ],
+      "suggestion": "Delete the get_session() function and its docstring. No other changes are needed.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "root_cause_cluster": "leapfrogai_rebrand_residue"
+    },
+    {
+      "dimension": "incomplete_migration",
+      "identifier": "leapfrogai_module_filename",
+      "summary": "leapfrogai_embeddings.py retains old project name in active module path",
+      "related_files": [
+        "src/cowabunga_api/backend/rag/leapfrogai_embeddings.py",
+        "src/cowabunga_api/backend/rag/index.py",
+        "src/cowabunga_api/backend/rag/query.py"
+      ],
+      "evidence": [
+        "Module is named leapfrogai_embeddings.py but implements CowabungaAIEmbeddings class.",
+        "Imported by index.py and query.py as 'from cowabunga_api.backend.rag.leapfrogai_embeddings import CowabungaAIEmbeddings'."
+      ],
+      "suggestion": "Rename the file to cowabunga_embeddings.py (or embeddings_client.py) and update the two import sites.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "multi_file_refactor",
+      "root_cause_cluster": "leapfrogai_rebrand_residue"
+    },
+    {
+      "dimension": "incomplete_migration",
+      "identifier": "lfai_router_aliases_in_main",
+      "summary": "main.py uses lfai_* local aliases for cowabunga routers instead of current naming",
+      "related_files": [
+        "src/cowabunga_api/main.py"
+      ],
+      "evidence": [
+        "Lines 14-18 define imports: models as lfai_models, vector_stores as lfai_vector_stores, count as lfai_token_count, rag as lfai_rag, tokens as lfai_tokens.",
+        "Lines 116-121 register routers using these lfai-prefixed aliases."
+      ],
+      "suggestion": "Rename local aliases from lfai_* to cowabunga_* (e.g., cowabunga_models, cowabunga_vector_stores) to align with the current project name.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "root_cause_cluster": "leapfrogai_rebrand_residue"
+    },
+    {
+      "dimension": "incomplete_migration",
+      "identifier": "stale_leapfrogai_todo",
+      "summary": "TODO comment references obsolete leapfrogai GitHub issue tracker",
+      "related_files": [
+        "src/cowabunga_api/backend/converters.py"
+      ],
+      "evidence": [
+        "converters.py:70 contains '# TODO: What should these numbers be? https://github.com/defenseunicorns/leapfrogai/issues/1110'"
+      ],
+      "suggestion": "Update the TODO to reference the current project issue tracker or repository, or resolve the open question and remove the TODO.",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "root_cause_cluster": "leapfrogai_rebrand_residue"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Project rebrand from leapfrogai to cowabunga renamed top-level packages but did not propagate the change into internal import aliases, module filenames, or inline documentation."
+    ],
+    "likely_symptoms": [
+      "lfai alias confusion",
+      "stale backward-compatibility shim with no callers",
+      "old project name in active module paths"
+    ],
+    "possible_false_positives": [
+      "API key prefix 'lfai_' was considered but dismissed as external backward-compatibility (published API contract)",
+      "Protobuf generated files with leapfrogai paths were considered but dismissed as generated code per rubric skip list",
+      "build/ directory containing old leapfrogai_sdk references was considered but dismissed because the directory is already gitignored"
+    ]
+  },
+  "context_updates": {
+    "incomplete_migration": {
+      "add": [
+        {
+          "header": "Persistent lfai alias for cowabunga_sdk",
+          "description": "The SDK module was renamed from leapfrogai to cowabunga_sdk, but 8 production files still import it as 'lfai'. This is an internal-only alias that creates persistent cognitive overhead without serving external compatibility.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Stale get_session() backward-compatibility shim",
+          "description": "database_factory.py defines get_session() explicitly as backward compatibility, yet zero callers exist. All code uses create_database_client() directly.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "UI JS web components are intentional, not migration residue",
+          "description": "The two .js files in the UI (CodeBlock.js, styles.js) are Lit-based web components with explicit documentation explaining why they are implemented as vanilla JS instead of Svelte/TS. This is not an incomplete TypeScript migration.",
+          "settled": true,
+          "positive": true
+        }
+      ]
+    }
+  }
+}

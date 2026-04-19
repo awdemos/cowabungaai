@@ -1,0 +1,141 @@
+{
+  "batch": "authorization_consistency",
+  "batch_index": 12,
+  "assessments": {
+    "authorization_consistency": 75.0
+  },
+  "dimension_notes": {
+    "authorization_consistency": {
+      "evidence": [
+        "All 9 application tables (assistant_objects, thread_objects, message_objects, file_objects, run_objects, vector_store, vector_store_file, vector_content, api_keys) have RLS enabled with per-user policies",
+        "All 12 openai router files consistently require session: Session on every endpoint",
+        "cowabunga/tokens.py /cowabunga/v1/tokens/count endpoint lacks session: Session while all other cowabunga endpoints require it",
+        "cowabunga/models.py /cowabunga/v1/models endpoint lacks session: Session while the sibling /openai/v1/models endpoint requires it",
+        "_validate_api_authorization in supabase_session.py does session.table('api_keys').select('*').execute() and only checks if any rows are returned, relying entirely on database RLS to filter by x-custom-api-key header",
+        "runs_steps.py submit_tool_outputs and cancel_run fetch runs by run_id only without verifying the run belongs to the provided thread_id, unlike retrieve_run in runs.py and all message endpoints in messages.py which filter by both id and thread_id"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high",
+      "issues_preventing_higher_score": "Two cowabunga endpoints lack auth while siblings require it; API key validation is implicitly delegated to RLS with no code-level verification; runs_steps.py does not verify thread ownership for run mutations while sibling endpoints do"
+    }
+  },
+  "dimension_judgment": {
+    "authorization_consistency": {
+      "dimension_character": "The codebase has a coherent dual-auth strategy (JWT + API key) backed by comprehensive RLS on all tables, but auth enforcement is leaky at the edges: some cowabunga endpoints are publicly accessible while siblings require authentication, and application-level validation of resource ownership is inconsistent across sibling routers.",
+      "score_rationale": "A score of 75.0 reflects that the core auth architecture is sound and consistently applied across the OpenAI router surface, but auth gaps exist in the cowabunga namespace and implicit trust in RLS for API key validation creates a mixed trust boundary. These are fixable with targeted edits rather than architectural overhaul."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "authorization_consistency",
+      "identifier": "cowabunga_tokens_missing_auth",
+      "summary": "Cowabunga tokens endpoint lacks authentication while sibling endpoints require it",
+      "related_files": [
+        "src/cowabunga_api/routers/cowabunga/tokens.py"
+      ],
+      "evidence": [
+        "tokens.py defines @router.post('/count') async def count_tokens_route(text: str) -> int with no session: Session parameter",
+        "All other cowabunga endpoints (auth.py, count.py, vector_stores.py, rag.py) declare session: Session"
+      ],
+      "suggestion": "Add session: Session parameter to count_tokens_route to enforce authentication consistent with sibling cowabunga endpoints",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "authorization_consistency",
+      "identifier": "cowabunga_models_missing_auth",
+      "summary": "Cowabunga models endpoint lacks authentication while the equivalent OpenAI endpoint requires it",
+      "related_files": [
+        "src/cowabunga_api/routers/cowabunga/models.py"
+      ],
+      "evidence": [
+        "models.py defines @router.get('') async def models() with no session: Session parameter",
+        "The OpenAI-compliant models.py (src/cowabunga_api/routers/openai/models.py) requires session: Session with comment 'required for authorizing endpoint'"
+      ],
+      "suggestion": "Add session: Session parameter to the cowabunga models endpoint for consistency, or document it as intentionally public if that is the design intent",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "authorization_consistency",
+      "identifier": "api_key_validation_implicit_rls",
+      "summary": "API key validation delegates entirely to database RLS without explicit code-level verification",
+      "related_files": [
+        "src/cowabunga_api/routers/supabase_session.py"
+      ],
+      "evidence": [
+        "_validate_api_authorization does 'response = await session.table(\"api_keys\").select(\"*\").execute()' then checks only 'if not response or not response.data'",
+        "The function relies on the RLS policy 'Read only if API key matches and is current' to filter results; Python code never verifies the returned key matches the provided key, checks expiration, or validates user identity"
+      ],
+      "suggestion": "Explicitly verify the API key in code by comparing the returned record against the parsed key, checking expiration, and confirming the user_id match, rather than assuming RLS is the sole validation layer",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "authorization_consistency",
+      "identifier": "runs_steps_missing_thread_verification",
+      "summary": "Run step endpoints do not verify run belongs to the provided thread_id while sibling endpoints do",
+      "related_files": [
+        "src/cowabunga_api/routers/openai/runs_steps.py",
+        "src/cowabunga_api/routers/openai/runs.py",
+        "src/cowabunga_api/routers/openai/messages.py"
+      ],
+      "evidence": [
+        "submit_tool_outputs in runs_steps.py does 'run = await crud_run.get(id_=run_id)' without checking run.thread_id == thread_id",
+        "cancel_run in runs_steps.py does 'run = await crud_run.get(id_=run_id)' without checking run.thread_id == thread_id",
+        "retrieve_run in runs.py filters by both run_id and thread_id: 'await crud_run.get(filters={\"id\": run_id, \"thread_id\": thread_id})'",
+        "messages.py retrieve_message, modify_message, and delete_message all filter by both message_id and thread_id"
+      ],
+      "suggestion": "Update submit_tool_outputs and cancel_run to verify the retrieved run's thread_id matches the path parameter, consistent with runs.py and messages.py patterns",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Auth enforcement is manual (declaring session: Session on each endpoint) rather than via router-level middleware, making omissions likely as new endpoints are added",
+      "API key validation was designed around Supabase RLS capabilities rather than an explicit application-layer check, creating implicit trust in database policies"
+    ],
+    "likely_symptoms": [
+      "cowabunga_tokens_missing_auth",
+      "cowabunga_models_missing_auth",
+      "runs_steps_missing_thread_verification"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "authorization_consistency": {
+      "add": [
+        {
+          "header": "Uniform RLS coverage across all tables",
+          "description": "All 9 application tables in the API schema have RLS enabled with per-user policies, creating a consistent database-level authorization boundary.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "OpenAI router surface consistently requires auth",
+          "description": "Every endpoint in the 12 openai router modules declares session: Session, maintaining a uniform auth boundary for the OpenAI-compliant API surface.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Manual auth declaration pattern is error-prone",
+          "description": "Auth is enforced by manually adding session: Session to each endpoint rather than via router-level middleware or dependency injection. This explains why two cowabunga endpoints were missed.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Implicit RLS trust for API key validation",
+          "description": "The application layer assumes RLS policies will validate API keys, so _validate_api_authorization only checks if any rows are returned. This mixed trust boundary means a service_role or admin client bypass would accept any key.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}

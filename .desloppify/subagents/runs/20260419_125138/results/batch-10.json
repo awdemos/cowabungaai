@@ -1,0 +1,222 @@
+{
+  "batch": "test_strategy",
+  "batch_index": 10,
+  "assessments": {
+    "test_strategy": 42.0
+  },
+  "dimension_notes": {
+    "test_strategy": {
+      "evidence": [
+        "src/cowabunga_api/backend/composer.py (403 loc) has no dedicated unit or integration tests",
+        "src/cowabunga_api/backend/rag/index.py, query.py, document_loader.py, and leapfrogai_embeddings.py have zero tests",
+        "src/cowabunga_api/data/crud_file_bucket.py, crud_file_object.py, crud_message.py, crud_thread.py, crud_vector_content.py, crud_vector_store.py, and crud_vector_store_file.py lack dedicated tests",
+        "src/cowabunga_evals/runners/niah_runner.py (412 loc) and qa_runner.py (330 loc) have no tests",
+        "src/cowabunga_evals/metrics/annotation_relevancy.py, correctness.py, and niah_metrics.py have no tests",
+        "src/cowabunga_sdk/llm.py, serve.py, and utils.py have no tests",
+        "tests/unit/cowabunga_api/data/test_crud_base.py asserts on mock_session.table(...).insert().execute() call chains, coupling tests to Supabase client internals",
+        "tests/unit/cowabunga_api/data/test_crud_api_key.py uses mock_session.table().insert().execute() to verify behavior",
+        "tests/integration/api/routes/openai/test_vector_stores.py uses time.sleep(1) twice to wait for vector store expiration",
+        "tests/e2e/test_text_backend_full.py polls with time.sleep(2) for background task completion",
+        "tests/pytest/cowabunga_api/test_api.py uses time.sleep(0.5) for config file deletion detection"
+      ],
+      "impact_scope": "codebase",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high"
+    }
+  },
+  "dimension_judgment": {
+    "test_strategy": {
+      "dimension_character": "The test suite has a layered structure (unit, integration, e2e, conformance) and covers many API routes, but critical backend paths—especially RAG, composer, and eval runners—are largely untested. Existing unit tests for data layers are tightly coupled to Supabase client internals, and several integration/e2e tests rely on arbitrary sleeps, making them fragile.",
+      "score_rationale": "The score reflects significant gaps in critical-path coverage and notable fragility from timing-dependent tests and test-production coupling. While the presence of integration and conformance tests prevents a very low score, the lack of coverage for core business logic and the brittle mock-based CRUD tests hold the strategy well below a healthy threshold."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "test_strategy",
+      "identifier": "untested_backend_rag",
+      "summary": "Core backend orchestration and RAG modules have zero test coverage",
+      "related_files": [
+        "src/cowabunga_api/backend/composer.py",
+        "src/cowabunga_api/backend/grpc_client.py",
+        "src/cowabunga_api/backend/rag/index.py",
+        "src/cowabunga_api/backend/rag/query.py",
+        "src/cowabunga_api/backend/rag/document_loader.py",
+        "src/cowabunga_api/backend/rag/leapfrogai_embeddings.py"
+      ],
+      "evidence": [
+        "composer.py is 403 loc with no unit or integration tests",
+        "rag/index.py, query.py, document_loader.py, and leapfrogai_embeddings.py have no corresponding test files"
+      ],
+      "suggestion": "Add unit tests for composer helper functions and RAG index/query logic, or integration tests that exercise real (or stubbed) embeddings and indexing",
+      "confidence": "high",
+      "impact_scope": "subsystem",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "test_strategy",
+      "identifier": "untested_crud_modules",
+      "summary": "Many data-layer CRUD modules lack dedicated tests",
+      "related_files": [
+        "src/cowabunga_api/data/crud_file_bucket.py",
+        "src/cowabunga_api/data/crud_file_object.py",
+        "src/cowabunga_api/data/crud_message.py",
+        "src/cowabunga_api/data/crud_thread.py",
+        "src/cowabunga_api/data/crud_vector_content.py",
+        "src/cowabunga_api/data/crud_vector_store.py",
+        "src/cowabunga_api/data/crud_vector_store_file.py"
+      ],
+      "evidence": [
+        "No test files exist for crud_file_bucket, crud_file_object, crud_message, crud_thread, crud_vector_content, crud_vector_store, or crud_vector_store_file"
+      ],
+      "suggestion": "Write focused unit tests for each CRUD module using the existing mock_session pattern, or refactor to shared test fixtures that reduce duplication",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "test_strategy",
+      "identifier": "untested_evals_sdk",
+      "summary": "Evaluation runners, metrics, and SDK core modules are untested",
+      "related_files": [
+        "src/cowabunga_evals/runners/niah_runner.py",
+        "src/cowabunga_evals/runners/qa_runner.py",
+        "src/cowabunga_evals/metrics/annotation_relevancy.py",
+        "src/cowabunga_evals/metrics/correctness.py",
+        "src/cowabunga_evals/metrics/niah_metrics.py",
+        "src/cowabunga_sdk/llm.py",
+        "src/cowabunga_sdk/serve.py",
+        "src/cowabunga_sdk/utils.py"
+      ],
+      "evidence": [
+        "niah_runner.py (412 loc) and qa_runner.py (330 loc) have no tests",
+        "All metrics files lack tests",
+        "SDK modules llm.py, serve.py, and utils.py have no tests"
+      ],
+      "suggestion": "Add unit tests for runner orchestration and metric calculations; add smoke tests for SDK serve and utility functions",
+      "confidence": "high",
+      "impact_scope": "subsystem",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "test_strategy",
+      "identifier": "crud_test_coupling",
+      "summary": "CRUD unit tests are tightly coupled to Supabase client internals",
+      "related_files": [
+        "tests/unit/cowabunga_api/data/test_crud_base.py",
+        "tests/unit/cowabunga_api/data/test_crud_api_key.py",
+        "tests/mocks/mock_session.py"
+      ],
+      "evidence": [
+        "test_crud_base.py asserts on mock_session.table(...).insert().execute() call chains",
+        "test_crud_api_key.py uses mock_session.table().insert().execute() to verify behavior",
+        "Changing the underlying DB client (e.g., from Supabase to Turso) would break these tests even if behavior is identical"
+      ],
+      "suggestion": "Refactor CRUD tests to assert on outcomes (return values, raised exceptions) rather than internal Supabase API call sequences, or introduce a repository port/interface to decouple tests from client specifics",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "test_strategy",
+      "identifier": "vector_store_sleep_fragility",
+      "summary": "Vector store integration tests rely on arbitrary sleeps for expiration",
+      "related_files": [
+        "tests/integration/api/routes/openai/test_vector_stores.py"
+      ],
+      "evidence": [
+        "Line 153: time.sleep(1) to wait for vector store expiration",
+        "Line 175: time.sleep(1) to wait for vector store expiration"
+      ],
+      "suggestion": "Replace fixed sleeps with deterministic expiration triggers (e.g., mock the clock or use a test-specific TTL of 0 with synchronous cleanup)",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "test_strategy",
+      "identifier": "e2e_polling_sleep",
+      "summary": "E2E background-task test uses fixed polling intervals",
+      "related_files": [
+        "tests/e2e/test_text_backend_full.py"
+      ],
+      "evidence": [
+        "Line 135: time.sleep(2) inside a polling loop waiting for vector store indexing to complete",
+        "Test fails if indexing finishes too quickly or too slowly"
+      ],
+      "suggestion": "Use an exponential back-off with a short initial delay, or expose a synchronous test hook to await background task completion",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "test_strategy",
+      "identifier": "api_config_sleep_fragility",
+      "summary": "API config deletion test relies on a fixed sleep for filesystem detection",
+      "related_files": [
+        "tests/pytest/cowabunga_api/test_api.py"
+      ],
+      "evidence": [
+        "Line 119: time.sleep(0.5) waits for the API to detect a deleted config file"
+      ],
+      "suggestion": "Replace the sleep with a retry loop that polls the endpoint until the expected empty response is observed, or trigger a config reload explicitly in tests",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Test coverage was added primarily for API routes and a few data-layer primitives, but core business logic (RAG, composer, evals, SDK) was deprioritized",
+      "CRUD tests were written against the first DB client (Supabase) without an abstraction layer, locking tests to client internals"
+    ],
+    "likely_symptoms": [
+      "untested_backend_rag",
+      "untested_crud_modules",
+      "untested_evals_sdk",
+      "crud_test_coupling",
+      "vector_store_sleep_fragility",
+      "e2e_polling_sleep",
+      "api_config_sleep_fragility"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "test_strategy": {
+      "add": [
+        {
+          "header": "Layered test structure mirrors source layout",
+          "description": "The repository maintains separate unit, integration, e2e, and conformance test directories that generally map to the source tree, which aids navigation and coverage targeting.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Conformance tests validate OpenAI API compatibility",
+          "description": "A dedicated conformance suite checks assistant, chat, file, message, run, thread, vector store, and tool endpoints against OpenAI types, providing a safety net for API contract drift.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Core backend and RAG modules lack any tests",
+          "description": "The composer, grpc_client, and all RAG submodules (index, query, document_loader, leapfrogai_embeddings) have zero unit or integration tests, leaving critical indexing and retrieval paths unverified.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "CRUD unit tests are locked to Supabase client internals",
+          "description": "Tests for CRUDBase and CRUDAPIKey assert on MagicMock call chains matching the Supabase Python client API; swapping the client implementation would break the tests without changing behavior.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Timing-dependent sleeps introduce flaky tests",
+          "description": "Integration and e2e tests use fixed time.sleep calls (0.5s, 1s, 2s) to wait for expiration, config reload, or background indexing, making the suite fragile under varying CI load.",
+          "settled": true,
+          "positive": false
+        }
+      ],
+      "remove": [],
+      "settle": [],
+      "unsettle": []
+    }
+  }
+}
