@@ -1,0 +1,220 @@
+{
+  "batch": "convention_outlier",
+  "batch_index": 3,
+  "assessments": {
+    "convention_outlier": 75.0
+  },
+  "dimension_notes": {
+    "convention_outlier": {
+      "evidence": [
+        "src/cowabunga_api/typedef/common.py defines MetadataObject identically twice (lines 5-13 and 31-39)",
+        "packages/vllm/src/main.py lives under a src/ subdirectory while packages/repeater/main.py, packages/whisper/main.py, packages/text-embeddings/main.py, and packages/llama-cpp-python/main.py are all flat at package root",
+        "src/cowabunga_api/data/crud_file_bucket.py and crud_vector_content.py do not inherit from CRUDBase and use ad-hoc method names (upload/download/delete vs create/get/list/update/delete)",
+        "src/cowabunga_evals/metrics/correctness.py inherits from GEval while annotation_relevancy.py and niah_metrics.py inherit from BaseMetric with custom measure/a_measure implementations",
+        "src/cowabunga_api/data/database/turso_auth.py and turso_client.py use @dataclass for User, Session, and TursoResult while the rest of the codebase uses pydantic BaseModel with no documented rationale",
+        "src/cowabunga_api/typedef/threads/thread_create.py uses Optional[List[Attachment]] (line 75) while modern pipe-union syntax is used everywhere else",
+        "src/cowabunga_api/routers/supabase_session.py defines no APIRouter and is a dependency module placed among router files",
+        "src/cowabunga_sdk/llm.py defines a class decorator as def LLM(_cls) using PascalCase instead of snake_case"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high"
+    }
+  },
+  "dimension_judgment": {
+    "convention_outlier": {
+      "dimension_character": "The codebase follows strong dominant conventions—snake_case functions, PascalCase classes, pydantic BaseModel for API types, and a consistent CRUD naming pattern—with localized outliers in CRUD protocols, metrics base classes, package layout, and type strategies that create minor friction for developers navigating unfamiliar subsystems.",
+      "score_rationale": "A 75.0 reflects solid convention adherence overall with several localized but genuine inconsistencies: a duplicate class definition, one package using src/ while siblings are flat, two CRUD classes bypassing the shared base, mixed dataclass/BaseModel strategies without rationale, and a misplaced dependency module. None are systemic, but together they create enough friction to keep the score in the mid-70s."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "convention_outlier",
+      "identifier": "duplicate_metadata_object",
+      "summary": "MetadataObject class defined twice identically in the same file",
+      "related_files": [
+        "src/cowabunga_api/typedef/common.py"
+      ],
+      "evidence": [
+        "Lines 5-13 define class MetadataObject with __init__ and __getattr__",
+        "Lines 31-39 repeat the exact same class MetadataObject definition"
+      ],
+      "suggestion": "Remove the duplicate MetadataObject definition at lines 31-39",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "package_structure_inconsistency",
+      "summary": "vllm package uses src/ subdirectory while all sibling packages are flat",
+      "related_files": [
+        "packages/vllm/src/main.py",
+        "packages/repeater/main.py",
+        "packages/whisper/main.py",
+        "packages/text-embeddings/main.py",
+        "packages/llama-cpp-python/main.py"
+      ],
+      "evidence": [
+        "vllm places main.py, config.py, and model_download.py under packages/vllm/src/",
+        "repeater, whisper, text-embeddings, and llama-cpp-python place main.py directly at package root",
+        "text-embeddings and llama-cpp-python place model_download.py under scripts/ rather than src/"
+      ],
+      "suggestion": "Move vllm Python files to package root to match sibling layout, or document the structural deviation",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "crud_base_protocol_drift",
+      "summary": "CRUDFileBucket and CRUDVectorContent do not inherit from CRUDBase and use divergent method signatures",
+      "related_files": [
+        "src/cowabunga_api/data/crud_file_bucket.py",
+        "src/cowabunga_api/data/crud_vector_content.py",
+        "src/cowabunga_api/data/crud_base.py"
+      ],
+      "evidence": [
+        "CRUDFileBucket defines its own __init__(db, model) with upload/download/delete instead of create/get/list/update/delete",
+        "CRUDVectorContent defines its own __init__(db) with add_vectors/get_vector/delete_vectors/similarity_search instead of inheriting CRUDBase generic methods",
+        "Eight sibling CRUD modules (CRUDRun, CRUDThread, CRUDMessage, etc.) consistently inherit from CRUDBase[ModelType]"
+      ],
+      "suggestion": "Refactor CRUDFileBucket and CRUDVectorContent to inherit from CRUDBase where feasible, or rename them to avoid the CRUD prefix if they follow a fundamentally different protocol",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "metrics_base_class_inconsistency",
+      "summary": "CorrectnessMetric extends GEval while sibling metrics extend BaseMetric",
+      "related_files": [
+        "src/cowabunga_evals/metrics/correctness.py",
+        "src/cowabunga_evals/metrics/annotation_relevancy.py",
+        "src/cowabunga_evals/metrics/niah_metrics.py"
+      ],
+      "evidence": [
+        "correctness.py inherits from deepeval.metrics.GEval and relies on GEval's built-in measure()",
+        "annotation_relevancy.py and niah_metrics.py inherit from BaseMetric and implement measure(), a_measure(), is_successful(), and __name__ property manually"
+      ],
+      "suggestion": "Make CorrectnessMetric consistent with siblings by extending BaseMetric and implementing the same interface, or add a comment documenting why GEval is intentionally used",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "mixed_type_strategies",
+      "summary": "Turso database modules use dataclasses while the rest of the codebase uses pydantic BaseModel",
+      "related_files": [
+        "src/cowabunga_api/data/database/turso_auth.py",
+        "src/cowabunga_api/data/database/turso_client.py"
+      ],
+      "evidence": [
+        "turso_auth.py defines User, UserResponse, and Session as @dataclass",
+        "turso_client.py defines TursoResult as @dataclass",
+        "All API typedef modules and the database base config use pydantic BaseModel with no documented rationale for the dataclass exception"
+      ],
+      "suggestion": "Add a comment explaining why dataclasses are preferred for Turso domain objects, or migrate them to pydantic BaseModel for consistency",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "legacy_typing_style",
+      "summary": "thread_create.py uses Optional[List[...]] instead of modern pipe-union syntax",
+      "related_files": [
+        "src/cowabunga_api/typedef/threads/thread_create.py"
+      ],
+      "evidence": [
+        "Line 75: attachments: Optional[List[Attachment]]",
+        "The rest of the codebase consistently uses pipe unions such as list[Message] | None and dict | None"
+      ],
+      "suggestion": "Replace Optional[List[Attachment]] with list[Attachment] | None",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "non_router_in_routers_directory",
+      "summary": "supabase_session.py is a dependency module placed in the routers directory",
+      "related_files": [
+        "src/cowabunga_api/routers/supabase_session.py",
+        "src/cowabunga_api/routers/base.py",
+        "src/cowabunga_api/routers/health.py"
+      ],
+      "evidence": [
+        "supabase_session.py defines Session = Annotated[AsyncClient, Depends(...)] and auth helper functions but does not declare an APIRouter",
+        "All other top-level files in routers/ (base.py, health.py) and all subdirectories (cowabunga/, openai/) define APIRouter instances and route handlers"
+      ],
+      "suggestion": "Move supabase_session.py to src/cowabunga_api/dependencies/ or src/cowabunga_api/utils/ to match its actual role",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "convention_outlier",
+      "identifier": "pascal_case_decorator_name",
+      "summary": "LLM class decorator uses PascalCase instead of snake_case",
+      "related_files": [
+        "src/cowabunga_sdk/llm.py",
+        "packages/vllm/src/main.py",
+        "packages/repeater/main.py"
+      ],
+      "evidence": [
+        "llm.py defines 'def LLM(_cls):' used as @LLM decorator on Model classes",
+        "Python convention uses snake_case for function decorators (e.g., @classmethod, @property, @lru_cache)"
+      ],
+      "suggestion": "Rename LLM to llm_decorator or apply_llm to follow Python naming conventions",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Multiple independent backend implementations (Supabase vs Turso, vllm vs repeater vs whisper) were added at different times without a shared style guide",
+      "CRUDBase was introduced after some CRUD modules were already written ad-hoc, leaving legacy shapes in place"
+    ],
+    "likely_symptoms": [
+      "crud_base_protocol_drift",
+      "mixed_type_strategies",
+      "package_structure_inconsistency"
+    ],
+    "possible_false_positives": [
+      "PascalCase method names in packages/repeater/main.py, packages/whisper/main.py, and cowabunga_sdk/llm.py are framework-required gRPC servicer overrides, not naming drift"
+    ]
+  },
+  "context_updates": {
+    "convention_outlier": {
+      "add": [
+        {
+          "header": "Pydantic BaseModel as dominant type strategy",
+          "description": "Nearly all API request/response types and database config classes use pydantic BaseModel. This is a settled, positive convention that keeps serialization and validation behavior consistent across the codebase.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "CRUD prefix convention for data access classes",
+          "description": "The data layer consistently names classes with a CRUD prefix (e.g., CRUDRun, CRUDThread). Most inherit from CRUDBase[ModelType], establishing a predictable pattern for database operations.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "gRPC servicer PascalCase methods are framework-required",
+          "description": "Methods like ChatComplete, CountTokens, CreateEmbedding, Transcribe, and Translate use PascalCase because they override generated gRPC servicer stubs. This is intentional and forced by the protobuf interface, not a naming drift.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Modern pipe-union typing syntax is codebase standard",
+          "description": "The codebase overwhelmingly uses X | None instead of Optional[X] and list[X] instead of List[X]. Legacy typing imports are outliers.",
+          "settled": true,
+          "positive": true
+        }
+      ]
+    }
+  }
+}

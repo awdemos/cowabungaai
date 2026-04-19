@@ -1,0 +1,137 @@
+{
+  "batch": "abstraction_fitness",
+  "batch_index": 6,
+  "assessments": {
+    "abstraction_fitness": 84.0
+  },
+  "dimension_notes": {
+    "abstraction_fitness": {
+      "evidence": [
+        "CRUDBase generic abstraction is used by 8+ concrete domain CRUD classes (Assistant, Message, Run, Thread, VectorStore, VectorStoreFile, FileObject, APIKey)",
+        "DatabaseClient / QueryBuilder / AuthClient ABCs have two concrete implementations (SupabaseClient and TursoClient) earning the multi-backend abstraction",
+        "backend/helpers.py contains real gRPC-to-SSE conversion logic in recv_completion and recv_chat, not pass-through wrappers",
+        "backend/converters.py performs real translation between OpenAI types and internal Message / ThreadMessageDelta objects",
+        "typedef/ packages use consistent __init__.py re-export facades to stabilize public import paths — intentional and bounded",
+        "object_or_default in backend/helpers.py is an unearned helper: it only does 'obj if obj is not None else _default' and is used 9 times in routers/openai/assistants.py",
+        "MetadataObject in typedef/common.py is an over-broad dynamic bag accepting arbitrary kwargs with no schema; used once in converters.py",
+        "get_session in utils/database_factory.py is a pure backward-compatibility alias for create_database_client() with no added policy or deprecation plan"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "single_edit",
+      "confidence": "high",
+      "issues_preventing_higher_score": "Localized unearned helpers (object_or_default, MetadataObject) and a backward-compatibility alias (get_session) create minor indirection. Removing them would push the score above 88.",
+      "sub_axes": {
+        "abstraction_leverage": 82.0,
+        "indirection_cost": 88.0,
+        "interface_honesty": 85.0,
+        "delegation_density": 90.0,
+        "definition_directness": 82.0,
+        "type_discipline": 90.0
+      }
+    }
+  },
+  "dimension_judgment": {
+    "abstraction_fitness": {
+      "dimension_character": "The codebase favors earned abstractions: a generic CRUD layer serves multiple domain types, database-client ABCs enable two backend implementations, and gRPC-to-SSE helpers contain real translation logic. Intentional package facades in typedef/ and cowabunga_sdk/ stabilize imports without obscuring structure.",
+      "score_rationale": "Most abstractions are purposeful and bounded. Minor localized indirection from object_or_default (a generic None-check helper), the schema-less MetadataObject, and a backward-compatibility alias slightly drag down an otherwise direct codebase. Score anchored at 84.0."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "abstraction_fitness",
+      "identifier": "unearned_helper_object_or_default",
+      "summary": "object_or_default is a generic helper that restates a ternary None check without added policy",
+      "related_files": [
+        "src/cowabunga_api/backend/helpers.py",
+        "src/cowabunga_api/routers/openai/assistants.py"
+      ],
+      "evidence": [
+        "backend/helpers.py line 121: 'def object_or_default(obj: Any | None, _default: Any) -> Any: if obj is not None: return obj else: return _default'",
+        "Used 9 times in routers/openai/assistants.py lines 141-159 for name, description, instructions, model, tools, tool_resources, temperature, top_p, metadata, response_format"
+      ],
+      "suggestion": "Inline the expression: use 'request.name or old_assistant.name' where falsy-vs-None distinction does not matter, or 'request.name if request.name is not None else old_assistant.name' where it does. Then remove object_or_default and its tests.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "root_cause_cluster": "unearned_helper_surface"
+    },
+    {
+      "dimension": "abstraction_fitness",
+      "identifier": "overbroad_metadata_object",
+      "summary": "MetadataObject is a schema-less dynamic bag that accepts arbitrary kwargs and returns None for missing attributes",
+      "related_files": [
+        "src/cowabunga_api/typedef/common.py",
+        "src/cowabunga_api/backend/converters.py"
+      ],
+      "evidence": [
+        "typedef/common.py: class MetadataObject defines __init__(self, **kwargs) and __getattr__(self, key) returning self.__dict__.get(key)",
+        "backend/converters.py line 101-103: metadata=MetadataObject(vector_ids=all_vector_ids.__str__) — only production usage"
+      ],
+      "suggestion": "Replace MetadataObject with a typed dataclass (e.g., MessageMetadata) that declares the vector_ids field, or pass a plain dict if the consumer accepts it.",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "abstraction_fitness",
+      "identifier": "backward_compat_alias_get_session",
+      "summary": "get_session is a pure backward-compatibility alias for create_database_client with no deprecation plan",
+      "related_files": [
+        "src/cowabunga_api/utils/database_factory.py"
+      ],
+      "evidence": [
+        "database_factory.py line 57-66: async def get_session() -> DatabaseClient: return await create_database_client()",
+        "Docstring claims backward compatibility but there is no @deprecated marker, no warnings.warn, and no tracked sunset plan"
+      ],
+      "suggestion": "Add a DeprecationWarning to get_session, migrate any remaining callers to create_database_client(), and remove the alias in the next cleanup cycle.",
+      "confidence": "low",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Helper modules accumulate convenience functions over time; object_or_default was added to avoid repeating a ternary but became indirection without policy",
+      "Dynamic bag types like MetadataObject are often introduced at integration boundaries where the exact schema feels uncertain"
+    ],
+    "likely_symptoms": [
+      "facade detector flagged composer.py, thread_create.py, run_create_base.py, niah_runner.py, and qa_runner.py as facade modules due to high import counts, but these files consume imports rather than re-export them — the metric conflates consumption with re-export surfacing"
+    ],
+    "possible_false_positives": [
+      "composer.py flagged as facade (0.98 re-export ratio) — all imports are consumed locally, not re-exported",
+      "thread_create.py and run_create_base.py flagged as indirection hotspots — import depth is driven by OpenAI type nesting, not codebase indirection",
+      "repeater/main.py CountTokens, Transcribe, Translate flagged as pass-through wrappers — they are simple demo-service implementations, not pure forwarding",
+      "whisper/main.py Translate/Transcribe flagged as pass-through — they dispatch to call_whisper with a task parameter, adding minor policy"
+    ]
+  },
+  "context_updates": {
+    "abstraction_fitness": {
+      "add": [
+        {
+          "header": "Intentional typedef package facades",
+          "description": "Every typedef/ subdomain uses an __init__.py to re-export its public types from a *_types.py module. This is a deliberate, bounded pattern that stabilizes import paths without obscuring internals.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "CRUDBase generic abstraction serves 8+ domain types",
+          "description": "CRUDBase is parameterized over ModelType and used by CRUDAssistant, CRUDMessage, CRUDRun, CRUDThread, CRUDVectorStore, CRUDVectorStoreFile, CRUDFileObject, and CRUDApiKey. The abstraction is earned because each concrete class binds a distinct OpenAI domain model to its database table.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "DatabaseClient ABC enables Supabase and Turso backends",
+          "description": "DatabaseClient, QueryBuilder, and AuthClient are abstract interfaces with concrete Supabase and Turso implementations. This is a purposeful abstraction for multi-backend support, not speculative generalization.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "backend/helpers.py contains real gRPC-to-SSE conversion",
+          "description": "recv_completion and recv_chat perform substantial mapping from protobuf streaming responses to Server-Sent Event JSON payloads. These are not pass-through wrappers; they add real translation policy.",
+          "settled": true,
+          "positive": true
+        }
+      ]
+    }
+  }
+}
