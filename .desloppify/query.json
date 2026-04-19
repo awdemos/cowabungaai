@@ -1,6 +1,6 @@
 {
   "command": "show",
-  "query": "structural",
+  "query": "test_coverage",
   "status_filter": "open",
   "total": 0,
   "issues": [],

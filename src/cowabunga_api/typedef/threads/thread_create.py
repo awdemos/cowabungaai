@@ -7,7 +7,6 @@ from openai.types.beta.threads import Message, MessageDeleted, MessageContent
 from openai.types.beta.threads.message import Attachment
 
 from typing_extensions import Literal
-from typing import List, Optional
 from pydantic import BaseModel, Field
 from cowabunga_api.data.crud_message import CRUDMessage
 from cowabunga_api.data.crud_thread import CRUDThread
@@ -72,7 +71,7 @@ class CreateThreadRequest(BaseModel):
         self,
         role: Literal["user", "assistant"],
         message_content: list[MessageContent],
-        attachments: Optional[List[Attachment]],
+        attachments: list[Attachment] | None,
         thread_id: str,
         session: Session,
     ) -> Message:

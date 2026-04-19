@@ -31,4 +31,6 @@ async def tokens(
             model, lfai.TokenCountRequest(text=request.text)
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error counting tokens: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Error counting tokens: {str(e)}"
+        ) from e
