@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "chart.fullname" . }}
-  namespace: {{ .Release.Namespace | default "leapfrogai" }}
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:
@@ -50,10 +50,10 @@ spec:
           resources:
             {{- toYaml .Values.modelInjectionContainer.resources | nindent 12 }}
           volumeMounts:
-            - name: leapfrogai-pv-storage
+            - name: cowabungaai-pv-storage
               mountPath: "/data"
       volumes:
-        - name: leapfrogai-pv-storage
+        - name: cowabungaai-pv-storage
           persistentVolumeClaim:
             claimName: lfai-{{ .Values.nameOverride }}-pv-claim
       securityContext:
@@ -80,7 +80,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: leapfrogai-pv-storage
+            - name: cowabungaai-pv-storage
               mountPath: "/data"
       {{- with .Values.nodeSelector }}
       nodeSelector:

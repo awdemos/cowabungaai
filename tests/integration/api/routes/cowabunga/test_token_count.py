@@ -9,7 +9,7 @@ from cowabunga_api.typedef.counting import (
     TokenCountRequest,
     TokenCountResponse,
 )
-from tests.utils.client import get_leapfrogai_model, CowabungaAIClient
+from tests.utils.client import get_cowabunga_model, CowabungaAIClient
 
 INVALID_MODEL = "invalid-model"
 
@@ -22,7 +22,7 @@ def client():
 def test_token_count(client):
     """Test token counting"""
     request = TokenCountRequest(
-        model=get_leapfrogai_model(), text="This is a test sentence for token counting."
+        model=get_cowabunga_model(), text="This is a test sentence for token counting."
     )
 
     response = client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
@@ -34,7 +34,7 @@ def test_token_count(client):
 
 def test_token_count_empty_text(client):
     """Test token counting with empty text"""
-    request = TokenCountRequest(model=get_leapfrogai_model(), text="")
+    request = TokenCountRequest(model=get_cowabunga_model(), text="")
 
     response = client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
     assert response.status_code == status.HTTP_200_OK
@@ -68,7 +68,7 @@ def test_token_count_various_lengths(client):
     token_counts = []
 
     for text in texts:
-        request = TokenCountRequest(model=get_leapfrogai_model(), text=text)
+        request = TokenCountRequest(model=get_cowabunga_model(), text=text)
 
         response = client.post("/cowabunga/v1/count/tokens", json=request.model_dump())
 

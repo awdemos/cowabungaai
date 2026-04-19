@@ -9,13 +9,13 @@ from fastapi import status
 
 
 @pytest.fixture(scope="session")
-def leapfrogai_client():
+def cowabunga_client():
     return CowabungaAIClient()
 
 
 @pytest.fixture(scope="session")
 def make_test_vector_store():
-    config = client_config_factory("leapfrogai")
+    config = client_config_factory("cowabunga")
     client = config.client
     vector_store = client.beta.vector_stores.create(name="Test data")
 
@@ -31,13 +31,13 @@ def make_test_vector_store():
 
 
 @pytest.fixture(scope="session")
-def make_test_search_response(leapfrogai_client, make_test_vector_store):
+def make_test_search_response(cowabunga_client, make_test_vector_store):
     params = {
         "query": "Who is Sam?",
         "vector_store_id": make_test_vector_store.id,
     }
 
-    return leapfrogai_client.post(
+    return cowabunga_client.post(
         endpoint="/cowabunga/v1/vector_stores/search", params=params
     )
 
@@ -50,14 +50,14 @@ def test_search(make_test_search_response):
     assert SearchResponse.model_validate(search_response.json())
 
 
-def test_get_vector(leapfrogai_client, make_test_search_response):
+def test_get_vector(cowabunga_client, make_test_search_response):
     """Test that the get vector endpoint returns a valid response."""
 
     search_response = SearchResponse.model_validate(make_test_search_response.json())
     search_item = SearchItem.model_validate(search_response.data[0])
     vector_id = search_item.id
 
-    get_vector_response = leapfrogai_client.get(
+    get_vector_response = cowabunga_client.get(
         f"/cowabunga/v1/vector_stores/vector/{vector_id}"
     )
 

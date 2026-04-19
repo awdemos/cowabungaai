@@ -12,7 +12,7 @@ components:
     required: true
     charts:
       - name: cowabunga
-        namespace: leapfrogai
+        namespace: cowabungaai
         localPath: ../chart
         # x-release-please-start-version
         version: 0.14.0
@@ -24,5 +24,5 @@ components:
               cluster:
                 kind: Job
                 name: cowabunga-api-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
-                namespace: leapfrogai
+                namespace: cowabungaai
                 condition: complete

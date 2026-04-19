@@ -31,7 +31,7 @@ components:
       flavor: upstream
     charts:
       - name: llama-cpp-python-model
-        namespace: leapfrogai
+        namespace: cowabungaai
         localPath: chart
         releaseName: llama-cpp-python-model
         # x-release-please-start-version
@@ -40,7 +40,7 @@ components:
         valuesFiles:
           - "values/upstream-values.yaml"
     images:
-      - ghcr.io/defenseunicorns/leapfrogai/llama-cpp-python:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:###ZARF_PKG_TMPL_IMAGE_VERSION###
       - cgr.dev/chainguard/bash:latest
     # dataInjections disabled - model download will be handled separately
     # actions disabled for now - model download will be handled separately

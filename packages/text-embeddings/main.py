@@ -3,7 +3,7 @@ import logging
 import os
 
 from InstructorEmbedding import INSTRUCTOR
-from leapfrogai_sdk import (
+from cowabunga_sdk import (
     Embedding,
     EmbeddingRequest,
     EmbeddingResponse,

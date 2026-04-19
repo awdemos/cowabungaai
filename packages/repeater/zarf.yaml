@@ -18,7 +18,7 @@ components:
       flavor: upstream
     charts:
       - name: repeater
-        namespace: leapfrogai
+        namespace: cowabungaai
         localPath: chart
         releaseName: repeater
         # x-release-please-start-version
@@ -27,4 +27,4 @@ components:
         valuesFiles:
           - "values/upstream-values.yaml"
     images:
-      - ghcr.io/defenseunicorns/leapfrogai/repeater:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/repeater:###ZARF_PKG_TMPL_IMAGE_VERSION###

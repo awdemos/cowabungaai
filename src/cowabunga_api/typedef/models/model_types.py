@@ -28,9 +28,9 @@ class ModelResponseModel(BaseModel):
         description="The Unix timestamp (in seconds) when the model was created. Always 0 for CowabungaAI models.",
         examples=[0],
     )
-    owned_by: Literal["leapfrogai"] = Field(
-        default="leapfrogai",
-        description="The organization that owns the model. Always 'leapfrogai' for CowabungaAI models.",
+    owned_by: Literal["cowabungaai"] = Field(
+        default="cowabungaai",
+        description="The organization that owns the model. Always 'cowabungaai' for CowabungaAI models.",
     )
 
 

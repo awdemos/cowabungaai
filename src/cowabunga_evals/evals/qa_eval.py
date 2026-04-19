@@ -9,9 +9,9 @@ from deepeval.metrics import (
 )
 from deepeval.test_case import LLMTestCase
 
-from leapfrogai_evals.metrics import AnnotationRelevancyMetric, CorrectnessMetric
-from leapfrogai_evals.models import *  # noqa (imports all models)
-from leapfrogai_evals.runners import QA_Runner
+from cowabunga_evals.metrics import AnnotationRelevancyMetric, CorrectnessMetric
+from cowabunga_evals.models import *  # noqa (imports all models)
+from cowabunga_evals.runners import QA_Runner
 
 
 def qa_eval(*args, **kwargs) -> dict:

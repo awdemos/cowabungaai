@@ -14,7 +14,7 @@ constants:
 variables:
   - name: COWABUNGA_API_BASE_URL
     description: The base URL for the CowabungaAI API
-    default: http://leapfrogai-api.leapfrogai.svc.cluster.local:8080
+    default: http://cowabunga-api.cowabungaai.svc.cluster.local:8080
     prompt: true
     sensitive: true
   - name: OPENAI_API_KEY
@@ -76,8 +76,8 @@ components:
         version: 0.14.0
         # x-release-please-end
     images:
-      - ghcr.io/defenseunicorns/leapfrogai/leapfrogai-ui:###ZARF_PKG_TMPL_IMAGE_VERSION###
-      - ghcr.io/defenseunicorns/leapfrogai/ui-migrations:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/ui-migrations:###ZARF_PKG_TMPL_IMAGE_VERSION###
     actions:
       onDeploy:
         after:

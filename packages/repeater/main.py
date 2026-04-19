@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Any, AsyncGenerator
 
-from leapfrogai_sdk import (
+from cowabunga_sdk import (
     CompletionServiceServicer,
     EmbeddingsServiceServicer,
     ChatCompletionServiceServicer,
@@ -20,7 +20,7 @@ from leapfrogai_sdk import (
     TokenCountResponse,
     serve,
 )
-from leapfrogai_sdk.llm import LLM, GenerationConfig
+from cowabunga_sdk.llm import LLM, GenerationConfig
 
 logging.basicConfig(
     level=os.getenv("COWABUNGA_LOG_LEVEL", logging.INFO),

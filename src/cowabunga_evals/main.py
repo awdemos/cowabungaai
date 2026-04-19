@@ -3,7 +3,7 @@ import time
 from dotenv import load_dotenv
 from typing import Optional, List
 
-from leapfrogai_evals.evals import human_eval, mmlu, niah_eval, qa_eval  # noqa
+from cowabunga_evals.evals import human_eval, mmlu, niah_eval, qa_eval  # noqa
 
 ALL_EVALS = ["niah_eval", "qa_eval", "mmlu", "human_eval"]
 

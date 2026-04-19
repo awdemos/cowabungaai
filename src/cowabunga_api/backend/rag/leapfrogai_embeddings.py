@@ -1,7 +1,7 @@
 """CowabungaAI Embeddings via Langchain Embeddings Interface."""
 
 import os
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.backend.grpc_client import create_embeddings
 import logging

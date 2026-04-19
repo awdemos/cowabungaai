@@ -1,5 +1,5 @@
 [project]
-name = "leapfrogai-evals"
+name = "cowabunga-evals"
 description = "A framework for running evaluations in LeapfrogAI"
 
 # x-release-please-start-version
@@ -27,7 +27,7 @@ generate-hashes = true
 
 [tool.setuptools.packages.find]
 where = ["../"]
-include = ["leapfrogai_evals*"]
+include = ["cowabunga_evals*"]
 namespaces = false
 
 [tool.pytest.ini_options]

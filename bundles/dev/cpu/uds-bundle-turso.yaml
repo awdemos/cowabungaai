@@ -2,7 +2,7 @@
 
 kind: UDSBundle
 metadata:
-  name: leapfrogai-turso
+  name: cowabungaai-turso
   description: A UDS bundle for deploying CowabungaAI with CPU-only support and Turso database
   version: dev
 
@@ -13,16 +13,16 @@ packages:
     ref: dev
 
   # API
-  - name: leapfrogai-api
+  - name: cowabunga-api
     path: ../../../packages/api/
     ref: dev
     overrides:
-      leapfrogai-api:
+      cowabunga-api:
         variables:
           - name: DATABASE_TYPE
             value: "turso"
           - name: TURSO_URL
-            value: "http://turso.leapfrogai.svc.cluster.local:8080"
+            value: "http://turso.cowabungaai.svc.cluster.local:8080"
 
   # Chat Model
   - name: llama-cpp-python
@@ -40,6 +40,6 @@ packages:
     ref: dev
 
   # UI
-  - name: leapfrogai-ui
+  - name: cowabunga-ui
     path: ../../../packages/ui/
     ref: dev

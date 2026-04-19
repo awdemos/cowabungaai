@@ -6,7 +6,7 @@ description = "A LeapfrogAI API-compatible llama-cpp-python wrapper for quantize
 version = "0.14.0"
 # x-release-please-end
 
-dependencies = ["llama-cpp-python == 0.2.72", "leapfrogai-sdk"]
+dependencies = ["llama-cpp-python == 0.2.72", "cowabunga-sdk"]
 requires-python = "~=3.11"
 readme = "README.md"
 
@@ -17,8 +17,8 @@ dev = ["huggingface_hub[cli,hf_transfer] ==0.25.1"]
 generate-hashes = true
 
 [tool.setuptools]
-packages = ["cowabunga_sdk"]
-package-dir = { "" = "../../src" }
+py-modules = ["main"]
+
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

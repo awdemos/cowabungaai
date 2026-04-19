@@ -2,7 +2,7 @@
 
 from typing import Annotated, AsyncGenerator, Any
 from fastapi import HTTPException, APIRouter, Depends
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 from cowabunga_api.backend.grpc_client import (
     chat_completion,
     stream_chat_completion,

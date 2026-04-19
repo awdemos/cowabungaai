@@ -1,7 +1,7 @@
 MODEL_NAME ?= openai/whisper-base
 
 install:
-	python -m pip install ../../src/leapfrogai_sdk
+	python -m pip install ../../src/cowabunga_sdk
 	python -m pip install -e ".[dev]"
 
 download-model:
@@ -14,4 +14,4 @@ download-model:
 
 dev:
 	make install
-	python -m leapfrogai_sdk.cli --app-dir=src/ main:Model
+	python -m cowabunga_sdk.cli --app-dir=src/ main:Model

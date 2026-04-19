@@ -19,12 +19,12 @@ help: ## Display this help information
 ## Clean up targets for test artifacts, cachce, etc.
 include mk-clean.mk
 
-gen-python: ## Generate the protobufs for the OpenAI typing within the leapfrogai_api module
-	python3 -m grpc_tools.protoc -I src/leapfrogai_sdk/proto \
+gen-python: ## Generate the protobufs for the OpenAI typing within the cowabunga_api module
+	python3 -m grpc_tools.protoc -I src/cowabunga_sdk/proto \
 			--pyi_out=src/. \
 			--python_out=src/. \
 			--grpc_python_out=src/. \
-			src/leapfrogai_sdk/proto/leapfrogai_sdk/**/*.proto
+			src/cowabunga_sdk/proto/cowabunga_sdk/**/*.proto
 
 local-registry: ## Start up a local container registry. Errors in this target are ignored.
 	@echo "Creating local Docker registry..."
@@ -38,27 +38,27 @@ clean-registry:
 	@docker stop ${REG_NAME}
 	@docker rm ${REG_NAME}
 
-sdk-wheel: ## build wheels for the leapfrogai_sdk package as a dependency for other lfai components
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-sdk:${LOCAL_VERSION} -f src/leapfrogai_sdk/Dockerfile .
+sdk-wheel: ## build wheels for the cowabunga_sdk package as a dependency for other lfai components
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f src/cowabunga_sdk/Dockerfile .
 
 docker-supabase:
 	## Build the migration container for this version of the supabase package
-	docker build ${DOCKER_FLAGS} -t ghcr.io/defenseunicorns/leapfrogai/supabase-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=packages/supabase/migrations" .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/supabase-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/supabase-migrations:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} -t ghcr.io/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=packages/supabase/migrations" .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION}
 
 build-supabase: local-registry docker-supabase
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/supabase-migrations:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/supabase --flavor ${FLAVOR} -a ${ARCH} -o packages/supabase --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-turso:
 	## Build the turso database image with API server
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
-	docker tag ghcr.io/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
+	docker tag ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
 
 build-turso: local-registry docker-turso
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/turso:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/turso --flavor ${FLAVOR} -a ${ARCH} -o packages/turso --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
@@ -68,72 +68,72 @@ docker-api: local-registry sdk-wheel
 	@echo $(ZARF_FLAGS)
 ifeq ($(FLAVOR),upstream)
 	## Build the API image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${LOCAL_VERSION} -f packages/api/Dockerfile .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/leapfrogai-api:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/leapfrogai-api:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} -f packages/api/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
 endif
 	## Build the migration container for this version of the API
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/leapfrogai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=packages/api/supabase/migrations" .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/api-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/api-migrations:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=packages/api/supabase/migrations" .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
 
-build-api: local-registry docker-api ## Build the leapfrogai_api container and Zarf package
+build-api: local-registry docker-api ## Build the cowabunga_api container and Zarf package
 ifeq ($(FLAVOR),upstream)
 	## Push the images to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/leapfrogai-api:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
 endif
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/api-migrations:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/api --flavor ${FLAVOR} -a ${ARCH} -o packages/api --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-ui:
 	## Build the UI image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/leapfrogai/leapfrogai-ui:${LOCAL_VERSION} src/leapfrogai_ui
-	docker tag ghcr.io/defenseunicorns/leapfrogai/leapfrogai-ui:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/leapfrogai-ui:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} src/cowabunga_ui
+	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
 
 	## Build the migration container for the version of the UI
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/leapfrogai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=src/leapfrogai_ui/supabase/migrations" .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/ui-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/ui-migrations:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=src/cowabunga_ui/supabase/migrations" .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
 
-build-ui: local-registry docker-ui ## Build the leapfrogai_ui container and Zarf package
+build-ui: local-registry docker-ui ## Build the cowabunga_ui container and Zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/leapfrogai-ui:${LOCAL_VERSION}
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/ui-migrations:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/ui --flavor ${FLAVOR} -a ${ARCH} -o packages/ui --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-llama-cpp-python: sdk-wheel
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/leapfrogai/llama-cpp-python:${LOCAL_VERSION} -f packages/llama-cpp-python/Dockerfile .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/llama-cpp-python:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/llama-cpp-python:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} -f packages/llama-cpp-python/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION}
 
 build-llama-cpp-python: local-registry docker-llama-cpp-python ## Build the llama-cpp-python (cpu) container and Zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/llama-cpp-python:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/llama-cpp-python --flavor ${FLAVOR} -a ${ARCH} -o packages/llama-cpp-python --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-vllm: sdk-wheel
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/leapfrogai/vllm:${LOCAL_VERSION} -f packages/vllm/Dockerfile .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/vllm:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/vllm:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} -f packages/vllm/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION}
 
 build-vllm: local-registry docker-vllm ## Build the vllm container and Zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/vllm:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/vllm --flavor ${FLAVOR} -a ${ARCH} -o packages/vllm --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-text-embeddings: sdk-wheel
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/leapfrogai/text-embeddings:${LOCAL_VERSION} -f packages/text-embeddings/Dockerfile .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/text-embeddings:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/text-embeddings:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} -f packages/text-embeddings/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION}
 
 build-text-embeddings: local-registry docker-text-embeddings ## Build the text-embeddings container and Zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/text-embeddings:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/text-embeddings --flavor ${FLAVOR} -a ${ARCH} -o packages/text-embeddings --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
@@ -141,24 +141,24 @@ build-text-embeddings: local-registry docker-text-embeddings ## Build the text-e
 
 docker-whisper: sdk-wheel
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/leapfrogai/whisper:${LOCAL_VERSION} -f packages/whisper/Dockerfile .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/whisper:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/whisper:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} -f packages/whisper/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION}
 
 build-whisper: local-registry docker-whisper ## Build the whisper container and zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/whisper:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/whisper --flavor ${FLAVOR} -a ${ARCH} -o packages/whisper --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-repeater: sdk-wheel
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/leapfrogai/repeater:${LOCAL_VERSION} -f packages/repeater/Dockerfile .
-	docker tag ghcr.io/defenseunicorns/leapfrogai/repeater:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/leapfrogai/repeater:${LOCAL_VERSION}
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} -f packages/repeater/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION}
 
 build-repeater: local-registry docker-repeater ## Build the repeater container and zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/leapfrogai/repeater:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION}
 
 	## Build the Zarf package
 	uds zarf package create packages/repeater --flavor ${FLAVOR} -a ${ARCH} -o packages/repeater --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
@@ -258,13 +258,13 @@ silent-deploy-turso-package:
 silent-deploy-api-package:
 	@echo "Starting API deployment..."
 	@mkdir -p .logs
-	@uds zarf package deploy packages/api/zarf-package-leapfrogai-api-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-api.log 2>&1
+	@uds zarf package deploy packages/api/zarf-package-cowabunga-api-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-api.log 2>&1
 	@echo "API deployment completed"
 
 silent-deploy-ui-package:
 	@echo "Starting UI deployment..."
 	@mkdir -p .logs
-	@uds zarf package deploy packages/ui/zarf-package-leapfrogai-ui-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-ui.log 2>&1
+	@uds zarf package deploy packages/ui/zarf-package-cowabunga-ui-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-ui.log 2>&1
 	@echo "UI deployment completed"
 
 silent-deploy-llama-cpp-python-package:
@@ -320,7 +320,7 @@ silent-deploy-gpu:
 	@$(MAKE) silent-deploy-ui-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS} --set=MODEL='vllm'"
 	@echo "All deployments completed"
 
-silent-fresh-leapfrogai-gpu:
+silent-fresh-cowabunga-gpu:
 	@echo "Cleaning up previous artifacts..."
 	@$(MAKE) clean-artifacts > /dev/null 2>&1
 	@echo "Logs at .logs/*.log"
@@ -335,9 +335,9 @@ silent-fresh-leapfrogai-gpu:
 	@$(MAKE) silent-deploy-gpu
 	@echo "Done!"
 	@echo "UI is available at https://ai.uds.dev"
-	@echo "API is available at https://leapfrogai-api.uds.dev"
+	@echo "API is available at https://cowabunga-api.uds.dev"
 
-silent-fresh-leapfrogai-cpu:
+silent-fresh-cowabunga-cpu:
 	@echo "Cleaning up previous artifacts..."
 	@$(MAKE) clean-artifacts > /dev/null 2>&1
 	@echo "Logs at .logs/*.log"
@@ -350,7 +350,7 @@ silent-fresh-leapfrogai-cpu:
 	@$(MAKE) silent-deploy-cpu
 	@echo "Done!"
 	@echo "UI is available at https://ai.uds.dev"
-	@echo "API is available at https://leapfrogai-api.uds.dev"
+	@echo "API is available at https://cowabunga-api.uds.dev"
 
 # Turso-specific targets (alternative to Supabase)
 silent-build-cpu-turso:
@@ -374,7 +374,7 @@ silent-deploy-cpu-turso:
 		silent-deploy-whisper-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
 	@echo "All deployments completed"
 
-silent-fresh-leapfrogai-cpu-turso:
+silent-fresh-cowabunga-cpu-turso:
 	@echo "Cleaning up previous artifacts..."
 	@$(MAKE) clean-artifacts > /dev/null 2>&1
 	@echo "Logs at .logs/*.log"
@@ -387,5 +387,5 @@ silent-fresh-leapfrogai-cpu-turso:
 	@$(MAKE) silent-deploy-cpu-turso
 	@echo "Done!"
 	@echo "UI is available at https://ai.uds.dev"
-	@echo "API is available at https://leapfrogai-api.uds.dev"
-	@echo "Turso database is available at turso.leapfrogai.svc.cluster.local:8080"
+	@echo "API is available at https://cowabunga-api.uds.dev"
+	@echo "Turso database is available at turso.cowabungaai.svc.cluster.local:8080"

@@ -55,7 +55,7 @@ components:
     required: true
     charts:
       - name: supabase
-        namespace: leapfrogai
+        namespace: cowabungaai
         url: oci://ghcr.io/supabase-community/supabase-kubernetes
         releaseName: supabase
         version: 5.1.0

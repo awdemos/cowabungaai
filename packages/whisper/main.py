@@ -4,7 +4,7 @@ import os
 import tempfile
 from typing import Iterator
 
-import leapfrogai_sdk as lfai
+import cowabunga_sdk as lfai
 from faster_whisper import WhisperModel
 
 logging.basicConfig(

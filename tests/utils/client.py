@@ -6,7 +6,7 @@ from requests import Response
 import requests
 
 
-def get_leapfrogai_model() -> str:
+def get_cowabunga_model() -> str:
     """Get the model to use for CowabungaAI.
 
     Returns:
@@ -98,7 +98,7 @@ def openai_client() -> OpenAI:
     return OpenAI(api_key=get_openai_key())
 
 
-def leapfrogai_client() -> OpenAI:
+def cowabunga_client() -> OpenAI:
     """Create an OpenAI client using the COWABUNGA_API_URL and COWABUNGA_API_KEY or SUPABASE_USER_JWT.
 
     returns:
@@ -125,8 +125,8 @@ def client_config_factory(client_name: str) -> ClientConfig:
     """Factory function for creating a client configuration that is OpenAI compliant."""
     if client_name == "openai":
         return ClientConfig(client=openai_client(), model=get_openai_model())
-    elif client_name == "leapfrogai":
-        return ClientConfig(client=leapfrogai_client(), model=get_leapfrogai_model())
+    elif client_name == "cowabunga":
+        return ClientConfig(client=cowabunga_client(), model=get_cowabunga_model())
     else:
         raise ValueError(f"Unknown client name: {client_name}")
 

@@ -7,7 +7,7 @@ from deepeval.benchmarks.tasks import HumanEvalTask
 from tqdm import tqdm
 from typing import Optional
 
-from leapfrogai_evals.models import COWABUNGA_Model
+from cowabunga_evals.models import COWABUNGA_Model
 
 
 def human_eval(

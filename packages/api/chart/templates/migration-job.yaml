@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ include "chart.fullname" . }}-migrations-{{ .Values.api.migration.image.tag | default .Chart.AppVersion }}
-  namespace: {{ .Release.Namespace | default "leapfrogai" }}
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
   labels:
     {{- include "chart.labels" . | nindent 4 }}
 spec:
@@ -20,7 +20,7 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
             - name: MIGRATION_NAMESPACE
-              value: "{{ default "leapfrogai" $.Release.Namespace }}"
+              value: "{{ default "cowabungaai" $.Release.Namespace }}"
           {{- end }}
           command: ["/bin/sh"]
           args:

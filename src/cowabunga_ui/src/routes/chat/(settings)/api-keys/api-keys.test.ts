@@ -168,7 +168,7 @@ describe('api keys', () => {
 
   // This test passes but is throwing a type error:
   // TypeError: Cannot read properties of undefined (reading '$set')
-  // TODO - https://github.com/defenseunicorns/leapfrogai/issues/636
+  // TODO - https://github.com/defenseunicorns/cowabunga/issues/636
   it.skip('can create new keys', async () => {
     const toastSpy = vi.spyOn(toastStore, 'addToast');
     const keyName = faker.word.noun();

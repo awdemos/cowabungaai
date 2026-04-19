@@ -207,7 +207,7 @@ describe('file management', () => {
 
 // TODO - The API Keys table also uses this pagination logic, but we are only testing it here on the files table
 // Eventually we should refactor the table to a re-usable component and test there instead
-// https://github.com/defenseunicorns/leapfrogai/issues/860
+// https://github.com/defenseunicorns/cowabunga/issues/860
 describe('table pagination', () => {
   const files = getFakeFiles({ numFiles: 15 });
   let form: FilesForm;

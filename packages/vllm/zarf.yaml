@@ -106,13 +106,13 @@ components:
         valuesFiles:
           - "values/upstream-values.yaml"
     images:
-      - "ghcr.io/defenseunicorns/leapfrogai/vllm:###ZARF_PKG_TMPL_IMAGE_VERSION###"
+      - "ghcr.io/defenseunicorns/cowabungaai/vllm:###ZARF_PKG_TMPL_IMAGE_VERSION###"
       - "cgr.dev/chainguard/bash:latest"
     dataInjections:
       # location where locally downloaded model files are located
       - source: ".model/"
         target:
-          namespace: "leapfrogai"
+          namespace: "cowabungaai"
           selector: "app=lfai-###ZARF_PKG_TMPL_NAME_OVERRIDE###"
           container: "data-loader"
           # location in the container for injection of the model files

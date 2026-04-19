@@ -179,7 +179,7 @@ class NIAH_Runner:
                         logging.info(f"chunk {chunk_num} (id: {chunk_id})")
                         vector_response = requests.get(
                             url=os.getenv("COWABUNGA_API_URL")
-                            + "/leapfrogai/v1/vector_stores/vector/"
+                            + "/cowabungaai/v1/vector_stores/vector/"
                             + chunk_id,
                             headers={
                                 "accept": "application/json",

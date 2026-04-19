@@ -49,8 +49,8 @@ proxy = "direct"
 
   archived_version    = false
   copyright           = "Defense Unicorns"
-  github_project_repo = "https://github.com/defenseunicorns/leapfrogai"
-  github_repo         = "https://github.com/defenseunicorns/leapfrogai"
+  github_project_repo = "https://github.com/awdemos/cowabungaai"
+  github_repo         = "https://github.com/awdemos/cowabungaai"
   # x-release-please-start-version
   version             = "v0.14.0"
   # x-release-please-end
@@ -65,13 +65,13 @@ proxy = "direct"
   # version = "v0.2"
   # url = "https://v02-version"
   [params.ui]
-    navbar_logo = "img/leapfrogai.svg" # The product logo on the navbar
+    navbar_logo = "img/cowabungaai.svg" # The product logo on the navbar
 
   [[params.socialLinks]]
     desc = ""
     icon = "fa-brands fa-github"
     name = "GitHub"
-    url  = "https://github.com/defenseunicorns/leapfrogai"
+    url  = "https://github.com/awdemos/cowabungaai"
 
     ### Other social links
     # [[params.socialLinks]]
