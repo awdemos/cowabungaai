@@ -19,7 +19,7 @@ def validate_annotation_format(annotation):
     return match is not None
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def make_vector_store_with_file(client_name):
     config = client_config_factory(client_name)
     client = config.client
@@ -32,7 +32,7 @@ def make_vector_store_with_file(client_name):
     return vector_store
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def make_test_assistant(client_name, model, vector_store_id):
     config = client_config_factory(client_name)
     client = config.client
@@ -47,7 +47,7 @@ def make_test_assistant(client_name, model, vector_store_id):
     return assistant
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def make_test_run(client_name, assistant, thread):
     config = client_config_factory(client_name)
     client = config.client
@@ -58,7 +58,7 @@ def make_test_run(client_name, assistant, thread):
     return run
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_thread_file_annotations(client_name):
     config = client_config_factory(client_name)
     client = config.client

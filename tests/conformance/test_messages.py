@@ -5,7 +5,7 @@ from openai.types.beta.threads.message import Message
 from tests.utils.client import client_config_factory
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_message_create(client_name):
     config = client_config_factory(client_name)
     client = config.client
@@ -20,7 +20,7 @@ def test_message_create(client_name):
     assert isinstance(message, Message)
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_message_list(client_name):
     config = client_config_factory(client_name)
     client = config.client

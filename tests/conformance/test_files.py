@@ -10,7 +10,7 @@ from tests.utils.client import client_config_factory
 from tests.utils.data_path import data_path, TXT_FILE_NAME
 
 
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_file_upload(client_name):
     config = client_config_factory(client_name)
     client = config.client  # shorthand
@@ -26,7 +26,7 @@ def test_file_upload(client_name):
 
 
 @pytest.mark.xfail(reason="File Batch Upload is not yet implemented in CowabungaAI")
-@pytest.mark.parametrize("client_name", ["openai", "leapfrogai"])
+@pytest.mark.parametrize("client_name", ["openai", "cowabunga"])
 def test_file_delete(client_name):
     config = client_config_factory(client_name)
     client = config.client

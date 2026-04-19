@@ -31,8 +31,8 @@ mock_message = make_mock_message_simple(role="user", message_text="Who is Sam?")
     [
         ("openai", []),
         ("openai", [mock_message]),
-        ("leapfrogai", []),
-        ("leapfrogai", [mock_message]),
+        ("cowabunga", []),
+        ("cowabunga", [mock_message]),
     ],
 )
 def test_thread(client_name, test_messages):

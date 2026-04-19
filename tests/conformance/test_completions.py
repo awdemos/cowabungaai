@@ -30,8 +30,8 @@ mock_message = make_mock_message_simple(role="user", message_text="Hello world!"
     [
         ("openai", []),
         ("openai", [mock_message]),
-        ("leapfrogai", []),
-        ("leapfrogai", [mock_message]),
+        ("cowabunga", []),
+        ("cowabunga", [mock_message]),
     ],
 )
 def test_run_completion(client_name, test_messages):
