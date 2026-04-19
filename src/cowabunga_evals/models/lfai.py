@@ -4,7 +4,6 @@ import openai
 from pydantic import BaseModel
 from deepeval.models.base_model import DeepEvalBaseLLM
 import asyncio
-from typing import Optional, List
 
 
 class COWABUNGA_Model(DeepEvalBaseLLM):
@@ -18,9 +17,9 @@ class COWABUNGA_Model(DeepEvalBaseLLM):
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
-        base_url: Optional[str] = None,
-        model: Optional[str] = None,
+        api_key: str | None = None,
+        base_url: str | None = None,
+        model: str | None = None,
     ):
         self.model = model or os.getenv("MODEL_TO_EVALUATE")
         self.api_key = api_key or os.getenv("COWABUNGA_API_KEY")
@@ -59,7 +58,7 @@ class COWABUNGA_Model(DeepEvalBaseLLM):
         response_text = response_text.strip()
         return response_text
 
-    def generate_samples(self, n: int, *args, **kwargs) -> List[str]:
+    def generate_samples(self, n: int, *args, **kwargs) -> list[str]:
         """Generates a list of n responses using the generate() function"""
         samples = [self.generate(*args, **kwargs) for ii in range(n)]
         return samples
