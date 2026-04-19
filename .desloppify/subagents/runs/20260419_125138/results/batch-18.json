@@ -1,0 +1,194 @@
+{
+  "batch": "contract_coherence",
+  "batch_index": 18,
+  "assessments": {
+    "contract_coherence": 72.0
+  },
+  "dimension_notes": {
+    "contract_coherence": {
+      "evidence": [
+        "CRUDBase.get signature only accepts 'filters' param, but runs_steps.py passes 'id_' to crud_run.get(id_=run_id) on four separate lines (27, 84, 129, 152)",
+        "CRUDBase.delete catches bare Exception and returns False, silently swallowing all database errors instead of propagating them",
+        "get_user_id in crud_base.py is annotated -> str but can raise IndexError when result.data is empty; no docstring documents this exception",
+        "CRUDAPIKey.get is annotated -> APIKeyItem but accesses response[0] without checking if result.data is empty, risking IndexError",
+        "grpc_chat_role is named as a pure converter but returns None for unmatched roles, violating the implicit non-null contract suggested by the name",
+        "data_path in tests/utils/data_path.py docstring claims 'Returns: Path' but when filename=None it produces Path('.../data/None')",
+        "Composer.generate_response, Composer.generate_message_for_thread, and from_assistant_stream_event_to_str lack return type annotations on public APIs",
+        "Router handlers in openai/ directory generally have consistent return type annotations, showing good pattern adherence"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high",
+      "issues_preventing_higher_score": "The runs_steps.py parameter mismatch is a latent runtime bug. CRUDBase.delete swallows all exceptions silently, breaking error contracts. Multiple getter functions risk unhandled IndexError crashes that are not documented in their contracts."
+    }
+  },
+  "dimension_judgment": {
+    "contract_coherence": {
+      "dimension_character": "The codebase follows a consistent CRUD-base pattern with generally honest type annotations on router handlers, but several core data-access functions violate their stated contracts through silent error swallowing, undocumented exceptions, and parameter mismatches that would fail at runtime.",
+      "score_rationale": "The strong positive pattern of typed FastAPI handlers and generic CRUDBase is undermined by a clear runtime contract violation in runs_steps.py, silent exception swallowing in CRUDBase.delete, and multiple getter functions that can crash with IndexError without documenting this in their types or docstrings. These are concrete contract breaches, not mere missing annotations."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "contract_coherence",
+      "identifier": "crud_get_param_mismatch",
+      "summary": "CRUDRun.get called with 'id_' param that its contract does not accept",
+      "related_files": [
+        "src/cowabunga_api/routers/openai/runs_steps.py",
+        "src/cowabunga_api/data/crud_base.py"
+      ],
+      "evidence": [
+        "runs_steps.py line 27: run = await crud_run.get(id_=run_id)",
+        "runs_steps.py line 84: run = await crud_run.get(id_=run_id)",
+        "runs_steps.py line 129: run = await crud_run.get(id_=run_id)",
+        "runs_steps.py line 152: run = await crud_run.get(id_=run_id)",
+        "CRUDBase.get signature: async def get(self, filters: dict | None = None) -> ModelType | None"
+      ],
+      "suggestion": "Change all four calls to pass filters={\"id\": run_id} instead of id_=run_id, or add an id_ overload to CRUDBase.get if that pattern is intentionally desired.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit",
+      "root_cause_cluster": "inconsistent_crud_interface"
+    },
+    {
+      "dimension": "contract_coherence",
+      "identifier": "crudbase_delete_silent_swallow",
+      "summary": "CRUDBase.delete catches all exceptions and returns False, hiding failure reasons from callers",
+      "related_files": [
+        "src/cowabunga_api/data/crud_base.py"
+      ],
+      "evidence": [
+        "async def delete(self, filters: dict | None = None) -> bool:",
+        "try: return True if result.data else False",
+        "except Exception: return False"
+      ],
+      "suggestion": "Catch specific expected exceptions (e.g., IndexError for empty result.data) and re-raise unexpected ones so callers can distinguish 'no rows matched' from 'database connection failed'.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit",
+      "root_cause_cluster": "silent_error_swallowing"
+    },
+    {
+      "dimension": "contract_coherence",
+      "identifier": "get_user_id_undocumented_indexerror",
+      "summary": "get_user_id is typed -> str but can raise IndexError on empty query results without documenting this",
+      "related_files": [
+        "src/cowabunga_api/data/crud_base.py"
+      ],
+      "evidence": [
+        "async def get_user_id(db: AsyncClient) -> str:",
+        "user_id: str = result.data[0]['user_id']  // result.data may be empty"
+      ],
+      "suggestion": "Add a guard clause to check len(result.data) before indexing, or change the return type to str | None and document the None case.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "contract_coherence",
+      "identifier": "crudapikey_get_undocumented_crash",
+      "summary": "CRUDAPIKey.get is typed -> APIKeyItem but crashes with IndexError when no rows match",
+      "related_files": [
+        "src/cowabunga_api/data/crud_api_key.py"
+      ],
+      "evidence": [
+        "async def get(self, filters: dict | None = None) -> APIKeyItem:",
+        "return APIKeyItem(name=response[0]['name'], ...)  // response may be empty"
+      ],
+      "suggestion": "Return APIKeyItem | None when no match is found, consistent with CRUDBase.get, and add a guard before indexing response[0].",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "contract_coherence",
+      "identifier": "grpc_chat_role_null_return",
+      "summary": "grpc_chat_role returns None for unmatched roles despite name implying a non-null ChatRole",
+      "related_files": [
+        "src/cowabunga_api/backend/helpers.py"
+      ],
+      "evidence": [
+        "def grpc_chat_role(role: str) -> lfai.ChatRole:  // missing annotation, but name implies ChatRole",
+        "case _: return None"
+      ],
+      "suggestion": "Add a return type annotation of lfai.ChatRole | None and raise ValueError for truly invalid roles instead of silently returning None, or document that None is the expected fallback.",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "contract_coherence",
+      "identifier": "data_path_docstring_lie",
+      "summary": "data_path docstring claims it returns a Path but omits the return type and produces a broken path when filename is None",
+      "related_files": [
+        "tests/utils/data_path.py"
+      ],
+      "evidence": [
+        "def data_path(filename: str | None = None):  // no return type",
+        "Docstring: Returns: Path: The path to the data directory or a specific file within it.",
+        "data_path = Path(os.path.dirname(__file__) + f\"/../data/{filename}\")  // interpolates 'None' when filename is None"
+      ],
+      "suggestion": "Add -> Path return type annotation and handle filename=None by returning the data directory path without appending 'None'.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "contract_coherence",
+      "identifier": "missing_return_annotations_public_api",
+      "summary": "Multiple public API functions in grpc_client.py and composer.py lack return type annotations",
+      "related_files": [
+        "src/cowabunga_api/backend/grpc_client.py",
+        "src/cowabunga_api/backend/composer.py",
+        "src/cowabunga_api/backend/converters.py"
+      ],
+      "evidence": [
+        "grpc_client.py: async def stream_completion(model: Model, request: lfai.CompletionRequest):  // no return type",
+        "grpc_client.py: async def chat_completion(model: Model, request: lfai.ChatCompletionRequest):  // no return type",
+        "composer.py: async def generate_response(self, request, new_thread, new_run, session):  // no return type",
+        "converters.py: def from_assistant_stream_event_to_str(stream_event: AssistantStreamEvent):  // no return type"
+      ],
+      "suggestion": "Add return type annotations to all public API functions: stream_completion -> StreamingResponse, chat_completion -> ChatCompletionResponse, generate_response -> StreamingResponse | Run, from_assistant_stream_event_to_str -> str.",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "CRUDBase generic interface was extended without ensuring all subclasses and callers use consistent parameter names",
+      "Error handling strategy in CRUDBase.delete prefers silent failure over explicit exceptions, hiding operational issues",
+      "Supabase query results are indexed directly without emptiness checks, assuming rows always exist"
+    ],
+    "likely_symptoms": [
+      "runs_steps.py parameter mismatch",
+      "silent delete failures",
+      "IndexError crashes in production under empty-result conditions"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "contract_coherence": {
+      "add": [
+        {
+          "header": "CRUDBase provides a consistent generic interface",
+          "description": "Most data modules inherit from CRUDBase and follow the same create/get/list/update/delete pattern, which keeps contracts predictable across the data layer.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "FastAPI router handlers generally typed",
+          "description": "OpenAI-compliant router handlers in src/cowabunga_api/routers/openai/ mostly declare explicit return types, providing honest API surface contracts.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Supabase result indexing without guards",
+          "description": "A recurring pattern throughout the data layer is accessing result.data[0] without first checking that the list is non-empty. This creates an implicit IndexError contract that contradicts the declared return types.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}
