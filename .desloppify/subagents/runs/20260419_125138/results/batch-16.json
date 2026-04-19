@@ -1,0 +1,153 @@
+{
+  "batch": "initialization_coupling",
+  "batch_index": 16,
+  "assessments": {
+    "initialization_coupling": 60.0
+  },
+  "dimension_notes": {
+    "initialization_coupling": {
+      "evidence": [
+        "src/cowabunga_api/utils/__init__.py instantiates Config() at module scope and exports it via get_model_config(), creating a global mutable singleton consumed by ~15 call sites",
+        "Config class in src/cowabunga_api/utils/config.py defines mutable class attributes models={} and config_sources={} and uses mutable default args in __init__",
+        "packages/text-embeddings/main.py loads INSTRUCTOR(model_dir) at module import time, causing heavy I/O and model initialization on every import",
+        "packages/llama-cpp-python/main.py executes BackendConfig(), os.path.exists(), and Llama(...) inside the class body, all running at import time when the class is defined",
+        "src/cowabunga_api/utils/logging_tools.py calls load_dotenv() and logging.basicConfig() at module scope, mutating process-global state on import",
+        "src/cowabunga_sdk/config.py reads os.getenv('COWABUNGA_CONFIG_FILE') in the BackendConfig class attribute CONFIG_SOURCES at class definition time, baking in the first-seen env value",
+        "Positive: src/cowabunga_api/utils/database_factory.py defers all os.getenv calls into create_database_client(), avoiding import-time coupling",
+        "Positive: tests/utils/client.py wraps every env read in a getter function, making tests independent of import order"
+      ],
+      "impact_scope": "codebase",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high"
+    }
+  },
+  "dimension_judgment": {
+    "initialization_coupling": {
+      "dimension_character": "The codebase mixes disciplined deferred initialization—factory functions and getter wrappers—with several heavy import-time side effects. A global mutable Config singleton is instantiated at module scope and shared across the entire API, while multiple package entry points load ML models and mutate process-global logging state during import.",
+      "score_rationale": "The global mutable Config singleton and import-time model loading are structural weaknesses that make testing brittle and create hidden boot-order dependencies. These are partially offset by good patterns in database_factory.py and tests/utils/client.py, but the heavy side effects in package entry points and the process-wide logging mutation keep the score below average."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "initialization_coupling",
+      "identifier": "global_mutable_config_singleton",
+      "summary": "Global mutable Config singleton instantiated at module scope",
+      "related_files": [
+        "src/cowabunga_api/utils/__init__.py",
+        "src/cowabunga_api/utils/config.py"
+      ],
+      "evidence": [
+        "src/cowabunga_api/utils/__init__.py line 3: config = Config()",
+        "src/cowabunga_api/utils/__init__.py line 6-7: get_model_config() returns the module-level instance",
+        "src/cowabunga_api/utils/config.py line 51-52: mutable class attributes models={} and config_sources={}",
+        "src/cowabunga_api/utils/config.py line 54-55: mutable default dict arguments in __init__"
+      ],
+      "suggestion": "Replace the module-level singleton with an explicit initialization function (e.g., create_config()) that returns a fresh instance, or use a proper registry/context manager. If a true singleton is required, use a thread-safe lazy accessor and avoid mutable default arguments.",
+      "confidence": "high",
+      "impact_scope": "codebase",
+      "fix_scope": "multi_file_refactor",
+      "root_cause_cluster": "global_mutable_config"
+    },
+    {
+      "dimension": "initialization_coupling",
+      "identifier": "import_time_model_load_embeddings",
+      "summary": "Heavy ML model loaded at module import time in text-embeddings package",
+      "related_files": [
+        "packages/text-embeddings/main.py"
+      ],
+      "evidence": [
+        "packages/text-embeddings/main.py line 21-22: model_dir = os.environ.get('COWABUNGA_MODEL_PATH', '.model'); model = INSTRUCTOR(model_dir)"
+      ],
+      "suggestion": "Move model initialization into the InstructorEmbedding class __init__ or a lazily-evaluated factory so the module can be imported without triggering file I/O and model loading.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "initialization_coupling",
+      "identifier": "import_time_class_body_init_llama",
+      "summary": "Class-body code executes BackendConfig and Llama initialization at import time",
+      "related_files": [
+        "packages/llama-cpp-python/main.py"
+      ],
+      "evidence": [
+        "packages/llama-cpp-python/main.py line 19: backend_config = BackendConfig() inside class body",
+        "packages/llama-cpp-python/main.py line 21-22: os.path.exists check that can raise ValueError at class definition time",
+        "packages/llama-cpp-python/main.py line 24-28: llm = Llama(...) instantiated inside class body"
+      ],
+      "suggestion": "Move backend_config, existence check, and Llama instantiation into the class __init__ method so they run at object construction time rather than module import time.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "initialization_coupling",
+      "identifier": "import_time_logging_mutation",
+      "summary": "Module import mutates process-global logging and environment state",
+      "related_files": [
+        "src/cowabunga_api/utils/logging_tools.py"
+      ],
+      "evidence": [
+        "src/cowabunga_api/utils/logging_tools.py line 5: load_dotenv() at module scope",
+        "src/cowabunga_api/utils/logging_tools.py line 7-10: logging.basicConfig(level=os.getenv(...)) at module scope"
+      ],
+      "suggestion": "Remove load_dotenv() from the module; rely on the application entry point or deployment environment to load dotenv. If a pre-configured logger is needed, expose a configure_logging() function that callers invoke explicitly rather than running side effects on import.",
+      "confidence": "high",
+      "impact_scope": "codebase",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "initialization_coupling",
+      "identifier": "class_attr_env_snapshot_backend_config",
+      "summary": "BackendConfig bakes environment variable into class attribute at definition time",
+      "related_files": [
+        "src/cowabunga_sdk/config.py"
+      ],
+      "evidence": [
+        "src/cowabunga_sdk/config.py line 46-48: CONFIG_SOURCES = FileSource(file=os.getenv('COWABUNGA_CONFIG_FILE', 'config.yaml'), optional=True) inside class body"
+      ],
+      "suggestion": "Evaluate os.getenv inside an override of __init__ or a factory method so the environment can be changed after import without reloading the module. Alternatively, use a property or lazy resolver for CONFIG_SOURCES.",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Package entry points were authored as scripts with top-level execution logic mixed into module scope",
+      "No explicit application bootstrap phase separates configuration loading from service wiring"
+    ],
+    "likely_symptoms": [
+      "global_mutable_config",
+      "test fragility when importing API modules before setting environment",
+      "hidden import-order failures in CI"
+    ],
+    "possible_false_positives": [
+      "logging.basicConfig in src/cowabunga_api/main.py is standard FastAPI bootstrap and intentionally skipped per rubric"
+    ]
+  },
+  "context_updates": {
+    "initialization_coupling": {
+      "add": [
+        {
+          "header": "Database client factory defers env reads to call time",
+          "description": "src/cowabunga_api/utils/database_factory.py reads DATABASE_TYPE and related vars inside create_database_client() rather than at import time, which is a clean pattern that avoids boot-order coupling.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Test utilities wrap env access in getter functions",
+          "description": "tests/utils/client.py consistently wraps os.getenv calls inside getter functions (get_openai_key, get_cowabunga_api_url, etc.), making test setup independent of import order and allowing easy mocking.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Global mutable Config singleton at module scope",
+          "description": "src/cowabunga_api/utils/__init__.py instantiates Config() at import time and shares it across ~15 consumers via get_model_config(). The Config class also uses mutable default arguments and mutable class attributes, creating a shared mutable state surface with no encapsulation boundary.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}
