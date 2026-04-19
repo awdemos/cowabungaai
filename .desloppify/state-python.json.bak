@@ -1208,10 +1208,10 @@
   },
   "reminder_history": {
     "zone_classification": 3,
-    "report_scores": 3,
-    "feedback_nudge": 2,
+    "report_scores": 4,
+    "feedback_nudge": 3,
     "stagnant_nudge": 20,
-    "wontfix_growing": 1
+    "wontfix_growing": 2
   },
   "work_items": {
     "structural::tests/integration/api/test_assistants.py": {
