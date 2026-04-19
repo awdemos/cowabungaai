@@ -58,7 +58,7 @@ async def lifespan(app: FastAPI):
         try:
             await config_task
         except asyncio.CancelledError:
-            pass  # Task was cancelled, which is expected during shutdown
+            logger.info("Config watcher task cancelled during shutdown")
         await config.clear_all_models()
 
 

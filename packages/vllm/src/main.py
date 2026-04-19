@@ -71,7 +71,7 @@ class RandomAsyncIterator:
         try:
             self.async_iterators.remove(async_iterable.__aiter__())
         except ValueError:
-            pass  # If the iterable is not found, ignore the error
+            logger.debug("Iterator not found in pool, skipping removal")
 
 
 @LLM

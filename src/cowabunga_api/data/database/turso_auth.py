@@ -248,6 +248,7 @@ class TursoAuthClient(AuthClient):
                 payload = jwt.decode(access_token, self.jwt_secret, algorithms=['HS256'])
                 self._current_user_id = payload.get('sub') or payload.get('user_id')
             except jwt.InvalidTokenError:
+                # Not a valid JWT, will fall through to session token auth below
                 pass
         
         # Store session in database
