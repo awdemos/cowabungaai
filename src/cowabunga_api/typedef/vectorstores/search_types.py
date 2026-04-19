@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel, Field
 
 
@@ -27,11 +25,11 @@ class SearchItem(BaseModel):
     similarity: float = Field(
         ..., description="Similarity score of this item to the query."
     )
-    rank: Optional[int] = Field(
+    rank: int | None = Field(
         default=None,
         description="The rank of this search item after ranking has occurred.",
     )
-    score: Optional[float] = Field(
+    score: float | None = Field(
         default=None,
         description="The score of this search item after ranking has occurred.",
     )
