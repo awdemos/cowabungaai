@@ -2,7 +2,7 @@
   "batch": "api_surface_coherence",
   "batch_index": 11,
   "assessments": {
-    "api_surface_coherence": 74.0
+    "api_surface_coherence": 68.0
   },
   "dimension_notes": {
     "api_surface_coherence": {
@@ -12,19 +12,22 @@
         "Composer.generate_response returns Run | StreamingResponse depending on request.stream flag; create_run in runs.py returns Run | StreamingResponse",
         "Most route handlers raise HTTPException but do not document error contracts in docstrings; only modify_assistant includes a Raises section",
         "CRUDBase.delete catches bare Exception and returns False, silently swallowing all database errors",
-        "grpc_chat_role in backend/helpers.py declares return type lfai.ChatRole but returns None for unmatched roles",
-        "object_or_default helper returns Any, discarding type information from callers",
-        "chat_complete_stream_raw in routers/openai/chat.py is a public async function in a router module but is not registered as a FastAPI route"
+        "backend/helpers.py mixes async generators (recv_completion, recv_chat) with sync utilities (grpc_chat_role, read_chunks, object_or_default) in the same public module",
+        "Database backends diverge: TursoQueryBuilder exposes neq/gt/gte/lt/lte/order/limit/range that SupabaseQueryBuilder lacks; TursoClient.create(base_url, auth_token) vs SupabaseClient.create(supabase_url, supabase_key)",
+        "cowabunga tokens router bypasses dependency injection: count_tokens_route(text: str) hardcodes model config lookup instead of using Depends(get_model_config) like sibling routers",
+        "SDK serve() uses hasattr(o, 'ChatComplete') dynamic dispatch, making the public contract depend on runtime object shape rather than static types",
+        "grpc_client.py functions (stream_completion, completion, etc.) call gRPC stubs without documented failure modes or retry contracts",
+        "stream_generate_message_for_thread in composer.py takes 8 positional parameters, exceeding the heuristic API-boundary threshold"
       ],
-      "impact_scope": "module",
+      "impact_scope": "subsystem",
       "fix_scope": "multi_file_refactor",
       "confidence": "high"
     }
   },
   "dimension_judgment": {
     "api_surface_coherence": {
-      "dimension_character": "The API surface has coherent high-level patterns—async routers, CRUD inheritance, and FastAPI dependency injection—but suffers from inconsistent parameter ordering, mixed filter-typing strategies in the CRUD layer, and overloaded return types that change based on runtime flags. Error contracts are largely undocumented despite widespread HTTPException usage.",
-      "score_rationale": "The codebase scores above average because structural patterns (CRUD base, async routers, dependency injection) are recognizable and mostly consistent. It falls short of good because parameter ordering drifts across sibling routes, CRUD subclasses diverge in filter typing, and several public functions return union types based on runtime behavior rather than distinct endpoints. Missing error contracts and silent exception swallowing in CRUDBase.delete further degrade developer trust in the API boundary."
+      "dimension_character": "The API surface has recognizable structural patterns—async FastAPI routers, CRUD inheritance, and dependency injection—that provide a coherent foundation. However, parameter ordering drifts across sibling routes, CRUD subclasses diverge in filter typing, database backends expose unequal query surfaces, and several modules mix sync/async utilities or rely on dynamic runtime dispatch. Error contracts are largely undocumented, and silent exception swallowing in CRUDBase.delete erodes developer trust at the boundary.",
+      "score_rationale": "The codebase scores slightly above average because high-level patterns (CRUD base, async routers, FastAPI DI) are consistent enough to be learnable. It falls short of good because parameter ordering drifts across sibling modules, database client abstractions leak backend-specific capabilities, the SDK uses dynamic hasattr dispatch rather than explicit protocols, and several public modules mix sync and async utilities without clear boundaries. Missing error contracts and CRUDBase's silent exception swallowing further degrade predictability."
     }
   },
   "issues": [
@@ -106,15 +109,17 @@
         "src/cowabunga_api/routers/openai/messages.py",
         "src/cowabunga_api/routers/openai/vector_stores.py",
         "src/cowabunga_api/routers/openai/files.py",
-        "src/cowabunga_api/routers/openai/runs.py"
+        "src/cowabunga_api/routers/openai/runs.py",
+        "src/cowabunga_api/backend/grpc_client.py"
       ],
       "evidence": [
         "create_assistant raises HTTPException with 400 and 500 status codes but docstring only says 'Create an assistant'",
         "create_thread raises HTTPException with 400 and 500 but docstring lacks Raises section",
         "Only modify_assistant in assistants.py includes a Raises section documenting HTTPException conditions",
+        "grpc_client.py functions call gRPC stubs without documented failure modes or retry contracts",
         "Broad try/except Exception blocks wrap helper calls and re-raise as 500, but these error contracts are invisible to API consumers reading the docstrings"
       ],
-      "suggestion": "Add Raises sections to all public route handler docstrings documenting the HTTPException conditions (status codes and triggers). This is low-cost and significantly improves API consumer experience.",
+      "suggestion": "Add Raises sections to all public route handler docstrings documenting the HTTPException conditions (status codes and triggers). Document gRPC client failure modes (connection errors, timeout behavior) in grpc_client.py.",
       "confidence": "medium",
       "impact_scope": "module",
       "fix_scope": "multi_file_refactor"
@@ -133,17 +138,94 @@
       "confidence": "high",
       "impact_scope": "local",
       "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "mixed_sync_async_helpers",
+      "summary": "Public helper module mixes async and sync functions without clear boundary",
+      "related_files": [
+        "src/cowabunga_api/backend/helpers.py"
+      ],
+      "evidence": [
+        "async def recv_completion(stream, model) and async def recv_chat(stream, model) are async SSE generators",
+        "def grpc_chat_role(role: str) -> lfai.ChatRole, def read_chunks(file: BinaryIO, chunk_size: int), and def object_or_default(obj, _default) are synchronous utilities",
+        "All six functions are exported from the same module surface with no subpackage or naming convention separating async from sync utilities"
+      ],
+      "suggestion": "Split backend/helpers.py into two modules (e.g., backend/async_helpers.py and backend/sync_helpers.py) or adopt a naming convention that makes async/sync boundary explicit at the import site.",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "database_client_api_divergence",
+      "summary": "Database client backends expose unequal query surfaces and different factory parameter names",
+      "related_files": [
+        "src/cowabunga_api/data/database/turso_client.py",
+        "src/cowabunga_api/data/database/supabase_client.py",
+        "src/cowabunga_api/data/database/base.py"
+      ],
+      "evidence": [
+        "TursoQueryBuilder adds neq, gt, gte, lt, lte, order, limit, range beyond the QueryBuilder ABC",
+        "SupabaseQueryBuilder only wraps the Supabase query object and does not expose the extra filter methods",
+        "TursoClient.create(base_url, auth_token) vs SupabaseClient.create(supabase_url, supabase_key) — parameter names differ even though semantic roles are identical",
+        "Callers depending on backend-specific query capabilities will fail silently when the factory returns the other backend"
+      ],
+      "suggestion": "Expand the QueryBuilder ABC to include the common filter methods, implement them for both backends, and align factory parameter names (e.g., url and key for both). Alternatively, document which query operations are backend-specific.",
+      "confidence": "high",
+      "impact_scope": "subsystem",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "tokens_router_di_bypass",
+      "summary": "Cowabunga tokens router bypasses FastAPI dependency injection used by sibling routers",
+      "related_files": [
+        "src/cowabunga_api/routers/cowabunga/tokens.py",
+        "src/cowabunga_api/routers/cowabunga/count.py"
+      ],
+      "evidence": [
+        "count_tokens_route(text: str) hardcodes model config lookup internally instead of accepting model_config: ModelConfig = Depends(get_model_config)",
+        "count.py tokens(session, model_config, request) properly injects both session and model_config via Depends",
+        "The bypass makes the tokens endpoint less testable and inconsistent with the dependency-injection pattern used across all other route modules"
+      ],
+      "suggestion": "Refactor count_tokens_route to accept model_config via Depends(get_model_config), matching the pattern in count.py and the OpenAI routers.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "sdk_dynamic_interface_dispatch",
+      "summary": "SDK serve() and LLM decorator construct interfaces dynamically at runtime",
+      "related_files": [
+        "src/cowabunga_sdk/serve.py",
+        "src/cowabunga_sdk/llm.py"
+      ],
+      "evidence": [
+        "serve(o, host='0.0.0.0', port=50051) uses hasattr(o, 'ChatComplete') to decide which gRPC services to register",
+        "LLM decorator dynamically creates NewClass with ChatComplete, ChatCompleteStream, Complete, CompleteStream, CountTokens methods at runtime",
+        "The effective public API of decorated classes is not statically discoverable; type checkers and IDEs cannot infer the generated interface"
+      ],
+      "suggestion": "Define an explicit Protocol or ABC that documents the required methods, and use isinstance checks against the protocol instead of hasattr. This makes the contract statically verifiable and improves IDE support for SDK consumers.",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
     }
   ],
   "retrospective": {
     "root_causes": [
       "Multiple contributors working on different router/CRUD modules without a documented API surface convention for parameter ordering and filter typing",
-      "Streaming vs non-streaming modeled as a single endpoint to match OpenAI API spec, causing overloaded return types"
+      "Streaming vs non-streaming modeled as a single endpoint to match OpenAI API spec, causing overloaded return types",
+      "Database abstraction added incrementally (Turso after Supabase) without fully equalizing the backend-specific query surfaces",
+      "SDK evolved from internal prototype to public package without converting dynamic runtime patterns to static protocols"
     ],
     "likely_symptoms": [
       "crud_filter_typing_inconsistency",
       "router_session_param_order_drift",
-      "missing_error_contracts"
+      "missing_error_contracts",
+      "database_client_api_divergence",
+      "tokens_router_di_bypass"
     ],
     "possible_false_positives": []
   },
@@ -164,9 +246,27 @@
         },
         {
           "header": "FastAPI dependency injection used consistently",
-          "description": "Session and model_config dependencies are injected via Depends across all route modules, showing a consistent integration pattern with the framework.",
+          "description": "Session and model_config dependencies are injected via Depends across most route modules, showing a consistent integration pattern with the framework.",
           "settled": true,
           "positive": true
+        },
+        {
+          "header": "OpenAI typedef models follow consistent Pydantic patterns",
+          "description": "All OpenAI-compatible request/response types use Pydantic BaseModel with consistent field naming and validation, providing a coherent serialization surface.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Database backends expose unequal query surfaces",
+          "description": "TursoQueryBuilder has filter methods (neq, gt, gte, lt, lte, order, limit, range) that SupabaseQueryBuilder lacks, so callers cannot rely on a uniform query API regardless of which backend is configured.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "SDK uses runtime dynamic dispatch instead of static protocols",
+          "description": "serve() and the LLM decorator use hasattr and runtime class construction, which means the public SDK contract is only discoverable at runtime and cannot be type-checked statically.",
+          "settled": true,
+          "positive": false
         }
       ]
     }
