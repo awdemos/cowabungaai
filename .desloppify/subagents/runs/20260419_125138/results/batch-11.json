@@ -1,0 +1,174 @@
+{
+  "batch": "api_surface_coherence",
+  "batch_index": 11,
+  "assessments": {
+    "api_surface_coherence": 74.0
+  },
+  "dimension_notes": {
+    "api_surface_coherence": {
+      "evidence": [
+        "CRUD subclasses inconsistently use typed filter models (FilterAssistant, FilterVectorStore, FilterFileObject) while others pass raw dicts directly to base methods (CRUDThread, CRUDRun, CRUDMessage, CRUDAPIKey)",
+        "Router parameter ordering is inconsistent: session appears first in create_assistant(session, request), last in create_thread(request, session), middle in create_run(thread_id, session, request), and first again in delete_vector_store_file(session, vector_store_id, file_id)",
+        "Composer.generate_response returns Run | StreamingResponse depending on request.stream flag; create_run in runs.py returns Run | StreamingResponse",
+        "Most route handlers raise HTTPException but do not document error contracts in docstrings; only modify_assistant includes a Raises section",
+        "CRUDBase.delete catches bare Exception and returns False, silently swallowing all database errors",
+        "grpc_chat_role in backend/helpers.py declares return type lfai.ChatRole but returns None for unmatched roles",
+        "object_or_default helper returns Any, discarding type information from callers",
+        "chat_complete_stream_raw in routers/openai/chat.py is a public async function in a router module but is not registered as a FastAPI route"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high"
+    }
+  },
+  "dimension_judgment": {
+    "api_surface_coherence": {
+      "dimension_character": "The API surface has coherent high-level patterns—async routers, CRUD inheritance, and FastAPI dependency injection—but suffers from inconsistent parameter ordering, mixed filter-typing strategies in the CRUD layer, and overloaded return types that change based on runtime flags. Error contracts are largely undocumented despite widespread HTTPException usage.",
+      "score_rationale": "The codebase scores above average because structural patterns (CRUD base, async routers, dependency injection) are recognizable and mostly consistent. It falls short of good because parameter ordering drifts across sibling routes, CRUD subclasses diverge in filter typing, and several public functions return union types based on runtime behavior rather than distinct endpoints. Missing error contracts and silent exception swallowing in CRUDBase.delete further degrade developer trust in the API boundary."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "crud_filter_typing_inconsistency",
+      "summary": "CRUD subclasses use inconsistent filter types: some typed models, some raw dicts",
+      "related_files": [
+        "src/cowabunga_api/data/crud_assistant.py",
+        "src/cowabunga_api/data/crud_vector_store.py",
+        "src/cowabunga_api/data/crud_file_object.py",
+        "src/cowabunga_api/data/crud_thread.py",
+        "src/cowabunga_api/data/crud_run.py",
+        "src/cowabunga_api/data/crud_message.py",
+        "src/cowabunga_api/data/crud_api_key.py"
+      ],
+      "evidence": [
+        "CRUDAssistant, CRUDVectorStore, and CRUDFileObject override get/list/delete to accept typed filter models (FilterAssistant, FilterVectorStore, FilterFileObject)",
+        "CRUDThread, CRUDRun, and CRUDMessage inherit base methods directly and pass raw dict filters like {'id': thread_id}",
+        "CRUDAPIKey overrides get/list but still accepts dict | None, not a typed filter model"
+      ],
+      "suggestion": "Standardize all CRUD subclasses to use typed filter models that convert to dict internally, or remove typed filter subclasses and consistently use dicts across the layer. Pick one pattern and apply it uniformly.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "router_session_param_order_drift",
+      "summary": "Session parameter position drifts inconsistently across route handlers",
+      "related_files": [
+        "src/cowabunga_api/routers/openai/assistants.py",
+        "src/cowabunga_api/routers/openai/threads.py",
+        "src/cowabunga_api/routers/openai/runs.py",
+        "src/cowabunga_api/routers/openai/messages.py",
+        "src/cowabunga_api/routers/openai/vector_stores.py",
+        "src/cowabunga_api/routers/openai/files.py"
+      ],
+      "evidence": [
+        "create_assistant(session, request) → session first",
+        "create_thread(request, session) → session last",
+        "create_run(thread_id, session, request) → session middle",
+        "create_message(thread_id, request, session) → session last",
+        "delete_vector_store_file(session, vector_store_id, file_id) → session first (unlike siblings in same file)"
+      ],
+      "suggestion": "Adopt a consistent parameter ordering convention for all route handlers, such as path parameters first, then session, then request body. Apply consistently across all router modules.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "overloaded_return_types",
+      "summary": "Public functions return union types based on runtime flags rather than separate endpoints",
+      "related_files": [
+        "src/cowabunga_api/backend/composer.py",
+        "src/cowabunga_api/routers/openai/runs.py",
+        "src/cowabunga_api/routers/openai/chat.py",
+        "src/cowabunga_api/routers/openai/completions.py"
+      ],
+      "evidence": [
+        "Composer.generate_response returns Run | StreamingResponse based on request.stream flag",
+        "create_run in runs.py returns Run | StreamingResponse based on runtime branching",
+        "chat_complete returns either a ChatCompletionResponse or a StreamingResponse based on req.stream",
+        "complete in completions.py similarly branches on req.stream with no return type annotation"
+      ],
+      "suggestion": "Either split streaming and non-streaming into separate functions with distinct return types, or document the union return type explicitly and ensure callers handle both cases. Adding return type annotations to chat_complete and complete would also help.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "missing_error_contracts",
+      "summary": "Most route handlers do not document error conditions in docstrings despite raising HTTPExceptions",
+      "related_files": [
+        "src/cowabunga_api/routers/openai/assistants.py",
+        "src/cowabunga_api/routers/openai/threads.py",
+        "src/cowabunga_api/routers/openai/messages.py",
+        "src/cowabunga_api/routers/openai/vector_stores.py",
+        "src/cowabunga_api/routers/openai/files.py",
+        "src/cowabunga_api/routers/openai/runs.py"
+      ],
+      "evidence": [
+        "create_assistant raises HTTPException with 400 and 500 status codes but docstring only says 'Create an assistant'",
+        "create_thread raises HTTPException with 400 and 500 but docstring lacks Raises section",
+        "Only modify_assistant in assistants.py includes a Raises section documenting HTTPException conditions",
+        "Broad try/except Exception blocks wrap helper calls and re-raise as 500, but these error contracts are invisible to API consumers reading the docstrings"
+      ],
+      "suggestion": "Add Raises sections to all public route handler docstrings documenting the HTTPException conditions (status codes and triggers). This is low-cost and significantly improves API consumer experience.",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "api_surface_coherence",
+      "identifier": "crud_delete_silent_exception_swallowing",
+      "summary": "CRUDBase.delete catches all exceptions and silently returns False",
+      "related_files": [
+        "src/cowabunga_api/data/crud_base.py"
+      ],
+      "evidence": [
+        "CRUDBase.delete contains 'except Exception: return False' which hides database connection errors, permission errors, and syntax errors from callers"
+      ],
+      "suggestion": "Let specific exceptions propagate or wrap them in a custom CRUD exception that preserves the original cause. Only return False when the delete genuinely matched zero rows.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Multiple contributors working on different router/CRUD modules without a documented API surface convention for parameter ordering and filter typing",
+      "Streaming vs non-streaming modeled as a single endpoint to match OpenAI API spec, causing overloaded return types"
+    ],
+    "likely_symptoms": [
+      "crud_filter_typing_inconsistency",
+      "router_session_param_order_drift",
+      "missing_error_contracts"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "api_surface_coherence": {
+      "add": [
+        {
+          "header": "Consistent async router handlers",
+          "description": "All FastAPI route handlers across openai/ and cowabunga/ routers are consistently async, with no sync/async mixing at the router boundary.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "CRUD inheritance pattern provides structural consistency",
+          "description": "Despite filter-typing drift, the CRUDBase generic class gives the data layer a predictable shape (create/get/list/update/delete) that is followed by all subclasses.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "FastAPI dependency injection used consistently",
+          "description": "Session and model_config dependencies are injected via Depends across all route modules, showing a consistent integration pattern with the framework.",
+          "settled": true,
+          "positive": true
+        }
+      ]
+    }
+  }
+}
