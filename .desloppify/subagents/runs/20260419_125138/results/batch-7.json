@@ -1,0 +1,152 @@
+{
+  "batch": "dependency_health",
+  "batch_index": 7,
+  "assessments": {
+    "dependency_health": 78.0
+  },
+  "dimension_notes": {
+    "dependency_health": {
+      "evidence": [
+        "pyPDF2 declared in cowabunga_evals/pyproject.toml but never imported in any source file",
+        "seaborn declared in cowabunga_evals/pyproject.toml but never imported in any source file",
+        "python-dotenv appears twice in cowabunga_evals/pyproject.toml dependencies array",
+        "transformers version conflict: root pyproject.toml dev-whisper specifies 4.45.1, packages/whisper/pyproject.toml dev specifies 4.39.3",
+        "toml and yaml (PyYAML) imported directly in src/cowabunga_api/utils/config.py but not declared in cowabunga_api/pyproject.toml",
+        "Both dompurify and isomorphic-dompurify in UI production dependencies; Message.svelte uses dompurify while CodeBlock.js uses isomorphic-dompurify for same HTML sanitization purpose",
+        "aiostream declared in packages/vllm/pyproject.toml but never imported in any vllm source file"
+      ],
+      "impact_scope": "codebase",
+      "fix_scope": "single_edit",
+      "confidence": "high",
+      "issues_preventing_higher_score": "Multiple unused or duplicate dependencies, undeclared direct imports, and a version conflict across packages indicate dependency manifests have drifted from actual usage."
+    }
+  },
+  "dimension_judgment": {
+    "dependency_health": {
+      "dimension_character": "The dependency surface is mostly well-organized across a multi-package monorepo with explicit version pinning, but several manifests have drifted from actual usage. Unused deps, duplicate declarations, and undeclared direct imports suggest insufficient pruning of dependency lists.",
+      "score_rationale": "The codebase avoids circular dependencies and uses a sensible monorepo structure, but the accumulation of unused deps (pyPDF2, seaborn, aiostream), duplicate declarations (python-dotenv, dompurify/isomorphic-dompurify), undeclared direct imports (toml, yaml), and a version conflict (transformers) creates regular friction. This places it in the solid-but-uneven range."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "dependency_health",
+      "identifier": "unused_pypdf2_evals",
+      "summary": "pyPDF2 declared but never used in cowabunga_evals",
+      "related_files": ["src/cowabunga_evals/pyproject.toml"],
+      "evidence": ["pyPDF2 == 3.0.1 is listed in dependencies but grep finds zero imports across the entire codebase"],
+      "suggestion": "Remove pyPDF2 from cowabunga_evals/pyproject.toml dependencies",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "dependency_health",
+      "identifier": "unused_seaborn_evals",
+      "summary": "seaborn declared but never used in cowabunga_evals",
+      "related_files": ["src/cowabunga_evals/pyproject.toml"],
+      "evidence": ["seaborn == 0.13.2 is listed in dependencies but grep finds zero imports across the entire codebase"],
+      "suggestion": "Remove seaborn from cowabunga_evals/pyproject.toml dependencies",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "dependency_health",
+      "identifier": "duplicate_python_dotenv_evals",
+      "summary": "python-dotenv declared twice in same pyproject.toml",
+      "related_files": ["src/cowabunga_evals/pyproject.toml"],
+      "evidence": ["python-dotenv == 1.0.1 appears on both line 13 and line 20 of the dependencies array"],
+      "suggestion": "Remove the duplicate python-dotenv entry",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "dependency_health",
+      "identifier": "undeclared_toml_yaml_api",
+      "summary": "toml and PyYAML imported directly but not declared in cowabunga_api dependencies",
+      "related_files": ["src/cowabunga_api/pyproject.toml", "src/cowabunga_api/utils/config.py"],
+      "evidence": ["config.py imports toml and yaml directly, but neither package appears in cowabunga_api/pyproject.toml dependencies; they only work via transitive inclusion"],
+      "suggestion": "Add toml and PyYAML as explicit dependencies in cowabunga_api/pyproject.toml",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "dependency_health",
+      "identifier": "transformers_version_conflict",
+      "summary": "transformers version conflict between root and whisper package",
+      "related_files": ["pyproject.toml", "packages/whisper/pyproject.toml"],
+      "evidence": ["Root pyproject.toml dev-whisper specifies transformers[torch] == 4.45.1, while packages/whisper/pyproject.toml dev specifies transformers[torch] == 4.39.3"],
+      "suggestion": "Align transformers version across both manifests, or document why different versions are required",
+      "confidence": "medium",
+      "impact_scope": "subsystem",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "dependency_health",
+      "identifier": "duplicate_purify_libs_ui",
+      "summary": "Both dompurify and isomorphic-dompurify in UI production dependencies",
+      "related_files": ["src/cowabunga_ui/package.json", "src/cowabunga_ui/src/lib/components/Message.svelte", "src/cowabunga_ui/src/lib/web-components/CodeBlock.js"],
+      "evidence": ["dompurify and isomorphic-dompurify both listed in UI dependencies; Message.svelte imports dompurify while CodeBlock.js imports isomorphic-dompurify for the same HTML sanitization purpose"],
+      "suggestion": "Consolidate on isomorphic-dompurify for both server and browser contexts, remove dompurify",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "dependency_health",
+      "identifier": "unused_aiostream_vllm",
+      "summary": "aiostream declared but never used in vllm package",
+      "related_files": ["packages/vllm/pyproject.toml"],
+      "evidence": ["aiostream ==0.6.2 is listed in dependencies but no vllm source file imports it"],
+      "suggestion": "Remove aiostream from packages/vllm/pyproject.toml dependencies",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Dependency manifests are not regularly audited against actual imports, leading to accumulated unused and duplicate declarations",
+      "Multi-package monorepo with separate pyproject.toml files creates opportunity for version drift when optional dependencies are pinned independently"
+    ],
+    "likely_symptoms": [
+      "unused_pypdf2_evals",
+      "unused_seaborn_evals",
+      "unused_aiostream_vllm",
+      "duplicate_python_dotenv_evals"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "dependency_health": {
+      "add": [
+        {
+          "header": "Explicit transitive dependency pinning",
+          "description": "Several packages (nltk, pylibmagic, python-magic, storage3, postgrest) are intentionally pinned as direct dependencies even though they are transitive, with explanatory comments documenting why. This is a healthy pattern that prevents upstream breakage.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "No circular dependency cycles in Python import graph",
+          "description": "A structural scan of the cowabunga_api and related source packages found no circular import cycles, indicating the module graph is clean.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Undeclared direct dependencies in cowabunga_api",
+          "description": "toml and PyYAML are imported directly in config.py but are not listed in cowabunga_api/pyproject.toml; they happen to be available through transitive dependencies, making the build fragile.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Duplicate HTML sanitization libraries in UI",
+          "description": "The UI package depends on both dompurify and isomorphic-dompurify, which serve the same purpose. CodeBlock.js uses isomorphic-dompurify while Message.svelte uses dompurify, suggesting inconsistent adoption.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}

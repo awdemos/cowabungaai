@@ -342,11 +342,12 @@ class IndexingService:
         if not isinstance(file_ids, list):
             file_ids = [file_ids]
 
-        try:
-            for file_id in file_ids:
-                await crud_file_object.get(filters=FilterFileObject(id=file_id))
-        except Exception:
-            return False
+        for file_id in file_ids:
+            file_obj = await crud_file_object.get(
+                filters=FilterFileObject(id=file_id)
+            )
+            if file_obj is None:
+                return False
 
         return True
 
