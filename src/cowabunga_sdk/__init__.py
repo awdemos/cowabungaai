@@ -68,4 +68,3 @@ from cowabunga_sdk.name.name_pb2_grpc import (
 )
 from cowabunga_sdk.serve import serve
 
-print("Initializing CowabungaAI")

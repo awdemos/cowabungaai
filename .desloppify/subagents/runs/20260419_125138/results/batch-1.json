@@ -1,0 +1,202 @@
+{
+  "batch": "cross_module_architecture",
+  "batch_index": 1,
+  "assessments": {
+    "cross_module_architecture": 58.0
+  },
+  "dimension_notes": {
+    "cross_module_architecture": {
+      "evidence": [
+        "typedef/common.py imports from backend.constants",
+        "typedef/runs/run_create_base.py imports from backend.constants, backend.converters, data.crud_assistant, and routers.supabase_session",
+        "typedef/threads/thread_create.py imports from data.crud_message, data.crud_thread, and routers.supabase_session",
+        "typedef/assistants/assistant_types.py imports from backend.rag.index and data.crud_vector_store",
+        "backend/composer.py imports chat_complete and chat_complete_stream_raw from routers/openai/chat.py",
+        "data/crud_api_key.py imports from backend.security.api_key and backend.constants",
+        "data/crud_vector_content.py imports from backend.constants",
+        "routers/supabase_session.py is imported by 23 files across all layers including typedef, backend, data, and other routers",
+        "backend/composer.py is 403 LOC and imports from backend, data, routers, typedef, and cowabunga_sdk",
+        "src/cowabunga_sdk/build/lib/cowabunga_sdk/ contains committed build artifacts duplicating the SDK source"
+      ],
+      "impact_scope": "codebase",
+      "fix_scope": "architectural_change",
+      "confidence": "high"
+    }
+  },
+  "dimension_judgment": {
+    "cross_module_architecture": {
+      "dimension_character": "The codebase has clear top-level package boundaries (cowabunga_api, cowabunga_sdk, cowabunga_evals) and a sensible database abstraction, but pervasive layer violations undermine architectural integrity. The typedef layer imports from backend, data, and routers across nearly every module, data reaches into backend, and backend/composer imports from routers.",
+      "score_rationale": "These are not isolated incidents but systemic directional failures that create cycle pressure and large blast radii. The supabase_session router module acts as a cross-layer hub for the Session type, and composer.py aggregates dependencies from almost every module. The committed build artifacts in cowabunga_sdk/build/ further blur package boundaries."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "cross_module_architecture",
+      "identifier": "typedef_layer_violation",
+      "summary": "Type definition modules import from backend, data, and router layers",
+      "related_files": [
+        "src/cowabunga_api/typedef/common.py",
+        "src/cowabunga_api/typedef/auth/auth_types.py",
+        "src/cowabunga_api/typedef/runs/run_create_base.py",
+        "src/cowabunga_api/typedef/runs/run_create.py",
+        "src/cowabunga_api/typedef/threads/thread_create.py",
+        "src/cowabunga_api/typedef/threads/thread_run_create_params_request.py",
+        "src/cowabunga_api/typedef/messages/message_types.py",
+        "src/cowabunga_api/typedef/assistants/assistant_types.py"
+      ],
+      "evidence": [
+        "typedef/common.py:2 imports DEFAULT_MAX_COMPLETION_TOKENS from backend.constants",
+        "typedef/runs/run_create_base.py:25 imports from backend.constants, :29 from backend.converters, :32 from data.crud_assistant, :33 from routers.supabase_session",
+        "typedef/threads/thread_create.py:12 imports from data.crud_message, :13 from data.crud_thread, :14 from routers.supabase_session",
+        "typedef/assistants/assistant_types.py:17 imports from backend.rag.index, :19 from data.crud_vector_store, :20 from routers.supabase_session"
+      ],
+      "suggestion": "Move constants to a top-level constants module or into typedef. Extract Session into a shared dependencies/ or core/ module. Remove data access and backend logic imports from typedef by moving validation logic into routers or services. Type definitions should be the bottom layer with no upstream dependencies.",
+      "confidence": "high",
+      "impact_scope": "codebase",
+      "fix_scope": "architectural_change",
+      "root_cause_cluster": "layer_inversion"
+    },
+    {
+      "dimension": "cross_module_architecture",
+      "identifier": "backend_imports_router",
+      "summary": "backend/composer.py imports from routers/openai/chat.py",
+      "related_files": [
+        "src/cowabunga_api/backend/composer.py",
+        "src/cowabunga_api/routers/openai/chat.py"
+      ],
+      "evidence": [
+        "backend/composer.py:37 imports chat_complete and chat_complete_stream_raw from routers.openai.chat"
+      ],
+      "suggestion": "Extract the chat completion logic into a shared service module under backend/ (e.g., backend/chat_service.py) that both composer.py and routers/openai/chat.py can depend on. Backend modules should never import from routers.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "root_cause_cluster": "layer_inversion"
+    },
+    {
+      "dimension": "cross_module_architecture",
+      "identifier": "data_imports_backend",
+      "summary": "Data layer modules import from backend security and constants",
+      "related_files": [
+        "src/cowabunga_api/data/crud_api_key.py",
+        "src/cowabunga_api/data/crud_vector_content.py"
+      ],
+      "evidence": [
+        "data/crud_api_key.py:8 imports APIKey and KEY_PREFIX from backend.security.api_key, :9 imports THIRTY_DAYS_SECONDS from backend.constants",
+        "data/crud_vector_content.py:7 imports TOP_K from backend.constants"
+      ],
+      "suggestion": "Move shared constants (TOP_K, THIRTY_DAYS_SECONDS) to a neutral location such as a top-level constants module or into the data layer if they are data concerns. Move APIKey validation utilities into a shared security module that sits below or alongside the data layer.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "root_cause_cluster": "layer_inversion"
+    },
+    {
+      "dimension": "cross_module_architecture",
+      "identifier": "supabase_session_hub",
+      "summary": "routers/supabase_session.py is imported by 23 files across all architectural layers",
+      "related_files": [
+        "src/cowabunga_api/routers/supabase_session.py"
+      ],
+      "evidence": [
+        "supabase_session.py is imported by typedef modules (run_create_base.py, thread_create.py, message_types.py, assistant_types.py, thread_run_create_params_request.py, run_create.py)",
+        "supabase_session.py is imported by backend module composer.py",
+        "supabase_session.py is imported by all router modules in routers/openai/ and routers/cowabunga/"
+      ],
+      "suggestion": "Extract the Session dependency and authentication utilities into a shared core/dependencies/ module that is independent of routers. This decouples the session type from the router layer and allows all layers to depend on it without creating layer violations.",
+      "confidence": "high",
+      "impact_scope": "subsystem",
+      "fix_scope": "multi_file_refactor",
+      "root_cause_cluster": "hub_module"
+    },
+    {
+      "dimension": "cross_module_architecture",
+      "identifier": "composer_hub_module",
+      "summary": "backend/composer.py is a 403-line hub importing from nearly every module",
+      "related_files": [
+        "src/cowabunga_api/backend/composer.py"
+      ],
+      "evidence": [
+        "composer.py imports from backend.converters, backend.rag.query, data.crud_assistant, data.crud_message, routers.openai.chat, routers.supabase_session, utils.config, cowabunga_sdk.chat.chat_pb2, and multiple typedef modules",
+        "composer.py has a re-export ratio of 0.98 but also contains substantial orchestration logic"
+      ],
+      "suggestion": "Split composer.py into domain-specific service modules (e.g., chat_service.py, thread_service.py, run_service.py) each owning a cohesive slice of orchestration. Keep composer.py only as a thin facade if necessary, or remove it entirely in favor of direct service usage.",
+      "confidence": "medium",
+      "impact_scope": "module",
+      "fix_scope": "architectural_change",
+      "root_cause_cluster": "hub_module"
+    },
+    {
+      "dimension": "cross_module_architecture",
+      "identifier": "sdk_build_artifacts",
+      "summary": "Committed build artifacts duplicate cowabunga_sdk source inside build/lib/",
+      "related_files": [
+        "src/cowabunga_sdk/build/lib/cowabunga_sdk/__init__.py",
+        "src/cowabunga_sdk/build/lib/cowabunga_sdk/llm.py"
+      ],
+      "evidence": [
+        "src/cowabunga_sdk/build/lib/cowabunga_sdk/ contains full copies of __init__.py, llm.py, serve.py, utils.py, cli.py, errors.py, config.py and all protobuf modules",
+        "These files are stale copies of source files already present at the package root"
+      ],
+      "suggestion": "Delete src/cowabunga_sdk/build/ entirely and add it to .gitignore. Build artifacts should never be committed to source control.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Layer inversion: typedef was not established as a bottom layer and instead accumulated imports from every layer above it",
+      "Missing shared boundary: Session and constants live in layers that force downstream modules to reach upward",
+      "No build artifact hygiene: build/ directory was committed without .gitignore protection"
+    ],
+    "likely_symptoms": [
+      "typedef_layer_violation",
+      "supabase_session_hub",
+      "composer_hub_module"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "cross_module_architecture": {
+      "add": [
+        {
+          "header": "Three-package separation is clean at top level",
+          "description": "cowabunga_api, cowabunga_sdk, and cowabunga_evals have distinct responsibilities and minimal cross-package coupling. packages/ service stubs depend on cowabunga_sdk in a single direction.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Database abstraction supports dual backends",
+          "description": "The data/database layer provides a unified interface for both Supabase (PostgreSQL) and Turso (SQLite/libSQL) through DatabaseClient, SupabaseClient, and TursoClient. This is a well-designed boundary.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "typedef layer imports from all higher layers",
+          "description": "Type definition modules under typedef/ import from backend/, data/, and routers/ across at least 8 files. This is a systemic layer inversion that forces cycle pressure and prevents typedef from being a stable foundation.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "supabase_session.py acts as a cross-layer hub",
+          "description": "The Session type is defined in routers/supabase_session.py but imported by 23 files across typedef, backend, data, and router layers. A router module should not be the provider of a cross-cutting dependency type.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "composer.py aggregates dependencies from nearly every module",
+          "description": "backend/composer.py is a 403-line hub importing from backend, data, routers, typedef, and SDK. It creates a large blast radius for common changes and also violates layer direction by importing from routers.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Committed build artifacts in cowabunga_sdk/build/",
+          "description": "The build/ directory contains stale copies of the entire SDK source tree. This blurs package boundaries and should be removed with a .gitignore entry.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}

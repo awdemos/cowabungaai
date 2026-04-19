@@ -107,16 +107,13 @@ class CRUDAPIKey(CRUDBase[APIKeyItem]):
 
         response = result.data
 
-        try:
-            return APIKeyItem(
-                name=response[0]["name"],
-                id=response[0]["id"],
-                api_key=f"{KEY_PREFIX}_****_{response[0]['checksum']}",
-                created_at=response[0]["created_at"],
-                expires_at=response[0]["expires_at"],
-            )
-        except Exception as exc:
-            raise exc
+        return APIKeyItem(
+            name=response[0]["name"],
+            id=response[0]["id"],
+            api_key=f"{KEY_PREFIX}_****_{response[0]['checksum']}",
+            created_at=response[0]["created_at"],
+            expires_at=response[0]["expires_at"],
+        )
 
     async def list(self, filters: dict | None = None) -> list[APIKeyItem]:
         """List API keys."""
@@ -131,19 +128,16 @@ class CRUDAPIKey(CRUDBase[APIKeyItem]):
 
         response = result.data
 
-        try:
-            return [
-                APIKeyItem(
-                    name=item["name"],
-                    id=item["id"],
-                    api_key=f"{KEY_PREFIX}_****_{item['checksum']}",
-                    created_at=item["created_at"],
-                    expires_at=item["expires_at"],
-                )
-                for item in response
-            ]
-        except Exception as exc:
-            raise exc
+        return [
+            APIKeyItem(
+                name=item["name"],
+                id=item["id"],
+                api_key=f"{KEY_PREFIX}_****_{item['checksum']}",
+                created_at=item["created_at"],
+                expires_at=item["expires_at"],
+            )
+            for item in response
+        ]
 
     async def update(self, id_: str, object_: APIKeyItem) -> APIKeyItem:
         """Update API key."""

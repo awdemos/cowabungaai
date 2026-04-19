@@ -1,0 +1,170 @@
+{
+  "batch": "error_consistency",
+  "batch_index": 4,
+  "assessments": {
+    "error_consistency": 58.0
+  },
+  "dimension_notes": {
+    "error_consistency": {
+      "evidence": [
+        "crud_base.py has 5 pointless try/except blocks that do 'except Exception as e: raise e', adding no context and creating indirection without value",
+        "crud_vector_content.py and crud_api_key.py repeat the same 'except Exception as e: raise e' anti-pattern",
+        "routers/cowabunga/count.py raises HTTPException from a broad except without 'from e', breaking the exception chain",
+        "typedef/assistants/assistant_types.py catches Exception (which includes HTTPException) and re-raises a different HTTPException, masking the original status code and detail",
+        "data/database/turso_auth.py:250 uses bare 'except:' to silently swallow JWT decode failures with no logging",
+        "backend/rag/index.py file_ids_are_valid catches all exceptions including programming errors and returns False, making failures invisible",
+        "Data layer mixes strategies: CRUDBase raises on some paths, returns None on IndexError, returns False on Exception, while TursoClient returns TursoResult with string errors",
+        "Router layer (openai/) is relatively consistent: most broad catches use 'raise HTTPException(...) from exc', preserving chains"
+      ],
+      "impact_scope": "subsystem",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high",
+      "issues_preventing_higher_score": "Data layer is littered with pointless try/except wrappers and mixed return-null/raise strategies. Some boundary files lose or mask exception context. The codebase lacks a shared error taxonomy (only 2 custom exceptions across src/)."
+    }
+  },
+  "dimension_judgment": {
+    "error_consistency": {
+      "dimension_character": "The router layer follows a predictable HTTPException pattern with preserved exception chains, but the data layer is inconsistent: CRUD modules wrap operations in pointless try/except blocks that either re-raise verbatim, return None, or return False. A few boundary files break exception chains or mask specific failures with overly broad catches.",
+      "score_rationale": "The score sits below the midpoint because the data layer lacks a coherent error strategy and contains multiple anti-patterns (pointless wrappers, bare excepts, context loss). The router layer is better but cannot compensate for the subsystem-level inconsistency in CRUD and indexing code."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "error_consistency",
+      "identifier": "crud_pointless_except",
+      "summary": "Pointless try/except wrappers in CRUD base add no error context",
+      "related_files": [
+        "src/cowabunga_api/data/crud_base.py",
+        "src/cowabunga_api/data/crud_vector_content.py",
+        "src/cowabunga_api/data/crud_api_key.py"
+      ],
+      "evidence": [
+        "crud_base.py:41 'except Exception as e: raise e' around model construction",
+        "crud_base.py:61 'except Exception as e: raise e' around get()",
+        "crud_base.py:80 'except Exception as e: raise e' around list()",
+        "crud_base.py:100 'except Exception as e: raise e' around update()",
+        "crud_base.py:115 'except Exception: return False' around delete()",
+        "crud_vector_content.py:56 'except Exception as e: raise e'",
+        "crud_api_key.py:118 'except Exception as exc: raise exc'"
+      ],
+      "suggestion": "Remove the pointless try/except wrappers. If error translation is needed, catch specific exceptions (e.g., IndexError, ValidationError) and raise a domain-specific exception with context. If not needed, let exceptions propagate naturally.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor"
+    },
+    {
+      "dimension": "error_consistency",
+      "identifier": "count_context_loss",
+      "summary": "Exception context lost in count router due to missing 'from' clause",
+      "related_files": [
+        "src/cowabunga_api/routers/cowabunga/count.py"
+      ],
+      "evidence": [
+        "count.py:33-34 'except Exception as e: raise HTTPException(status_code=500, detail=f\"Error counting tokens: {str(e)}\")' — no 'from e', so the original traceback and exception type are lost"
+      ],
+      "suggestion": "Add 'from e' to the HTTPException raise to preserve the original exception chain for debugging.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "error_consistency",
+      "identifier": "assistant_types_masking",
+      "summary": "Broad except masks HTTPException and re-raises with wrong detail",
+      "related_files": [
+        "src/cowabunga_api/typedef/assistants/assistant_types.py"
+      ],
+      "evidence": [
+        "assistant_types.py:146-150 catches 'except Exception:' (which includes HTTPException from crud_vector_store.get) and re-raises 'HTTPException(status_code=400, detail=\"Invalid vector store id was provided\")', hiding the original 404 or 500"
+      ],
+      "suggestion": "Catch specific exceptions expected from the CRUD call, or catch HTTPException separately and re-raise it unchanged. Only catch broad Exception for unexpected errors and log them.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "error_consistency",
+      "identifier": "turso_auth_bare_except",
+      "summary": "Bare except silently swallows JWT decode failures",
+      "related_files": [
+        "src/cowabunga_api/data/database/turso_auth.py"
+      ],
+      "evidence": [
+        "turso_auth.py:247-251 'try: jwt.decode(...); except: pass' — a bare except swallows all errors including jwt.ExpiredSignatureError, jwt.InvalidTokenError, and even KeyboardInterrupt"
+      ],
+      "suggestion": "Catch specific jwt exceptions (jwt.DecodeError, jwt.ExpiredSignatureError) and log the failure instead of silently ignoring it.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "error_consistency",
+      "identifier": "index_file_ids_catch_all",
+      "summary": "file_ids_are_valid catches all exceptions and returns False",
+      "related_files": [
+        "src/cowabunga_api/backend/rag/index.py"
+      ],
+      "evidence": [
+        "index.py:345-349 'try: ... except Exception: return False' — any error (including AttributeError, TypeError, or database connection failures) is converted to False, making real bugs invisible"
+      ],
+      "suggestion": "Catch only the expected exception from the CRUD get() call (e.g., IndexError or a domain-specific NotFoundError). Let unexpected exceptions propagate so they surface as bugs.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "error_consistency",
+      "identifier": "data_layer_mixed_strategies",
+      "summary": "Data layer mixes raise, return None, return False, and Result-type error strategies",
+      "related_files": [
+        "src/cowabunga_api/data/crud_base.py",
+        "src/cowabunga_api/data/crud_run.py",
+        "src/cowabunga_api/data/database/turso_client.py"
+      ],
+      "evidence": [
+        "crud_base.py: create() raises on Exception, get() returns None on IndexError, delete() returns False on Exception",
+        "crud_run.py: update() returns None when response is empty instead of raising",
+        "turso_client.py: execute() returns TursoResult(data=[], error=str(e)) instead of raising, diverging from Supabase client behavior"
+      ],
+      "suggestion": "Choose a single error strategy for the data layer: either raise domain exceptions for all failures, or consistently return a Result type. Do not mix both across sibling modules.",
+      "confidence": "medium",
+      "impact_scope": "subsystem",
+      "fix_scope": "architectural_change"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "No shared error taxonomy or data-layer error contract, leading to ad-hoc per-file decisions",
+      "Defensive over-engineering: developers wrapped operations in broad try/except 'just in case' without deciding what should actually happen on failure"
+    ],
+    "likely_symptoms": [
+      "crud_pointless_except",
+      "data_layer_mixed_strategies"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "error_consistency": {
+      "add": [
+        {
+          "header": "Router layer preserves exception chains consistently",
+          "description": "Most OpenAI router modules use 'raise HTTPException(...) from exc' when translating exceptions, preserving the original traceback for debugging. This is a positive, deliberate pattern.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Data layer lacks a shared error contract",
+          "description": "CRUD modules mix raise, return None, return False, and pointless re-raise patterns without a documented strategy. This inconsistency forces consumers to handle multiple failure shapes.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Only two custom exception classes in src/",
+          "description": "The entire src/ tree defines only AppImportError and FileAlreadyIndexedError. Everything else relies on generic HTTPException or bare strings, indicating minimal investment in a domain error model.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}
