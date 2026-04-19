@@ -134,19 +134,13 @@ class BaseAssistantRequest(BaseModel):
                 "Attaching vector store with id: {} to new assistant".format(ids[0])
             )
             crud_vector_store = CRUDVectorStore(db=session)
-            try:
-                existing_vector_store = await crud_vector_store.get(
-                    filters=FilterVectorStore(id=ids[0])
-                )
-                if existing_vector_store is None:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail="Provided vector store id was not found",
-                    )
-            except Exception:
+            existing_vector_store = await crud_vector_store.get(
+                filters=FilterVectorStore(id=ids[0])
+            )
+            if existing_vector_store is None:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Invalid vector store id was provided",
+                    detail="Provided vector store id was not found",
                 )
 
         # check for unsupported tools
