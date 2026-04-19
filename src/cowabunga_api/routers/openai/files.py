@@ -10,6 +10,7 @@ from cowabunga_api.backend.rag.document_loader import (
 )
 from cowabunga_api.data.crud_file_bucket import CRUDFileBucket
 from cowabunga_api.data.crud_file_object import CRUDFileObject, FilterFileObject
+from cowabunga_api.routers.openai import raise_parse_error
 from cowabunga_api.routers.supabase_session import Session
 from cowabunga_api.typedef.files import ListFilesResponse, UploadFileRequest
 
@@ -49,9 +50,7 @@ async def upload_file(
             status_details=None,
         )
     except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to parse file"
-        ) from exc
+        raise_parse_error("file", exc)
 
     crud_file_object = CRUDFileObject(session)
 

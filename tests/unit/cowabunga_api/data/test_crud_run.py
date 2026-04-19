@@ -23,6 +23,7 @@ def mock_run():
         model="vllm",
         instructions="",
         tools=[],
+        parallel_tool_calls=False,
     )
 
 

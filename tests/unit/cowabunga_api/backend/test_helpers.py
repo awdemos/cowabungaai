@@ -1,7 +1,7 @@
 """Tests for backend helper functions."""
 
 import pytest
-from cowabunga_api.backend.helpers import grpc_chat_role, object_or_default
+from cowabunga_api.backend.helpers import grpc_chat_role
 
 
 def test_grpc_chat_role_user():
@@ -34,23 +34,4 @@ def test_grpc_chat_role_unknown():
     assert result is None
 
 
-def test_object_or_default_with_value():
-    """Test object_or_default returns object when not None."""
-    assert object_or_default("value", "default") == "value"
-    assert object_or_default(42, 0) == 42
-    assert object_or_default([1, 2], []) == [1, 2]
 
-
-def test_object_or_default_with_none():
-    """Test object_or_default returns default when None."""
-    assert object_or_default(None, "default") == "default"
-    assert object_or_default(None, 0) == 0
-    assert object_or_default(None, []) == []
-
-
-def test_object_or_default_with_falsy_values():
-    """Test object_or_default with falsy but not None values."""
-    assert object_or_default(0, 100) == 0
-    assert object_or_default("", "default") == ""
-    assert object_or_default(False, True) is False
-    assert object_or_default([], [1]) == []

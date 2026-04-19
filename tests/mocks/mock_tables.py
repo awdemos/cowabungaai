@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+from openai.types import FileObject
 from openai.types.beta import Thread, Assistant
 from openai.types.beta.threads import Message, TextContentBlock, Text, Run
 
@@ -47,9 +48,24 @@ mock_message = Message(
     ],
 )
 
+mock_file_object = FileObject(
+    id="file-123",
+    bytes=1024,
+    created_at=0,
+    filename="test.txt",
+    object="file",
+    purpose="assistants",
+    status="uploaded",
+)
+
 
 class MockApiKey(BaseModel):
     user_id: str
+    name: str = "mock-api-key"
+    id: str = "12345678-1234-1234-1234-1234567890ab"
+    created_at: int = 1700000000
+    expires_at: int = 1702592000
+    checksum: str = "abcd"
 
 
 mock_api_key = MockApiKey(user_id="mock-api-key")

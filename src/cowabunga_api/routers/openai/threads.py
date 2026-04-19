@@ -70,16 +70,8 @@ async def modify_thread(
             detail="Thread not found",
         )
 
-    try:
-        thread.metadata = getattr(request, "metadata", thread.metadata)
-        thread.tool_resources = getattr(
-            request, "tool_resources", thread.tool_resources
-        )
-    except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Unable to parse thread request",
-        ) from exc
+    thread.metadata = getattr(request, "metadata", thread.metadata)
+    thread.tool_resources = getattr(request, "tool_resources", thread.tool_resources)
 
     if not (response := await crud_thread.update(id_=thread_id, object_=thread)):
         raise HTTPException(
@@ -93,17 +85,10 @@ async def modify_thread(
 @router.delete("/{thread_id}")
 async def delete_thread(thread_id: str, session: Session) -> ThreadDeleted:
     """Delete a thread."""
-    try:
-        crud_thread = CRUDThread(db=session)
-
-        thread_deleted = await crud_thread.delete(filters={"id": thread_id})
-        return ThreadDeleted(
-            id=thread_id,
-            object="thread.deleted",
-            deleted=bool(thread_deleted),
-        )
-    except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Unable to delete thread",
-        ) from exc
+    crud_thread = CRUDThread(db=session)
+    thread_deleted = await crud_thread.delete(filters={"id": thread_id})
+    return ThreadDeleted(
+        id=thread_id,
+        object="thread.deleted",
+        deleted=bool(thread_deleted),
+    )

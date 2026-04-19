@@ -3,13 +3,13 @@
 from fastapi import HTTPException, APIRouter, status
 from openai.types.beta import Assistant, AssistantDeleted
 
-from cowabunga_api.backend.helpers import object_or_default
 from cowabunga_api.typedef.assistants import ListAssistantsResponse
 from cowabunga_api.typedef.assistants import (
     CreateAssistantRequest,
     ModifyAssistantRequest,
 )
 from cowabunga_api.data.crud_assistant import CRUDAssistant, FilterAssistant
+from cowabunga_api.routers.openai import raise_parse_error
 from cowabunga_api.routers.supabase_session import Session
 
 
@@ -45,10 +45,7 @@ async def create_assistant(
             response_format=request.response_format,
         )
     except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Unable to parse assistant request",
-        ) from exc
+        raise_parse_error("assistant", exc)
 
     crud_assistant = CRUDAssistant(session)
 
@@ -138,33 +135,20 @@ async def modify_assistant(
         new_assistant = Assistant(
             id=assistant_id,
             created_at=old_assistant.created_at,
-            name=object_or_default(request.name, old_assistant.name),
-            description=object_or_default(
-                request.description, old_assistant.description
-            ),
-            instructions=object_or_default(
-                request.instructions, old_assistant.instructions
-            ),
-            model=object_or_default(request.model, old_assistant.model),
+            name=request.name or old_assistant.name,
+            description=request.description or old_assistant.description,
+            instructions=request.instructions or old_assistant.instructions,
+            model=request.model or old_assistant.model,
             object="assistant",
-            tools=object_or_default(request.tools, old_assistant.tools),
-            tool_resources=object_or_default(
-                request.tool_resources, old_assistant.tool_resources
-            ),
-            temperature=object_or_default(
-                request.temperature, old_assistant.temperature
-            ),
-            top_p=object_or_default(request.top_p, old_assistant.top_p),
-            metadata=object_or_default(request.metadata, old_assistant.metadata),
-            response_format=object_or_default(
-                request.response_format, old_assistant.response_format
-            ),
+            tools=request.tools or old_assistant.tools,
+            tool_resources=request.tool_resources or old_assistant.tool_resources,
+            temperature=request.temperature if request.temperature is not None else old_assistant.temperature,
+            top_p=request.top_p if request.top_p is not None else old_assistant.top_p,
+            metadata=request.metadata or old_assistant.metadata,
+            response_format=request.response_format or old_assistant.response_format,
         )
     except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Unable to parse assistant request",
-        ) from exc
+        raise_parse_error("assistant", exc)
 
     if not (
         response := await crud_assistant.update(object_=new_assistant, id_=assistant_id)

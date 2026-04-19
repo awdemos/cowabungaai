@@ -5,10 +5,12 @@ from pydantic import BaseModel, Field
 class Model:
     name: str
     backend: str
+    capabilities: List[str] | None
 
     def __init__(self, name: str, backend: str, capabilities: List[str] | None = None):
         self.name = name
         self.backend = backend
+        self.capabilities = capabilities
 
 
 class ModelResponseModel(BaseModel):

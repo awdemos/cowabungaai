@@ -4,9 +4,11 @@ from typing import Literal
 
 from openai.types.beta import VectorStore
 
-from openai.types.beta.thread_create_params import (
-    ToolResourcesFileSearchVectorStoreChunkingStrategy,
-    ToolResourcesFileSearchVectorStoreChunkingStrategyAuto,
+from openai.types.beta.vector_stores.file_create_params import (
+    FileChunkingStrategyParam,
+)
+from openai.types.beta.auto_file_chunking_strategy_param import (
+    AutoFileChunkingStrategyParam,
 )
 from openai.types.beta.vector_store import ExpiresAfter
 from pydantic import BaseModel, Field
@@ -32,14 +34,10 @@ class VectorStoreStatus(Enum):
 class CreateVectorStoreFileRequest(BaseModel):
     """Request object for creating a vector store file."""
 
-    chunking_strategy: ToolResourcesFileSearchVectorStoreChunkingStrategy | None = (
-        Field(
-            default=None,
-            description="The strategy for chunking the file content. Use 'auto' for automatic chunking.",
-            examples=[
-                ToolResourcesFileSearchVectorStoreChunkingStrategyAuto(type="auto")
-            ],
-        )
+    chunking_strategy: FileChunkingStrategyParam | None = Field(
+        default=None,
+        description="The strategy for chunking the file content. Use 'auto' for automatic chunking.",
+        examples=[AutoFileChunkingStrategyParam(type="auto")],
     )
 
     file_id: str = Field(

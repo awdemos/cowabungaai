@@ -371,7 +371,7 @@ class Composer(BaseModel):
         new_thread: Thread,
         new_run: Run,
         session: Session,
-    ):
+    ) -> Run | StreamingResponse:
         """Generate a new response based on the existing thread"""
         if request.stream:
             initial_messages: list[str] = (

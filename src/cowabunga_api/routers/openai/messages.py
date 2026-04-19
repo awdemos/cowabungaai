@@ -5,6 +5,7 @@ from openai.types.beta.threads import Message, MessageDeleted
 from openai.pagination import SyncCursorPage
 from cowabunga_api.typedef.messages import CreateMessageRequest, ModifyMessageRequest
 from cowabunga_api.data.crud_message import CRUDMessage
+from cowabunga_api.routers.openai import raise_parse_error
 from cowabunga_api.routers.supabase_session import Session
 
 router = APIRouter(prefix="/openai/v1/threads", tags=["openai/threads/messages"])
@@ -33,10 +34,7 @@ async def create_message(
             thread_id=thread_id,
         )
     except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Unable to parse message request.",
-        ) from exc
+        raise_parse_error("message", exc)
 
     if not (response := await crud_message.create(object_=message)):
         raise HTTPException(

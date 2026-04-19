@@ -36,8 +36,8 @@ async def test_crud_api_key_create(crud_api_key, mock_api_key_item):
     """Test creating an API key."""
     result = await crud_api_key.create(mock_api_key_item)
     assert result is not None
-    assert result.name == mock_api_key_item.name
-    assert result.id == mock_api_key_item.id
+    assert result.name == "mock-api-key"
+    assert result.id == "12345678-1234-1234-1234-1234567890ab"
 
 
 @pytest.mark.asyncio
@@ -64,4 +64,4 @@ async def test_crud_api_key_update(crud_api_key, mock_api_key_item):
         object_=mock_api_key_item,
     )
     assert result is not None
-    assert result.name == mock_api_key_item.name
+    assert result.name == "mock-api-key"

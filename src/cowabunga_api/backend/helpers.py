@@ -1,5 +1,7 @@
 """Helper functions for the OpenAI backend."""
 
+from __future__ import annotations
+
 import time
 import uuid
 import grpc
@@ -117,10 +119,3 @@ def read_chunks(file: BinaryIO, chunk_size: int) -> Iterator[lfai.AudioRequest]:
         yield lfai.AudioRequest(chunk_data=chunk)
 
 
-# helper function used to modify objects unless certain fields are missing
-def object_or_default(obj: Any | None, _default: Any) -> Any:
-    """Returns the given object unless it is a None type, otherwise a given default is returned"""
-    if obj is not None:
-        return obj
-    else:
-        return _default

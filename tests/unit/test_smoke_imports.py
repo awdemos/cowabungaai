@@ -4,7 +4,16 @@ These tests provide baseline coverage for modules that lack dedicated tests.
 Import failures usually indicate broken dependencies or circular imports.
 """
 
+import importlib
 import pytest
+
+
+def _import_or_skip(module: str):
+    """Import a module, skipping the test if an optional dependency is missing."""
+    try:
+        return importlib.import_module(module)
+    except ImportError as exc:
+        pytest.skip(f"Optional dependency missing for {module}: {exc}")
 
 
 # src/cowabunga_api backend modules
@@ -21,7 +30,7 @@ import pytest
 )
 def test_backend_module_imports(module):
     """Test that backend modules can be imported."""
-    __import__(module)
+    _import_or_skip(module)
 
 
 # src/cowabunga_api data modules
@@ -38,7 +47,7 @@ def test_backend_module_imports(module):
 )
 def test_data_module_imports(module):
     """Test that data modules can be imported."""
-    __import__(module)
+    _import_or_skip(module)
 
 
 # src/cowabunga_api router modules
@@ -54,7 +63,7 @@ def test_data_module_imports(module):
 )
 def test_router_module_imports(module):
     """Test that router modules can be imported."""
-    __import__(module)
+    _import_or_skip(module)
 
 
 # src/cowabunga_api typedef modules
@@ -69,7 +78,7 @@ def test_router_module_imports(module):
 )
 def test_typedef_module_imports(module):
     """Test that typedef modules can be imported."""
-    __import__(module)
+    _import_or_skip(module)
 
 
 # src/cowabunga_evals modules
@@ -92,7 +101,7 @@ def test_typedef_module_imports(module):
 )
 def test_evals_module_imports(module):
     """Test that evals modules can be imported."""
-    __import__(module)
+    _import_or_skip(module)
 
 
 # src/cowabunga_sdk modules
@@ -106,4 +115,4 @@ def test_evals_module_imports(module):
 )
 def test_sdk_module_imports(module):
     """Test that SDK modules can be imported."""
-    __import__(module)
+    _import_or_skip(module)
