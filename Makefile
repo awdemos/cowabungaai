@@ -83,7 +83,7 @@ endif
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/api --flavor ${FLAVOR} -a ${ARCH} -o packages/api --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/api --flavor ${FLAVOR} -a ${ARCH} -o packages/api --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-ui:
 	## Build the UI image (and tag it for the local registry)
@@ -100,7 +100,7 @@ build-ui: local-registry docker-ui ## Build the cowabunga_ui container and Zarf 
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/ui --flavor ${FLAVOR} -a ${ARCH} -o packages/ui --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/ui --flavor ${FLAVOR} -a ${ARCH} -o packages/ui --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-llama-cpp-python: sdk-wheel
 	## Build the image (and tag it for the local registry)
@@ -112,7 +112,7 @@ build-llama-cpp-python: local-registry docker-llama-cpp-python ## Build the llam
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/llama-cpp-python --flavor ${FLAVOR} -a ${ARCH} -o packages/llama-cpp-python --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/llama-cpp-python --flavor ${FLAVOR} -a ${ARCH} -o packages/llama-cpp-python --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-vllm: sdk-wheel
 	## Build the image (and tag it for the local registry)
@@ -124,7 +124,7 @@ build-vllm: local-registry docker-vllm ## Build the vllm container and Zarf pack
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/vllm --flavor ${FLAVOR} -a ${ARCH} -o packages/vllm --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/vllm --flavor ${FLAVOR} -a ${ARCH} -o packages/vllm --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-text-embeddings: sdk-wheel
 	## Build the image (and tag it for the local registry)
@@ -136,7 +136,7 @@ build-text-embeddings: local-registry docker-text-embeddings ## Build the text-e
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/text-embeddings --flavor ${FLAVOR} -a ${ARCH} -o packages/text-embeddings --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/text-embeddings --flavor ${FLAVOR} -a ${ARCH} -o packages/text-embeddings --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 
 docker-whisper: sdk-wheel
@@ -149,7 +149,7 @@ build-whisper: local-registry docker-whisper ## Build the whisper container and 
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/whisper --flavor ${FLAVOR} -a ${ARCH} -o packages/whisper --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/whisper --flavor ${FLAVOR} -a ${ARCH} -o packages/whisper --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-repeater: sdk-wheel
 	## Build the image (and tag it for the local registry)
@@ -161,7 +161,7 @@ build-repeater: local-registry docker-repeater ## Build the repeater container a
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION}
 
 	## Build the Zarf package
-	uds zarf package create packages/repeater --flavor ${FLAVOR} -a ${ARCH} -o packages/repeater --registry-override=ghcr.io=localhost:${REG_PORT} --insecure --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+	uds zarf package create packages/repeater --flavor ${FLAVOR} -a ${ARCH} -o packages/repeater --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 build-cpu: build-supabase build-api build-ui build-llama-cpp-python build-text-embeddings build-whisper ## Build all zarf packages for a cpu-enabled deployment of LFAI
 

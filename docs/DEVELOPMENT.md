@@ -56,6 +56,103 @@ echo -e '#!/bin/bash\nuds zarf tools kubectl "$@"' > /usr/local/bin/kubectl
 chmod +x /usr/local/bin/kubectl
 ```
 
+## Accessing the Kubernetes Cluster
+
+Once you have a running cluster (see [k3d-gpu setup](../packages/k3d-gpu/README.md)), you can access it with kubectl or k9s.
+
+### kubectl
+
+```bash
+# Verify cluster is running
+kubectl cluster-info
+
+# List nodes
+kubectl get nodes
+
+# List all pods
+kubectl get pods -A
+
+# View GPU nodes
+kubectl get nodes -o yaml | grep nvidia.com/gpu
+```
+
+### k9s
+
+[k9s](https://k9scli.io/) is a terminal-based UI for Kubernetes. It provides a more intuitive interface than kubectl for day-to-day operations.
+
+#### Installation
+
+```bash
+# Fedora/RHEL
+sudo dnf install k9s
+
+# Ubuntu/Debian
+wget https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_linux_amd64.deb
+sudo dpkg -i k9s_linux_amd64.deb
+
+# Or via webi
+curl -sS https://webinstall.dev/k9s | bash
+```
+
+#### Usage
+
+```bash
+# Launch k9s with current context
+k9s
+
+# View all namespaces
+k9s -A
+
+# View specific namespace
+k9s -n leapfrogai
+
+# View pods in kube-system (for GPU resources)
+k9s -n kube-system
+```
+
+#### UDS CLI k9s
+
+If using UDS CLI, k9s is included as a tool:
+
+```bash
+# Via UDS
+uds zarf tools monitor
+
+# Or with the alias (from UDS CLI Aliasing section above)
+k9s
+```
+
+#### Common k9s Operations
+
+| Key | Action |
+|-----|--------|
+| `?` | Show help |
+| `/` | Filter resources |
+| `d` | Describe resource |
+| `l` | View logs |
+| `s` | Shell into container |
+| `:pods` | View pods |
+| `:ns` | View namespaces |
+| `:svc` | View services |
+| `:nodes` | View nodes |
+| `ctrl+d` | Delete resource |
+| `q` | Quit |
+
+#### GPU Monitoring in k9s
+
+To monitor GPU resources:
+
+```bash
+# Launch k9s
+k9s -n kube-system
+
+# Filter for nvidia
+/nvidia
+
+# View nvidia-device-plugin logs
+# Navigate to nvidia-device-plugin pod, press `l`
+```
+
 ## Makefiles
 
 Many of the directories and sub-directories within this project contain Make targets that can be executed to simplify repetitive command-line tasks.
