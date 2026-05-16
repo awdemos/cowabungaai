@@ -362,8 +362,8 @@ class _MatchVectorsRPC:
         self.params = params
 
     async def execute(self) -> TursoResult:
-        # For Turso without pgvector, we fetch all vectors and compute similarity in Python
-        # This is a fallback implementation - proper vector search would use an extension
+        import struct
+
         vector_store_id = self.params.get("vs_id")
         query_embedding = self.params.get("query_embedding", [])
         match_limit = self.params.get("match_limit", 10)
@@ -371,15 +371,76 @@ class _MatchVectorsRPC:
         if not vector_store_id or not query_embedding:
             return TursoResult(data=[])
 
-        result = await self.client.table("vector_content").select("*").eq("vector_store_id", vector_store_id).execute()
+        query_bytes = struct.pack(f"<{len(query_embedding)}f", *query_embedding)
+
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as http_client:
+                headers = {"Content-Type": "application/json"}
+                if self.client.auth_token:
+                    headers["Authorization"] = f"Bearer {self.client.auth_token}"
+
+                sql = (
+                    "SELECT id, vector_store_id, file_id, content, metadata, "
+                    "vector_distance_cos(embedding, vector32(?)) AS similarity "
+                    "FROM vector_content WHERE vector_store_id = ? "
+                    "ORDER BY similarity LIMIT ?"
+                )
+                payload = {
+                    "statements": [
+                        {
+                            "query": sql,
+                            "params": [query_bytes.hex(), vector_store_id, match_limit],
+                        }
+                    ]
+                }
+                response = await http_client.post(
+                    f"{self.client.base_url}/", json=payload, headers=headers
+                )
+                response.raise_for_status()
+                results = response.json()
+
+                if not results or not isinstance(results, list):
+                    return TursoResult(data=[])
+
+                first = results[0]
+                if "error" in first:
+                    error_msg = first["error"].get("message", "Unknown error")
+                    if "no such function: vector_distance_cos" in error_msg:
+                        return await self._fallback_brute_force(
+                            vector_store_id, query_embedding, match_limit
+                        )
+                    return TursoResult(data=[], error=error_msg)
+
+                if "results" not in first:
+                    return TursoResult(data=[])
+
+                cols = first["results"].get("columns", [])
+                rows = first["results"].get("rows", [])
+                data = [dict(zip(cols, row)) for row in rows]
+                return TursoResult(data=data)
+        except httpx.HTTPError:
+            return await self._fallback_brute_force(
+                vector_store_id, query_embedding, match_limit
+            )
+
+    async def _fallback_brute_force(
+        self, vector_store_id: str, query_embedding: list[float], match_limit: int
+    ) -> TursoResult:
+        import struct
+
+        result = await self.client.table("vector_content").select("*").eq(
+            "vector_store_id", vector_store_id
+        ).execute()
         if not result.data:
             return TursoResult(data=[])
 
-        vectors = result.data
         scored = []
-        for item in vectors:
+        for item in result.data:
             embedding = item.get("embedding")
-            if isinstance(embedding, str):
+            if isinstance(embedding, bytes):
+                count = len(embedding) // 4
+                embedding = list(struct.unpack(f"<{count}f", embedding))
+            elif isinstance(embedding, str):
                 import ast
                 try:
                     embedding = ast.literal_eval(embedding.strip())
