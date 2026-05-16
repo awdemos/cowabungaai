@@ -74,7 +74,7 @@ async def test_retrieve_thread(mock_get, mock_session):
     # verify response
     assert response == mock_thread
 
-    mock_get.assert_called_once_with(filters={"id": mock_thread.id})
+    mock_get.assert_called_once_with(filters={"id": mock_thread.id, "user_id": "mock-api-key"})
 
 
 mock_resource_code_interpreter = ToolResourcesCodeInterpreter(file_ids=["mock-data"])
@@ -111,7 +111,7 @@ async def test_modify_thread(
 
     assert response == mock_thread_update_return
 
-    mock_thread_get.assert_called_once_with(filters={"id": mock_thread.id})
+    mock_thread_get.assert_called_once_with(filters={"id": mock_thread.id, "user_id": "mock-api-key"})
     mock_thread_update.assert_called_once()
     _, kwargs = mock_thread_update.call_args
     assert kwargs["object_"].metadata == mock_metadata

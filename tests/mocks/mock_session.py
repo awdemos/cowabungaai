@@ -57,14 +57,7 @@ def mock_table(table_name=None):
     mock_table.select.return_value = mock_select
 
     mock_update = AsyncMock()
-    if table_name == "run_objects":
-        # CRUDRun.update unpacks execute() as (data, count) then _, response = data
-        mock_update.execute.return_value = (
-            (None, [mock_data.model_dump()]),
-            1,
-        )
-    else:
-        mock_update.execute.return_value = execute_response_format(mock_data.model_dump())
+    mock_update.execute.return_value = execute_response_format(mock_data.model_dump())
     mock_update.eq = MagicMock(return_value=mock_update)
     mock_table.update.return_value = mock_update
 

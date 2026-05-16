@@ -1,7 +1,7 @@
 """CRUD Operations for VectorStore."""
 
 import struct
-from cowabunga_api.data.crud_base import get_user_id
+from cowabunga_api.data.crud_base import get_current_user
 from cowabunga_api.typedef.vectorstores import SearchItem, SearchResponse
 from cowabunga_api.backend.constants import TOP_K
 from cowabunga_api.typedef.vectorstores import Vector
@@ -37,7 +37,8 @@ class CRUDVectorContent:
     async def add_vectors(self, object_: list[Vector]) -> list[Vector]:
         """Create new row."""
 
-        user_id = await get_user_id(self.db)
+        current_user = await get_current_user(self.db)
+        user_id = current_user["user_id"]
 
         rows = []
 
@@ -74,7 +75,11 @@ class CRUDVectorContent:
 
     async def get_vector(self, vector_id: str) -> Vector:
         """Get a vector by its ID."""
-        result = await self.db.table(self.table_name).select("*").eq("id", vector_id).execute()
+        current_user = await get_current_user(self.db)
+        query = self.db.table(self.table_name).select("*").eq("id", vector_id)
+        if not current_user["is_admin"]:
+            query = query.eq("user_id", current_user["user_id"])
+        result = await query.execute()
 
         response = result.data
 
@@ -94,7 +99,11 @@ class CRUDVectorContent:
 
     async def delete_vectors(self, vector_store_id: str, file_id: str) -> bool:
         """Delete a vector store file by its ID."""
-        result = await self.db.table(self.table_name).delete().eq("vector_store_id", vector_store_id).eq("file_id", file_id).execute()
+        current_user = await get_current_user(self.db)
+        query = self.db.table(self.table_name).delete().eq("vector_store_id", vector_store_id).eq("file_id", file_id)
+        if not current_user["is_admin"]:
+            query = query.eq("user_id", current_user["user_id"])
+        result = await query.execute()
 
         response = result.data if hasattr(result, "data") else result
 
@@ -103,7 +112,8 @@ class CRUDVectorContent:
     async def similarity_search(
         self, query: list[float], vector_store_id: str, k: int = TOP_K
     ) -> SearchResponse:
-        user_id = await get_user_id(self.db)
+        current_user = await get_current_user(self.db)
+        user_id = current_user["user_id"]
 
         params = {
             "query_embedding": query,

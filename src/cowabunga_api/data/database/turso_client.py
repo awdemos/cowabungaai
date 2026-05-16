@@ -367,6 +367,7 @@ class _MatchVectorsRPC:
         vector_store_id = self.params.get("vs_id")
         query_embedding = self.params.get("query_embedding", [])
         match_limit = self.params.get("match_limit", 10)
+        user_id = self.params.get("user_id")
 
         if not vector_store_id or not query_embedding:
             return TursoResult(data=[])
@@ -384,13 +385,14 @@ class _MatchVectorsRPC:
                     "vector_distance_cos(embedding, vector32(?)) AS similarity "
                     "FROM vector_content WHERE vector_store_id = ? "
                     "AND embedding MATCH vector32(?) "
+                    "AND user_id = ? "
                     "ORDER BY similarity LIMIT ?"
                 )
                 payload = {
                     "statements": [
                         {
                             "query": sql,
-                            "params": [query_bytes.hex(), vector_store_id, query_bytes.hex(), match_limit],
+                            "params": [query_bytes.hex(), vector_store_id, query_bytes.hex(), user_id, match_limit],
                         }
                     ]
                 }
@@ -432,9 +434,13 @@ class _MatchVectorsRPC:
     ) -> TursoResult:
         import struct
 
-        result = await self.client.table("vector_content").select("*").eq(
+        user_id = self.params.get("user_id")
+        query = self.client.table("vector_content").select("*").eq(
             "vector_store_id", vector_store_id
-        ).execute()
+        )
+        if user_id:
+            query = query.eq("user_id", user_id)
+        result = await query.execute()
         if not result.data:
             return TursoResult(data=[])
 
