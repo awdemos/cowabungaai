@@ -202,6 +202,9 @@ CREATE TABLE IF NOT EXISTS vector_content (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE INDEX IF NOT EXISTS idx_vector_content_embedding 
+ON vector_content USING libsql_vector_idx(embedding);
+
 CREATE INDEX IF NOT EXISTS idx_vector_content_store ON vector_content(vector_store_id);
 CREATE INDEX IF NOT EXISTS idx_vector_content_file ON vector_content(file_id);
 CREATE INDEX IF NOT EXISTS idx_vector_content_user ON vector_content(user_id);
