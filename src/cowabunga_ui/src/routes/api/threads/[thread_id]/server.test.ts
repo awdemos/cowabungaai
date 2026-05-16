@@ -15,7 +15,7 @@ describe('/api/threads/[thread_id]', () => {
       GET({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/threads/[thread_id]'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/[thread_id]'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -26,7 +26,7 @@ describe('/api/threads/[thread_id]', () => {
       GET({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/[thread_id]'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/[thread_id]'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -42,7 +42,7 @@ describe('/api/threads/[thread_id]', () => {
         thread_id: thread.id
       },
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/threads/[thread_id]'>);
+    } as unknown as RequestEvent<RouteParams, '/api/threads/[thread_id]'>);
 
     const resData = await res.json();
     expect(res.status).toEqual(200);
@@ -61,7 +61,7 @@ describe('/api/threads/[thread_id]', () => {
           thread_id: thread.id
         },
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/[thread_id]'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/[thread_id]'>)
     ).rejects.toMatchObject({
       status: 500
     });

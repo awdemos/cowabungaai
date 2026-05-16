@@ -10,7 +10,7 @@ describe('/api/files', () => {
     await expect(
       GET({
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/files'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -22,7 +22,7 @@ describe('/api/files', () => {
 
     const res = await GET({
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/files'>);
+    } as unknown as RequestEvent<RouteParams, '/api/files'>);
     expect(res.status).toEqual(200);
     const resJson = await res.json();
 

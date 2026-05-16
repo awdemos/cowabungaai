@@ -1,61 +1,21 @@
 import type { Actions } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
-import { env } from '$env/dynamic/private';
-import { setError, superValidate } from 'sveltekit-superforms';
-import { yup } from 'sveltekit-superforms/adapters';
-import { emailPasswordSchema } from '$schemas/auth';
+import { redirect } from '@sveltejs/kit';
+import { env as envPublic } from '$env/dynamic/public';
+import { env as envPrivate } from '$env/dynamic/private';
+
+const SESSION_COOKIE = 'cowabunga-session';
 
 export const actions: Actions = {
-  signup: async ({ request, locals: { supabase } }) => {
-    const form = await superValidate(request, yup(emailPasswordSchema));
-
-    if (!form.valid) {
-      return fail(400, { form });
-    }
-
-    const email = form.data.email;
-    const password = form.data.password;
-
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      if (error.code === 'user_already_exists') {
-        console.log('user already exists');
-        return setError(form, 'email', 'User already exists');
-      }
-      console.error(error);
-      return setError(form, 'email', 'Unknown error');
-    } else {
-      redirect(303, '/chat');
-    }
-  },
-  login: async ({ request, locals: { supabase } }) => {
-    const form = await superValidate(request, yup(emailPasswordSchema));
-
-    if (!form.valid) {
-      return fail(400, { form });
-    }
-
-    const email = form.data.email;
-    const password = form.data.password;
-
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      console.error(error);
-      return setError(form, 'email', 'Login error');
-    } else {
-      redirect(303, '/chat');
-    }
-  },
-  signout: async ({ locals: { supabase, session } }) => {
+  signout: async ({ cookies, locals: { session } }) => {
     if (session) {
       if (session.provider_refresh_token) {
         const params = new URLSearchParams();
-        params.append('client_id', env.SUPABASE_AUTH_KEYCLOAK_CLIENT_ID);
-        params.append('client_secret', env.SUPABASE_AUTH_KEYCLOAK_SECRET);
-        params.append('refresh_token', session.provider_refresh_token!);
+        params.append('client_id', envPublic.PUBLIC_KEYCLOAK_CLIENT_ID || '');
+        params.append('client_secret', envPrivate.KEYCLOAK_CLIENT_SECRET || '');
+        params.append('refresh_token', session.provider_refresh_token);
 
         const res = await fetch(
-          `${env.SUPABASE_AUTH_EXTERNAL_KEYCLOAK_URL}/protocol/openid-connect/logout`,
+          `${envPublic.PUBLIC_KEYCLOAK_URL}/protocol/openid-connect/logout`,
           {
             method: 'POST',
             headers: {
@@ -69,7 +29,7 @@ export const actions: Actions = {
         }
       }
 
-      await supabase.auth.signOut();
+      cookies.delete(SESSION_COOKIE, { path: '/' });
       throw redirect(303, '/');
     }
   }

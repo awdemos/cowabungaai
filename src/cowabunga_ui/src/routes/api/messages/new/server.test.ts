@@ -27,7 +27,7 @@ describe('/api/messages/new', () => {
     const res = await POST({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/messages/new'>);
+    } as unknown as RequestEvent<RouteParams, '/api/messages/new'>);
 
     const resData = await res.json();
     expect(res.status).toEqual(200);
@@ -44,7 +44,7 @@ describe('/api/messages/new', () => {
       POST({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/messages/new'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/new'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -59,7 +59,7 @@ describe('/api/messages/new', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/new'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/new'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -74,7 +74,7 @@ describe('/api/messages/new', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/new'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/new'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -89,7 +89,7 @@ describe('/api/messages/new', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/new'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/new'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -105,7 +105,7 @@ describe('/api/messages/new', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/new'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/new'>)
     ).rejects.toMatchObject({
       status: 500
     });

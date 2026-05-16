@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from cowabunga_api.utils import get_model_config
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 router = APIRouter(prefix="/cowabunga/v1/models", tags=["cowabunga/models"])
 

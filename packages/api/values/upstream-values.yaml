@@ -18,13 +18,13 @@ api:
       value: "###ZARF_VAR_DEV###"
     - name: PORT
       value: "8080"
-    - name: SUPABASE_URL
-      value: "http://supabase-kong.cowabungaai.svc.cluster.local:80"
-    - name: SUPABASE_ANON_KEY
+    - name: TURSO_URL
+      value: "http://turso.cowabungaai.svc.cluster.local:8080"
+    - name: TURSO_AUTH_TOKEN
       valueFrom:
         secretKeyRef:
-          name: supabase-bootstrap-jwt
-          key: anon-key
+          name: turso-auth
+          key: token
           optional: true
 
   migration:

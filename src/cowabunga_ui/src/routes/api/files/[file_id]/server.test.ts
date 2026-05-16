@@ -11,7 +11,7 @@ const request = new Request('http://thisurlhasnoeffect', {
 describe('/api/files/[file_id]', () => {
   it('returns a 401 when there is no session', async () => {
     await expect(
-      GET({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as RequestEvent<
+      GET({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as unknown as RequestEvent<
         RouteParams,
         '/api/files/[file_id]'
       >)
@@ -22,7 +22,7 @@ describe('/api/files/[file_id]', () => {
 
   it('should return 400 if file_id is missing', async () => {
     await expect(
-      GET({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/[file_id]'
       >)
@@ -32,7 +32,7 @@ describe('/api/files/[file_id]', () => {
   });
 
   it('request the file from the API', async () => {
-    await GET({ request, params: { file_id: 'file_123' }, locals: getLocalsMock() } as RequestEvent<
+    await GET({ request, params: { file_id: 'file_123' }, locals: getLocalsMock() } as unknown as RequestEvent<
       RouteParams,
       '/api/files/[file_id]'
     >);

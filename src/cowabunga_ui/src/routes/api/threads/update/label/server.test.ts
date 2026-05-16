@@ -22,7 +22,7 @@ describe('/api/threads/update/label', () => {
     const res = await PUT({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/threads/update/label'>);
+    } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>);
 
     const updatedThread = await res.json();
 
@@ -43,7 +43,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -59,7 +59,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -75,7 +75,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -91,7 +91,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -106,7 +106,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -121,7 +121,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -138,7 +138,7 @@ describe('/api/threads/update/label', () => {
       PUT({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/threads/update/label'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/update/label'>)
     ).rejects.toMatchObject({
       status: 500
     });

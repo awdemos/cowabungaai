@@ -19,7 +19,7 @@ from cowabunga_api.data.crud_run import CRUDRun
 from cowabunga_api.backend.converters import (
     from_content_param_to_content,
 )
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 
 class RunCreateParamsRequest(RunCreateParamsRequestBase):

@@ -59,7 +59,7 @@ class DatabaseClient(ABC):
     """Abstract database client interface.
     
     This interface abstracts the database client to support multiple backends
-    (Supabase, Turso, etc.) while maintaining a consistent API.
+    (Turso, etc.) while maintaining a consistent API.
     """
     
     @abstractmethod
@@ -111,4 +111,4 @@ class DatabaseClient(ABC):
 class DatabaseConfig(BaseModel):
     """Base configuration for database clients."""
     
-    database_type: str = "supabase"  # or "turso"
+    database_type: str = "turso"  # or "turso"

@@ -2,8 +2,8 @@
 
 from pydantic import BaseModel
 from openai.types.beta import Assistant
-from supabase import AClient as AsyncClient
 from cowabunga_api.data.crud_base import CRUDBase
+from cowabunga_api.data.database.base import DatabaseClient
 
 
 class FilterAssistant(BaseModel):
@@ -17,7 +17,7 @@ class CRUDAssistant(CRUDBase[Assistant]):
 
     def __init__(
         self,
-        db: AsyncClient,
+        db: DatabaseClient,
         table_name: str = "assistant_objects",
     ):
         super().__init__(db=db, model=Assistant, table_name=table_name)

@@ -41,17 +41,6 @@ clean-registry:
 sdk-wheel: ## build wheels for the cowabunga_sdk package as a dependency for other lfai components
 	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f src/cowabunga_sdk/Dockerfile .
 
-docker-supabase:
-	## Build the migration container for this version of the supabase package
-	docker build ${DOCKER_FLAGS} -t ghcr.io/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=packages/supabase/migrations" .
-	docker tag ghcr.io/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION}
-
-build-supabase: local-registry docker-supabase
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/supabase-migrations:${LOCAL_VERSION}
-
-	## Build the Zarf package
-	uds zarf package create packages/supabase --flavor ${FLAVOR} -a ${ARCH} -o packages/supabase --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
-
 docker-turso:
 	## Build the turso database image with API server
 	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
@@ -163,9 +152,9 @@ build-repeater: local-registry docker-repeater ## Build the repeater container a
 	## Build the Zarf package
 	uds zarf package create packages/repeater --flavor ${FLAVOR} -a ${ARCH} -o packages/repeater --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
-build-cpu: build-supabase build-api build-ui build-llama-cpp-python build-text-embeddings build-whisper ## Build all zarf packages for a cpu-enabled deployment of LFAI
+build-cpu: build-api build-ui build-llama-cpp-python build-text-embeddings build-whisper ## Build all zarf packages for a cpu-enabled deployment of LFAI
 
-build-gpu: build-supabase build-api build-ui build-vllm build-text-embeddings build-whisper ## Build all zarf packages for a gpu-enabled deployment of LFAI
+build-gpu: build-api build-ui build-vllm build-text-embeddings build-whisper ## Build all zarf packages for a gpu-enabled deployment of LFAI
 
 build-all: build-cpu build-gpu ## Build all of the LFAI packages
 
@@ -178,12 +167,6 @@ silent-build-api-parallel:
 	@mkdir -p .logs
 	@$(MAKE) build-api DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-api.log 2>&1
 	@echo "API build completed"
-
-silent-build-supabase-parallel:
-	@echo "Supabase build started"
-	@mkdir -p .logs
-	@$(MAKE) build-supabase DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-supabase.log 2>&1
-	@echo "Supabase build completed"
 
 silent-build-turso-parallel:
 	@echo "Turso build started"
@@ -225,30 +208,24 @@ silent-build-all:
 	@echo "Starting parallel builds..."
 	@echo "Logs at .logs/*.log"
 	@mkdir -p .logs
-	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-supabase-parallel silent-build-ui-parallel silent-build-vllm-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-ui-parallel silent-build-vllm-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
 	@echo "All builds completed"
 
 silent-build-gpu:
 	@echo "Starting parallel builds..."
 	@echo "Logs at .logs/*.log"
 	@mkdir -p .logs
-	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-supabase-parallel silent-build-ui-parallel silent-build-vllm-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-ui-parallel silent-build-vllm-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
 	@echo "All builds completed"
 
 silent-build-cpu:
 	@echo "Starting parallel builds..."
 	@echo "Logs at .logs/*.log"
 	@mkdir -p .logs
-	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-supabase-parallel silent-build-ui-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-ui-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
 	@echo "All builds completed"
 
 # Define individual deployment targets
-silent-deploy-supabase-package:
-	@echo "Starting Supabase deployment..."
-	@mkdir -p .logs
-	@uds zarf package deploy packages/supabase/zarf-package-supabase-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-supabase.log 2>&1
-	@echo "Supabase deployment completed"
-
 silent-deploy-turso-package:
 	@echo "Starting Turso deployment..."
 	@mkdir -p .logs
@@ -294,8 +271,6 @@ silent-deploy-whisper-package:
 silent-deploy-cpu:
 	@echo "Logs at .logs/*.log"
 	@echo "Starting parallel deployments..."
-	@echo "Deploying Supabase first to avoid migration issues."
-	@$(MAKE) silent-deploy-supabase-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
 	@echo "Deploying the rest of the packages..."
 	@$(MAKE) -j${MAX_JOBS} \
 		silent-deploy-api-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
@@ -308,8 +283,6 @@ silent-deploy-cpu:
 silent-deploy-gpu:
 	@echo "Logs at .logs/*.log"
 	@echo "Starting parallel deployments..."
-	@echo "Deploying Supabase first to avoid migration issues."
-	@$(MAKE) silent-deploy-supabase-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
 	@echo "Deploying API and models..."
 	@$(MAKE) -j${MAX_JOBS} \
 		silent-deploy-api-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS}" \

@@ -11,7 +11,7 @@ from cowabunga_api.typedef.audio import (
     CreateTranscriptionResponse,
     CreateTranslationRequest,
 )
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
 import cowabunga_sdk as lfai

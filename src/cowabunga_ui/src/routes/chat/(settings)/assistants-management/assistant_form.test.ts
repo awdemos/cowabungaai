@@ -6,11 +6,6 @@ import { ASSISTANTS_DESCRIPTION_MAX_LENGTH, ASSISTANTS_NAME_MAX_LENGTH } from '$
 import { actions as editActions, load as editLoad } from './edit/[assistantId]/+page.server';
 import { actions as newActions, load as newLoad } from './new/+page.server';
 import {
-  storageRemoveMock,
-  supabaseInsertSingleMock,
-  supabaseStorageMockWrapper
-} from '$lib/mocks/supabase-mocks';
-import {
   getFakeAssistant,
   getFakeAssistantInput,
   getFakeFileObject,
@@ -44,10 +39,6 @@ describe('Assistant Form', () => {
   });
 
   it("does not show a file if it's vector status is failed", async () => {
-    /* --- SETUP
-      This extensive setup is an example of why E2E tests are sometimes preferred to unit tests. In this situation,
-      getting a vector file with status of 'failed' in an E2E is not feasible, so we have to unit test it
-    --- */
     const files = getFakeFiles({ numFiles: 2 });
     const vectorStore = getFakeVectorStore();
     const vectorStoreFile1 = getFakeVectorStoreFile({
@@ -74,7 +65,6 @@ describe('Assistant Form', () => {
     });
     // @ts-expect-error: overcomplicated to mock out load function arguments and they are not used
     const data = await editLoad({ params: { assistantId: assistant.id }, locals: getLocalsMock() });
-    /* --- END SETUP --- */
 
     render(AssistantForm, { data, isEditMode: true });
     screen.getByTestId(`${files[0].filename}-hide-uploader-item`);
@@ -116,11 +106,6 @@ describe('Assistant Form', () => {
     await userEvent.type(descriptionField, 'a'.repeat(ASSISTANTS_DESCRIPTION_MAX_LENGTH + 1));
     expect(descriptionField).toHaveValue('a'.repeat(ASSISTANTS_DESCRIPTION_MAX_LENGTH));
   });
-  /* Note - instructions length limit is too long, test times out.
-       Attempts to mock the constant required specifying each variable from the constants file in the mock
-       (vi.importActual) did not work
-       The extra maintenance overhead was deemed not worth testing this field
-    */
 
   describe('the new assistant server side form action', () => {
     it('redirects on success (with data sources)', async () => {
@@ -142,13 +127,11 @@ describe('Assistant Form', () => {
         body: formData
       });
 
-      // Redirect from sveltekit throws
       try {
         await newActions.default({
           request,
-          locals: getLocalsMock({ supabase: supabaseInsertSingleMock(assistant) })
-        } as RequestEvent<RouteParams, '/chat/(settings)/assistants-management/new'>);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          locals: getLocalsMock()
+        } as unknown as RequestEvent<RouteParams, '/chat/(settings)/assistants-management/new'>);
       } catch (redirect: any) {
         expect(redirect?.status).toEqual(303);
         expect(redirect?.location).toBe('/chat/assistants-management');
@@ -162,7 +145,7 @@ describe('Assistant Form', () => {
       const res = (await newActions.default({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<
+      } as unknown as RequestEvent<
         RouteParams,
         '/chat/(settings)/assistants-management/new'
       >)) as ActionFailure;
@@ -181,7 +164,7 @@ describe('Assistant Form', () => {
     const res = (await newActions.default({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/chat/(settings)/assistants-management/new'>)) as ActionFailure;
+    } as unknown as RequestEvent<RouteParams, '/chat/(settings)/assistants-management/new'>)) as ActionFailure;
 
     expect(res.status).toEqual(400);
   });
@@ -199,7 +182,6 @@ describe('Assistant Form', () => {
       formData.append('instructions', assistant.instructions!);
       formData.append('data_sources', `${fakeFile1.filename},${fakeFile2.filename}`);
       formData.append('pictogram', 'User');
-      // No avatar or avatarFile included to ensure we test the deletion call and mock for the avatar
 
       const request = new Request(
         `http://localhost:5173/chat/assistants-management/edit/${assistant.id}`,
@@ -209,20 +191,14 @@ describe('Assistant Form', () => {
         }
       );
 
-      // Redirect from sveltekit throws
       try {
         await editActions.default({
           request,
-          locals: getLocalsMock({
-            supabase: supabaseStorageMockWrapper({
-              ...storageRemoveMock()
-            })
-          })
-        } as RequestEvent<
+          locals: getLocalsMock()
+        } as unknown as RequestEvent<
           RouteParams & { assistantId: string },
           '/chat/(settings)/assistants-management/edit/[assistantId]'
         >);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (redirect: any) {
         expect(redirect?.status).toEqual(303);
         expect(redirect?.location).toBe('/chat/assistants-management');
@@ -236,7 +212,7 @@ describe('Assistant Form', () => {
       const res = (await editActions.default({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<
+      } as unknown as RequestEvent<
         RouteParams & { assistantId: string },
         '/chat/(settings)/assistants-management/edit/[assistantId]'
       >)) as ActionFailure;
@@ -261,7 +237,7 @@ describe('Assistant Form', () => {
       const res = (await editActions.default({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<
+      } as unknown as RequestEvent<
         RouteParams & { assistantId: string },
         '/chat/(settings)/assistants-management/edit/[assistantId]'
       >)) as ActionFailure;
@@ -292,7 +268,7 @@ describe('Assistant Form', () => {
       const res = (await editActions.default({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<
+      } as unknown as RequestEvent<
         RouteParams & { assistantId: string },
         '/chat/(settings)/assistants-management/edit/[assistantId]'
       >)) as ActionFailure;

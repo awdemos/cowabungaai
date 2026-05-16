@@ -45,7 +45,7 @@ def app_client():
 
 @pytest.fixture(scope="session")
 def create_assistant(app_client):
-    """Create an assistant for testing. Requires a running Supabase instance."""
+    """Create an assistant for testing. Requires a running database instance."""
     request = CreateAssistantRequest(
         model=starting_assistant.model,
         name=starting_assistant.name,
@@ -64,7 +64,7 @@ def create_assistant(app_client):
 
 @pytest.fixture(scope="session")
 def create_thread(app_client):
-    """Create a thread for testing. Requires a running Supabase instance."""
+    """Create a thread for testing. Requires a running database instance."""
     request = CreateThreadRequest(
         messages=None,
         tool_resources=None,
@@ -76,7 +76,7 @@ def create_thread(app_client):
 
 @pytest.fixture(scope="session")
 def create_message(app_client, create_thread):
-    """Create a message for testing. Requires a running Supabase instance."""
+    """Create a message for testing. Requires a running database instance."""
     request = CreateMessageRequest(
         role="user",
         content=[
@@ -96,7 +96,7 @@ def create_message(app_client, create_thread):
 
 @pytest.fixture(scope="session")
 def create_run(app_client, create_assistant, create_thread):
-    """Create a run for testing. Requires a running Supabase instance."""
+    """Create a run for testing. Requires a running database instance."""
     assistant_id = create_assistant.json()["id"]
     thread_id = create_thread.json()["id"]
 
@@ -115,7 +115,7 @@ def create_run(app_client, create_assistant, create_thread):
 
 
 def test_create_assistant(create_assistant):
-    """Test creating an assistant. Requires a running Supabase instance."""
+    """Test creating an assistant. Requires a running database instance."""
     assert create_assistant.status_code is status.HTTP_200_OK
     assert Assistant.model_validate(
         create_assistant.json()
@@ -123,13 +123,13 @@ def test_create_assistant(create_assistant):
 
 
 def test_create_thread(create_thread):
-    """Test creating a thread. Requires a running Supabase instance."""
+    """Test creating a thread. Requires a running database instance."""
     assert create_thread.status_code == status.HTTP_200_OK
     assert Thread.model_validate(create_thread.json()), "Create should create a Thread."
 
 
 def test_create_message(create_message):
-    """Test creating a message. Requires a running Supabase instance."""
+    """Test creating a message. Requires a running database instance."""
     assert create_message["message"].status_code == status.HTTP_200_OK
     assert Message.model_validate(
         create_message["message"].json()
@@ -137,7 +137,7 @@ def test_create_message(create_message):
 
 
 def test_create_thread_and_run(app_client, create_assistant):
-    """Test running an assistant. Requires a running Supabase instance."""
+    """Test running an assistant. Requires a running database instance."""
     assistant_id = create_assistant.json()["id"]
 
     request = ThreadRunCreateParamsRequest(
@@ -158,7 +158,7 @@ def test_create_thread_and_run(app_client, create_assistant):
 
 
 def test_create_run(create_run):
-    """Test running an assistant. Requires a running Supabase instance."""
+    """Test running an assistant. Requires a running database instance."""
 
     assert create_run.status_code == status.HTTP_200_OK
     assert Run.model_validate(create_run.json()), "Create should create a Run."
@@ -166,7 +166,7 @@ def test_create_run(create_run):
 
 
 def test_list_runs(app_client, create_thread):
-    """Test listing runs. Requires a running Supabase instance."""
+    """Test listing runs. Requires a running database instance."""
 
     thread_id = create_thread.json()["id"]
 
@@ -178,7 +178,7 @@ def test_list_runs(app_client, create_thread):
 
 
 def test_retrieve_run(app_client, create_run):
-    """Test retrieving a run. Requires a running Supabase instance."""
+    """Test retrieving a run. Requires a running database instance."""
     thread_id = create_run.json()["thread_id"]
     run_id = create_run.json()["id"]
 
@@ -189,7 +189,7 @@ def test_retrieve_run(app_client, create_run):
 
 
 def test_modify_run(app_client, create_run):
-    """Test modifying a run. Requires a running Supabase instance."""
+    """Test modifying a run. Requires a running database instance."""
     thread_id = create_run.json()["thread_id"]
     run_id = create_run.json()["id"]
     updated_metadata = {
@@ -209,7 +209,7 @@ def test_modify_run(app_client, create_run):
 
 
 def test_delete_assistant(app_client, create_assistant):
-    """Test deleting an assistant. Requires a running Supabase instance."""
+    """Test deleting an assistant. Requires a running database instance."""
     assistant_id = create_assistant.json()["id"]
 
     response = app_client.delete(f"/openai/v1/assistants/{assistant_id}")
@@ -223,7 +223,7 @@ def test_delete_assistant(app_client, create_assistant):
 
 
 def test_delete_threads(app_client, create_thread):
-    """Test deleting a thread. Requires a running Supabase instance."""
+    """Test deleting a thread. Requires a running database instance."""
     thread_id = create_thread.json()["id"]
 
     response = app_client.delete(f"/openai/v1/threads/{thread_id}")
@@ -235,7 +235,7 @@ def test_delete_threads(app_client, create_thread):
 
 
 def test_get_nonexistent_run(app_client, create_run):
-    """Test retrieving a run that does not exist. Requires a running Supabase instance."""
+    """Test retrieving a run that does not exist. Requires a running database instance."""
     thread_id = create_run.json()["thread_id"]
     run_id = create_run.json()["id"]
 

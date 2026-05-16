@@ -73,4 +73,4 @@ jobs:
         run: |
           helm lint packages/ui/chart --quiet
 
-      # TODO: we will not be linting or refactoring Supabase charts until GitHub issue #968 is resolved and a path forward is provided
+      

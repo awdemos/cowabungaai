@@ -3,7 +3,7 @@
 from fastapi import APIRouter
 from cowabunga_api.backend.rag.query import QueryService
 from cowabunga_api.typedef.vectorstores import SearchResponse
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.data.crud_vector_content import CRUDVectorContent, Vector
 from cowabunga_api.backend.constants import TOP_K
 

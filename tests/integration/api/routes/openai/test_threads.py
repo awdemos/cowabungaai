@@ -24,7 +24,7 @@ def app_client():
 # Create a thread with the previously created file and fake embeddings
 @pytest.fixture(scope="session")
 def create_thread(app_client):
-    """Create a thread for testing. Requires a running Supabase instance."""
+    """Create a thread for testing. Requires a running database instance."""
 
     request = CreateThreadRequest(
         messages=None,
@@ -37,7 +37,7 @@ def create_thread(app_client):
 
 @pytest.fixture(scope="session")
 def create_message(app_client, create_thread):
-    """Create a message for testing. Requires a running Supabase instance."""
+    """Create a message for testing. Requires a running database instance."""
 
     request = CreateMessageRequest(
         role="user",
@@ -80,14 +80,14 @@ def test_code_interpreter_fails(app_client):
 
 
 def test_create_thread(create_thread):
-    """Test creating a thread. Requires a running Supabase instance."""
+    """Test creating a thread. Requires a running database instance."""
     assert create_thread.status_code == status.HTTP_200_OK
     assert Thread.model_validate(create_thread.json()), "Create should create a Thread."
     assert "user_id" not in create_thread.json(), "Create should not return a user_id."
 
 
 def test_get_thread(app_client, create_thread):
-    """Test getting a threads. Requires a running Supabase instance."""
+    """Test getting a threads. Requires a running database instance."""
     threads_id = create_thread.json()["id"]
     get_response = app_client.get(f"/openai/v1/threads/{threads_id}")
     assert get_response.status_code == status.HTTP_200_OK
@@ -97,7 +97,7 @@ def test_get_thread(app_client, create_thread):
 
 
 def test_modify_thread(app_client, create_thread):
-    """Test modifying a thread. Requires a running Supabase instance."""
+    """Test modifying a thread. Requires a running database instance."""
     thread_id = create_thread.json()["id"]
     request = ModifyThreadRequest(
         tool_resources=None,
@@ -116,7 +116,7 @@ def test_modify_thread(app_client, create_thread):
 
 
 def test_delete_thread(app_client, create_thread):
-    """Test deleting a thread. Requires a running Supabase instance."""
+    """Test deleting a thread. Requires a running database instance."""
     thread_id = create_thread.json()["id"]
     delete_response = app_client.delete(f"/openai/v1/threads/{thread_id}")
     assert delete_response.status_code == status.HTTP_200_OK
@@ -127,7 +127,7 @@ def test_delete_thread(app_client, create_thread):
 
 
 def test_delete_twice_thread(app_client, create_thread):
-    """Test deleting a thread twice. Requires a running Supabase instance."""
+    """Test deleting a thread twice. Requires a running database instance."""
     thread_id = create_thread.json()["id"]
     delete_response = app_client.delete(f"/openai/v1/threads/{thread_id}")
     assert delete_response.status_code == status.HTTP_200_OK
@@ -141,7 +141,7 @@ def test_delete_twice_thread(app_client, create_thread):
 
 @pytest.mark.xfail
 def test_get_nonexistent_thread(app_client, create_thread):
-    """Test getting a nonexistent thread. Requires a running Supabase instance."""
+    """Test getting a nonexistent thread. Requires a running database instance."""
     thread_id = create_thread.json()["id"]
     fail_response = app_client.get(f"/openai/v1/threads/{thread_id}")
     assert fail_response.status_code == status.HTTP_404_NOT_FOUND

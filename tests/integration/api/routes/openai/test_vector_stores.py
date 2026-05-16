@@ -37,10 +37,10 @@ class MissingEnvironmentVariable(Exception):
 headers: dict[str, str] = {}
 
 try:
-    headers = {"Authorization": f"Bearer {os.environ['SUPABASE_USER_JWT']}"}
+    headers = {"Authorization": f"Bearer {os.environ['COWABUNGA_USER_JWT']}"}
 except KeyError as exc:
     raise MissingEnvironmentVariable(
-        "SUPABASE_USER_JWT must be defined for the test to pass. "
+        "COWABUNGA_USER_JWT must be defined for the test to pass. "
         "Please check the api README for instructions on obtaining this token."
     ) from exc
 
@@ -59,10 +59,10 @@ def read_testfile():
     return testfile_content
 
 
-# Adds file to Supabase
+# Adds file to database
 @pytest.fixture(scope="session", autouse=True)
 def create_file(read_testfile):  # pylint: disable=redefined-outer-name, unused-argument
-    """Create a file for testing. Requires a running Supabase instance."""
+    """Create a file for testing. Requires a running database instance."""
 
     file_response = files_client.post(
         "/openai/v1/files",
@@ -82,7 +82,7 @@ expired_vector_store_response: Response
 # Create a vector store with the previously created file and fake embeddings
 @pytest.fixture(scope="session", autouse=True)
 def create_vector_store(create_file):
-    """Create a vector store for testing. Requires a running Supabase instance."""
+    """Create a vector store for testing. Requires a running database instance."""
 
     global vector_store_response  # pylint: disable=global-statement
     global expired_vector_store_response  # pylint: disable=global-statement
@@ -114,7 +114,7 @@ def create_vector_store(create_file):
 
 
 def test_create():
-    """Test creating a vector store. Requires a running Supabase instance."""
+    """Test creating a vector store. Requires a running database instance."""
     assert vector_store_response.status_code == status.HTTP_200_OK
     assert VectorStore.model_validate(
         vector_store_response.json()
@@ -133,7 +133,7 @@ def test_create_expired():
 
 
 def test_get():
-    """Test getting a vector store. Requires a running Supabase instance."""
+    """Test getting a vector store. Requires a running database instance."""
     vector_store_id = vector_store_response.json()["id"]
     get_response = vector_store_client.get(
         f"/openai/v1/vector_stores/{vector_store_id}"
@@ -162,7 +162,7 @@ def test_get_expired():
 
 
 def test_list():
-    """Test listing vector stores. Requires a running Supabase instance."""
+    """Test listing vector stores. Requires a running database instance."""
     list_response = vector_store_client.get("/openai/v1/vector_stores")
     assert list_response.status_code == status.HTTP_200_OK
     for vector_store_object in list_response.json()["data"]:
@@ -182,7 +182,7 @@ def test_list_expired():
 
 
 def test_modify(create_file):
-    """Test modifying a vector store. Requires a running Supabase instance."""
+    """Test modifying a vector store. Requires a running database instance."""
     vector_store_id = vector_store_response.json()["id"]
     request = ModifyVectorStoreRequest(
         file_ids=[create_file["id"]],
@@ -219,7 +219,7 @@ def test_modify_expired(create_file):
 
 
 def test_get_modified():
-    """Test getting a modified vector store. Requires a running Supabase instance."""
+    """Test getting a modified vector store. Requires a running database instance."""
     vector_store_id = vector_store_response.json()["id"]
     get_modified_response = vector_store_client.get(
         f"/openai/v1/vector_stores/{vector_store_id}"
@@ -232,7 +232,7 @@ def test_get_modified():
 
 
 def test_get_modified_expired():
-    """Test getting a modified vector store. Requires a running Supabase instance."""
+    """Test getting a modified vector store. Requires a running database instance."""
     vector_store_id = expired_vector_store_response.json()["id"]
     get_modified_response = vector_store_client.get(
         f"/openai/v1/vector_stores/{vector_store_id}"
@@ -242,7 +242,7 @@ def test_get_modified_expired():
 
 
 def test_delete():
-    """Test deleting a vector store. Requires a running Supabase instance."""
+    """Test deleting a vector store. Requires a running database instance."""
     vector_store_id = vector_store_response.json()["id"]
     delete_response = vector_store_client.delete(
         f"/openai/v1/vector_stores/{vector_store_id}"
@@ -255,7 +255,7 @@ def test_delete():
 
 
 def test_delete_twice():
-    """Test deleting a vector store twice. Requires a running Supabase instance."""
+    """Test deleting a vector store twice. Requires a running database instance."""
     vector_store_id = vector_store_response.json()["id"]
     delete_response = vector_store_client.delete(
         f"/openai/v1/vector_stores/{vector_store_id}"
@@ -270,7 +270,7 @@ def test_delete_twice():
 
 
 def test_get_nonexistent():
-    """Test getting a nonexistent vector store. Requires a running Supabase instance."""
+    """Test getting a nonexistent vector store. Requires a running database instance."""
     vector_store_id = vector_store_response.json()["id"]
     get_response = vector_store_client.get(
         f"/openai/v1/vector_stores/{vector_store_id}"
@@ -282,7 +282,7 @@ def test_get_nonexistent():
 
 
 def test_cleanup_file(create_file):
-    """Test cleaning up the file created for the vector store. Requires a running Supabase instance."""
+    """Test cleaning up the file created for the vector store. Requires a running database instance."""
     file_id = create_file["id"]
     cleanup_response = files_client.delete(f"/openai/v1/files/{file_id}")
     assert cleanup_response.status_code == status.HTTP_200_OK

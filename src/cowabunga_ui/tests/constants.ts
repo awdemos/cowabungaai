@@ -1,2 +1,1 @@
-export const supabaseUsername = 'fakesupabaseuser@test.com';
-export const supabasePassword = 'fakepass';
+// Test constants removed after database removal

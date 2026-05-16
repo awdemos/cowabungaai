@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Annotated
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils.config import Config
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.typedef.counting import (

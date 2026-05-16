@@ -3,7 +3,7 @@ import { delay } from 'msw';
 import type { Page } from '@playwright/test';
 
 /** NOTE:
- *  If you test depends on Supabase realtime listeners, you need to wait a second after navigating via
+ *  If you test depends on API realtime listeners, you need to wait a second after navigating via
  *  a page.goto call, because the listeners get re-setup when the page is fully reloaded
  * **/
 

@@ -4,7 +4,7 @@
 
 ## 📣 CowabungaAI Status Update 📣
 
-> ⚠️ **WIP: Breaking changes underway** - We're adding Turso database support as an alternative to Supabase. Expect schema changes and configuration updates. See `TURSO_INTEGRATION_PLAN.md` for details.
+> ⚠️ **Status Update** - CowabungaAI now uses Turso as its primary database. Supabase has been removed. See `TURSO_INTEGRATION_PLAN.md` for migration details.
 
 Thank you for your interest in CowabungaAI!
 
@@ -73,7 +73,7 @@ cowabungaai/
 │   ├── api/              # deployment infrastructure for the API
 │   ├── llama-cpp-python/ # source code & deployment infrastructure for the llama-cpp-python backend
 │   ├── repeater/         # source code & deployment infrastructure for the repeater model backend
-│   ├── supabase/         # deployment infrastructure for the Supabase backend and postgres database
+│   ├── turso/            # deployment infrastructure for the Turso database
 │   ├── text-embeddings/  # source code & deployment infrastructure for the text-embeddings backend
 │   ├── ui/               # deployment infrastructure for the UI
 │   ├── vllm/             # source code & deployment infrastructure for the vllm backend
@@ -141,7 +141,6 @@ Below is the current component flavors list:
 | ---------------------------------------------- | ------------ | ------------- |
 | [api](packages/api/)                           |      ✅      |      ✅      |
 | [ui](packages/ui/)                             |      ✅      |      🚧      |
-| [supabase](packages/supabase/)                 |      ✅      |      🚧      |
 | [migrations](./Dockerfile.migrations)          |      ✅      |      🚧      |
 | [llama-cpp-python](packages/llama-cpp-python/) |      ✅      |      🚧      |
 | [whisper](packages/whisper/)                   |      ✅      |      🚧      |
@@ -173,7 +172,7 @@ Each of the CowabungaAI components can also be run individually outside of a Kub
 - [UI](packages/ui/README.md)[^3]
 - [LLaMA C++ Python](packages/llama-cpp-python/README.md)
 - [vLLM](packages/vllm/README.md)
-- [Supabase](packages/supabase/README.md)
+- [Turso](packages/turso/README.md)
 - [Text Embeddings](packages/text-embeddings/README.md)
 - [Faster Whisper](packages/whisper/README.md)
 - [Repeater](packages/repeater/README.md)

@@ -11,7 +11,7 @@ from cowabunga_api.backend.rag.document_loader import (
 from cowabunga_api.data.crud_file_bucket import CRUDFileBucket
 from cowabunga_api.data.crud_file_object import CRUDFileObject, FilterFileObject
 from cowabunga_api.routers.openai import raise_parse_error
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.typedef.files import ListFilesResponse, UploadFileRequest
 
 router = APIRouter(prefix="/openai/v1/files", tags=["openai/files"])

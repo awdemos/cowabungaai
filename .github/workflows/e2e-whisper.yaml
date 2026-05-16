@@ -1,4 +1,4 @@
-# End-to-end testing that deploys Supabase and the API, and deploy/tests llama-cpp-python, text-embeddings, and whisper
+# End-to-end testing that deploys API and tests llama-cpp-python, text-embeddings, and whisper
 
 name: e2e-whisper
 on:
@@ -79,7 +79,7 @@ jobs:
             ghToken: ${{ secrets.GITHUB_TOKEN }}
             chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
 
-        - name: Setup LFAI-API and Supabase
+        - name: Setup LFAI-API and Turso
           uses: ./.github/actions/lfai-core
 
         ##########

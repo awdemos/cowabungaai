@@ -5,7 +5,7 @@ from typing import Any
 from fastapi import HTTPException, APIRouter, status as http_status
 from openai.types.beta.threads import Run
 from openai.types.beta.threads.runs import RunStep
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.data.crud_run import CRUDRun
 
 router = APIRouter(prefix="/openai/v1/threads", tags=["openai/threads/run-steps"])

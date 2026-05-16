@@ -5,7 +5,7 @@ from cowabunga_api.typedef.rag.rag_types import (
     ConfigurationSingleton,
     ConfigurationPayload,
 )
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils.logging_tools import logger
 
 router = APIRouter(prefix="/cowabunga/v1/rag", tags=["cowabunga/rag"])

@@ -1,17 +1,17 @@
 """CRUD Operations for VectorStore."""
 
-from supabase import AClient as AsyncClient
-from cowabunga_api.data.crud_base import get_user_id
 import ast
+from cowabunga_api.data.crud_base import get_user_id
 from cowabunga_api.typedef.vectorstores import SearchItem, SearchResponse
 from cowabunga_api.backend.constants import TOP_K
 from cowabunga_api.typedef.vectorstores import Vector
+from cowabunga_api.data.database.base import DatabaseClient
 
 
 class CRUDVectorContent:
     """CRUD Operations for VectorStore"""
 
-    def __init__(self, db: AsyncClient):
+    def __init__(self, db: DatabaseClient):
         self.db = db
         self.table_name = "vector_content"
 
@@ -30,9 +30,9 @@ class CRUDVectorContent:
 
             rows.append(dict_)
 
-        data, _count = await self.db.table(self.table_name).insert(rows).execute()
+        result = await self.db.table(self.table_name).insert(rows).execute()
 
-        _, response = data
+        response = result.data if hasattr(result, 'data') else result
 
         final_response = []
         try:
@@ -58,39 +58,30 @@ class CRUDVectorContent:
 
     async def get_vector(self, vector_id: str) -> Vector:
         """Get a vector by its ID."""
-        data, _count = (
-            await self.db.table(self.table_name)
-            .select("*")
-            .eq("id", vector_id)
-            .single()
-            .execute()
-        )
+        result = await self.db.table(self.table_name).select("*").eq("id", vector_id).execute()
 
-        _, response = data
+        response = result.data
 
-        if isinstance(response["embedding"], str):
-            response["embedding"] = self.string_to_float_list(response["embedding"])
+        if response and len(response) > 0:
+            item = response[0]
+            if isinstance(item["embedding"], str):
+                item["embedding"] = self.string_to_float_list(item["embedding"])
 
-        return Vector(
-            id=response["id"],
-            vector_store_id=response["vector_store_id"],
-            file_id=response["file_id"],
-            content=response["content"],
-            metadata=response["metadata"],
-            embedding=response["embedding"],
-        )
+            return Vector(
+                id=item["id"],
+                vector_store_id=item["vector_store_id"],
+                file_id=item["file_id"],
+                content=item["content"],
+                metadata=item["metadata"],
+                embedding=item["embedding"],
+            )
+        raise ValueError(f"Vector {vector_id} not found")
 
     async def delete_vectors(self, vector_store_id: str, file_id: str) -> bool:
         """Delete a vector store file by its ID."""
-        data, _count = (
-            await self.db.table(self.table_name)
-            .delete()
-            .eq("vector_store_id", vector_store_id)
-            .eq("file_id", file_id)
-            .execute()
-        )
+        result = await self.db.table(self.table_name).delete().eq("vector_store_id", vector_store_id).eq("file_id", file_id).execute()
 
-        _, response = data
+        response = result.data if hasattr(result, 'data') else result
 
         return bool(response)
 
@@ -109,7 +100,7 @@ class CRUDVectorContent:
         result = await self.db.rpc("match_vectors", params).execute()
 
         try:
-            response = result.data
+            response = result.data if hasattr(result, 'data') else result
             return SearchResponse(data=[SearchItem(**item) for item in response])
         except Exception as e:
             raise e

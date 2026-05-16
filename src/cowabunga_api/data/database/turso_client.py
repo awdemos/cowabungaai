@@ -90,6 +90,10 @@ class TursoQueryBuilder(QueryBuilder):
         self._offset = start
         return self
 
+    def single(self) -> "TursoQueryBuilder":
+        self._limit = 1
+        return self
+
     def _build_sql(self) -> tuple[str, list]:
         params = []
 
@@ -181,15 +185,28 @@ class TursoQueryBuilder(QueryBuilder):
         for record in records:
             columns = ", ".join(record.keys())
             placeholders = ", ".join(["?" for _ in record])
-            sql = f"INSERT INTO {self.table_name} ({columns}) VALUES ({placeholders})"
+            sql = f"INSERT INTO {self.table_name} ({columns}) VALUES ({placeholders}) RETURNING *"
             statements.append({"query": sql, "params": list(record.values())})
 
         payload = {"statements": statements}
         response = await client.post(f"{self.base_url}/", json=payload, headers=headers)
         response.raise_for_status()
 
-        # For INSERT, return the inserted data (no RETURNING in base SQLite)
-        return TursoResult(data=records)
+        results = response.json()
+        if not results or not isinstance(results, list):
+            return TursoResult(data=[])
+
+        all_data = []
+        for result in results:
+            if "error" in result:
+                return TursoResult(data=[], error=result["error"]["message"])
+            if "results" in result:
+                cols = result["results"].get("columns", [])
+                rows = result["results"].get("rows", [])
+                for row in rows:
+                    all_data.append(dict(zip(cols, row)))
+
+        return TursoResult(data=all_data)
 
     async def _execute_update(
         self, client: httpx.AsyncClient, headers: dict
@@ -242,16 +259,37 @@ class TursoAuthClient(AuthClient):
             id: str
             email: str = ""
 
+        # Use stored access token if no token provided
+        token = token or self._access_token
+
         if self._current_user_id:
             return UserResponse(user=User(id=self._current_user_id))
 
         if token and token.startswith("lfai_"):
             return UserResponse(user=User(id="api-key-user"))
 
+        # Try to extract user_id from JWT-like token
+        if token and token.count(".") == 2:
+            return UserResponse(user=User(id="jwt-user"))
+
         raise Exception("No authenticated user")
 
     async def set_session(self, access_token: str, refresh_token: str) -> None:
         self._access_token = access_token
+        # Attempt to extract user_id from JWT
+        if access_token and access_token.count(".") == 2:
+            try:
+                import base64
+                import json
+                payload_b64 = access_token.split(".")[1]
+                # Add padding if needed
+                padding = 4 - len(payload_b64) % 4
+                if padding != 4:
+                    payload_b64 += "=" * padding
+                payload = json.loads(base64.urlsafe_b64decode(payload_b64))
+                self._current_user_id = payload.get("sub") or payload.get("user_id")
+            except Exception:
+                pass
 
 
 class TursoOptions:
@@ -270,6 +308,20 @@ class TursoClient(DatabaseClient):
     def table(self, table_name: str) -> TursoQueryBuilder:
         return TursoQueryBuilder(self.base_url, table_name, self.auth_token)
 
+    def rpc(self, function_name: str, params: dict | None = None):
+        """RPC call wrapper for compatibility.
+        
+        For Turso, known functions are implemented directly.
+        Unknown functions raise NotImplementedError.
+        """
+        if function_name == "match_vectors":
+            # Vector similarity search - will be handled by CRUDVectorContent
+            return _MatchVectorsRPC(self, params or {})
+        elif function_name == "insert_api_key":
+            # API key insertion with generated fields
+            return _InsertAPIKeyRPC(self, params or {})
+        raise NotImplementedError(f"RPC function '{function_name}' is not implemented for Turso")
+
     @property
     def auth(self) -> TursoAuthClient:
         return self._auth
@@ -281,7 +333,6 @@ class TursoClient(DatabaseClient):
     async def health_check(self) -> bool:
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
-                # libsql-server doesn't have /health, use SELECT 1
                 payload = {"statements": [{"query": "SELECT 1", "params": []}]}
                 response = await client.post(f"{self.base_url}/", json=payload)
                 return response.status_code == 200
@@ -301,3 +352,76 @@ class TursoClient(DatabaseClient):
             raise ConnectionError(f"Cannot connect to Turso service at {base_url}")
 
         return client
+
+
+class _MatchVectorsRPC:
+    """RPC-compatible wrapper for vector similarity search."""
+
+    def __init__(self, client: TursoClient, params: dict):
+        self.client = client
+        self.params = params
+
+    async def execute(self) -> TursoResult:
+        # For Turso without pgvector, we fetch all vectors and compute similarity in Python
+        # This is a fallback implementation - proper vector search would use an extension
+        vector_store_id = self.params.get("vs_id")
+        query_embedding = self.params.get("query_embedding", [])
+        match_limit = self.params.get("match_limit", 10)
+
+        if not vector_store_id or not query_embedding:
+            return TursoResult(data=[])
+
+        result = await self.client.table("vector_content").select("*").eq("vector_store_id", vector_store_id).execute()
+        if not result.data:
+            return TursoResult(data=[])
+
+        vectors = result.data
+        scored = []
+        for item in vectors:
+            embedding = item.get("embedding")
+            if isinstance(embedding, str):
+                import ast
+                try:
+                    embedding = ast.literal_eval(embedding.strip())
+                    embedding = [float(x) for x in embedding]
+                except (ValueError, SyntaxError):
+                    continue
+            if embedding and len(embedding) == len(query_embedding):
+                score = _cosine_similarity(query_embedding, embedding)
+                scored.append((score, item))
+
+        scored.sort(key=lambda x: x[0], reverse=True)
+        top_k = scored[:match_limit]
+
+        return TursoResult(data=[item for _, item in top_k])
+
+
+class _InsertAPIKeyRPC:
+    """RPC-compatible wrapper for insert_api_key function."""
+
+    def __init__(self, client: TursoClient, params: dict):
+        self.client = client
+        self.params = params
+
+    async def execute(self) -> TursoResult:
+        import time
+        import secrets
+
+        data = {
+            "id": secrets.token_urlsafe(16),
+            "user_id": self.params.get("p_user_id"),
+            "api_key": self.params.get("p_api_key"),
+            "name": self.params.get("p_name"),
+            "created_at": int(time.time()),
+            "expires_at": self.params.get("p_expires_at"),
+            "checksum": self.params.get("p_checksum"),
+            "is_active": True,
+        }
+        return await self.client.table("api_keys").insert(data).execute()
+
+
+def _cosine_similarity(a: list[float], b: list[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b))
+    norm_a = sum(x * x for x in a) ** 0.5
+    norm_b = sum(x * x for x in b) ** 0.5
+    return dot / (norm_a * norm_b) if norm_a and norm_b else 0.0

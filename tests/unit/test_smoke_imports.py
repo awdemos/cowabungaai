@@ -41,7 +41,6 @@ def test_backend_module_imports(module):
         "cowabunga_api.data.crud_file_object",
         "cowabunga_api.data.crud_run",
         "cowabunga_api.data.crud_vector_content",
-        "cowabunga_api.data.database.supabase_client",
         "cowabunga_api.data.database.turso_auth",
     ],
 )

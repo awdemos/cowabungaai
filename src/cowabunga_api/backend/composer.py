@@ -35,7 +35,7 @@ from cowabunga_api.backend.rag.query import QueryService
 from cowabunga_api.data.crud_assistant import CRUDAssistant, FilterAssistant
 from cowabunga_api.data.crud_message import CRUDMessage
 from cowabunga_api.routers.openai.chat import chat_complete, chat_complete_stream_raw
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_sdk.chat.chat_pb2 import (
     ChatCompletionResponse as ProtobufChatCompletionResponse,

@@ -1,71 +1,33 @@
 <script lang="ts">
   import logo from '$assets/LeapfrogAI.png';
-  import { Button, Input, Label } from 'flowbite-svelte';
-  import { superForm } from 'sveltekit-superforms';
+  import { Button } from 'flowbite-svelte';
   import { env } from '$env/dynamic/public';
 
   export let data;
-  export let queryParams: { [key: string]: string } | undefined = undefined;
 
-  let isSignup = true;
-  let { supabase, url } = data;
-  $: ({ supabase, url } = data);
+  let { url } = data;
+  $: ({ url } = data);
 
-  async function signInWithKeycloak() {
-    await supabase.auth.signInWithOAuth({
-      provider: 'keycloak',
-      options: {
-        scopes: 'openid',
-        redirectTo: `${url}/auth/callback`,
-        queryParams
-      }
-    });
+  function signInWithKeycloak() {
+    const keycloakUrl = env.PUBLIC_KEYCLOAK_URL;
+    const clientId = env.PUBLIC_KEYCLOAK_CLIENT_ID;
+    if (!keycloakUrl || !clientId) {
+      console.error('Keycloak URL or Client ID is not configured');
+      return;
+    }
+    const redirectUri = `${url}/auth/callback`;
+    const authUrl = new URL(`${keycloakUrl}/protocol/openid-connect/auth`);
+    authUrl.searchParams.set('client_id', clientId);
+    authUrl.searchParams.set('redirect_uri', redirectUri);
+    authUrl.searchParams.set('response_type', 'code');
+    authUrl.searchParams.set('scope', 'openid');
+    window.location.href = authUrl.toString();
   }
-  const { form, errors, enhance } = superForm(data.form);
 </script>
 
 <div class="flex w-full flex-col items-center gap-10 pt-3">
   <div class="h-[72px] w-[252px]">
     <img alt="LeapfrogAI Logo" src={logo} class="logo" />
   </div>
-  {#if env.PUBLIC_DISABLE_KEYCLOAK === 'true'}
-    <form method="POST" action={isSignup ? '/auth?/signup' : '/auth?/login'} use:enhance>
-      <div class="flex flex-col gap-2">
-        <Label for="email">Email</Label>
-        <Input
-          id="email"
-          data-testid="email-input"
-          name="email"
-          type="email"
-          bind:value={$form.email}
-          placeholder="Your email address"
-        />
-
-        <Label for="password">Password</Label>
-        <Input
-          id="password"
-          data-testid="password-input"
-          name="password"
-          type="password"
-          placeholder="Your password"
-          bind:value={$form.password}
-        />
-
-        <Button data-testid="submit-btn" type="submit">{isSignup ? 'Sign Up' : 'Sign In'}</Button>
-        {#if $errors.email}
-          <span style="color: red">{$errors.email}</span>
-        {/if}
-      </div>
-    </form>
-
-    <Button
-      data-testid="toggle-submit-btn"
-      color="alternative"
-      on:click={() => {
-        isSignup = !isSignup;
-      }}>{isSignup ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}</Button
-    >
-  {:else}
-    <Button on:click={signInWithKeycloak}>Log In with UDS SSO</Button>
-  {/if}
+  <Button on:click={signInWithKeycloak}>Log In with UDS SSO</Button>
 </div>

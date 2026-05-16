@@ -10,7 +10,7 @@ from cowabunga_api.typedef.assistants import (
 )
 from cowabunga_api.data.crud_assistant import CRUDAssistant, FilterAssistant
 from cowabunga_api.routers.openai import raise_parse_error
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 
 router = APIRouter(prefix="/openai/v1/assistants", tags=["openai/assistants"])

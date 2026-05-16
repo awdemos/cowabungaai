@@ -7,10 +7,6 @@ metadata:
   version: dev
 
 packages:
-  # Supabase backend for the UI and API to interface with Postgresql
-  - name: supabase
-    path: ../../../packages/supabase/
-    ref: dev
 
   # OpenAI-like API
   - name: cowabunga-api

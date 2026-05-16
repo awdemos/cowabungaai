@@ -25,7 +25,6 @@ README.md
 
 playwright/.auth
 
-supabase/
 
 # Copied from .gitignore
 # temporary deployment and development artifacts

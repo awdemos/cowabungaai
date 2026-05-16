@@ -1,12 +1,7 @@
 import { GET } from './+server';
-import { getLocalsMock } from '$lib/mocks/misc';
+import { getLocalsMock, getCookiesMock } from '$lib/mocks/misc';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { RouteParams } from './$types';
-import {
-  selectSingleReturnsMockError,
-  supabaseFromMockWrapper,
-  supabaseSelectSingleByIdMock
-} from '$lib/mocks/supabase-mocks';
 import { getFakeThread } from '$testUtils/fakeData';
 import { mockOpenAI } from '../../../../vitest-setup';
 import * as apiHelpers from '../helpers';
@@ -24,8 +19,9 @@ describe('/api/threads', () => {
     await expect(
       GET({
         request,
+        cookies: getCookiesMock(),
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/threads'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -39,12 +35,9 @@ describe('/api/threads', () => {
 
     const res = await GET({
       request,
-      locals: getLocalsMock({
-        supabase: supabaseFromMockWrapper({
-          ...supabaseSelectSingleByIdMock(fakeProfile)
-        })
-      })
-    } as RequestEvent<RouteParams, '/api/threads'>);
+      cookies: getCookiesMock(fakeProfile),
+      locals: getLocalsMock()
+    } as unknown as RequestEvent<RouteParams, '/api/threads'>);
 
     expect(res.status).toEqual(200);
     const resJson = await res.json();
@@ -60,12 +53,9 @@ describe('/api/threads', () => {
     mockOpenAI.setError('retrieveThread'); // fail the first thread fetching
     const res = await GET({
       request,
-      locals: getLocalsMock({
-        supabase: supabaseFromMockWrapper({
-          ...supabaseSelectSingleByIdMock(fakeProfile)
-        })
-      })
-    } as RequestEvent<RouteParams, '/api/threads'>);
+      cookies: getCookiesMock(fakeProfile),
+      locals: getLocalsMock()
+    } as unknown as RequestEvent<RouteParams, '/api/threads'>);
 
     expect(res.status).toEqual(200);
     const resJson = await res.json();
@@ -76,12 +66,9 @@ describe('/api/threads', () => {
     mockOpenAI.setError('listMessages'); // fail the first thread's message fetching
     const res = await GET({
       request,
-      locals: getLocalsMock({
-        supabase: supabaseFromMockWrapper({
-          ...supabaseSelectSingleByIdMock(fakeProfile)
-        })
-      })
-    } as RequestEvent<RouteParams, '/api/threads'>);
+      cookies: getCookiesMock(fakeProfile),
+      locals: getLocalsMock()
+    } as unknown as RequestEvent<RouteParams, '/api/threads'>);
 
     expect(res.status).toEqual(200);
     const resJson = await res.json();
@@ -95,12 +82,9 @@ describe('/api/threads', () => {
 
     const res = await GET({
       request,
-      locals: getLocalsMock({
-        supabase: supabaseFromMockWrapper({
-          ...supabaseSelectSingleByIdMock(fakeProfile)
-        })
-      })
-    } as RequestEvent<RouteParams, '/api/threads'>);
+      cookies: getCookiesMock(fakeProfile),
+      locals: getLocalsMock()
+    } as unknown as RequestEvent<RouteParams, '/api/threads'>);
 
     expect(res.status).toEqual(200);
     const resJson = await res.json();
@@ -108,18 +92,15 @@ describe('/api/threads', () => {
     // ensure we hit the correct catch block/error case with this test
     expect(consoleSpy).toHaveBeenCalledWith('Error fetching threads: Error: fake error');
   });
-  it("returns a 500 is an error getting the user's profile", async () => {
-    await expect(
-      GET({
-        request,
-        locals: getLocalsMock({
-          supabase: supabaseFromMockWrapper({
-            ...selectSingleReturnsMockError()
-          })
-        })
-      } as RequestEvent<RouteParams, '/api/threads'>)
-    ).rejects.toMatchObject({
-      status: 500
-    });
+  it('returns an empty array when there is no profile cookie', async () => {
+    const res = await GET({
+      request,
+      cookies: getCookiesMock(),
+      locals: getLocalsMock()
+    } as unknown as RequestEvent<RouteParams, '/api/threads'>);
+
+    expect(res.status).toEqual(200);
+    const resJson = await res.json();
+    expect(resJson).toEqual([]);
   });
 });

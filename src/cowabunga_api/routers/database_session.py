@@ -1,15 +1,11 @@
-"""Supabase session dependency."""
+"""Database session dependency."""
 
-from base64 import binascii
 import logging
-import os
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from httpx import HTTPStatusError
-from supabase import AClient as AsyncClient
-from supabase import acreate_client
-import gotrue
+
+from cowabunga_api.data.database.base import DatabaseClient
 from cowabunga_api.backend.security.api_key import APIKey
 
 logger = logging.getLogger(__name__)
@@ -17,44 +13,21 @@ logger = logging.getLogger(__name__)
 security = HTTPBearer()
 
 
-def get_supabase_vars() -> tuple[str, str]:
-    """Gets the Supabase URL and Supabase Anon Key from the environment variables
-
-    Returns:
-        tuple[str, str]: the Supabase URL and Supabase Anon Key
-    """
-
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_ANON_KEY")
-
-    if not supabase_url or not supabase_key:
-        raise HTTPException(
-            detail="Supabase URL or Supabase Anon Key is not set",
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
-
-    return supabase_url, supabase_key
-
-
-async def init_supabase_client(
+async def init_database_client(
     auth_creds: Annotated[HTTPAuthorizationCredentials, Depends(security)],
-) -> AsyncClient:
+) -> DatabaseClient:
     """
-    Returns an authenticated Supabase client using the provided user's JWT token
+    Returns an authenticated database client using the provided token.
 
     Parameters:
         auth_creds (HTTPAuthorizationCredentials): the auth credentials for the user that include the bearer token
 
     Returns:
-        user_client (AsyncClient): a client instantiated with a session associated with the JWT token
+        DatabaseClient: a client instantiated with the authenticated session
     """
+    from cowabunga_api.utils.database_factory import create_database_client
 
-    supabase_url, supabase_key = get_supabase_vars()
-
-    client: AsyncClient = await acreate_client(
-        supabase_key=supabase_key,
-        supabase_url=supabase_url,
-    )
+    client = await create_database_client()
 
     # Try JWT Auth first
     if _validate_jwt_token(auth_creds.credentials):
@@ -62,29 +35,17 @@ async def init_supabase_client(
             await client.auth.set_session(
                 access_token=auth_creds.credentials, refresh_token="dummy"
             )
-        except gotrue.errors.AuthApiError as e:
+        except Exception as e:
             logger.exception("\t%s", e)
             raise HTTPException(
                 detail="Token has expired or is not valid. Generate a new token",
                 status_code=status.HTTP_401_UNAUTHORIZED,
             ) from e
-        except binascii.Error as e:
-            logger.exception("\t%s", e)
-            raise HTTPException(
-                detail="Failed to validate Authentication Token",
-                status_code=status.HTTP_401_UNAUTHORIZED,
-            ) from e
-        except Exception as e:
-            logger.exception("\t%s", e)
-            raise HTTPException(
-                detail="Failed to create Supabase session",
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            ) from e
 
         if await _validate_jwt_authorization(client, auth_creds.credentials):
             return client
 
-    # Try API Key Auth first
+    # Try API Key Auth
     try:
         api_key = APIKey.parse(auth_creds.credentials)
 
@@ -107,15 +68,15 @@ async def init_supabase_client(
 
 
 # This variable needs to be added to each endpoint even if it's not used to ensure auth is required for the endpoint
-Session = Annotated[AsyncClient, Depends(init_supabase_client)]
+Session = Annotated[DatabaseClient, Depends(init_database_client)]
 
 
-async def _validate_api_authorization(session: AsyncClient) -> bool:
+async def _validate_api_authorization(session: DatabaseClient) -> bool:
     """
     Check if the provided API key is valid
 
     Parameters:
-        session (Session): an anonymous session with x-custom-api-key header
+        session (DatabaseClient): a session with x-custom-api-key header
 
     Returns:
         bool: True if the API key is valid, False otherwise
@@ -129,12 +90,12 @@ async def _validate_api_authorization(session: AsyncClient) -> bool:
     return True
 
 
-async def _validate_jwt_authorization(session: AsyncClient, authorization: str) -> bool:
+async def _validate_jwt_authorization(session: DatabaseClient, authorization: str) -> bool:
     """
     Check if the provided user's JWT token is valid, raises a 403 if not
 
     Parameters:
-        session (Session): the default anonymous session
+        session (DatabaseClient): the default session
         authorization (str): the JWT token for the user
     """
 
@@ -142,16 +103,14 @@ async def _validate_jwt_authorization(session: AsyncClient, authorization: str) 
 
     if authorization:
         try:
-            user_response: gotrue.types.UserResponse = await session.auth.get_user(
+            user_response = await session.auth.get_user(
                 authorization.replace("Bearer ", "")
             )
 
             if user_response:
                 authorized = True
 
-        except HTTPStatusError:
-            authorized = False
-        except gotrue.errors.AuthApiError:
+        except Exception:
             authorized = False
 
     if not authorized:

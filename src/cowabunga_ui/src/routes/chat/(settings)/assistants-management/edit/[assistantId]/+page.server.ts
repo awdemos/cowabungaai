@@ -63,8 +63,7 @@ export const load: PageServerLoad = async ({ params, locals: { session } }) => {
 };
 
 export const actions: Actions = {
-  default: async ({ request, locals: { supabase, session } }) => {
-    // Validate session
+  default: async ({ request, locals: { session } }) => {
     if (!session) {
       return fail(401, { message: 'Unauthorized' });
     }
@@ -76,30 +75,40 @@ export const actions: Actions = {
     }
 
     const openai = getOpenAiClient(session.access_token);
-    const deleteAvatar = !form.data.avatar && !form.data.avatarFile;
-    const filePath = form.data.id;
 
-    // Update avatar if new file uploaded
+    let avatarUrl = form.data.avatar || '';
+
     if (form.data.avatarFile) {
-      const { error } = await supabase.storage
-        .from('assistant_avatars')
-        .upload(filePath, form.data.avatarFile, { upsert: true });
-
-      if (error) {
-        console.error('Error updating assistant avatar:', error);
+      try {
+        const fileObject = await openai.files.create({
+          file: form.data.avatarFile,
+          purpose: 'assistants'
+        });
+        avatarUrl = getAssistantAvatarUrl(fileObject.id);
+      } catch (e) {
+        console.error('Error uploading assistant avatar:', e);
         return fail(500, { message: 'Error updating assistant avatar.' });
       }
-    } else {
-      if (!form.data.avatar) {
-        // Delete avatar
-        const { error: deleteAvatarError } = await supabase.storage
-          .from('assistant_avatars')
-          .remove([`${filePath}`]);
-        if (deleteAvatarError) {
-          console.error('Error deleting assistant avatar:', deleteAvatarError);
-          return fail(500, { message: 'error deleting avatar' });
+      // Delete old avatar file if it exists
+      if (form.data.avatar && form.data.avatar.startsWith('/api/files/')) {
+        const oldFileId = form.data.avatar.replace('/api/files/', '');
+        try {
+          await openai.files.del(oldFileId);
+        } catch (e) {
+          console.error('Error deleting old assistant avatar:', e);
         }
       }
+    } else if (!form.data.avatar) {
+      // Delete avatar
+      if (form.data.avatar && form.data.avatar.startsWith('/api/files/')) {
+        const oldFileId = form.data.avatar.replace('/api/files/', '');
+        try {
+          await openai.files.del(oldFileId);
+        } catch (e) {
+          console.error('Error deleting assistant avatar:', e);
+        }
+      }
+      avatarUrl = '';
     }
 
     const data_sources =
@@ -118,7 +127,6 @@ export const actions: Actions = {
         const vectorStoreFiles = vectorStoreFilesPage.data;
 
         const vectorStoreFileIds = vectorStoreFiles.map((file) => file.id);
-        // delete and add files to vector store
         const filesToDelete = vectorStoreFileIds.filter((fileId) => !data_sources.includes(fileId));
         const filesToAdd = data_sources.filter((fileId) => !vectorStoreFileIds.includes(fileId));
         const promises: APIPromise<VectorStoreFileDeleted | VectorStoreFile>[] = [];
@@ -138,7 +146,6 @@ export const actions: Actions = {
         return fail(500, { message: 'Error updating assistant.' });
       }
     } else {
-      // Create new vector store with files
       if (data_sources.length > 0) {
         try {
           const vectorStore = await openai.beta.vectorStores.create({
@@ -152,7 +159,7 @@ export const actions: Actions = {
         }
       }
     }
-    // Create assistant object
+
     const updatedAssistantParams: AssistantCreateParams = {
       name: form.data.name,
       description: form.data.description,
@@ -169,13 +176,12 @@ export const actions: Actions = {
         : null,
       metadata: {
         ...assistantDefaults.metadata,
-        avatar: deleteAvatar ? '' : getAssistantAvatarUrl(filePath),
+        avatar: avatarUrl,
         pictogram: form.data.pictogram,
         user_id: session.user.id
       }
     };
 
-    // Update assistant
     let updatedAssistant: LFAssistant;
     try {
       updatedAssistant = (await openai.beta.assistants.update(

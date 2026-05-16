@@ -149,13 +149,13 @@ jobs:
       - name: Generate Secrets
         id: generate_secrets
         run: |
-          ANON_KEY=$(uds zarf tools kubectl get secret supabase-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.anon-key}' | base64 -d)
+          ANON_KEY=$(uds zarf tools kubectl get secret turso-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.anon-key}' | base64 -d)
           echo "::add-mask::$ANON_KEY"
           echo "ANON_KEY=$ANON_KEY" >> $GITHUB_OUTPUT
           FAKE_PASSWORD=$(cat <(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9!@#$%^&*()_+-=[]{}|;:,.<>?' | head -c 20) <(echo '!@1Aa') | fold -w1 | shuf | tr -d '\n')
           echo "::add-mask::$FAKE_PASSWORD"
           echo "FAKE_PASSWORD=$FAKE_PASSWORD" >> $GITHUB_OUTPUT
-          SERVICE_KEY=$(uds zarf tools kubectl get secret -n leapfrogai supabase-bootstrap-jwt -o jsonpath={.data.service-key} | base64 -d)
+          SERVICE_KEY=$(uds zarf tools kubectl get secret -n leapfrogai turso-bootstrap-jwt -o jsonpath={.data.service-key} | base64 -d)
           echo "::add-mask::$SERVICE_KEY"
           echo "SERVICE_KEY=$SERVICE_KEY" >> $GITHUB_OUTPUT
 
@@ -192,7 +192,7 @@ jobs:
           mkdir -p playwright/auth
           touch playwright/auth.user.json
 
-          SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY TEST_ENV=CI USERNAME=doug PASSWORD=$FAKE_E2E_USER_PASSWORD PUBLIC_SUPABASE_ANON_KEY=$ANON_KEY DEFAULT_MODEL=llama-cpp-python npm --prefix src/leapfrogai_ui run test:integration:ci
+          SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY TEST_ENV=CI USERNAME=doug PASSWORD=$FAKE_E2E_USER_PASSWORD PUBLIC_TURSO_ANON_KEY=$ANON_KEY DEFAULT_MODEL=llama-cpp-python npm --prefix src/leapfrogai_ui run test:integration:ci
 
       - name: Archive Playwright Report
         uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0

@@ -2,7 +2,7 @@ import { ValidationError } from 'yup';
 import { editAssistantInputSchema, assistantInputSchema } from '$schemas/assistants';
 import { ASSISTANTS_NAME_MAX_LENGTH } from '$constants';
 
-describe('supabaseAssistantInputSchema', () => {
+describe('assistantInputSchema', () => {
   it('should validate a correct input', async () => {
     const validInput = {
       name: 'Assistant Name',
