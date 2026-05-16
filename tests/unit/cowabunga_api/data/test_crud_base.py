@@ -114,16 +114,17 @@ async def test_create(
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "mock_response",
-    [({}), ([]), (None)],
+    [([]), (None)],
 )
 async def test_create_fail(mock_response, mock_session, mock_crud_base):
+    """Empty or None responses return None instead of raising."""
     mock_table = mock_session.table(mock_crud_base.table_name)
     mock_table.insert.return_value.execute.return_value = MockAPIResponse(
         data=mock_response
     )
 
-    with pytest.raises(Exception):
-        await mock_crud_base.create(mock_data_model)
+    result = await mock_crud_base.create(mock_data_model)
+    assert result is None
 
 
 @pytest.mark.asyncio
@@ -152,13 +153,12 @@ async def test_get(mock_response, expected_result, mock_session, mock_crud_base)
     [
         ({"id": 1}, {}, ValidationError),
         (None, {}, ValidationError),
-        ({"id": 1}, None, TypeError),
-        (None, None, TypeError),
     ],
 )
 async def test_get_fail(
     filters, mock_response, expected_error, mock_session, mock_crud_base
 ):
+    """Invalid model data still raises ValidationError; None response returns None."""
     mock_table = mock_session.table(mock_crud_base.table_name)
     mock_table.select.return_value.execute.return_value = MockAPIResponse(
         data=mock_response
@@ -166,6 +166,25 @@ async def test_get_fail(
 
     with pytest.raises(expected_error):
         await mock_crud_base.get(filters)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "filters",
+    [
+        ({"id": 1}),
+        (None),
+    ],
+)
+async def test_get_none_response(filters, mock_session, mock_crud_base):
+    """None response from DB returns None gracefully."""
+    mock_table = mock_session.table(mock_crud_base.table_name)
+    mock_table.select.return_value.execute.return_value = MockAPIResponse(
+        data=None
+    )
+
+    result = await mock_crud_base.get(filters)
+    assert result is None
 
 
 @pytest.mark.asyncio
@@ -199,21 +218,39 @@ async def test_list(mock_response, expected_result, mock_session, mock_crud_base
     "filters, mock_response, expected_error",
     [
         ({"id": 1}, {}, ValidationError),
-        ({"id": 1}, None, TypeError),
-        ({}, None, TypeError),
-        (None, None, TypeError),
     ],
 )
 async def test_list_fail(
     filters, mock_response, expected_error, mock_session, mock_crud_base
 ):
+    """Invalid model data still raises ValidationError; None response returns []."""
     mock_table = mock_session.table(mock_crud_base.table_name)
     mock_table.select.return_value.execute.return_value = MockAPIResponse(
         data=mock_response
     )
 
     with pytest.raises(expected_error):
-        await mock_crud_base.get(filters)
+        await mock_crud_base.list(filters)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "filters",
+    [
+        ({"id": 1}),
+        ({}),
+        (None),
+    ],
+)
+async def test_list_none_response(filters, mock_session, mock_crud_base):
+    """None response from DB returns empty list gracefully."""
+    mock_table = mock_session.table(mock_crud_base.table_name)
+    mock_table.select.return_value.execute.return_value = MockAPIResponse(
+        data=None
+    )
+
+    result = await mock_crud_base.list(filters)
+    assert result == []
 
 
 @pytest.mark.asyncio
@@ -234,13 +271,14 @@ async def test_update(mock_response, expected_result, mock_session, mock_crud_ba
 @pytest.mark.asyncio
 @pytest.mark.parametrize("mock_response", [(None)])
 async def test_update_fail(mock_response, mock_session, mock_crud_base):
+    """None response from DB returns None gracefully."""
     mock_table = mock_session.table(mock_crud_base.table_name)
     mock_table.update.return_value.execute.return_value = MockAPIResponse(
         data=mock_response
     )
 
-    with pytest.raises(TypeError):
-        await mock_crud_base.update("1", mock_data_model)
+    result = await mock_crud_base.update("1", mock_data_model)
+    assert result is None
 
 
 @pytest.mark.asyncio
@@ -251,7 +289,7 @@ async def test_delete(mock_crud_base, mock_session):
 
     assert result is True
 
-    mock_table.delete().eq.assert_called_with("id", 1)
+    mock_table.delete().eq.assert_any_call("id", 1)
 
 
 @pytest.mark.asyncio

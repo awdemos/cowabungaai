@@ -78,7 +78,8 @@ async def list_files(
 ) -> ListFilesResponse:
     """List all files."""
     crud_file_object = CRUDFileObject(session)
-    crud_response = await crud_file_object.list()
+    user_id = await crud_file_object._get_user_id()
+    crud_response = await crud_file_object.list(filters=FilterFileObject(user_id=user_id))
 
     return ListFilesResponse(
         object="list",
@@ -93,7 +94,8 @@ async def retrieve_file(
 ) -> FileObject | None:
     """Retrieve a file."""
     crud_file_object = CRUDFileObject(session)
-    return await crud_file_object.get(filters=FilterFileObject(id=file_id))
+    user_id = await crud_file_object._get_user_id()
+    return await crud_file_object.get(filters=FilterFileObject(id=file_id, user_id=user_id))
 
 
 @router.delete("/{file_id}")
@@ -104,8 +106,9 @@ async def delete_file(
     """Delete a file."""
 
     crud_file_object = CRUDFileObject(session)
+    user_id = await crud_file_object._get_user_id()
     file_deleted: bool = await crud_file_object.delete(
-        filters=FilterFileObject(id=file_id)
+        filters=FilterFileObject(id=file_id, user_id=user_id)
     )
 
     # We need to check if the RLS allowed the deletion before continuing with the bucket deletion
@@ -132,7 +135,8 @@ async def retrieve_file_content(
 
         # Get the file object to retrieve the filename
         crud_file_object = CRUDFileObject(session)
-        file_object = await crud_file_object.get(filters=FilterFileObject(id=file_id))
+        user_id = await crud_file_object._get_user_id()
+        file_object = await crud_file_object.get(filters=FilterFileObject(id=file_id, user_id=user_id))
 
         if not file_object:
             raise HTTPException(

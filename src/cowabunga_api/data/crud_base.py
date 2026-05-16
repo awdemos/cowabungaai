@@ -20,7 +20,8 @@ class CRUDBase(Generic[ModelType]):
         """Create new row."""
 
         dict_ = object_.model_dump()
-        dict_["user_id"] = await self._get_user_id()
+        current_user = await self.get_current_user()
+        dict_["user_id"] = current_user["user_id"]
 
         if "id" in dict_ and not dict_.get(
             "id"
@@ -49,6 +50,10 @@ class CRUDBase(Generic[ModelType]):
             for key, value in filters.items():
                 query = query.eq(key, value)
 
+        current_user = await self.get_current_user()
+        if not current_user["is_admin"]:
+            query = query.eq("user_id", current_user["user_id"])
+
         result = await query.execute()
 
         try:
@@ -69,6 +74,10 @@ class CRUDBase(Generic[ModelType]):
             for key, value in filters.items():
                 query = query.eq(key, value)
 
+        current_user = await self.get_current_user()
+        if not current_user["is_admin"]:
+            query = query.eq("user_id", current_user["user_id"])
+
         result = await query.execute()
 
         response = result.data if hasattr(result, 'data') and result.data else []
@@ -81,11 +90,14 @@ class CRUDBase(Generic[ModelType]):
         """Update a row by its ID."""
 
         dict_ = object_.model_dump()
-        dict_["user_id"] = await self._get_user_id()
+        # Do NOT modify user_id in the update dict
 
-        result = (
-            await self.db.table(self.table_name).update(dict_).eq("id", id_).execute()
-        )
+        current_user = await self.get_current_user()
+        query = self.db.table(self.table_name).update(dict_).eq("id", id_)
+        if not current_user["is_admin"]:
+            query = query.eq("user_id", current_user["user_id"])
+
+        result = await query.execute()
 
         try:
             response = result.data
@@ -105,14 +117,23 @@ class CRUDBase(Generic[ModelType]):
             for key, value in filters.items():
                 query = query.eq(key, value)
 
+        current_user = await self.get_current_user()
+        if not current_user["is_admin"]:
+            query = query.eq("user_id", current_user["user_id"])
+
         result = await query.execute()
 
         return bool(result.data) if hasattr(result, 'data') else False
 
+    async def get_current_user(self) -> dict:
+        """Get the current user with admin status."""
+        return await get_current_user(self.db)
+
     async def _get_user_id(self) -> str:
         """Get the user_id from the API key."""
 
-        return await get_user_id(self.db)
+        user = await self.get_current_user()
+        return user["user_id"]
 
 
 async def get_user_id(db: DatabaseClient) -> str:
@@ -132,3 +153,19 @@ async def get_user_id(db: DatabaseClient) -> str:
             user_id = "anonymous"
 
     return user_id
+
+
+async def get_current_user(db: DatabaseClient) -> dict:
+    """Get the current user with admin status."""
+
+    user_id = await get_user_id(db)
+
+    if not user_id or user_id == "anonymous":
+        raise Exception("No authenticated user")
+
+    result = await db.table("users").select("is_admin").eq("id", user_id).execute()
+    is_admin = False
+    if result.data and len(result.data) > 0:
+        is_admin = result.data[0].get("is_admin", False)
+
+    return {"user_id": user_id, "is_admin": is_admin}

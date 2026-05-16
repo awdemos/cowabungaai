@@ -50,8 +50,9 @@ async def list_messages(thread_id: str, session: Session) -> SyncCursorPage[Mess
     """List all the messages in a thread."""
     try:
         crud_message = CRUDMessage(db=session)
+        user_id = await crud_message._get_user_id()
         messages: list[Message] | None = await crud_message.list(
-            filters={"thread_id": thread_id}
+            filters={"thread_id": thread_id, "user_id": user_id}
         )
 
         if not messages:
@@ -71,7 +72,8 @@ async def retrieve_message(
 ) -> Message | None:
     """Retrieve a message."""
     crud_message = CRUDMessage(db=session)
-    return await crud_message.get(filters={"id": message_id, "thread_id": thread_id})
+    user_id = await crud_message._get_user_id()
+    return await crud_message.get(filters={"id": message_id, "thread_id": thread_id, "user_id": user_id})
 
 
 @router.post("/{thread_id}/messages/{message_id}")
@@ -80,10 +82,11 @@ async def modify_message(
 ) -> Message:
     """Modify a message."""
     crud_message = CRUDMessage(db=session)
+    user_id = await crud_message._get_user_id()
 
     if not (
         message := await crud_message.get(
-            filters={"id": message_id, "thread_id": thread_id}
+            filters={"id": message_id, "thread_id": thread_id, "user_id": user_id}
         )
     ):
         raise HTTPException(
@@ -109,8 +112,9 @@ async def delete_message(
     """Delete message from a thread."""
 
     crud_message = CRUDMessage(db=session)
+    user_id = await crud_message._get_user_id()
     message_deleted = await crud_message.delete(
-        filters={"id": message_id, "thread_id": thread_id}
+        filters={"id": message_id, "thread_id": thread_id, "user_id": user_id}
     )
     return MessageDeleted(
         id=message_id,

@@ -40,8 +40,9 @@ async def create_thread(request: CreateThreadRequest, session: Session) -> Threa
 async def retrieve_thread(thread_id: str, session: Session) -> Thread:
     """Retrieve a thread."""
     crud_thread = CRUDThread(db=session)
+    user_id = await crud_thread._get_user_id()
 
-    if not (thread := await crud_thread.get(filters={"id": thread_id})):
+    if not (thread := await crud_thread.get(filters={"id": thread_id, "user_id": user_id})):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Thread not found",
@@ -63,8 +64,9 @@ async def modify_thread(
         )
 
     crud_thread = CRUDThread(db=session)
+    user_id = await crud_thread._get_user_id()
 
-    if not (thread := await crud_thread.get(filters={"id": thread_id})):
+    if not (thread := await crud_thread.get(filters={"id": thread_id, "user_id": user_id})):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Thread not found",
@@ -86,7 +88,8 @@ async def modify_thread(
 async def delete_thread(thread_id: str, session: Session) -> ThreadDeleted:
     """Delete a thread."""
     crud_thread = CRUDThread(db=session)
-    thread_deleted = await crud_thread.delete(filters={"id": thread_id})
+    user_id = await crud_thread._get_user_id()
+    thread_deleted = await crud_thread.delete(filters={"id": thread_id, "user_id": user_id})
     return ThreadDeleted(
         id=thread_id,
         object="thread.deleted",
