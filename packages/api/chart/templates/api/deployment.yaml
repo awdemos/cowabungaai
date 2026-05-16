@@ -65,9 +65,18 @@ spec:
           volumeMounts:
             - name: {{ include "chart.fullname" . }}-model
               mountPath: /config
+          {{- if .Values.storage.enabled }}
+            - name: {{ include "chart.fullname" . }}-files
+              mountPath: /tmp/cowabunga_files
+          {{- end }}
       volumes:
         - name: {{ include "chart.fullname" . }}-model
           emptyDir: {}
+        {{- if .Values.storage.enabled }}
+        - name: {{ include "chart.fullname" . }}-files
+          persistentVolumeClaim:
+            claimName: {{ include "chart.fullname" . }}-files
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

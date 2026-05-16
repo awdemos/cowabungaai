@@ -383,13 +383,14 @@ class _MatchVectorsRPC:
                     "SELECT id, vector_store_id, file_id, content, metadata, "
                     "vector_distance_cos(embedding, vector32(?)) AS similarity "
                     "FROM vector_content WHERE vector_store_id = ? "
+                    "AND embedding MATCH vector32(?) "
                     "ORDER BY similarity LIMIT ?"
                 )
                 payload = {
                     "statements": [
                         {
                             "query": sql,
-                            "params": [query_bytes.hex(), vector_store_id, match_limit],
+                            "params": [query_bytes.hex(), vector_store_id, query_bytes.hex(), match_limit],
                         }
                     ]
                 }
@@ -405,7 +406,10 @@ class _MatchVectorsRPC:
                 first = results[0]
                 if "error" in first:
                     error_msg = first["error"].get("message", "Unknown error")
-                    if "no such function: vector_distance_cos" in error_msg:
+                    if (
+                        "no such function: vector_distance_cos" in error_msg
+                        or "no such index" in error_msg
+                    ):
                         return await self._fallback_brute_force(
                             vector_store_id, query_embedding, match_limit
                         )

@@ -29,6 +29,8 @@ api:
       value: "false"
     - name: PORT
       value: "8080"
+    - name: FILE_STORAGE_PATH
+      value: "/tmp/cowabunga_files"
     - name: TURSO_URL
       value: "http://turso.cowabungaai.svc.cluster.local:8080"
     - name: TURSO_AUTH_TOKEN
@@ -112,3 +114,9 @@ strategy:
   rollingUpdate:
     maxUnavailable: 0
   type: RollingUpdate
+
+storage:
+  enabled: true
+  size: 10Gi
+  storageClass: ""
+  accessMode: ReadWriteOnce
