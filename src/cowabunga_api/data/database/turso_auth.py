@@ -1,6 +1,6 @@
 """Turso authentication implementation."""
 
-import hashlib
+import bcrypt
 import secrets
 from datetime import datetime, timedelta
 from typing import Optional, Any
@@ -303,9 +303,9 @@ class TursoAuthClient(AuthClient):
             Created User object
         """
         user_id = secrets.token_urlsafe(16)
-        # TODO: Use proper password hashing (bcrypt/argon2)
-        encrypted_password = hashlib.sha256(password.encode()).hexdigest()
-        
+        password_bytes = password.encode("utf-8")
+        encrypted_password = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode("utf-8")
+
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(
                 """INSERT INTO users (id, email, encrypted_password, metadata)
@@ -323,50 +323,47 @@ class TursoAuthClient(AuthClient):
     
     async def sign_in(self, email: str, password: str) -> tuple[str, str]:
         """Sign in user with email and password.
-        
+
         Args:
             email: User email
             password: Plain text password
-            
+
         Returns:
             Tuple of (access_token, refresh_token)
-            
+
         Raises:
             Exception: If authentication fails
         """
-        # Hash password
-        password_hash = hashlib.sha256(password.encode()).hexdigest()
-        
         async with aiosqlite.connect(self.db_path) as db:
             db.row_factory = aiosqlite.Row
-            
-            # Find user
+
             async with db.execute(
-                "SELECT * FROM users WHERE email = ? AND encrypted_password = ? AND is_active = 1",
-                [email, password_hash]
+                "SELECT * FROM users WHERE email = ? AND is_active = 1",
+                [email]
             ) as cursor:
                 user_row = await cursor.fetchone()
-                
+
                 if not user_row:
                     raise Exception("Invalid email or password")
-                
-                user_id = user_row['id']
-        
-        # Generate tokens
+
+                stored_hash = user_row["encrypted_password"]
+                if not bcrypt.checkpw(password.encode("utf-8"), stored_hash.encode("utf-8")):
+                    raise Exception("Invalid email or password")
+
+                user_id = user_row["id"]
+
         access_token = jwt.encode(
             {
-                'sub': user_id,
-                'email': email,
-                'exp': datetime.utcnow() + timedelta(hours=1),
-                'iat': datetime.utcnow()
+                "sub": user_id,
+                "email": email,
+                "exp": datetime.utcnow() + timedelta(hours=1),
+                "iat": datetime.utcnow(),
             },
             self.jwt_secret,
-            algorithm='HS256'
+            algorithm="HS256",
         )
-        
+
         refresh_token = secrets.token_urlsafe(32)
-        
-        # Set session
         await self.set_session(access_token, refresh_token)
-        
+
         return access_token, refresh_token

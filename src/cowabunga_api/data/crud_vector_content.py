@@ -1,6 +1,6 @@
 """CRUD Operations for VectorStore."""
 
-import ast
+import struct
 from cowabunga_api.data.crud_base import get_user_id
 from cowabunga_api.typedef.vectorstores import SearchItem, SearchResponse
 from cowabunga_api.backend.constants import TOP_K
@@ -15,6 +15,25 @@ class CRUDVectorContent:
         self.db = db
         self.table_name = "vector_content"
 
+    @staticmethod
+    def _serialize_embedding(embedding: list[float]) -> bytes:
+        """Pack a list of floats into a compact binary F32_BLOB."""
+        return struct.pack(f"<{len(embedding)}f", *embedding)
+
+    @staticmethod
+    def _deserialize_embedding(data: bytes | str | list) -> list[float]:
+        """Unpack binary F32_BLOB or legacy string/list into list of floats."""
+        if isinstance(data, bytes):
+            count = len(data) // 4
+            return list(struct.unpack(f"<{count}f", data))
+        if isinstance(data, str):
+            import ast
+            parsed = ast.literal_eval(data.strip())
+            return [float(x) for x in parsed]
+        if isinstance(data, list):
+            return [float(x) for x in data]
+        raise ValueError(f"Unsupported embedding type: {type(data)}")
+
     async def add_vectors(self, object_: list[Vector]) -> list[Vector]:
         """Create new row."""
 
@@ -27,34 +46,31 @@ class CRUDVectorContent:
             dict_["user_id"] = user_id
             if "id" in dict_:
                 del dict_["id"]
+            dict_["embedding"] = self._serialize_embedding(dict_["embedding"])
 
             rows.append(dict_)
 
         result = await self.db.table(self.table_name).insert(rows).execute()
 
-        response = result.data if hasattr(result, 'data') else result
+        response = result.data if hasattr(result, "data") else result
 
         final_response = []
-        try:
-            for item in response:
-                if "user_id" in item:
-                    del item["user_id"]
-                if isinstance(item["embedding"], str):
-                    item["embedding"] = self.string_to_float_list(item["embedding"])
-                final_response.append(
-                    Vector(
-                        id=item["id"],
-                        vector_store_id=item["vector_store_id"],
-                        file_id=item["file_id"],
-                        content=item["content"],
-                        metadata=item["metadata"],
-                        embedding=item["embedding"],
-                    )
+        for item in response:
+            if "user_id" in item:
+                del item["user_id"]
+            item["embedding"] = self._deserialize_embedding(item["embedding"])
+            final_response.append(
+                Vector(
+                    id=item["id"],
+                    vector_store_id=item["vector_store_id"],
+                    file_id=item["file_id"],
+                    content=item["content"],
+                    metadata=item["metadata"],
+                    embedding=item["embedding"],
                 )
+            )
 
-            return final_response
-        except Exception as e:
-            raise e
+        return final_response
 
     async def get_vector(self, vector_id: str) -> Vector:
         """Get a vector by its ID."""
@@ -64,8 +80,7 @@ class CRUDVectorContent:
 
         if response and len(response) > 0:
             item = response[0]
-            if isinstance(item["embedding"], str):
-                item["embedding"] = self.string_to_float_list(item["embedding"])
+            item["embedding"] = self._deserialize_embedding(item["embedding"])
 
             return Vector(
                 id=item["id"],
@@ -81,7 +96,7 @@ class CRUDVectorContent:
         """Delete a vector store file by its ID."""
         result = await self.db.table(self.table_name).delete().eq("vector_store_id", vector_store_id).eq("file_id", file_id).execute()
 
-        response = result.data if hasattr(result, 'data') else result
+        response = result.data if hasattr(result, "data") else result
 
         return bool(response)
 
@@ -99,20 +114,15 @@ class CRUDVectorContent:
 
         result = await self.db.rpc("match_vectors", params).execute()
 
-        try:
-            response = result.data if hasattr(result, 'data') else result
-            return SearchResponse(data=[SearchItem(**item) for item in response])
-        except Exception as e:
-            raise e
+        response = result.data if hasattr(result, "data") else result
+        return SearchResponse(data=[SearchItem(**item) for item in response])
 
     @staticmethod
     def string_to_float_list(s: str) -> list[float]:
+        import ast
         try:
-            # Remove any whitespace and convert to a Python list
             cleaned_string = s.strip()
             python_list = ast.literal_eval(cleaned_string)
-
-            # Convert all elements to float
             return [float(x) for x in python_list]
         except (ValueError, SyntaxError) as e:
             raise e
