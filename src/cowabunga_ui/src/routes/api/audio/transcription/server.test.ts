@@ -25,7 +25,7 @@ describe('/api/audio/transcription', () => {
         request,
         params: {},
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/audio/transcription'>)
+      } as unknown as RequestEvent<RouteParams, '/api/audio/transcription'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -34,7 +34,7 @@ describe('/api/audio/transcription', () => {
   it('should return 400 if the form data is missing', async () => {
     const request = new Request('http://thisurlhasnoeffect', { method: 'POST' });
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/audio/transcription'
       >)
@@ -48,7 +48,7 @@ describe('/api/audio/transcription', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/audio/transcription'
       >)
@@ -66,7 +66,7 @@ describe('/api/audio/transcription', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/audio/transcription'
       >)
@@ -84,7 +84,7 @@ describe('/api/audio/transcription', () => {
     const request = requestWithFormData(testFile);
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/audio/transcription'
       >)
@@ -103,7 +103,7 @@ describe('/api/audio/transcription', () => {
     const request = requestWithFormData(testFile);
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/audio/transcription'
       >)
@@ -117,7 +117,7 @@ describe('/api/audio/transcription', () => {
     const testFile = new File([fileContent], 'test.txt', { type: 'audio/mp4' });
     const request = requestWithFormData(testFile);
 
-    const res = await POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+    const res = await POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
       RouteParams,
       '/api/audio/transcription'
     >);

@@ -37,28 +37,24 @@ env:
     value: "0.1"
   - name: OPENAI_API_KEY
     value: ""
-  - name: PUBLIC_SUPABASE_URL
-    value: "https://supabase-kong.uds.dev"
   - name: PUBLIC_DISABLE_KEYCLOAK
-    value: "true"
+    value: "false"
   - name: PUBLIC_MESSAGE_LENGTH_LIMIT
     value: "10000"
-  - name: SUPABASE_AUTH_EXTERNAL_KEYCLOAK_URL
+  - name: KEYCLOAK_URL
     value: "https://sso.uds.dev/realms/uds"
-  - name: SUPABASE_AUTH_KEYCLOAK_CLIENT_ID
+  - name: KEYCLOAK_CLIENT_ID
     valueFrom:
       secretKeyRef:
-        name: sso-client-uds-supabase
+        name: sso-client-uds-cowabunga
         key: clientId
-  - name: SUPABASE_AUTH_KEYCLOAK_SECRET
+  - name: KEYCLOAK_CLIENT_SECRET
     valueFrom:
       secretKeyRef:
-        name: sso-client-uds-supabase
+        name: sso-client-uds-cowabunga
         key: secret
 
 extraEnv:
-  # Only required when Supabase is hosted via PaaS outside of the cluster
-  supabaseAnonKey: ""
   # UDS package CR hosting subdomain (e.g. `ai` will produce a VirtualService with `ai.uds.dev`)
   host: "ai"
 
@@ -71,15 +67,15 @@ migration:
     imagePullPolicy: Always
 
   env:
-    - name: POSTGRES_PASSWORD
+    - name: TURSO_URL
+      value: "http://turso.cowabungaai.svc.cluster.local:8080"
+    - name: TURSO_AUTH_TOKEN
       valueFrom:
         secretKeyRef:
-          name: supabase-postgresql
-          key: postgres-password
-    - name: MIGRATION_SERVICE_NAME
-      value: "supabase-postgresql"
-    - name: MIGRATION_SERVICE_PORT
-      value: "5432"
+          name: turso-auth
+          key: token
+    - name: TURSO_DATABASE_PATH
+      value: "/data/cowabunga.db"
 
   securityContext:
     runAsUser: 65532

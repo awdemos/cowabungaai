@@ -20,10 +20,10 @@ class MissingEnvironmentVariable(Exception):
 headers: dict[str, str] = {}
 
 try:
-    headers = {"Authorization": f"Bearer {os.environ['SUPABASE_USER_JWT']}"}
+    headers = {"Authorization": f"Bearer {os.environ['COWABUNGA_USER_JWT']}"}
 except KeyError as exc:
     raise MissingEnvironmentVariable(
-        "SUPABASE_USER_JWT must be defined for the test to pass. "
+        "COWABUNGA_USER_JWT must be defined for the test to pass. "
         "Please check the api README for instructions on obtaining this token."
     ) from exc
 
@@ -32,7 +32,7 @@ client = TestClient(router, headers=headers)
 
 @pytest.fixture(scope="session", autouse=True)
 def create_api_key():
-    """Create an API key for testing. Requires a running Supabase instance."""
+    """Create an API key for testing. Requires a running database instance."""
 
     request = {
         "name": "API Keys Are Cool!",
@@ -44,7 +44,7 @@ def create_api_key():
 
 
 def test_create_api_key(create_api_key):
-    """Test creating an API key. Requires a running Supabase instance."""
+    """Test creating an API key. Requires a running database instance."""
     assert create_api_key.status_code is status.HTTP_200_OK
     assert "api_key" in create_api_key.json(), "Create should return an API key."
     assert "name" in create_api_key.json(), "Create should return a name."
@@ -58,7 +58,7 @@ def test_create_api_key(create_api_key):
 
 
 def test_list_api_keys(create_api_key):
-    """Test listing API keys. Requires a running Supabase instance."""
+    """Test listing API keys. Requires a running database instance."""
 
     id_ = create_api_key.json()["id"]
 
@@ -74,7 +74,7 @@ def test_list_api_keys(create_api_key):
 
 
 def test_update_api_key(create_api_key):
-    """Test updating an API key. Requires a running Supabase instance."""
+    """Test updating an API key. Requires a running database instance."""
 
     id_ = create_api_key.json()["id"]
 
@@ -90,7 +90,7 @@ def test_update_api_key(create_api_key):
 
 
 def test_revoke_api_key(create_api_key):
-    """Test revoking an API key. Requires a running Supabase instance."""
+    """Test revoking an API key. Requires a running database instance."""
 
     api_key_id = create_api_key.json()["id"]
 

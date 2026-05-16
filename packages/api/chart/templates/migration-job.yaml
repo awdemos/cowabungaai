@@ -14,20 +14,18 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: supabase-cli
+        - name: turso-migrations
           image: "{{ .Values.api.migration.image.repository }}:{{ .Values.api.migration.image.tag | default .Chart.AppVersion }}"
           {{- with .Values.api.migration.env }}
           env:
             {{- toYaml . | nindent 12 }}
-            - name: MIGRATION_NAMESPACE
-              value: "{{ default "cowabungaai" $.Release.Namespace }}"
           {{- end }}
           command: ["/bin/sh"]
           args:
             - -c
             - >-
-              supabase migration fetch --db-url="postgresql://postgres:$POSTGRES_PASSWORD@$MIGRATION_SERVICE_NAME.$MIGRATION_NAMESPACE.svc.cluster.local:$MIGRATION_SERVICE_PORT/postgres" --debug || true &&
-              supabase db push --db-url="postgresql://postgres:$POSTGRES_PASSWORD@$MIGRATION_SERVICE_NAME.$MIGRATION_NAMESPACE.svc.cluster.local:$MIGRATION_SERVICE_PORT/postgres" --include-all --debug
+              echo "Running Turso database migrations..." &&
+              python -m cowabunga_api.migrations run --url "$TURSO_URL" --token "$TURSO_AUTH_TOKEN" --db-path "$TURSO_DATABASE_PATH"
           securityContext:
             {{- toYaml .Values.api.migration.securityContext | nindent 12 }}
       restartPolicy: Never

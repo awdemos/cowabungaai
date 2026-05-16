@@ -5,7 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, HTTPException, status
 from pydantic import Field
 
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.data.crud_api_key import APIKeyItem, CRUDAPIKey
 from cowabunga_api.typedef.auth import CreateAPIKeyRequest, ModifyAPIKeyRequest
 

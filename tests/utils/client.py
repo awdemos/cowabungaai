@@ -26,9 +26,9 @@ def get_openai_model() -> str:
 
 def get_cowabunga_api_key() -> str:
     """Return the CowabungaAI API key or raise ValueError."""
-    api_key = os.getenv("COWABUNGA_API_KEY") or os.getenv("SUPABASE_USER_JWT")
+    api_key = os.getenv("COWABUNGA_API_KEY")
     if api_key is None:
-        raise ValueError("COWABUNGA_API_KEY or SUPABASE_USER_JWT not set")
+        raise ValueError("COWABUNGA_API_KEY not set")
     return api_key
 
 

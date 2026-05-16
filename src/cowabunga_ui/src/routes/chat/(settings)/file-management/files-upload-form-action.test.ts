@@ -10,7 +10,7 @@ describe('the files upload form action', () => {
       method: 'POST'
     });
 
-    const res = await actions.default({ request, locals: getLocalsMock() } as RequestEvent<
+    const res = await actions.default({ request, locals: getLocalsMock() } as unknown as RequestEvent<
       RouteParams,
       '/chat/(settings)/file-management'
     >);
@@ -23,7 +23,7 @@ describe('the files upload form action', () => {
     const res = await actions.default({
       request,
       locals: getLocalsMock({ nullSession: true })
-    } as RequestEvent<RouteParams, '/chat/(settings)/file-management'>);
+    } as unknown as RequestEvent<RouteParams, '/chat/(settings)/file-management'>);
 
     expect(res?.status).toEqual(401);
   });

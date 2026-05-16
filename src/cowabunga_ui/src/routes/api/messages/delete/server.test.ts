@@ -15,7 +15,7 @@ describe('/api/messages/delete', () => {
     const res = await DELETE({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/messages/delete'>);
+    } as unknown as RequestEvent<RouteParams, '/api/messages/delete'>);
     expect(res.status).toEqual(204);
   });
   it('returns a 401 when there is no session', async () => {
@@ -28,7 +28,7 @@ describe('/api/messages/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/messages/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/delete'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -43,7 +43,7 @@ describe('/api/messages/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/delete'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -58,7 +58,7 @@ describe('/api/messages/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/delete'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -78,7 +78,7 @@ describe('/api/messages/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/delete'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -94,7 +94,7 @@ describe('/api/messages/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/messages/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/messages/delete'>)
     ).rejects.toMatchObject({
       status: 500
     });

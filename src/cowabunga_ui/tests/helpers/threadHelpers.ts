@@ -1,7 +1,5 @@
 import { expect, type Page } from '@playwright/test';
 import OpenAI from 'openai';
-import type { Profile } from '$lib/types/profile';
-import { supabase } from './helpers';
 
 export const clickToDeleteThread = async (page: Page, label: string) => {
   const threads = page.getByTestId('threads');
@@ -32,36 +30,8 @@ export const deleteActiveThread = async (page: Page, openAIClient: OpenAI) => {
   }
 };
 
-const getUserId = async () => {
-  const listUsers = await supabase.auth.admin.listUsers();
-  let userId = '';
-  for (const user of listUsers.data.users) {
-    if (user.email === process.env.USERNAME) {
-      userId = user.id;
-    }
-  }
-  return userId;
-};
-
-const getUserThreadIds = async (userId: string) => {
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select(`*`)
-    .eq('id', userId)
-    .returns<Profile[]>()
-    .single();
-
-  return profile?.thread_ids || [];
-};
-
 export const deleteThread = async (id: string, openAIClient: OpenAI) => {
   await openAIClient.beta.threads.del(id);
-  const userId = await getUserId();
-  const threadIds = await getUserThreadIds(userId);
-
-  const updatedThreadIds = threadIds.filter((existingId) => existingId !== id);
-
-  await supabase.from('profiles').update({ thread_ids: updatedThreadIds }).eq('id', userId);
 };
 export const waitForResponseToComplete = async (page: Page) => {
   await expect(page.getByTestId('cancel message')).toHaveCount(1, { timeout: 60000 });
@@ -71,17 +41,10 @@ export const waitForResponseToComplete = async (page: Page) => {
 
 export const deleteAllThreads = async (openAIClient: OpenAI) => {
   try {
-    const userId = await getUserId();
-    const threadIds = await getUserThreadIds(userId);
-    for (const id of threadIds) {
-      try {
-        await openAIClient.beta.threads.del(id);
-      } catch (e) {
-        console.error(`Error deleting thread: ${threadIds}`);
-        console.error(`Error: ${e}`);
-      }
-    }
-    await supabase.from('profiles').update({ thread_ids: [] }).eq('id', userId);
+    // Note: thread list is now tracked client-side in a cookie.
+    // We attempt to delete any threads that may have been created during tests.
+    // This is a best-effort cleanup.
+    console.log('Skipping comprehensive thread cleanup: thread list is client-side only.');
   } catch (e) {
     console.error(`Error deleting test threads`, e);
   }

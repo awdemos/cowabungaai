@@ -20,7 +20,7 @@ def app_client():
 # Create a thread with the previously created file and fake embeddings
 @pytest.fixture(scope="session")
 def create_thread(app_client):
-    """Create a thread for testing. Requires a running Supabase instance."""
+    """Create a thread for testing. Requires a running database instance."""
 
     request = CreateThreadRequest(
         messages=None,
@@ -33,7 +33,7 @@ def create_thread(app_client):
 
 @pytest.fixture(scope="session")
 def create_message(app_client, create_thread):
-    """Create a message for testing. Requires a running Supabase instance."""
+    """Create a message for testing. Requires a running database instance."""
 
     request = CreateMessageRequest(
         role="user",
@@ -53,13 +53,13 @@ def create_message(app_client, create_thread):
 
 
 def test_create_thread(create_thread):
-    """Test creating a thread. Requires a running Supabase instance."""
+    """Test creating a thread. Requires a running database instance."""
     assert create_thread.status_code == status.HTTP_200_OK
     assert Thread.model_validate(create_thread.json()), "Create should create a Thread."
 
 
 def test_create_message(create_message):
-    """Test creating a message. Requires a running Supabase instance."""
+    """Test creating a message. Requires a running database instance."""
     assert create_message["message"].status_code == status.HTTP_200_OK
     assert Message.model_validate(
         create_message["message"].json()
@@ -67,7 +67,7 @@ def test_create_message(create_message):
 
 
 def test_get_message(app_client, create_message):
-    """Test getting a messages. Requires a running Supabase instance."""
+    """Test getting a messages. Requires a running database instance."""
     message_id = create_message["message"].json()["id"]
     thread_id = create_message["thread_id"]
     get_response = app_client.get(
@@ -80,7 +80,7 @@ def test_get_message(app_client, create_message):
 
 
 def test_list_message(app_client, create_message):
-    """Test listing messages. Requires a running Supabase instance."""
+    """Test listing messages. Requires a running database instance."""
     thread_id = create_message["thread_id"]
     list_response = app_client.get(f"/openai/v1/threads/{thread_id}/messages")
     assert list_response.status_code == status.HTTP_200_OK
@@ -91,7 +91,7 @@ def test_list_message(app_client, create_message):
 
 
 def test_modify_message(app_client, create_message):
-    """Test modifying a thread. Requires a running Supabase instance."""
+    """Test modifying a thread. Requires a running database instance."""
     message_id = create_message["message"].json()["id"]
     thread_id = create_message["thread_id"]
     request = ModifyMessageRequest(
@@ -110,7 +110,7 @@ def test_modify_message(app_client, create_message):
 
 
 def test_get_modified_message(app_client, create_message):
-    """Test getting a modified threads. Requires a running Supabase instance."""
+    """Test getting a modified threads. Requires a running database instance."""
     message_id = create_message["message"].json()["id"]
     thread_id = create_message["thread_id"]
     get_modified_response = app_client.get(
@@ -126,7 +126,7 @@ def test_get_modified_message(app_client, create_message):
 
 
 def test_delete_message(app_client, create_message):
-    """Test deleting a message. Requires a running Supabase instance."""
+    """Test deleting a message. Requires a running database instance."""
     message_id = create_message["message"].json()["id"]
     thread_id = create_message["thread_id"]
     delete_response = app_client.delete(
@@ -140,7 +140,7 @@ def test_delete_message(app_client, create_message):
 
 
 def test_delete_thread(app_client, create_thread):
-    """Test deleting a thread. Requires a running Supabase instance."""
+    """Test deleting a thread. Requires a running database instance."""
     thread_id = create_thread.json()["id"]
     delete_response = app_client.delete(f"/openai/v1/threads/{thread_id}")
     assert delete_response.status_code == status.HTTP_200_OK
@@ -151,7 +151,7 @@ def test_delete_thread(app_client, create_thread):
 
 
 def test_delete_twice_message(app_client, create_message):
-    """Test deleting a message twice. Requires a running Supabase instance."""
+    """Test deleting a message twice. Requires a running database instance."""
     message_id = create_message["message"].json()["id"]
     thread_id = create_message["thread_id"]
     delete_response = app_client.delete(
@@ -167,7 +167,7 @@ def test_delete_twice_message(app_client, create_message):
 
 
 def test_get_nonexistent_message(app_client, create_message):
-    """Test getting a nonexistent message. Requires a running Supabase instance."""
+    """Test getting a nonexistent message. Requires a running database instance."""
     message_id = create_message["message"].json()["id"]
     thread_id = create_message["thread_id"]
     get_response = app_client.get(

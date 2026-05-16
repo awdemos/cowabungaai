@@ -1,8 +1,9 @@
 """CRUD Operations for VectorStore."""
 
 from typing import Generic, TypeVar
-from supabase import AClient as AsyncClient
 from pydantic import BaseModel
+
+from cowabunga_api.data.database.base import DatabaseClient
 
 ModelType = TypeVar("ModelType", bound=BaseModel)
 
@@ -10,7 +11,7 @@ ModelType = TypeVar("ModelType", bound=BaseModel)
 class CRUDBase(Generic[ModelType]):
     """CRUD Operations"""
 
-    def __init__(self, db: AsyncClient, model: type[ModelType], table_name: str):
+    def __init__(self, db: DatabaseClient, model: type[ModelType], table_name: str):
         self.model = model
         self.table_name = table_name
         self.db = db
@@ -34,9 +35,11 @@ class CRUDBase(Generic[ModelType]):
         result = await self.db.table(self.table_name).insert(dict_).execute()
 
         response = result.data
-        if "user_id" in response[0]:
-            del response[0]["user_id"]
-        return self.model(**response[0])
+        if response and len(response) > 0:
+            if "user_id" in response[0]:
+                del response[0]["user_id"]
+            return self.model(**response[0])
+        return None
 
     async def get(self, filters: dict | None = None) -> ModelType | None:
         """Get row by filters."""
@@ -50,10 +53,12 @@ class CRUDBase(Generic[ModelType]):
 
         try:
             response = result.data
-            if "user_id" in response[0]:
-                del response[0]["user_id"]
-            return self.model(**response[0])
-        except IndexError:
+            if response and len(response) > 0:
+                if "user_id" in response[0]:
+                    del response[0]["user_id"]
+                return self.model(**response[0])
+            return None
+        except (IndexError, AttributeError):
             return None
 
     async def list(self, filters: dict | None = None) -> list[ModelType]:
@@ -66,7 +71,7 @@ class CRUDBase(Generic[ModelType]):
 
         result = await query.execute()
 
-        response = result.data
+        response = result.data if hasattr(result, 'data') and result.data else []
         for item in response:
             if "user_id" in item:
                 del item["user_id"]
@@ -84,10 +89,12 @@ class CRUDBase(Generic[ModelType]):
 
         try:
             response = result.data
-            if "user_id" in response[0]:
-                del response[0]["user_id"]
-            return self.model(**response[0])
-        except IndexError:
+            if response and len(response) > 0:
+                if "user_id" in response[0]:
+                    del response[0]["user_id"]
+                return self.model(**response[0])
+            return None
+        except (IndexError, AttributeError):
             return None
 
     async def delete(self, filters: dict | None = None) -> bool:
@@ -100,7 +107,7 @@ class CRUDBase(Generic[ModelType]):
 
         result = await query.execute()
 
-        return True if result.data else False
+        return bool(result.data) if hasattr(result, 'data') else False
 
     async def _get_user_id(self) -> str:
         """Get the user_id from the API key."""
@@ -108,13 +115,20 @@ class CRUDBase(Generic[ModelType]):
         return await get_user_id(self.db)
 
 
-async def get_user_id(db: AsyncClient) -> str:
+async def get_user_id(db: DatabaseClient) -> str:
     """Get the user_id from the API key."""
 
     if db.options.headers.get("x-custom-api-key"):
         result = await db.table("api_keys").select("user_id").execute()
-        user_id: str = result.data[0]["user_id"]
+        if result.data and len(result.data) > 0:
+            user_id: str = result.data[0]["user_id"]
+        else:
+            user_id = "anonymous"
     else:
-        user_id = (await db.auth.get_user()).user.id
+        try:
+            user = await db.auth.get_user()
+            user_id = user.user.id if hasattr(user, 'user') else str(user)
+        except Exception:
+            user_id = "anonymous"
 
     return user_id

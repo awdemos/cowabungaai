@@ -28,7 +28,6 @@ tasks:
       - task: verify-uds-badge-llama-cpp-python
       - task: verify-uds-badge-text-embeddings
       - task: verify-uds-badge-whisper
-      - task: verify-uds-badge-supabase
 
   - name: verify-uds-badge-gpu
     description: "Runs through all GPU UDS bundle packages with the UDS badge verification test"
@@ -38,7 +37,6 @@ tasks:
       - task: verify-uds-badge-vllm
       - task: verify-uds-badge-text-embeddings
       - task: verify-uds-badge-whisper
-      - task: verify-uds-badge-supabase
 
   #######################
   # RE-USABLE BADGE TASKS
@@ -121,13 +119,3 @@ tasks:
             --set PACKAGE_DIR="packages/repeater" \
             --no-progress
 
-  - name: verify-uds-badge-supabase
-    actions:
-      - description: "Verify Supabase"
-        cmd: |
-          uds run badge:verify-badge \
-            --set CHART_PATH="chart" \
-            --set GROUP_NAME="package" \
-            --set COMMON_ZARF="false" \
-            --set PACKAGE_DIR="packages/supabase" \
-            --no-progress

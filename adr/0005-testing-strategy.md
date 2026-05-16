@@ -85,9 +85,6 @@ Coverage is up to devs and can lapse.
 * Users test application usability and accessibility
 * Users evaluate LLM output quality and relevance
 
-## Alternatives
-Supabase has it's own testing framework that we need to consider.
-
 ## References
 * [Understanding the Python Mock Object Library](https://realpython.com/python-mock-library/)
 

@@ -39,10 +39,10 @@ class MissingEnvironmentVariable(Exception):
 headers: dict[str, str] = {}
 
 try:
-    headers = {"Authorization": f"Bearer {os.environ['SUPABASE_USER_JWT']}"}
+    headers = {"Authorization": f"Bearer {os.environ['COWABUNGA_USER_JWT']}"}
 except KeyError:
     raise MissingEnvironmentVariable(
-        "SUPABASE_USER_JWT must be defined for the test to pass. "
+        "COWABUNGA_USER_JWT must be defined for the test to pass. "
         "Please check the api README for instructions on obtaining this token."
     )
 
@@ -99,10 +99,10 @@ def read_testfile():
     return testfile_content
 
 
-# Adds file to Supabase
+# Adds file to database
 @pytest.fixture(scope="session", autouse=True)
 def create_file(read_testfile):  # pylint: disable=redefined-outer-name, unused-argument
-    """Create a file for testing. Requires a running Supabase instance."""
+    """Create a file for testing. Requires a running database instance."""
 
     global file_response  # pylint: disable=global-statement
 
@@ -125,7 +125,7 @@ file_response: Response
 # Create a vector store with the previously created file and fake embeddings
 @pytest.fixture(scope="session", autouse=True)
 def create_vector_store(create_file):
-    """Create a vector store for testing. Requires a running Supabase instance."""
+    """Create a vector store for testing. Requires a running database instance."""
 
     global vector_store_response  # pylint: disable=global-statement
     global expired_vector_store_response  # pylint: disable=global-statement
@@ -158,7 +158,7 @@ def create_vector_store(create_file):
 
 @pytest.fixture(scope="session", autouse=True)
 def create_assistant():
-    """Create an assistant for testing. Requires a running Supabase instance."""
+    """Create an assistant for testing. Requires a running database instance."""
 
     global assistant_response  # pylint: disable=global-statement
 
@@ -181,7 +181,7 @@ def create_assistant():
 
 
 def test_code_interpreter_fails():
-    """Test creating an assistant with a code interpreter tool. Requires a running Supabase instance."""
+    """Test creating an assistant with a code interpreter tool. Requires a running database instance."""
     request = CreateAssistantRequest(
         model=modified_assistant.model,
         name=modified_assistant.name,
@@ -203,7 +203,7 @@ def test_code_interpreter_fails():
 
 
 def test_create():
-    """Test creating an assistant. Requires a running Supabase instance."""
+    """Test creating an assistant. Requires a running database instance."""
     assert assistant_response.status_code is status.HTTP_200_OK
     assert Assistant.model_validate(
         assistant_response.json()
@@ -214,7 +214,7 @@ def test_create():
 
 
 def test_get():
-    """Test getting an assistant. Requires a running Supabase instance."""
+    """Test getting an assistant. Requires a running database instance."""
     assistant_id = assistant_response.json()["id"]
     get_response = assistants_client.get(f"/openai/v1/assistants/{assistant_id}")
     assert get_response.status_code is status.HTTP_200_OK
@@ -224,7 +224,7 @@ def test_get():
 
 
 def test_list():
-    """Test listing assistants. Requires a running Supabase instance."""
+    """Test listing assistants. Requires a running database instance."""
     list_response = assistants_client.get("/openai/v1/assistants")
     assert list_response.status_code is status.HTTP_200_OK
     for assistant_object in list_response.json()["data"]:
@@ -234,7 +234,7 @@ def test_list():
 
 
 def test_modify():
-    """Test modifying an assistant. Requires a running Supabase instance."""
+    """Test modifying an assistant. Requires a running database instance."""
 
     global modified_assistant  # pylint: disable=global-statement
 
@@ -287,7 +287,7 @@ def test_modify():
 
 
 def test_modify_with_no_tools():
-    """Test modifying an assistant without tools or tool_resources. Requires a running Supabase instance."""
+    """Test modifying an assistant without tools or tool_resources. Requires a running database instance."""
 
     global modified_assistant  # pylint: disable=global-statement
 
@@ -340,7 +340,7 @@ def test_modify_with_no_tools():
 
 
 def test_create_with_new_vector_store():
-    """Test creating a new assistant and vector store in the same request. Requires a running Supabase instance."""
+    """Test creating a new assistant and vector store in the same request. Requires a running database instance."""
 
     file_id = file_response.json()["id"]
 
@@ -388,7 +388,7 @@ def test_create_with_new_vector_store():
 
 
 def test_create_with_existing_vector_store():
-    """Test creating a new assistant and attaching it to an existing vector store. Requires a running Supabase instance."""
+    """Test creating a new assistant and attaching it to an existing vector store. Requires a running database instance."""
 
     vector_store_id = vector_store_response.json()["id"]
 
@@ -425,7 +425,7 @@ def test_create_with_existing_vector_store():
 
 
 def test_modify_with_new_vector_store():
-    """Test modifying an existing assistant and create a new vector store in the same request. Requires a running Supabase instance."""
+    """Test modifying an existing assistant and create a new vector store in the same request. Requires a running database instance."""
 
     file_id = file_response.json()["id"]
 
@@ -483,7 +483,7 @@ def test_modify_with_new_vector_store():
 
 
 def test_modify_with_existing_vector_store():
-    """Test modifying an existing assistant by attaching it to an existing vector store. Requires a running Supabase instance."""
+    """Test modifying an existing assistant by attaching it to an existing vector store. Requires a running database instance."""
 
     vector_store_id = vector_store_response.json()["id"]
 
@@ -534,7 +534,7 @@ def test_modify_with_existing_vector_store():
 
 
 def test_delete():
-    """Test deleting an assistant. Requires a running Supabase instance."""
+    """Test deleting an assistant. Requires a running database instance."""
     assistant_id = assistant_response.json()["id"]
 
     delete_response = assistants_client.delete(f"/openai/v1/assistants/{assistant_id}")
@@ -548,7 +548,7 @@ def test_delete():
 
 
 def test_delete_twice():
-    """Test deleting an assistant twice. Requires a running Supabase instance."""
+    """Test deleting an assistant twice. Requires a running database instance."""
     assistant_id = assistant_response.json()["id"]
     delete_response = assistants_client.delete(f"/openai/v1/assistants/{assistant_id}")
     assert delete_response.status_code is status.HTTP_200_OK
@@ -561,7 +561,7 @@ def test_delete_twice():
 
 
 def test_get_nonexistent():
-    """Test getting a nonexistent assistant. Requires a running Supabase instance."""
+    """Test getting a nonexistent assistant. Requires a running database instance."""
     assistant_id = assistant_response.json()["id"]
 
     get_response = assistants_client.get(f"/openai/v1/assistants/{assistant_id}")
@@ -572,7 +572,7 @@ def test_get_nonexistent():
 
 
 def test_create_with_too_many_vector_store_ids_fails():
-    """Test creating a new assistant and supplying too many vector store ids. Requires a running Supabase instance."""
+    """Test creating a new assistant and supplying too many vector store ids. Requires a running database instance."""
 
     request = CreateAssistantRequest(
         model=modified_assistant.model,
@@ -608,7 +608,7 @@ def test_create_with_too_many_vector_store_ids_fails():
 
 
 def test_create_with_too_many_vector_store_file_lists_fails():
-    """Test creating a new assistant and supplying too many vector store lists. Requires a running Supabase instance."""
+    """Test creating a new assistant and supplying too many vector store lists. Requires a running database instance."""
     request = CreateAssistantRequest(
         model=modified_assistant.model,
         name=modified_assistant.name,
@@ -650,7 +650,7 @@ def test_create_with_too_many_vector_store_file_lists_fails():
 
 
 def test_create_with_vector_store_files_and_ids_fails():
-    """Test creating a new assistant and supplying both vector store ids and file lists. Requires a running Supabase instance."""
+    """Test creating a new assistant and supplying both vector store ids and file lists. Requires a running database instance."""
     request = CreateAssistantRequest(
         model=modified_assistant.model,
         name=modified_assistant.name,
@@ -690,7 +690,7 @@ def test_create_with_vector_store_files_and_ids_fails():
 
 
 def test_create_with_invalid_vector_store_id_fails():
-    """Test creating a new assistant and supply an invalid vector store id. Requires a running Supabase instance."""
+    """Test creating a new assistant and supply an invalid vector store id. Requires a running database instance."""
 
     request = CreateAssistantRequest(
         model=modified_assistant.model,

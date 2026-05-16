@@ -15,7 +15,7 @@ describe('/api/files/delete', () => {
     const res = await DELETE({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/files/delete'>);
+    } as unknown as RequestEvent<RouteParams, '/api/files/delete'>);
 
     expect(res.status).toEqual(204);
   });
@@ -29,7 +29,7 @@ describe('/api/files/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/files/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -45,7 +45,7 @@ describe('/api/files/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -59,7 +59,7 @@ describe('/api/files/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -74,7 +74,7 @@ describe('/api/files/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -91,7 +91,7 @@ describe('/api/files/delete', () => {
       DELETE({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete'>)
     ).rejects.toMatchObject({
       status: 500
     });

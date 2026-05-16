@@ -1,4 +1,4 @@
-# End-to-end testing that deploys and tests Supabase, API, UI, and VLLM
+# End-to-end testing that deploys and tests Turso, API, UI, and VLLM
 
 name: e2e-vllm
 on:

@@ -10,7 +10,7 @@ For the unit and integration tests within this directory, the following componen
 
 - [CowabungaAI API](../src/leapfrogai_api/README.md)
 - [Repeater](../packages/repeater/README.md)
-- [Supabase](../packages/supabase/README.md)
+- [Turso Database](../packages/turso/README.md)
 
 If you are running everything in a [UDS Kubernetes cluster](../k3d-gpu/README.md), you must port-forward your model (e.g., Repeater, vLLM, etc.) using the following command:
 
@@ -47,10 +47,10 @@ LEAPFROGAI_MODEL=llama-cpp-python make test-api-integration
 
 ## Conformance Testing
 
-We include a set of conformance tests to verify our spec against OpenAI to gaurantee interoperability with tools that support OpenAI's API (MatterMost, Continue.dev, etc.) and SDKs (Vercel, Azure, etc.). To run these tests the environment variables need to be set:
+We include a set of conformance tests to verify our spec against OpenAI to guarantee interoperability with tools that support OpenAI's API (MatterMost, Continue.dev, etc.) and SDKs (Vercel, Azure, etc.). To run these tests the environment variables need to be set:
 
 ```bash
-LEAPFROGAI_API_KEY="<api key>" # this can be created via the LeapfrogAI UI or Supabase
+LEAPFROGAI_API_KEY="<api key>" # this can be created via the LeapfrogAI UI
 LEAPFROGAI_API_URL="https://leapfrogai-api.uds.dev/openai/v1" # This is the default when using a UDS-bundle locally
 LEAPFROGAI_MODEL="vllm" # or whatever model you have installed
 OPENAI_API_KEY="<api key>" # you need a funded OpenAI account for this
@@ -60,7 +60,7 @@ OPENAI_MODEL="gpt-4o-mini" # or whatever model you prefer
 To run the tests, from the root directory of the LeapfrogAI project:
 
 ```bash
-make install # to ensure all python dependencies are install
+make install # to ensure all python dependencies are installed
 
 make test-conformance # runs the entire suite
 ```
@@ -78,7 +78,7 @@ The E2E tests run in CI pipelines, with the exception of vLLM, which requires a 
 For the E2E tests, the following components must be running and accessible in a [UDS Kubernetes cluster](../k3d-gpu/README.md):
 
 - [CowabungaAI API](../src/leapfrogai_api/README.md)
-- [Supabase](../packages/supabase/README.md)
+- [Turso Database](../packages/turso/README.md)
 - Package to be tested (e.g., [vLLM](../packages/vllm/))
 
 An example of running the vLLM E2E tests locally is as follows:
@@ -133,7 +133,7 @@ k3d cluster delete uds
 We include a set of conformance tests to verify our spec against OpenAI to guarantee interoperability with tools that support OpenAI's API (MatterMost, Continue.dev, etc.) and SDKs (Vercel, Azure, etc.). To run these tests the environment variables need to be set:
 
 ```bash
-LEAPFROGAI_API_KEY="<api key>" # this can be created via the CowabungaAI UI or Supabase
+LEAPFROGAI_API_KEY="<api key>" # this can be created via the CowabungaAI UI
 LEAPFROGAI_API_URL="https://leapfrogai-api.uds.dev/openai/v1" # This is the default when using a UDS-bundle locally
 LEAPFROGAI_MODEL="vllm" # or whatever model you have installed
 OPENAI_API_KEY="<api key>" # you need a funded OpenAI account for this

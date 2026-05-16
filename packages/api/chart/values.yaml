@@ -29,13 +29,13 @@ api:
       value: "false"
     - name: PORT
       value: "8080"
-    - name: SUPABASE_URL
-      value: "http://supabase-kong.cowabungaai.svc.cluster.local:80"
-    - name: SUPABASE_ANON_KEY
+    - name: TURSO_URL
+      value: "http://turso.cowabungaai.svc.cluster.local:8080"
+    - name: TURSO_AUTH_TOKEN
       valueFrom:
         secretKeyRef:
-          name: supabase-bootstrap-jwt
-          key: anon-key
+          name: turso-auth
+          key: token
           optional: true
 
   service:
@@ -58,15 +58,15 @@ api:
       runAsGroup: 65532
 
     env:
-      - name: POSTGRES_PASSWORD
+      - name: TURSO_URL
+        value: "http://turso.cowabungaai.svc.cluster.local:8080"
+      - name: TURSO_AUTH_TOKEN
         valueFrom:
           secretKeyRef:
-            name: supabase-postgresql
-            key: postgres-password
-      - name: MIGRATION_SERVICE_NAME
-        value: "supabase-postgresql"
-      - name: MIGRATION_SERVICE_PORT
-        value: "5432"
+            name: turso-auth
+            key: token
+      - name: TURSO_DATABASE_PATH
+        value: "/data/cowabunga.db"
 
 kiwigrid:
   image:

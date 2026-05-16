@@ -29,7 +29,7 @@ from cowabunga_api.backend.converters import (
     from_assistant_stream_event_to_str,
 )
 from cowabunga_api.data.crud_assistant import CRUDAssistant, FilterAssistant
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 logger = logging.getLogger(__name__)
 

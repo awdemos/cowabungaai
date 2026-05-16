@@ -15,7 +15,7 @@ describe('/api/assistants', () => {
       GET({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/assistants'>)
+      } as unknown as RequestEvent<RouteParams, '/api/assistants'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -28,7 +28,7 @@ describe('/api/assistants', () => {
     const res = await GET({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/assistants'>);
+    } as unknown as RequestEvent<RouteParams, '/api/assistants'>);
     expect(res.status).toEqual(200);
     const resJson = await res.json();
 

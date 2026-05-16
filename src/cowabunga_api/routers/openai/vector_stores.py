@@ -19,7 +19,7 @@ from cowabunga_api.data.crud_vector_store_file import (
     CRUDVectorStoreFile,
     FilterVectorStoreFile,
 )
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 logger = logging.getLogger(__name__)
 

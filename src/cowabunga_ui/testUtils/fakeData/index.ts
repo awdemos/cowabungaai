@@ -11,7 +11,36 @@ import type {
 import { getUnixSeconds } from '../../src/lib/helpers/dates';
 import type { FileObject } from 'openai/resources/files';
 import type { Profile } from '../../src/lib/types/profile';
-import type { Session } from '@supabase/supabase-js';
+// Local Session type to avoid external dependency
+interface User {
+  id: string;
+  email?: string;
+  app_metadata?: { provider?: string; providers?: string[] };
+  user_metadata?: {
+    email?: string;
+    email_verified?: boolean;
+    full_name?: string;
+    iss?: string;
+    name?: string;
+    phone_verified?: boolean;
+    provider_id?: string;
+    sub?: string;
+  };
+  aud?: string;
+  created_at?: string;
+}
+
+interface Session {
+  access_token: string;
+  refresh_token?: string;
+  expires_in?: number;
+  expires_at?: number;
+  token_type?: string;
+  provider_token?: string | null;
+  provider_refresh_token?: string | null;
+  user: User;
+}
+
 import type { Assistant } from 'openai/resources/beta/assistants';
 import type { VectorStore } from 'openai/resources/beta/vector-stores/index';
 import type { VectorStoreFile } from 'openai/resources/beta/vector-stores/files';

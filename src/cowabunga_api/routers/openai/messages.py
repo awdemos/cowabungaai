@@ -6,7 +6,7 @@ from openai.pagination import SyncCursorPage
 from cowabunga_api.typedef.messages import CreateMessageRequest, ModifyMessageRequest
 from cowabunga_api.data.crud_message import CRUDMessage
 from cowabunga_api.routers.openai import raise_parse_error
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 router = APIRouter(prefix="/openai/v1/threads", tags=["openai/threads/messages"])
 

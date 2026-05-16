@@ -1,6 +1,6 @@
 /*
 Note - fully testing the assistant progress toast has proven difficult with Playwright. Sometimes the websocket
- connection for the Supabase realtime listeners works, and sometimes it does not. Due to the dynamic nature of
+ connection for the API realtime listeners works, and sometimes it does not. Due to the dynamic nature of
  how this component updates in realtime, unit testing is limited.
  There is an issue in the backlog to re-address at some point:
  TODO - https://github.com/defenseunicorns/cowabunga/issues/981

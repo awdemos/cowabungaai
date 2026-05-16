@@ -24,7 +24,7 @@ describe('/api/files/parse-text', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as unknown as RequestEvent<
         RouteParams,
         '/api/files/parse-text'
       >)
@@ -39,7 +39,7 @@ describe('/api/files/parse-text', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/parse-text'
       >)
@@ -55,7 +55,7 @@ describe('/api/files/parse-text', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/parse-text'
       >)
@@ -73,7 +73,7 @@ describe('/api/files/parse-text', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/parse-text'
       >)
@@ -89,7 +89,7 @@ describe('/api/files/parse-text', () => {
     const request = requestWithFormData(mockFile1);
 
     await expect(
-      POST({ request, fetch: global.fetch, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, fetch: global.fetch, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/parse-text'
       >)
@@ -110,7 +110,7 @@ describe('/api/files/parse-text', () => {
     const request = requestWithFormData(mockFile1);
 
     await expect(
-      POST({ request, fetch: global.fetch, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, fetch: global.fetch, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/parse-text'
       >)
@@ -144,7 +144,7 @@ describe('/api/files/parse-text', () => {
       fetch: global.fetch,
       params: {},
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/files/parse-text'>);
+    } as unknown as RequestEvent<RouteParams, '/api/files/parse-text'>);
     expect(res.status).toEqual(200);
     const resJson = await res.json();
 

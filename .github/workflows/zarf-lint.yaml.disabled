@@ -51,10 +51,10 @@ jobs:
         run: |
           check-jsonschema packages/repeater/zarf.yaml --schemafile zarf.schema.json
 
-      - name: Validate supabase zarf.yaml
+      - name: Validate Turso zarf.yaml
         if: always()
         run: |
-          check-jsonschema packages/supabase/zarf.yaml --schemafile zarf.schema.json
+          check-jsonschema packages/Turso/zarf.yaml --schemafile zarf.schema.json
 
       - name: Validate text-embeddings zarf.yaml
         if: always()

@@ -2,16 +2,8 @@ import { faker } from '@faker-js/faker';
 import { POST } from './+server';
 import { MAX_LABEL_SIZE } from '$lib/constants';
 import { getFakeThread } from '$testUtils/fakeData';
-import {
-  selectSingleReturnsMockError,
-  supabaseFromMockWrapper,
-  supabaseInsertMock,
-  supabaseSelectSingleByIdMock,
-  supabaseUpdateErrorMock,
-  updateSingleReturnsMock
-} from '$lib/mocks/supabase-mocks';
 import { mockOpenAI } from '../../../../../vitest-setup';
-import { getLocalsMock } from '$lib/mocks/misc';
+import { getLocalsMock, getCookiesMock } from '$lib/mocks/misc';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { RouteParams } from '../../../../../.svelte-kit/types/src/routes/api/messages/new/$types';
 
@@ -29,25 +21,23 @@ describe('/api/threads/new', () => {
 
     mockOpenAI.setTempThread(thread);
 
-    const updateMock = updateSingleReturnsMock();
+    const cookies = getCookiesMock(fakeProfile);
 
     const res = await POST({
       request,
-      locals: getLocalsMock({
-        supabase: supabaseFromMockWrapper({
-          ...supabaseSelectSingleByIdMock(fakeProfile),
-          ...updateMock
-        })
-      })
-    } as RequestEvent<RouteParams, '/api/threads/new'>);
+      cookies,
+      locals: getLocalsMock()
+    } as unknown as RequestEvent<RouteParams, '/api/threads/new'>);
 
     const resData = await res.json();
     expect(res.status).toEqual(200);
     expect(resData).toEqual(thread);
 
-    const updateCallArgs = updateMock.update.mock.calls[0];
-    // @ts-expect-error: confirmed updateCallArgs is array and test is behaving properly
-    expect(updateCallArgs[0]!.thread_ids).toHaveLength(2);
+    expect(cookies.set).toHaveBeenCalled();
+    const profileCookie = cookies._store['cowabunga-profile'];
+    expect(profileCookie).toBeDefined();
+    const parsed = JSON.parse(Buffer.from(profileCookie, 'base64').toString('utf-8'));
+    expect(parsed.thread_ids).toHaveLength(2);
   });
 
   it('returns a 401 when there is no session', async () => {
@@ -59,8 +49,9 @@ describe('/api/threads/new', () => {
     await expect(
       POST({
         request,
+        cookies: getCookiesMock(),
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
+      } as unknown as RequestEvent<RouteParams, '/api/threads/new'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -75,8 +66,9 @@ describe('/api/threads/new', () => {
     await expect(
       POST({
         request,
-        locals: getLocalsMock({ supabase: supabaseInsertMock([thread]) })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
+        cookies: getCookiesMock(),
+        locals: getLocalsMock()
+      } as unknown as RequestEvent<RouteParams, '/api/threads/new'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -89,8 +81,9 @@ describe('/api/threads/new', () => {
     await expect(
       POST({
         request,
-        locals: getLocalsMock({ supabase: supabaseInsertMock([thread]) })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
+        cookies: getCookiesMock(),
+        locals: getLocalsMock()
+      } as unknown as RequestEvent<RouteParams, '/api/threads/new'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -104,53 +97,14 @@ describe('/api/threads/new', () => {
     await expect(
       POST({
         request,
-        locals: getLocalsMock({ supabase: supabaseInsertMock([thread]) })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
+        cookies: getCookiesMock(),
+        locals: getLocalsMock()
+      } as unknown as RequestEvent<RouteParams, '/api/threads/new'>)
     ).rejects.toMatchObject({
       status: 400
     });
   });
 
-  it('returns a 500 when there is a supabase error updating the users profile', async () => {
-    const request = new Request('http://thisurlhasnoeffect', {
-      method: 'POST',
-      body: JSON.stringify({ label: thread.metadata.label })
-    });
-
-    await expect(
-      POST({
-        request,
-        locals: getLocalsMock({
-          supabase: supabaseFromMockWrapper({
-            ...supabaseSelectSingleByIdMock(fakeProfile),
-            ...supabaseUpdateErrorMock()
-          })
-        })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
-    ).rejects.toMatchObject({
-      status: 500
-    });
-  });
-  it('returns a 500 when there is a supabase error getting the users profile', async () => {
-    const request = new Request('http://thisurlhasnoeffect', {
-      method: 'POST',
-      body: JSON.stringify({ label: thread.metadata.label })
-    });
-
-    await expect(
-      POST({
-        request,
-        locals: getLocalsMock({
-          supabase: supabaseFromMockWrapper({
-            ...supabaseSelectSingleByIdMock(fakeProfile),
-            ...selectSingleReturnsMockError()
-          })
-        })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
-    ).rejects.toMatchObject({
-      status: 500
-    });
-  });
   it('returns a 500 when there is an openai error', async () => {
     mockOpenAI.setError('createThread');
     const request = new Request('http://thisurlhasnoeffect', {
@@ -160,13 +114,9 @@ describe('/api/threads/new', () => {
     await expect(
       POST({
         request,
-        locals: getLocalsMock({
-          supabase: supabaseFromMockWrapper({
-            ...supabaseSelectSingleByIdMock(fakeProfile),
-            ...updateSingleReturnsMock()
-          })
-        })
-      } as RequestEvent<RouteParams, '/api/threads/new'>)
+        cookies: getCookiesMock(fakeProfile),
+        locals: getLocalsMock()
+      } as unknown as RequestEvent<RouteParams, '/api/threads/new'>)
     ).rejects.toMatchObject({
       status: 500
     });

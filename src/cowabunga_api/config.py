@@ -3,17 +3,10 @@
 import os
 from typing import Optional
 from pydantic import BaseSettings, Field
-from cowabunga_api.utils.database_factory import DatabaseType
 
 
 class Settings(BaseSettings):
     """Application settings with database backend configuration."""
-    
-    # Database Configuration
-    database_type: DatabaseType = Field(
-        default=DatabaseType.SUPABASE,
-        description="Database backend type (supabase or turso)"
-    )
     
     # Turso Configuration
     turso_database_path: str = Field(
@@ -27,20 +20,6 @@ class Settings(BaseSettings):
     turso_auth_token: Optional[str] = Field(
         default=None,
         description="Turso authentication token"
-    )
-    
-    # Supabase Configuration
-    supabase_url: Optional[str] = Field(
-        default=None,
-        description="Supabase project URL"
-    )
-    supabase_anon_key: Optional[str] = Field(
-        default=None,
-        description="Supabase anonymous key"
-    )
-    supabase_service_key: Optional[str] = Field(
-        default=None,
-        description="Supabase service role key"
     )
     
     # API Configuration
@@ -75,25 +54,17 @@ class Settings(BaseSettings):
             return (init_settings, env_settings, file_secret_settings)
     
     def get_database_config(self) -> dict:
-        """Get database configuration based on database_type.
+        """Get database configuration.
         
         Returns:
             Dictionary with database configuration
         """
-        if self.database_type == DatabaseType.TURSO:
-            return {
-                "type": "turso",
-                "db_path": self.turso_database_path,
-                "url": self.turso_url,
-                "auth_token": self.turso_auth_token,
-            }
-        else:
-            return {
-                "type": "supabase",
-                "url": self.supabase_url,
-                "anon_key": self.supabase_anon_key,
-                "service_key": self.supabase_service_key,
-            }
+        return {
+            "type": "turso",
+            "db_path": self.turso_database_path,
+            "url": self.turso_url,
+            "auth_token": self.turso_auth_token,
+        }
 
 
 # Global settings instance

@@ -26,7 +26,6 @@ dev = [
     "requests",
     "requests-toolbelt",
     "pytest",
-    "supabase == 2.6.0",
     "huggingface_hub[cli,hf_transfer] ==0.25.1",
     "fastapi == 0.115.0",
 ]

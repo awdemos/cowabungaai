@@ -2,8 +2,8 @@
 
 from pydantic import BaseModel
 from openai.types.beta.vector_stores import VectorStoreFile
-from supabase import AClient as AsyncClient
 from cowabunga_api.data.crud_base import CRUDBase
+from cowabunga_api.data.database.base import DatabaseClient
 
 
 class FilterVectorStoreFile(BaseModel):
@@ -14,7 +14,7 @@ class FilterVectorStoreFile(BaseModel):
 class CRUDVectorStoreFile(CRUDBase[VectorStoreFile]):
     """CRUD Operations for VectorStoreFile"""
 
-    def __init__(self, db: AsyncClient, table_name: str = "vector_store_file"):
+    def __init__(self, db: DatabaseClient, table_name: str = "vector_store_file"):
         super().__init__(db=db, model=VectorStoreFile, table_name=table_name)
 
     async def get(
@@ -35,21 +35,15 @@ class CRUDVectorStoreFile(CRUDBase[VectorStoreFile]):
         """Update a vector store file by its ID.
         Args:
             id_ (str): The file id.
-            db (AsyncClient): The Supabase async client.
+            db (DatabaseClient): The database client.
             object_ (VectorStoreFile): The vector store file object (contains vector store id).
         """
         dict_ = object_.model_dump()
         del dict_["usage_bytes"]
 
-        data, _count = (
-            await self.db.table(self.table_name)
-            .update(dict_)
-            .eq("id", id_)
-            .eq("vector_store_id", object_.vector_store_id)
-            .execute()
-        )
+        result = await self.db.table(self.table_name).update(dict_).eq("id", id_).eq("vector_store_id", object_.vector_store_id).execute()
 
-        _, response = data
+        response = result.data
 
         if response:
             return self.model(**response[0])

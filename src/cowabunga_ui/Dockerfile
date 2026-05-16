@@ -35,7 +35,7 @@ WORKDIR /app
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./package.json
 # COPY --from=builder /app/node_modules/.prisma/client ./node_modules/.prisma/client
-# UI uses Supabase directly, not Prisma client
+# UI uses the API directly, not Prisma client
 
 # Disable request size limit
 ENV BODY_SIZE_LIMIT=Infinity \

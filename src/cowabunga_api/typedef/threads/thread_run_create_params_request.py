@@ -29,7 +29,7 @@ from cowabunga_api.backend.converters import (
 )
 from cowabunga_api.typedef.threads import CreateThreadRequest
 
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 
 
 logger = logging.getLogger(__name__)

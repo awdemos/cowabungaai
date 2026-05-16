@@ -1,6 +1,6 @@
 /*
   This store keeps track of files and any vector stores they are in along with their processing status.
-  The statuses are updating via a Supabase realtime listener.
+  The statuses are updating via a API realtime listener.
  */
 
 import { writable } from 'svelte/store';

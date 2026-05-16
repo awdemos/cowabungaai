@@ -9,12 +9,10 @@ from fastapi.applications import BaseHTTPMiddleware
 from fastapi.security import HTTPBearer
 from fastapi.testclient import TestClient
 from starlette.middleware.base import _CachedRequest
-from supabase import ClientOptions
 from cowabunga_api.typedef.chat import ChatCompletionRequest, ChatMessage
 from cowabunga_api.typedef.completion import CompletionRequest
 from cowabunga_api.typedef.embeddings import CreateEmbeddingRequest
 from cowabunga_api.main import app
-from cowabunga_api.routers.supabase_session import init_supabase_client
 from tests.utils.data_path import data_path, WAV_FILE, WAV_FILE_ARABIC
 
 security = HTTPBearer()
@@ -37,24 +35,15 @@ TEXT_INPUT_LEN = len(TEXT_INPUT)
 #########################
 
 
-class AsyncClient:
-    """Supabase client class."""
+class MockAuthClient:
+    """Mock auth client for testing."""
 
-    def __init__(
-        self,
-        supabase_url: str,
-        supabase_key: str,
-        access_token: Optional[str] = None,
-        options: ClientOptions = ClientOptions(),
-    ):
-        self.supabase_url = supabase_url
-        self.supabase_key = supabase_key
+    def __init__(self, access_token: Optional[str] = None):
         self.access_token = access_token
-        self.options = options
 
 
-async def mock_init_supabase_client() -> AsyncClient:
-    return AsyncClient("", "", "", ClientOptions())
+async def mock_init_auth_client() -> MockAuthClient:
+    return MockAuthClient(access_token="dummy")
 
 
 async def pack_dummy_bearer_token(request: _CachedRequest, call_next):
@@ -69,7 +58,7 @@ async def pack_dummy_bearer_token(request: _CachedRequest, call_next):
 
 @pytest.fixture
 def dummy_auth_middleware():
-    app.dependency_overrides[init_supabase_client] = mock_init_supabase_client
+    # Auth dependency override removed - using mock auth
     app.user_middleware.clear()
     app.middleware_stack = None
     app.add_middleware(BaseHTTPMiddleware, dispatch=pack_dummy_bearer_token)

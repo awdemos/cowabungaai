@@ -3,8 +3,8 @@
 import time
 from fastapi import HTTPException, status
 from pydantic import BaseModel, Field
-from supabase import AClient as AsyncClient
 from cowabunga_api.data.crud_base import CRUDBase
+from cowabunga_api.data.database.base import DatabaseClient
 from cowabunga_api.backend.security.api_key import APIKey, KEY_PREFIX
 from cowabunga_api.backend.constants import THIRTY_DAYS_SECONDS
 
@@ -50,7 +50,7 @@ class CRUDAPIKey(CRUDBase[APIKeyItem]):
         p_name: str | None = Field(None, description="The name of the API key.")
         p_checksum: str = Field(..., description="The checksum of the API key.")
 
-    def __init__(self, db: AsyncClient):
+    def __init__(self, db: DatabaseClient):
         super().__init__(db=db, model=APIKeyItem, table_name="api_keys")
 
         if db.options.headers.get("x-custom-api-key"):
@@ -83,9 +83,9 @@ class CRUDAPIKey(CRUDBase[APIKeyItem]):
         if response:
             return APIKeyItem(
                 name=response[0]["name"],
-                id=response[0]["id"],  # This is set by the database
+                id=response[0]["id"],
                 api_key=str(api_key),
-                created_at=response[0]["created_at"],  # This is set by the database
+                created_at=response[0]["created_at"],
                 expires_at=response[0]["expires_at"],
             )
 

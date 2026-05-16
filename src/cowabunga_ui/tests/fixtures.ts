@@ -24,20 +24,14 @@ export const getAccessToken = async () => {
       fs.readFileSync(`${process.cwd()}/playwright/.auth/user.json`, 'utf-8')
     );
     const cookie = authData.cookies.find(
-      (cookie: Cookie) =>
-        cookie.name === 'sb-supabase-kong-auth-token' ||
-        cookie.name === 'sb-supabase-kong-auth-token.0' ||
-        cookie.name === 'sb-supabase-kong-auth-token.1'
+      (cookie: Cookie) => cookie.name === 'cowabunga-session'
     );
-    const cookieStripped = cookie.value.replace('base64-', '');
-    // Decode the base64 string
-    const convertedCookie = Buffer.from(cookieStripped, 'base64').toString('utf-8');
-    const accessTokenMatch = convertedCookie.match(/"access_token":"(.*?)"/);
-    if (!accessTokenMatch) {
-      console.log('Access token not found in cookie');
+    if (!cookie) {
+      console.log('Session cookie not found');
       return '';
     }
-    return accessTokenMatch[1];
+    const session = JSON.parse(Buffer.from(cookie.value, 'base64').toString('utf-8'));
+    return session.access_token || '';
   } catch (e) {
     console.error('Error getting access token', e);
     return '';

@@ -34,7 +34,7 @@ def read_testfile():
 
 @pytest.fixture(scope="session", autouse=True)
 def create_file(client, read_testfile):  # pylint: disable=redefined-outer-name, unused-argument
-    """Create a file for testing. Requires a running Supabase instance."""
+    """Create a file for testing. Requires a running database instance."""
 
     global file_response  # pylint: disable=global-statement
 
@@ -46,7 +46,7 @@ def create_file(client, read_testfile):  # pylint: disable=redefined-outer-name,
 
 
 def test_create():
-    """Test creating a file. Requires a running Supabase instance."""
+    """Test creating a file. Requires a running database instance."""
     assert file_response.status_code is status.HTTP_200_OK
     assert FileObject.model_validate(
         file_response.json()
@@ -56,7 +56,7 @@ def test_create():
 
 
 def test_get(client):
-    """Test getting a file. Requires a running Supabase instance."""
+    """Test getting a file. Requires a running database instance."""
     file_id = file_response.json()["id"]
     get_response = client.get(f"/openai/v1/files/{file_id}")
     assert get_response.status_code is status.HTTP_200_OK
@@ -66,7 +66,7 @@ def test_get(client):
 
 
 def test_get_content(client):
-    """Test getting file content. Requires a running Supabase instance."""
+    """Test getting file content. Requires a running database instance."""
     file_id = file_response.json()["id"]
     get_content_response = client.get(f"/openai/v1/files/{file_id}/content")
     assert get_content_response.status_code is status.HTTP_200_OK
@@ -76,7 +76,7 @@ def test_get_content(client):
 
 
 def test_list(client):
-    """Test listing files. Requires a running Supabase instance."""
+    """Test listing files. Requires a running database instance."""
     list_response = client.get("/openai/v1/files")
     assert list_response.status_code is status.HTTP_200_OK
     for file_object in list_response.json()["data"]:
@@ -86,7 +86,7 @@ def test_list(client):
 
 
 def test_delete(client):
-    """Test deleting a file. Requires a running Supabase instance."""
+    """Test deleting a file. Requires a running database instance."""
     file_id = file_response.json()["id"]
 
     delete_response = client.delete(f"/openai/v1/files/{file_id}")
@@ -100,7 +100,7 @@ def test_delete(client):
 
 
 def test_delete_twice(client):
-    """Test deleting a file twice. Requires a running Supabase instance."""
+    """Test deleting a file twice. Requires a running database instance."""
     file_id = file_response.json()["id"]
     delete_response = client.delete(f"/openai/v1/files/{file_id}")
     assert delete_response.status_code is status.HTTP_200_OK
@@ -113,7 +113,7 @@ def test_delete_twice(client):
 
 
 def test_get_nonexistent(client):
-    """Test getting a nonexistent file. Requires a running Supabase instance."""
+    """Test getting a nonexistent file. Requires a running database instance."""
     file_id = file_response.json()["id"]
 
     get_response = client.get(f"/openai/v1/files/{file_id}")

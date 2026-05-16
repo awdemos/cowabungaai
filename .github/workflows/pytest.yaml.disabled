@@ -103,23 +103,23 @@ jobs:
           ghToken: ${{ secrets.GITHUB_TOKEN }}
           chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
 
-      - name: Setup API and Supabase
+      - name: Setup API and Turso
         uses: ./.github/actions/lfai-core
 
       - name: Generate Secrets
         id: generate_secrets
         run: |
-          SUPABASE_PASS=$(cat <(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9!@#$%^&*()_+-=[]{}|;:,.<>?' | head -c 20) <(echo '!@1Aa') | fold -w1 | shuf | tr -d '\n')
-          echo "::add-mask::$SUPABASE_PASS"
-          echo "SUPABASE_PASS=$SUPABASE_PASS" >> $GITHUB_OUTPUT
-          SUPABASE_ANON_KEY=$(uds zarf tools kubectl get secret supabase-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.anon-key}' | base64 -d)
-          echo "::add-mask::$SUPABASE_ANON_KEY"
-          echo "SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY" >> $GITHUB_OUTPUT
+          TURSO_PASS=$(cat <(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9!@#$%^&*()_+-=[]{}|;:,.<>?' | head -c 20) <(echo '!@1Aa') | fold -w1 | shuf | tr -d '\n')
+          echo "::add-mask::$TURSO_PASS"
+          echo "TURSO_PASS=$TURSO_PASS" >> $GITHUB_OUTPUT
+          TURSO_ANON_KEY=$(uds zarf tools kubectl get secret turso-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.anon-key}' | base64 -d)
+          echo "::add-mask::$TURSO_ANON_KEY"
+          echo "TURSO_ANON_KEY=$TURSO_ANON_KEY" >> $GITHUB_OUTPUT
 
       - name: Verify Secrets
         run: |
-          echo "SUPABASE_ANON_KEY is set: ${{ steps.generate_secrets.outputs.SUPABASE_ANON_KEY != '' }}"
-          echo "SUPABASE_PASS is set: ${{ steps.generate_secrets.outputs.SUPABASE_PASS != '' }}"
+          echo "TURSO_ANON_KEY is set: ${{ steps.generate_secrets.outputs.TURSO_ANON_KEY != '' }}"
+          echo "TURSO_PASS is set: ${{ steps.generate_secrets.outputs.TURSO_PASS != '' }}"
 
       - name: Setup Text-Embeddings
         run: |
@@ -130,10 +130,10 @@ jobs:
 
       - name: Run Integration Tests
         env:
-          SUPABASE_ANON_KEY: ${{ steps.generate_secrets.outputs.SUPABASE_ANON_KEY }}
-          SUPABASE_PASS: ${{ steps.generate_secrets.outputs.SUPABASE_PASS }}
-          SUPABASE_EMAIL: doug@uds.dev
-          SUPABASE_URL: https://supabase-kong.uds.dev
+          TURSO_ANON_KEY: ${{ steps.generate_secrets.outputs.TURSO_ANON_KEY }}
+          TURSO_PASS: ${{ steps.generate_secrets.outputs.TURSO_PASS }}
+          TURSO_EMAIL: doug@uds.dev
+          TURSO_URL: https://turso-kong.uds.dev
           # Turn off NIAH tests that are not applicable for integration testing using the Repeater model
           LFAI_RUN_NIAH_TESTS: "false"
         run: |

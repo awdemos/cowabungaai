@@ -31,7 +31,7 @@ describe('/api/files/convert/[id]', () => {
     });
 
     await expect(
-      GET({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as RequestEvent<
+      GET({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -46,7 +46,7 @@ describe('/api/files/convert/[id]', () => {
     });
 
     await expect(
-      GET({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -62,7 +62,7 @@ describe('/api/files/convert/[id]', () => {
 
     await expect(
       // @ts-expect-error - we want to test this error
-      GET({ request, params: { id: 123 }, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: { id: 123 }, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -77,7 +77,7 @@ describe('/api/files/convert/[id]', () => {
     });
 
     await expect(
-      GET({ request, params: { id: 'fakeId123' }, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: { id: 'fakeId123' }, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -95,7 +95,7 @@ describe('/api/files/convert/[id]', () => {
     });
 
     await expect(
-      GET({ request, params: { id: files[0].id }, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: { id: files[0].id }, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -109,7 +109,7 @@ describe('/api/files/convert/[id]', () => {
     });
 
     await expect(
-      GET({ request, params: { id: faker.string.uuid() }, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: { id: faker.string.uuid() }, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -131,7 +131,7 @@ describe('/api/files/convert/[id]', () => {
     });
 
     await expect(
-      GET({ request, params: { id: files[0].id }, locals: getLocalsMock() } as RequestEvent<
+      GET({ request, params: { id: files[0].id }, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert/[id]'
       >)
@@ -157,7 +157,7 @@ describe('/api/files/convert/[id]', () => {
       request,
       params: { id: files[0].id },
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/files/convert/[id]'>);
+    } as unknown as RequestEvent<RouteParams, '/api/files/convert/[id]'>);
     expect(res.status).toEqual(200);
     expect(res.headers.get('Content-Type')).toBe('application/pdf');
     const buffer = await res.arrayBuffer();

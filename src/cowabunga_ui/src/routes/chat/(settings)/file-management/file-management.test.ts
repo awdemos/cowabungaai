@@ -17,7 +17,6 @@ import { convertFileObjectToLFFileObject } from '$helpers/fileHelpers';
 import { superValidate } from 'sveltekit-superforms';
 import { yup } from 'sveltekit-superforms/adapters';
 import { filesSchema } from '$schemas/files';
-import type { SupabaseClient } from '@supabase/supabase-js';
 import type { FilesForm } from '$lib/types/files';
 import { tick } from 'svelte';
 import vectorStatusStore from '$stores/vectorStatusStore';
@@ -39,8 +38,7 @@ describe('file management', () => {
       data: {
         ...data,
         form,
-        session: getFakeSession(),
-        supabase: {} as unknown as SupabaseClient
+        session: getFakeSession()
       }
     });
     searchbox = screen.getByRole('textbox', {
@@ -225,8 +223,7 @@ describe('table pagination', () => {
       data: {
         ...data,
         form,
-        session: getFakeSession(),
-        supabase: {} as unknown as SupabaseClient
+        session: getFakeSession()
       }
     });
     searchbox = screen.getByRole('textbox', {

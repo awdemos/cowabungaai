@@ -11,7 +11,7 @@ from cowabunga_api.backend.grpc_client import (
 )
 from cowabunga_api.backend.helpers import grpc_chat_role
 from cowabunga_api.typedef.chat import ChatCompletionRequest, ChatCompletionResponse
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
 from cowabunga_sdk.chat.chat_pb2 import (

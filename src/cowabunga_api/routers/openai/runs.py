@@ -8,7 +8,7 @@ from openai.pagination import SyncCursorPage
 
 from cowabunga_api.data.crud_run import CRUDRun
 from cowabunga_api.data.crud_thread import CRUDThread
-from cowabunga_api.routers.supabase_session import Session
+from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils.validate_tools import (
     validate_assistant_tool,
     validate_assistant_tool_choice_option,

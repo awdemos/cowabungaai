@@ -13,11 +13,10 @@ import { filesSchema } from '$schemas/files';
 import type { VectorStore } from 'openai/resources/beta/vector-stores/index';
 
 export const load: PageServerLoad = async () => {
-  // Populate form with default temperature
   const form = await superValidate(
     { temperature: DEFAULT_ASSISTANT_TEMP },
     yup(assistantInputSchema),
-    { errors: false } // turn off errors for new assistant b/c providing default data turns them on
+    { errors: false }
   );
 
   const filesForm = await superValidate({}, yup(filesSchema), { errors: false });
@@ -26,7 +25,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-  default: async ({ request, locals: { supabase, session } }) => {
+  default: async ({ request, locals: { session } }) => {
     if (!session) {
       return fail(401, { message: 'Unauthorized' });
     }
@@ -58,7 +57,6 @@ export const actions: Actions = {
       }
     }
 
-    // Create assistant object, we can't spread the form data here because we need to re-nest some of the values
     const assistant: AssistantCreateParams = {
       name: form.data.name,
       description: form.data.description,
@@ -77,11 +75,9 @@ export const actions: Actions = {
         ...assistantDefaults.metadata,
         pictogram: form.data.pictogram,
         user_id: session.user.id
-        // avatar is added in later with an update call after saving to supabase
       }
     };
 
-    // Create assistant
     let createdAssistant: LFAssistant;
     try {
       createdAssistant = (await openai.beta.assistants.create(assistant)) as LFAssistant;
@@ -90,24 +86,22 @@ export const actions: Actions = {
       return fail(500, { message: 'Error creating assistant.' });
     }
 
-    // save avatar
     if (form.data.avatarFile) {
-      const filePath = createdAssistant.id;
-
-      const { error } = await supabase.storage
-        .from('assistant_avatars')
-        .upload(filePath, form.data.avatarFile);
-
-      if (error) {
-        console.error('Error saving assistant avatar:', error);
+      let fileObject;
+      try {
+        fileObject = await openai.files.create({
+          file: form.data.avatarFile,
+          purpose: 'assistants'
+        });
+      } catch (e) {
+        console.error('Error uploading assistant avatar:', e);
         return fail(500, { message: 'Error saving assistant avatar.' });
       }
-      // update assistant with saved avatar path
       try {
         createdAssistant = (await openai.beta.assistants.update(createdAssistant.id, {
           metadata: {
             ...(createdAssistant.metadata ? createdAssistant.metadata : undefined),
-            avatar: getAssistantAvatarUrl(filePath)
+            avatar: getAssistantAvatarUrl(fileObject.id)
           }
         })) as LFAssistant;
       } catch (e) {

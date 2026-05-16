@@ -9,7 +9,6 @@ from langchain_core.embeddings import Embeddings
 from openai.types.beta.vector_store import FileCounts, VectorStore
 from openai.types.beta.vector_stores import VectorStoreFile
 from openai.types.beta.vector_stores.vector_store_file import LastError
-from supabase import AClient as AsyncClient
 
 from cowabunga_api.backend.rag.document_loader import load_file, split
 from cowabunga_api.backend.rag.leapfrogai_embeddings import CowabungaAIEmbeddings
@@ -28,6 +27,7 @@ from cowabunga_api.data.crud_vector_store_file import (
 )
 
 from cowabunga_api.data.crud_vector_content import CRUDVectorContent, Vector
+from cowabunga_api.data.database.base import DatabaseClient
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ class FileAlreadyIndexedError(Exception):
 class IndexingService:
     """Service for indexing files into a vector store."""
 
-    def __init__(self, db: AsyncClient):
+    def __init__(self, db: DatabaseClient):
         self.db = db
         self.embeddings = embeddings_type()
         self.query_name: str = "match_vectors"
@@ -94,7 +94,7 @@ class IndexingService:
                     ),
                     object="vector_store.file",
                     status=VectorStoreFileStatus.FAILED.value,
-                    usage_bytes=0,  # Leave blank to have Postgres calculate the document bytes
+                    usage_bytes=0,
                     vector_store_id=vector_store_id,
                 )
                 return await crud_vector_store_file.create(object_=vector_store_file)
@@ -105,7 +105,7 @@ class IndexingService:
                 last_error=None,
                 object="vector_store.file",
                 status=VectorStoreFileStatus.IN_PROGRESS.value,
-                usage_bytes=0,  # Leave blank to have Postgres calculate the document bytes
+                usage_bytes=0,
                 vector_store_id=vector_store_id,
             )
 
@@ -173,16 +173,16 @@ class IndexingService:
         try:
             # Create a placeholder vector store
             placeholder_vector_store = VectorStore(
-                id="",  # Leave blank to have Postgres generate a UUID
+                id="",
                 name=request.name or "",
                 status=VectorStoreStatus.IN_PROGRESS.value,
                 object="vector_store",
-                created_at=0,  # Leave blank to have Postgres generate a timestamp
+                created_at=0,
                 last_active_at=current_time,
                 file_counts=FileCounts(
                     cancelled=0, completed=0, failed=0, in_progress=0, total=0
                 ),
-                usage_bytes=0,  # Leave blank to have Postgres calculate the document bytes
+                usage_bytes=0,
                 metadata=request.metadata,
                 expires_after=expires_after,
                 expires_at=expires_at,
@@ -264,10 +264,10 @@ class IndexingService:
         try:
             new_vector_store = VectorStore(
                 id=vector_store_id,
-                usage_bytes=old_vector_store.usage_bytes,  # Automatically calculated by DB
+                usage_bytes=old_vector_store.usage_bytes,
                 created_at=old_vector_store.created_at,
                 file_counts=old_vector_store.file_counts,
-                last_active_at=old_vector_store.last_active_at,  # Update after indexing files
+                last_active_at=old_vector_store.last_active_at,
                 metadata=getattr(request, "metadata", old_vector_store.metadata),
                 name=getattr(request, "name", old_vector_store.name),
                 object="vector_store",
@@ -326,7 +326,7 @@ class IndexingService:
 
         vector_store.status = VectorStoreStatus.COMPLETED.value
         last_active_at = int(time.time())
-        vector_store.last_active_at = last_active_at  # Update after indexing files
+        vector_store.last_active_at = last_active_at
 
         expires_after, expires_at = request.get_expiry(last_active_at)
         if expires_after and expires_at:

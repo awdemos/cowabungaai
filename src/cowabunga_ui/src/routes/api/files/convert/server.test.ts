@@ -29,7 +29,7 @@ describe('/api/files/convert', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock({ nullSession: true }) } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert'
       >)
@@ -44,7 +44,7 @@ describe('/api/files/convert', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert'
       >)
@@ -60,7 +60,7 @@ describe('/api/files/convert', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert'
       >)
@@ -78,7 +78,7 @@ describe('/api/files/convert', () => {
     });
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert'
       >)
@@ -97,7 +97,7 @@ describe('/api/files/convert', () => {
     const request = requestWithFormData(testFile);
 
     await expect(
-      POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+      POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
         RouteParams,
         '/api/files/convert'
       >)
@@ -121,7 +121,7 @@ describe('/api/files/convert', () => {
 
     const request = requestWithFormData(testFile);
 
-    const res = await POST({ request, params: {}, locals: getLocalsMock() } as RequestEvent<
+    const res = await POST({ request, params: {}, locals: getLocalsMock() } as unknown as RequestEvent<
       RouteParams,
       '/api/files/convert'
     >);

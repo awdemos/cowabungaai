@@ -1,12 +1,11 @@
 import { faker } from '@faker-js/faker';
-import type { Session, SupabaseClient, User } from '@supabase/supabase-js';
+import { vi } from 'vitest';
 
-type GetLocalsMockParams<T = SupabaseClient> = {
+type GetLocalsMockParams = {
   nullSession?: boolean;
-  supabase?: T;
 };
-export const getLocalsMock = <T = SupabaseClient>(params: GetLocalsMockParams<T> = {}) => {
-  const { nullSession = false, supabase = {} as unknown as SupabaseClient } = params;
+export const getLocalsMock = (params: GetLocalsMockParams = {}) => {
+  const { nullSession = false } = params;
 
   const id = faker.string.uuid();
   const email = faker.internet.email();
@@ -18,7 +17,7 @@ export const getLocalsMock = <T = SupabaseClient>(params: GetLocalsMockParams<T>
     currentDate.getDate() - 1
   );
 
-  const user: User = {
+  const user = {
     id,
     aud: 'authenticated',
     role: 'authenticated',
@@ -28,7 +27,7 @@ export const getLocalsMock = <T = SupabaseClient>(params: GetLocalsMockParams<T>
       email,
       email_verified: true,
       full_name,
-      iss: process.env.SUPABASE_AUTH_EXTERNAL_KEYCLOAK_URL,
+      iss: 'https://sso.uds.dev/realms/uds',
       name: full_name,
       phone_verified: false,
       provider_id: faker.string.uuid(),
@@ -37,7 +36,7 @@ export const getLocalsMock = <T = SupabaseClient>(params: GetLocalsMockParams<T>
     created_at: yesterday.toISOString()
   };
 
-  const session: Session | null = nullSession
+  const session = nullSession
     ? null
     : {
         access_token: 'abc',
@@ -51,7 +50,23 @@ export const getLocalsMock = <T = SupabaseClient>(params: GetLocalsMockParams<T>
     user,
     session,
     safeGetSession: () => Promise.resolve({ session, user }),
-    supabase,
     isUsingOpenAI: false
+  };
+};
+
+export const getCookiesMock = (profile?: { thread_ids: string[] }) => {
+  const store: Record<string, string> = {};
+  if (profile) {
+    store['cowabunga-profile'] = Buffer.from(JSON.stringify(profile)).toString('base64');
+  }
+  return {
+    get: (name: string) => store[name] || undefined,
+    set: vi.fn((name: string, value: string, _opts?: unknown) => {
+      store[name] = value;
+    }),
+    delete: vi.fn((name: string, _opts?: unknown) => {
+      delete store[name];
+    }),
+    _store: store
   };
 };

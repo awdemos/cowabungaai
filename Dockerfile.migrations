@@ -28,4 +28,4 @@ LABEL maintainer="CowabungaAI Team"
 USER 65532:65532
 
 # Download the migration scripts
-COPY --chown=65532:65532 ${MIGRATIONS_DIR}/*.sql /supabase/migrations/
+COPY --chown=65532:65532 ${MIGRATIONS_DIR}/*.sql /migrations/

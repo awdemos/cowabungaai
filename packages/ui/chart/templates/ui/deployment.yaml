@@ -33,16 +33,6 @@ spec:
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}
-            - name: PUBLIC_SUPABASE_ANON_KEY
-              {{ if $.Values.extraEnv.supabaseAnonKey  }}
-              value: {{ $.Values.extraEnv.supabaseAnonKey }}
-              {{ else }}
-              valueFrom:
-                secretKeyRef:
-                  name: supabase-bootstrap-jwt
-                  key: anon-key
-                  optional: true
-              {{ end }}
           {{- end }}
           ports:
             - containerPort: {{ .Values.service.port }}

@@ -3,7 +3,6 @@ import { expect, type Page } from '@playwright/test';
 import { getFakeAssistantInput } from '../../testUtils/fakeData';
 import type { Assistant, AssistantCreateParams } from 'openai/resources/beta/assistants';
 import type { AssistantInput, LFAssistant } from '../../src/lib/types/assistants';
-import { supabase } from './helpers';
 import { faker } from '@faker-js/faker';
 import { loadNewAssistantPage } from './navigationHelpers';
 
@@ -104,10 +103,6 @@ export const deleteAssistantCard = async (name: string, page: Page) => {
     .getByTestId('delete-assistant-modal')
     .getByRole('button', { name: /delete/i })
     .click();
-};
-
-export const deleteAssistantAvatars = async () => {
-  await supabase.storage.emptyBucket('assistant_avatars');
 };
 
 export const savePictogram = async (pictogramName: string, page: Page) => {

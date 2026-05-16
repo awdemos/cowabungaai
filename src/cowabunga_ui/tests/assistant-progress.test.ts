@@ -12,7 +12,7 @@ import { loadNewAssistantPage } from './helpers/navigationHelpers';
 import type { FileObject } from 'openai/resources/files';
 
 // Note - fully testing the assistant progress toast has proven difficult with Playwright. Sometimes the websocket
-// connection for the Supabase realtime listeners works, and sometimes it does not. Here we test that the
+// connection for the API realtime listeners works, and sometimes it does not. Here we test that the
 // toast exists with the files, but nothing further.
 test('when creating an assistant with files, an assistant progress toast is displayed', async ({
   page,

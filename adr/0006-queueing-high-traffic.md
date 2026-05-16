@@ -37,24 +37,24 @@ We have decided to implement a multi-tiered approach to address the queueing and
    - Reduce duplication of indexing efforts.
    - Scale horizontal/vertical resources as needed.
 
-2. Implement a lightweight queueing solution using Supabase Realtime and FastAPI background tasks:
-   - Utilize Supabase Realtime for task status updates (in-progress, complete, etc...) and basic queueing.
-    - In the event of issues with Supabase Realtime, fallback to RedPanda.
+2. Implement a lightweight queueing solution using FastAPI background tasks:
    - Leverage FastAPI's background tasks to handle long running operations asynchronously in the background.
+   - Use Server-Sent Events (SSE) or polling for task status updates (in-progress, complete, etc...).
+   - For more robust queueing needs, integrate RedPanda or RabbitMQ.
 
 3. Prepare for future scaling by designing the system to easily integrate with a more robust queueing solution:
    - Design interfaces that can work with both our current lightweight solution and future, more robust options.
-   - Do not attempt to push Supabase Realtime beyond its designed limits, instead plan to use RedPanda or RabbitMQ if those needs surface.
+   - Plan to use RedPanda or RabbitMQ if queueing needs exceed background task capabilities.
 
 ## Rationale
 1. Addressing underlying bottlenecks:
    - This approach ensures we're not masking performance issues with a queueing system.
    - Optimizations can significantly improve system performance without adding complexity.
 
-2. Lightweight solution (Supabase Realtime and FastAPI background tasks):
-   - Leverages existing infrastructure (Supabase) reducing additional operational overhead.
+2. Lightweight solution (FastAPI background tasks):
    - FastAPI background tasks provide a simple way to handle asynchronous operations without introducing new dependencies.
    - This solution meets our current needs without over-engineering.
+   - SSE or polling can be used for real-time status updates where needed.
 
 3. Preparation for future scaling:
    - Allows for easy transition to more robust solutions as the system grows.
@@ -67,17 +67,13 @@ We chose this approach over alternatives for a few reasons:
 - When performing load testing on the system, the primary bottlenecks seem to be around the vectordb file indexing.
   - The issues related to this process should be able to be resolved by optimizations, a light amount of queueing, and background tasks.
   - Issues not related to indexing were primarily scalability issues. Which can be resolved via resource limits, throttling, improving horizontal and vertical scaling within the cluster.
-- Authentication will be an issue for every solution except Supabase Realtime.
+- Authentication is handled via Keycloak (UDS standard) or custom JWT service.
 
 ## Alternatives
 Queueing Solutions Considered:
 * RabbitMQ: Meets current and future needs.
   * Well maintained JS and Python libraries.
   * Requires additional, potentially significant integration work to bring into the k8s cluster.
-* Supabase Realtime: Lightweight and already integrated, but may not meet all future queuing needs.
-  * Well maintained JS and Python libraries.
-  * Can listen directly to db transactions.
-  * Already integrated with Supabase auth.
 * Kafka: Powerful but too heavy for our current requirements.
   * Well maintained JS and Python libraries.
   * Requires additional, potentially significant integration work to bring into the k8s cluster.
@@ -92,9 +88,8 @@ Queueing Solutions Considered:
 * [0003-database](0003-database.md)
 
 ## References
-1. Supabase Realtime Documentation: https://supabase.com/docs/guides/realtime
-2. FastAPI Background Tasks: https://fastapi.tiangolo.com/tutorial/background-tasks/
-3. Celery Documentation: https://docs.celeryq.dev/en/stable/
-4. Kafka Documentation: https://kafka.apache.org/
-5. RabbitMQ Documentation: https://www.rabbitmq.com/docs
-6. RedPanda: https://docs.redpanda.com/docs/
+1. FastAPI Background Tasks: https://fastapi.tiangolo.com/tutorial/background-tasks/
+2. Celery Documentation: https://docs.celeryq.dev/en/stable/
+3. Kafka Documentation: https://kafka.apache.org/
+4. RabbitMQ Documentation: https://www.rabbitmq.com/docs
+5. RedPanda: https://docs.redpanda.com/docs/

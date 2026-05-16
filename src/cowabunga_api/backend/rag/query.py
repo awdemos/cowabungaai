@@ -1,7 +1,6 @@
 """Service for querying the RAG model."""
 
 from rerankers.results import RankedResults
-from supabase import AClient as AsyncClient
 from langchain_core.embeddings import Embeddings
 from cowabunga_api.backend.rag.leapfrogai_embeddings import CowabungaAIEmbeddings
 from cowabunga_api.data.crud_vector_content import CRUDVectorContent
@@ -10,6 +9,7 @@ from cowabunga_api.typedef.vectorstores.search_types import SearchResponse, Sear
 from cowabunga_api.backend.constants import TOP_K
 from cowabunga_api.utils.logging_tools import logger
 from rerankers import Reranker
+from cowabunga_api.data.database.base import DatabaseClient
 
 # Allows for overwriting type of embeddings that will be instantiated
 embeddings_type: type[Embeddings] | type[CowabungaAIEmbeddings] | None = (
@@ -20,7 +20,7 @@ embeddings_type: type[Embeddings] | type[CowabungaAIEmbeddings] | None = (
 class QueryService:
     """Service for querying the RAG model."""
 
-    def __init__(self, db: AsyncClient) -> None:
+    def __init__(self, db: DatabaseClient) -> None:
         """Initializes the QueryService."""
         self.db = db
         self.embeddings = embeddings_type()
@@ -51,9 +51,6 @@ class QueryService:
         # 2. Perform similarity search
         _k: int = k
         if ConfigurationSingleton.get_instance().enable_reranking:
-            """Use the user specified top-k value unless reranking.
-            When reranking, use the reranking top-k value to get the initial results.
-            Then filter the list down later to just the k that the user has requested after reranking."""
             _k = ConfigurationSingleton.get_instance().rag_top_k_when_reranking
 
         crud_vector_content = CRUDVectorContent(db=self.db)

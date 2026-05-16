@@ -1,24 +1,17 @@
 name: setup-lfai-core
-description: "Setup Supabase and LFAI-API"
+description: "Setup Turso and LFAI-API"
 
 runs:
   using: composite
   steps:
-    - name: Deploy Supabase
+    - name: Deploy Turso
       shell: bash
       run: |
-        make build-supabase LOCAL_VERSION=e2e-test
+        make build-turso LOCAL_VERSION=e2e-test
         docker image prune -af
         uds zarf tools kubectl create namespace leapfrogai
-        uds zarf package deploy packages/supabase/zarf-package-supabase-amd64-e2e-test.tar.zst --confirm
-        rm packages/supabase/zarf-package-supabase-amd64-e2e-test.tar.zst
-
-    - name: Set environment variable
-      shell: bash
-      id: set-env-var
-      run: |
-        echo "ANON_KEY=$(uds zarf tools kubectl get secret supabase-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.anon-key}' | base64 -d)" >> "$GITHUB_ENV"
-        echo "SERVICE_KEY=$(uds zarf tools kubectl get secret supabase-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.service-key}' | base64 -d)" >> "$GITHUB_ENV"
+        uds zarf package deploy packages/turso/zarf-package-turso-amd64-e2e-test.tar.zst --confirm
+        rm packages/turso/zarf-package-turso-amd64-e2e-test.tar.zst
 
     - name: Deploy LFAI-API
       shell: bash

@@ -4,8 +4,8 @@ import time
 
 from pydantic import BaseModel
 from openai.types.beta import VectorStore
-from supabase import AClient as AsyncClient
 from cowabunga_api.data.crud_base import CRUDBase
+from cowabunga_api.data.database.base import DatabaseClient
 
 
 class FilterVectorStore(BaseModel):
@@ -17,7 +17,7 @@ class FilterVectorStore(BaseModel):
 class CRUDVectorStore(CRUDBase[VectorStore]):
     """CRUD Operations for VectorStore"""
 
-    def __init__(self, db: AsyncClient):
+    def __init__(self, db: DatabaseClient):
         super().__init__(db=db, model=VectorStore, table_name="vector_store")
 
     async def get(self, filters: FilterVectorStore | None = None) -> VectorStore | None:
@@ -65,11 +65,9 @@ class CRUDVectorStore(CRUDBase[VectorStore]):
         dict_ = object_.model_dump()
         del dict_["usage_bytes"]  # Automatically calculated by DB
 
-        data, _count = (
-            await self.db.table(self.table_name).update(dict_).eq("id", id_).execute()
-        )
+        result = await self.db.table(self.table_name).update(dict_).eq("id", id_).execute()
 
-        _, response = data
+        response = result.data
 
         if response:
             if "user_id" in response[0]:

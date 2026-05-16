@@ -25,7 +25,7 @@ describe('/api/chat', () => {
       POST({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/chat'>)
+      } as unknown as RequestEvent<RouteParams, '/api/chat'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -41,7 +41,7 @@ describe('/api/chat', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/chat'>)
+      } as unknown as RequestEvent<RouteParams, '/api/chat'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -55,7 +55,7 @@ describe('/api/chat', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/chat'>)
+      } as unknown as RequestEvent<RouteParams, '/api/chat'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -71,7 +71,7 @@ describe('/api/chat', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/chat'>)
+      } as unknown as RequestEvent<RouteParams, '/api/chat'>)
     ).rejects.toMatchObject({
       status: 400
     });

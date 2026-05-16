@@ -17,7 +17,7 @@ describe('api keys form action', () => {
     const res = await actions.default({
       request,
       locals: getLocalsMock({ nullSession: true })
-    } as RequestEvent<RouteParams, '/chat/(settings)/api-keys'>);
+    } as unknown as RequestEvent<RouteParams, '/chat/(settings)/api-keys'>);
 
     expect(res?.status).toEqual(401);
   });
@@ -27,7 +27,7 @@ describe('api keys form action', () => {
       method: 'POST'
     });
 
-    const res = await actions.default({ request, locals: getLocalsMock() } as RequestEvent<
+    const res = await actions.default({ request, locals: getLocalsMock() } as unknown as RequestEvent<
       RouteParams,
       '/chat/(settings)/api-keys'
     >);
@@ -54,7 +54,7 @@ describe('api keys form action', () => {
       request,
       locals: getLocalsMock()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as RequestEvent<RouteParams, '/chat/(settings)/api-keys'>)) as Record<string, any>;
+    } as unknown as RequestEvent<RouteParams, '/chat/(settings)/api-keys'>)) as Record<string, any>;
 
     expect(res.key).toBeDefined();
     expect(res.key.api_key.startsWith('lfai_')).toEqual(true);
@@ -78,7 +78,7 @@ describe('api keys form action', () => {
     const res = (await actions.default({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/chat/(settings)/api-keys'>)) as ActionFailure;
+    } as unknown as RequestEvent<RouteParams, '/chat/(settings)/api-keys'>)) as ActionFailure;
 
     expect(res.status).toEqual(500);
   });

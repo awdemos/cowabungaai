@@ -22,7 +22,7 @@ describe('/api/files/delete/check', () => {
       POST({
         request,
         locals: getLocalsMock({ nullSession: true })
-      } as RequestEvent<RouteParams, '/api/files/delete/check'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>)
     ).rejects.toMatchObject({
       status: 401
     });
@@ -39,7 +39,7 @@ describe('/api/files/delete/check', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete/check'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -54,7 +54,7 @@ describe('/api/files/delete/check', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete/check'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -69,7 +69,7 @@ describe('/api/files/delete/check', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete/check'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -84,7 +84,7 @@ describe('/api/files/delete/check', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete/check'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>)
     ).rejects.toMatchObject({
       status: 400
     });
@@ -137,7 +137,7 @@ describe('/api/files/delete/check', () => {
     const res = await POST({
       request,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/files/delete/check'>);
+    } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>);
 
     const resData = await res.json();
     expect(res.status).toEqual(200);
@@ -153,7 +153,7 @@ describe('/api/files/delete/check', () => {
     const res2 = await POST({
       request: request2,
       locals: getLocalsMock()
-    } as RequestEvent<RouteParams, '/api/files/delete/check'>);
+    } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>);
 
     const resData2 = await res2.json();
     expect(res2.status).toEqual(200);
@@ -173,7 +173,7 @@ describe('/api/files/delete/check', () => {
       POST({
         request,
         locals: getLocalsMock()
-      } as RequestEvent<RouteParams, '/api/files/delete/check'>)
+      } as unknown as RequestEvent<RouteParams, '/api/files/delete/check'>)
     ).rejects.toMatchObject({
       status: 500
     });
