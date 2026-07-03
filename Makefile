@@ -54,7 +54,18 @@ docker-turso:
 	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
 	docker tag ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
 
-build-turso: local-registry docker-turso
+turso-upstream-images: local-registry ## pull/push upstream Turso dependency images to the local registry
+	docker pull ghcr.io/tursodatabase/libsql-server:latest
+	docker tag ghcr.io/tursodatabase/libsql-server:latest localhost:${REG_PORT}/tursodatabase/libsql-server:latest
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/tursodatabase/libsql-server:latest
+	docker pull alpine:3.19
+	docker tag alpine:3.19 localhost:${REG_PORT}/library/alpine:3.19
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/library/alpine:3.19
+	docker pull curlimages/curl:latest
+	docker tag curlimages/curl:latest localhost:${REG_PORT}/curlimages/curl:latest
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/curlimages/curl:latest
+
+build-turso: local-registry docker-turso turso-upstream-images
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
 
 	## Build the Zarf package

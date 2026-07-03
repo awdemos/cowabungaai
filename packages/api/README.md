@@ -1,6 +1,6 @@
-# CowabungaAI Python API
+# CowabungaAI API
 
-A Python API that exposes AI backends, via FastAPI and gRPC, in the [OpenAI API specification](https://platform.openai.com/docs/api-reference).
+A Rust API that exposes AI backends via axum and gRPC in the [OpenAI API specification](https://platform.openai.com/docs/api-reference).
 
 ## Usage
 
@@ -36,4 +36,4 @@ uds zarf package deploy packages/api/zarf-package-leapfrogai-api-*-dev.tar.zst -
 
 ### Local Development
 
-See the [source code documentation](../../src/leapfrogai_api/README.md) for running the API from the source code for local Python environment development.
+See the [Rust API source code](../../rust/crates/api) for running the API from the Rust workspace.

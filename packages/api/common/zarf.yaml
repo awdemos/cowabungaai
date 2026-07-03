@@ -8,7 +8,7 @@ metadata:
 
 components:
   - name: cowabunga-api
-    description: "The CowabungaAI Python API that shadows the OpenAI API specification"
+    description: "The CowabungaAI Rust API that shadows the OpenAI API specification"
     required: true
     charts:
       - name: cowabunga
