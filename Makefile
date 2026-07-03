@@ -2,6 +2,7 @@ ARCH ?= amd64
 REG_PORT ?= 5000
 REG_NAME ?= registry
 LOCAL_VERSION ?= $(shell git rev-parse --short HEAD)
+BUILDER ?= default
 DOCKER_FLAGS :=
 ZARF_FLAGS :=
 FLAVOR := upstream
@@ -42,11 +43,15 @@ clean-registry:
 	@docker rm ${REG_NAME}
 
 sdk-wheel: ## build wheels for the legacy cowabunga_sdk package as a dependency for other lfai components
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f legacy/cowabunga_sdk/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f legacy/cowabunga_sdk/Dockerfile .
+
+sdk-wheel-registry: sdk-wheel local-registry ## tag and push the SDK image to the local registry for docker-container builders
+	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION}
 
 docker-turso:
 	## Build the turso database image with API server
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
 	docker tag ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
 
 build-turso: local-registry docker-turso
@@ -60,11 +65,11 @@ docker-api: local-registry
 	@echo $(ZARF_FLAGS)
 ifeq ($(FLAVOR),upstream)
 	## Build the Rust API image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} -f packages/api/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} -f packages/api/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
 endif
 	## Build the migration container for this version of the API
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
 
 build-api: local-registry docker-api ## Build the cowabunga-api Rust container and Zarf package
@@ -79,11 +84,11 @@ endif
 
 docker-ui:
 	## Build the Rust UI image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} -f packages/ui/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} -f packages/ui/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
 
 	## Build the migration container for the version of the UI
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
 
 build-ui: local-registry docker-ui ## Build the cowabunga-ui Rust container and Zarf package
@@ -94,9 +99,9 @@ build-ui: local-registry docker-ui ## Build the cowabunga-ui Rust container and 
 	## Build the Zarf package
 	uds zarf package create packages/ui --flavor ${FLAVOR} -a ${ARCH} -o packages/ui --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
-docker-llama-cpp-python: sdk-wheel
+docker-llama-cpp-python: sdk-wheel-registry
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} -f packages/llama-cpp-python/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} -f packages/llama-cpp-python/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION}
 
 build-llama-cpp-python: local-registry docker-llama-cpp-python ## Build the llama-cpp-python (cpu) container and Zarf package
@@ -106,9 +111,9 @@ build-llama-cpp-python: local-registry docker-llama-cpp-python ## Build the llam
 	## Build the Zarf package
 	uds zarf package create packages/llama-cpp-python --flavor ${FLAVOR} -a ${ARCH} -o packages/llama-cpp-python --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
-docker-vllm: sdk-wheel
+docker-vllm: sdk-wheel-registry
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} -f packages/vllm/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} -f packages/vllm/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION}
 
 build-vllm: local-registry docker-vllm ## Build the vllm container and Zarf package
@@ -118,9 +123,9 @@ build-vllm: local-registry docker-vllm ## Build the vllm container and Zarf pack
 	## Build the Zarf package
 	uds zarf package create packages/vllm --flavor ${FLAVOR} -a ${ARCH} -o packages/vllm --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
-docker-text-embeddings: sdk-wheel
+docker-text-embeddings: sdk-wheel-registry
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} -f packages/text-embeddings/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} -f packages/text-embeddings/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION}
 
 build-text-embeddings: local-registry docker-text-embeddings ## Build the text-embeddings container and Zarf package
@@ -131,9 +136,9 @@ build-text-embeddings: local-registry docker-text-embeddings ## Build the text-e
 	uds zarf package create packages/text-embeddings --flavor ${FLAVOR} -a ${ARCH} -o packages/text-embeddings --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 
-docker-whisper: sdk-wheel
+docker-whisper: sdk-wheel-registry
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} -f packages/whisper/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} -f packages/whisper/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION}
 
 build-whisper: local-registry docker-whisper ## Build the whisper container and zarf package
@@ -143,9 +148,9 @@ build-whisper: local-registry docker-whisper ## Build the whisper container and 
 	## Build the Zarf package
 	uds zarf package create packages/whisper --flavor ${FLAVOR} -a ${ARCH} -o packages/whisper --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
-docker-repeater: sdk-wheel
+docker-repeater: sdk-wheel-registry
 	## Build the image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} -f packages/repeater/Dockerfile .
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} -f packages/repeater/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION}
 
 build-repeater: local-registry docker-repeater ## Build the repeater container and zarf package

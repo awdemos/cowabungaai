@@ -1,5 +1,6 @@
 ARG LOCAL_VERSION
-FROM ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
+ARG SDK_REGISTRY=ghcr.io
+FROM ${SDK_REGISTRY}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
 
 # hardened and slim python w/ developer tools image
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev AS builder

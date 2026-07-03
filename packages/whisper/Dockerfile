@@ -1,5 +1,6 @@
 ARG LOCAL_VERSION
-FROM ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
+ARG SDK_REGISTRY=ghcr.io
+FROM ${SDK_REGISTRY}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
 
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11-dev AS builder
 
@@ -11,12 +12,13 @@ WORKDIR /cowabungaai
 # create virtual environment for light-weight portability and minimal libraries
 RUN python3.11 -m venv .venv
 ENV PATH="/cowabungaai/.venv/bin:$PATH"
+RUN pip install --upgrade "pip<24" "setuptools<71" wheel pybind11 Cython
 
 COPY --from=sdk /cowabungaai/${SDK_DEST} ${SDK_DEST}
 COPY packages/whisper packages/whisper
 
 RUN rm -f packages/whisper/build/*.whl &&\
-    python -m pip wheel "packages/whisper[dev]" -w packages/whisper/build --find-links=${SDK_DEST} &&\
+    python -m pip wheel "packages/whisper[dev]" -w packages/whisper/build --find-links=${SDK_DEST} --no-build-isolation &&\
     pip install packages/whisper/build/lfai_whisper*.whl --no-index --find-links=packages/whisper/build/
 
 # Use hardened ffmpeg image to get compiled binaries
@@ -40,14 +42,14 @@ LABEL org.opencontainers.image.licenses="BSL-1.1"
 LABEL org.opencontainers.image.version="0.14.0"
 LABEL maintainer="CowabungaAI Team"
 
-COPY --from=ffmpeg /usr/bin/ffmpeg /usr/bin
-COPY --from=ffmpeg /usr/bin/ffprobe /usr/bin
-COPY --from=ffmpeg /usr/lib/lib* /usr/lib
+COPY --from=ffmpeg /usr/local/bin/ffmpeg /usr/bin/ffmpeg
+COPY --from=ffmpeg /usr/local/bin/ffprobe /usr/bin/ffprobe
+COPY --from=ffmpeg /usr/local/lib/lib* /usr/lib
 
 COPY --from=builder /cowabungaai/.venv/ /cowabungaai/.venv/
 
 # set the path to the cuda 11.8 dependencies
-ENV LD_LIBRARY_PATH \
+ENV LD_LIBRARY_PATH=\
 /cowabungaai/.venv/lib64/python3.11/site-packages/nvidia/cublas/lib:\
 /cowabungaai/.venv/lib64/python3.11/site-packages/nvidia/cudnn/lib
 
