@@ -1,5 +1,6 @@
 ARG LOCAL_VERSION
-FROM ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
+ARG SDK_REGISTRY=ghcr.io
+FROM ${SDK_REGISTRY}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} AS sdk
 
 FROM nvidia/cuda:12.2.2-devel-ubuntu22.04 AS builder
 
