@@ -1,0 +1,43 @@
+set shell := ["bash", "-c"]
+
+export RUSTFLAGS := "-Dwarnings"
+
+# Default recipe: show available commands
+_default:
+    @just --list
+
+# Check all crates for compilation errors
+check:
+    cd rust && cargo check --workspace --all-targets
+
+# Build the workspace
+build:
+    cd rust && cargo build --workspace --release
+
+# Run all tests
+test:
+    cd rust && cargo nextest run --workspace
+
+# Run clippy with warnings as errors
+lint:
+    cd rust && cargo clippy --workspace --all-targets -- -D warnings
+
+# Format all code
+fmt:
+    cd rust && cargo fmt --all
+
+# Check formatting without modifying files
+fmt-check:
+    cd rust && cargo fmt --all -- --check
+
+# Audit dependencies for known vulnerabilities and license issues
+audit:
+    cd rust && cargo deny check
+
+# Run the API server locally
+dev-api:
+    cd rust && cargo run -p cowabunga-api
+
+# Generate Rust SDK from protobufs
+gen-proto:
+    cd rust && cargo run -p cowabunga-sdk --bin gen-proto

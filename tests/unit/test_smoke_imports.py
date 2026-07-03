@@ -16,7 +16,7 @@ def _import_or_skip(module: str):
         pytest.skip(f"Optional dependency missing for {module}: {exc}")
 
 
-# src/cowabunga_api backend modules
+# legacy/cowabunga_api backend modules
 @pytest.mark.parametrize(
     "module",
     [
@@ -33,7 +33,7 @@ def test_backend_module_imports(module):
     _import_or_skip(module)
 
 
-# src/cowabunga_api data modules
+# legacy/cowabunga_api data modules
 @pytest.mark.parametrize(
     "module",
     [
@@ -49,7 +49,7 @@ def test_data_module_imports(module):
     _import_or_skip(module)
 
 
-# src/cowabunga_api router modules
+# legacy/cowabunga_api router modules
 @pytest.mark.parametrize(
     "module",
     [
@@ -65,7 +65,7 @@ def test_router_module_imports(module):
     _import_or_skip(module)
 
 
-# src/cowabunga_api typedef modules
+# legacy/cowabunga_api typedef modules
 @pytest.mark.parametrize(
     "module",
     [
@@ -80,7 +80,7 @@ def test_typedef_module_imports(module):
     _import_or_skip(module)
 
 
-# src/cowabunga_evals modules
+# legacy/cowabunga_evals modules
 @pytest.mark.parametrize(
     "module",
     [
@@ -103,7 +103,7 @@ def test_evals_module_imports(module):
     _import_or_skip(module)
 
 
-# src/cowabunga_sdk modules
+# legacy/cowabunga_sdk modules
 @pytest.mark.parametrize(
     "module",
     [

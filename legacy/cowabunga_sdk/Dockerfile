@@ -6,7 +6,7 @@ USER root
 
 WORKDIR /cowabungaai
 
-COPY ./src/cowabunga_sdk /cowabungaai/src/cowabunga_sdk
+COPY ./legacy/cowabunga_sdk /cowabungaai/src/cowabunga_sdk
 
 RUN python -m venv .venv
 ENV PATH="/cowabungaai/.venv/bin:$PATH"
