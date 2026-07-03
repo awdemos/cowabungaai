@@ -1,6 +1,8 @@
 ARG LOCAL_VERSION
 FROM rust:1.85 AS builder
 
+RUN apt-get update && apt-get install -y protobuf-compiler && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /cowabungaai
 
 COPY rust/Cargo.toml rust/Cargo.lock rust/rust-toolchain.toml ./
@@ -12,7 +14,7 @@ COPY rust/deny.toml ./
 
 RUN cargo build -p cowabunga-api --release
 
-FROM cgr.dev/chainguard/static:latest AS runtime
+FROM cgr.dev/chainguard/glibc-dynamic:latest AS runtime
 
 # Add CowabungaAI labels
 LABEL org.opencontainers.image.title="CowabungaAI API"
@@ -28,8 +30,5 @@ LABEL maintainer="CowabungaAI Team"
 COPY --from=builder /cowabungaai/target/release/cowabunga-api /usr/local/bin/cowabunga-api
 
 EXPOSE 8080
-
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/healthz || exit 1
 
 ENTRYPOINT ["/usr/local/bin/cowabunga-api"]

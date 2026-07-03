@@ -7,11 +7,14 @@ rust-version.workspace = true
 
 [dependencies]
 leptos = { version = "0.8", features = ["ssr"] }
-leptos_router = { version = "0.8", features = ["ssr"] }
 leptos_axum = { version = "0.8" }
+leptos_meta = { version = "0.8" }
 axum = { workspace = true }
 tokio = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true }
 tracing = { workspace = true }
-console_error_panic_hook = "0.1"
+
+[[bin]]
+name = "cowabunga-ui"
+path = "src/main.rs"

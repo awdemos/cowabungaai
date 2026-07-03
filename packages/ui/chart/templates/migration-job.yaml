@@ -20,13 +20,7 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          command: ["/bin/sh"]
-          args:
-            - -c
-            - >-
-              echo "Running Turso database migrations for UI..." &&
-              echo "UI migrations are handled by the API migration job." &&
-              echo "Skipping UI-specific migrations."
+          command: ["/usr/local/bin/migrate"]
           securityContext:
             {{- toYaml .Values.migration.securityContext | nindent 12 }}
       restartPolicy: Never

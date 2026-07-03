@@ -1,3 +1,4 @@
+ARG LOCAL_VERSION
 FROM rust:1.85 AS builder
 
 RUN apt-get update && apt-get install -y protobuf-compiler && rm -rf /var/lib/apt/lists/*
@@ -11,13 +12,13 @@ COPY rust/migrations ./migrations
 COPY rust/.cargo ./.cargo
 COPY rust/deny.toml ./
 
-RUN cargo build -p cowabunga-api --release --bin migrate
+RUN cargo build -p cowabunga-ui --release
 
 FROM cgr.dev/chainguard/glibc-dynamic:latest AS runtime
 
 # Add CowabungaAI labels
-LABEL org.opencontainers.image.title="CowabungaAI Database Migrations"
-LABEL org.opencontainers.image.description="Database migration runner for CowabungaAI"
+LABEL org.opencontainers.image.title="CowabungaAI UI"
+LABEL org.opencontainers.image.description="Rust/Leptos SSR web UI for CowabungaAI"
 LABEL org.opencontainers.image.vendor="CowabungaAI"
 LABEL org.opencontainers.image.authors="CowabungaAI Team"
 LABEL org.opencontainers.image.source="https://github.com/awdemos/cowabungaai"
@@ -26,9 +27,11 @@ LABEL org.opencontainers.image.licenses="BSL-1.1"
 LABEL org.opencontainers.image.version="0.14.0"
 LABEL maintainer="CowabungaAI Team"
 
-COPY --from=builder /cowabungaai/target/release/migrate /usr/local/bin/migrate
+COPY --from=builder /cowabungaai/target/release/cowabunga-ui /usr/local/bin/cowabunga-ui
 
-# 65532 is the UID of the `nonroot` user in chainguard/glibc-dynamic.
-USER 65532:65532
+ENV LEPTOS_SITE_ADDR=0.0.0.0:3000
+ENV LEPTOS_OUTPUT_NAME=cowabunga-ui
 
-ENTRYPOINT ["/usr/local/bin/migrate"]
+EXPOSE 3000
+
+ENTRYPOINT ["/usr/local/bin/cowabunga-ui"]
