@@ -473,16 +473,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "console_error_panic_hook"
-version = "0.1.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a06aeb73f470f66dcdbf7223caeebb85984942f22f1adb2a088cf9668146bbbc"
-dependencies = [
- "cfg-if",
- "wasm-bindgen",
-]
-
-[[package]]
 name = "const-str"
 version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -633,13 +623,12 @@ name = "cowabunga-ui"
 version = "0.1.0"
 dependencies = [
  "axum 0.8.9",
- "console_error_panic_hook",
  "leptos",
  "leptos_axum",
- "leptos_router",
- "serde",
- "serde_json",
+ "leptos_meta",
  "tokio",
+ "tower 0.5.3",
+ "tower-http 0.6.11",
  "tracing",
 ]
 

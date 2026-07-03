@@ -22,4 +22,5 @@
 .bundles/
 website/
 logs/
+rust/target/
 

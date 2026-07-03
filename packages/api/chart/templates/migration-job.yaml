@@ -20,12 +20,7 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          command: ["/bin/sh"]
-          args:
-            - -c
-            - >-
-              echo "Running Turso database migrations..." &&
-              python -m cowabunga_api.migrations run --url "$TURSO_URL" --token "$TURSO_AUTH_TOKEN" --db-path "$TURSO_DATABASE_PATH"
+          command: ["/usr/local/bin/migrate"]
           securityContext:
             {{- toYaml .Values.api.migration.securityContext | nindent 12 }}
       restartPolicy: Never
