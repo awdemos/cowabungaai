@@ -22,7 +22,7 @@ variables:
 
 components:
   - name: cowabunga-api
-    description: "A Python API that shadows the OpenAI API specification"
+    description: "A Rust API that shadows the OpenAI API specification"
     only:
       flavor: upstream
     required: true
