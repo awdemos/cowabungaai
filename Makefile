@@ -19,12 +19,15 @@ help: ## Display this help information
 ## Clean up targets for test artifacts, cachce, etc.
 include mk-clean.mk
 
-gen-python: ## Generate the protobufs for the OpenAI typing within the cowabunga_api module
-	python3 -m grpc_tools.protoc -I src/cowabunga_sdk/proto \
-			--pyi_out=src/. \
-			--python_out=src/. \
-			--grpc_python_out=src/. \
-			src/cowabunga_sdk/proto/cowabunga_sdk/**/*.proto
+gen-proto: ## Generate the Rust SDK from protobuf definitions
+	cd rust && cargo run -p cowabunga-sdk --bin gen-proto
+
+gen-python: ## Generate the protobufs for the OpenAI typing within the legacy cowabunga_api module
+	python3 -m grpc_tools.protoc -I legacy/cowabunga_sdk/proto \
+			--pyi_out=legacy/. \
+			--python_out=legacy/. \
+			--grpc_python_out=legacy/. \
+			legacy/cowabunga_sdk/proto/cowabunga_sdk/**/*.proto
 
 local-registry: ## Start up a local container registry. Errors in this target are ignored.
 	@echo "Creating local Docker registry..."
@@ -38,8 +41,8 @@ clean-registry:
 	@docker stop ${REG_NAME}
 	@docker rm ${REG_NAME}
 
-sdk-wheel: ## build wheels for the cowabunga_sdk package as a dependency for other lfai components
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f src/cowabunga_sdk/Dockerfile .
+sdk-wheel: ## build wheels for the legacy cowabunga_sdk package as a dependency for other lfai components
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f legacy/cowabunga_sdk/Dockerfile .
 
 docker-turso:
 	## Build the turso database image with API server
@@ -52,19 +55,19 @@ build-turso: local-registry docker-turso
 	## Build the Zarf package
 	uds zarf package create packages/turso --flavor ${FLAVOR} -a ${ARCH} -o packages/turso --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
-docker-api: local-registry sdk-wheel
+docker-api: local-registry
 	@echo $(DOCKER_FLAGS)
 	@echo $(ZARF_FLAGS)
 ifeq ($(FLAVOR),upstream)
-	## Build the API image (and tag it for the local registry)
+	## Build the Rust API image (and tag it for the local registry)
 	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} -f packages/api/Dockerfile .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
 endif
 	## Build the migration container for this version of the API
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=packages/api/supabase/migrations" .
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=rust/migrations/refinery" .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
 
-build-api: local-registry docker-api ## Build the cowabunga_api container and Zarf package
+build-api: local-registry docker-api ## Build the cowabunga-api Rust container and Zarf package
 ifeq ($(FLAVOR),upstream)
 	## Push the images to the local registry (Zarf is super slow if the image is only in the local daemon)
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
@@ -75,15 +78,15 @@ endif
 	uds zarf package create packages/api --flavor ${FLAVOR} -a ${ARCH} -o packages/api --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
 
 docker-ui:
-	## Build the UI image (and tag it for the local registry)
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} src/cowabunga_ui
+	## Build the legacy UI image (and tag it for the local registry)
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} legacy/cowabunga_ui
 	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
 
 	## Build the migration container for the version of the UI
-	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=src/cowabunga_ui/supabase/migrations" .
+	docker build ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations --build-arg="MIGRATIONS_DIR=legacy/cowabunga_ui/supabase/migrations" .
 	docker tag ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
 
-build-ui: local-registry docker-ui ## Build the cowabunga_ui container and Zarf package
+build-ui: local-registry docker-ui ## Build the legacy cowabunga_ui container and Zarf package
 	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}

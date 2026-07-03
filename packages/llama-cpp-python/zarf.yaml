@@ -42,5 +42,11 @@ components:
     images:
       - ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:###ZARF_PKG_TMPL_IMAGE_VERSION###
       - cgr.dev/chainguard/bash:latest
-    # dataInjections disabled - model download will be handled separately
-    # actions disabled for now - model download will be handled separately
+    dataInjections:
+      - source: .model/
+        target:
+          namespace: cowabungaai
+          selector: app=lfai-llama-cpp-python
+          container: data-loader
+          path: /data/.model
+        compress: true

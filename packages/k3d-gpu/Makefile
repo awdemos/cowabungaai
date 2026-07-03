@@ -21,6 +21,7 @@ create-uds-gpu-cluster: build-k3d-gpu
 create-uds-cpu-cluster:
 	@uds deploy ${UDS_VERSION} \
 	${ZARF_FLAGS} \
+	--set K3D_EXTRA_ARGS="--servers=1 --agents=3" \
 	--confirm
 
 test-uds-gpu-cluster:
