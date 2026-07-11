@@ -192,3 +192,16 @@ Required environment variables should be documented in deployment guides.
 ---
 
 *Last Updated: 2025-01-11*
+
+## Deployment
+
+Observed deployment configuration:
+
+- Makefile present — inspect `make help` or `make deploy`
+- GitHub Actions workflows in `.github/workflows`
+
+General redeploy process:
+
+1. Commit and push changes to the default branch.
+2. Trigger the relevant CI/CD pipeline or run the documented deploy command.
+3. If the project is served via GitHub Pages, the site redeploys automatically after the push.
