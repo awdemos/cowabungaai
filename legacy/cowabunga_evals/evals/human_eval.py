@@ -16,8 +16,8 @@ def human_eval(
     num_tasks: Optional[int] = None,
 ) -> dict:
     """Runs the HumanEval benchmark on a subset of tasks"""
-    eval_results = dict()
-    task_scores = dict()
+    eval_results = {}
+    task_scores = {}
     num_tasks = num_tasks or int(
         os.getenv("HUMAN_EVAL_NUM_TASKS", default=len(list(HumanEvalTask)))
     )
