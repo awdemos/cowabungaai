@@ -4,7 +4,7 @@ type: docs
 weight: 1
 ---
 
-Prior to deploying CowabungaAI, ensure that the following tools, packages, and requirements are met and present in your environment. See the [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/) page fro more details.
+Prior to deploying CowabungaAI, ensure that the following tools, packages, and requirements are met and present in your environment. See the [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/) page for more details.
 
 ## System Requirements
 

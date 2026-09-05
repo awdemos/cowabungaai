@@ -17,7 +17,7 @@ help: ## Display this help information
 		| sort | awk 'BEGIN {FS = ":.*?## "}; \
 		{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-## Clean up targets for test artifacts, cachce, etc.
+## Clean up targets for test artifacts, cache, etc.
 include mk-clean.mk
 
 gen-proto: ## Generate the Rust SDK from protobuf definitions
