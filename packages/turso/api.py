@@ -1,9 +1,10 @@
 """Simple HTTP API for Turso SQLite database."""
 
+import os
+
+import aiosqlite
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import aiosqlite
-import os
 
 app = FastAPI(title="Turso SQLite API")
 DB_PATH = os.getenv("TURSO_DATABASE_PATH", "/data/cowabunga.db")
@@ -30,7 +31,7 @@ async def execute_query(request: QueryRequest):
             async with db.execute(request.query, request.params) as cursor:
                 rows = await cursor.fetchall()
                 return {"data": [dict(row) for row in rows]}
-        except Exception as e:
+        except aiosqlite.Error as e:
             raise HTTPException(status_code=400, detail=str(e))
 
 
