@@ -15,7 +15,7 @@ packages:
 
   # Model for generic chat and summarization
   - name: vllm
-    path: ../../../packages//vllm
+    path: ../../../packages/vllm
     ref: dev
 
   # Model for providing vector embeddings for text
