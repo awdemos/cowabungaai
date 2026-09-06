@@ -17,7 +17,7 @@ from cowabunga_evals.runners import QA_Runner
 def qa_eval(*args, **kwargs) -> dict:
     """Runs the Question/Answer evaluation"""
     logging.info("Beginning Question/Answer Evaluation...")
-    eval_results = dict()
+    eval_results = {}
     qa_test_cases = []
 
     qa_runner = QA_Runner(*args, **kwargs)

@@ -10,7 +10,7 @@ from cowabunga_evals.runners import NIAH_Runner
 def niah_eval(*args, **kwargs) -> dict:
     """Run the Needle in a Haystack evaluation"""
     logging.info("Beginning Needle in a Haystack Evaluation...")
-    eval_results = dict()
+    eval_results = {}
     niah_test_cases = []
 
     niah_runner = NIAH_Runner(*args, **kwargs)

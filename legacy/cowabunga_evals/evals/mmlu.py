@@ -10,7 +10,7 @@ from cowabunga_evals.models import COWABUNGA_Model
 
 def mmlu(num_tasks: Optional[int] = None, n_shots: Optional[int] = None) -> dict:
     """Runs the Massive Multitask Language Understanding (MMLU) benchmark on a subset of tasks"""
-    eval_results = dict()
+    eval_results = {}
     num_tasks = num_tasks or int(
         os.getenv("MMLU_NUM_TASKS", default=len(list(MMLUTask)))
     )
