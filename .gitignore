@@ -58,3 +58,7 @@ api/main
 
 # claude.ai artifacts
 .claude/
+
+# Desloppify artifacts
+.desloppify/
+scorecard.png
