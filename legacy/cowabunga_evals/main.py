@@ -18,7 +18,7 @@ class RAGEvaluator:
         self.eval_list = eval_list
         self.test_case_dict = None
         self.niah_test_cases = None
-        self.eval_results = dict()
+        self.eval_results = {}
 
     def set_evaluations(self, eval_list: List[str] = None) -> None:
         """Set the evaluations that will be run via a list"""
@@ -45,8 +45,8 @@ class RAGEvaluator:
 
         start_time = time.time()
         for eval_name in self.eval_list:
-            eval = globals()[eval_name]
-            eval_result = eval(*args, **kwargs)
+            eval_fn = globals()[eval_name]
+            eval_result = eval_fn(*args, **kwargs)
             self.eval_results.update(eval_result)
         end_time = time.time()
 

@@ -52,7 +52,7 @@ class QA_Runner:
 
         self.qa_data = None
         self.vector_store = None
-        self.file_dict = None
+        self.file_dict = {}
         self.current_assistant = None
         self.api_key = api_key or os.getenv("COWABUNGA_API_KEY")
         self.dataset_name = os.environ.get("QA_DATASET", dataset)
@@ -213,7 +213,7 @@ class QA_Runner:
             self.current_assistant = None
         if self.file_dict:
             self._delete_context()
-            self.file_dict = None
+            self.file_dict = {}
         if self.vector_store:
             self._delete_vector_store(vector_store_id=self.vector_store.id)
             self.vector_store = None
@@ -288,7 +288,7 @@ class QA_Runner:
         self, dataset_name: str, num_documents: int | None = None
     ) -> None:
         """Uploads the full-text context documents to the vector store"""
-        self.file_dict = dict()
+        self.file_dict = {}
         zip_path = hf_hub_download(
             repo_id=dataset_name, repo_type="dataset", filename="documents_partial.zip"
         )

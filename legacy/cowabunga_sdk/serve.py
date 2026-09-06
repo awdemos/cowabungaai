@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import signal
 from concurrent import futures
 
@@ -65,15 +66,15 @@ async def serve(o, host="0.0.0.0", port=50051):
         health_servicer.set(service, health_pb2.HealthCheckResponse.SERVING)
 
     # Listen on port 50051
-    server.add_insecure_port("{}:{}".format(host, port))
-    print("Starting server. Listening on {}:{}.".format(host, port))
+    server.add_insecure_port(f"{host}:{port}")
+    logging.info("Starting server. Listening on %s:%s.", host, port)
     await server.start()
 
     # Setup graceful shutdown
     shutdown_event = asyncio.Event()
 
     def signal_handler(*_):
-        print("Shutdown signal received")
+        logging.info("Shutdown signal received")
         shutdown_event.set()
 
     loop = asyncio.get_running_loop()
@@ -85,4 +86,4 @@ async def serve(o, host="0.0.0.0", port=50051):
 
     # Properly shutdown the server
     await server.stop(5)
-    print("Server has been shut down")
+    logging.info("Server has been shut down")
