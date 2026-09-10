@@ -68,18 +68,23 @@ migration:
 
   env:
     - name: TURSO_URL
-      value: "http://turso.cowabungaai.svc.cluster.local:8080"
-    - name: TURSO_AUTH_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: turso-auth
-          key: token
+      value: "local"
     - name: TURSO_DATABASE_PATH
-      value: "/data/cowabunga.db"
+      value: "/data/cowabunga-ui.db"
+    - name: TURSO_AUTH_TOKEN
+      value: "dummy"
 
   securityContext:
     runAsUser: 65532
     runAsGroup: 65532
+
+  volumeMounts:
+    - name: migration-data
+      mountPath: /data
+
+  volumes:
+    - name: migration-data
+      emptyDir: {}
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -87,11 +92,11 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after "resources:".
   limits:
-    cpu: 0
-    memory: 0
+    cpu: 100m
+    memory: 128Mi
   requests:
-    cpu: 0
-    memory: 0
+    cpu: 100m
+    memory: 128Mi
 
 replicaCount: 1
 

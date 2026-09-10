@@ -1,5 +1,5 @@
 api:
-  expose: true
+  expose: false
 
   image:
     repository: "ghcr.io/defenseunicorns/cowabungaai/cowabunga-api"
@@ -61,14 +61,17 @@ api:
 
     env:
       - name: TURSO_URL
-        value: "http://turso.cowabungaai.svc.cluster.local:8080"
-      - name: TURSO_AUTH_TOKEN
-        valueFrom:
-          secretKeyRef:
-            name: turso-auth
-            key: token
+        value: "local"
       - name: TURSO_DATABASE_PATH
         value: "/data/cowabunga.db"
+
+    volumeMounts:
+      - name: migration-data
+        mountPath: /data
+
+    volumes:
+      - name: migration-data
+        emptyDir: {}
 
 kiwigrid:
   image:

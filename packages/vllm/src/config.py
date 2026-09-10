@@ -103,7 +103,7 @@ class AppConfig(BaseConfig):
 
 
 class DownloadConfig(BaseConfig):
-    download_options: Optional[DownloadOptions]
+    download_options: Optional[DownloadOptions] = None
     CONFIG_SOURCES = [
         EnvSource(
             allow_all=True,

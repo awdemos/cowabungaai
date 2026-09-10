@@ -23,8 +23,7 @@ dev = ["confz == 2.0.1", "huggingface_hub[cli,hf_transfer] ==0.25.1"]
 generate-hashes = true
 
 [tool.setuptools]
-packages = ["vllm"]
-package-dir = { "" = "src" }
+py-modules = []
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

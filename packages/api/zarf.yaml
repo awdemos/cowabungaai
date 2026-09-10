@@ -12,7 +12,7 @@ constants:
 
 variables:
   - name: EXPOSE_API
-    default: "true"
+    default: "false"
     description: "Flag to expose the OpenAPI schema for debugging."
   - name: DEFAULT_EMBEDDINGS_MODEL
     default: "text-embeddings"

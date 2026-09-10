@@ -62,3 +62,6 @@ api/main
 # Desloppify artifacts
 .desloppify/
 scorecard.png
+
+# per-host model tooling venv (HF downloads)
+.venv-modeltools/
