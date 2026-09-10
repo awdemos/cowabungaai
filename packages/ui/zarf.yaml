@@ -47,7 +47,7 @@ variables:
     sensitive: false
   - name: DISABLE_KEYCLOAK
     description: Disable keycloak true or false
-    default: "false"
+    default: "true"
     prompt: true
     sensitive: false
   - name: MESSAGE_LENGTH_LIMIT
