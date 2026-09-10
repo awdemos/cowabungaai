@@ -1,0 +1,83 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: "ghcr.io/defenseunicorns/cowabungaai/text-embeddings-tiny"
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  # x-release-please-start-version
+  tag: 0.14.0
+  # x-release-please-end
+
+nameOverride: "text-embeddings-tiny"
+fullnameOverride: ""
+
+env:
+  - name: COWABUNGA_LOG_LEVEL
+    value: "INFO"
+
+podSecurityContext:
+  runAsNonRoot: true
+  fsGroup: 65532
+
+securityContext:
+  runAsUser: 65532
+  runAsGroup: 65532
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 50051
+
+resources:
+  limits:
+    nvidia.com/gpu: "0"
+    cpu: "500m"
+    memory: "256Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+replicaCount: 1
+
+podAnnotations: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+strategy:
+  rollingUpdate:
+    maxUnavailable: 0
+  type: RollingUpdate
+
+persistence:
+  size: 15Gi
+  accessModes: ReadWriteOnce
+  storageClass: "local-path"
+
+gpu:
+  runtimeClassName: ""
+
+modelInjectionContainer:
+  securityContext:
+    runAsUser: 65532
+    runAsGroup: 65532
+
+  resources:
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+    requests:
+      memory: "64Mi"
+      cpu: "200m"
+
+  volumeMounts:
+    - name: cowabungaai-pv-storage
+      mountPath: /data

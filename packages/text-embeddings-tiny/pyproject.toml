@@ -1,0 +1,36 @@
+[project]
+name = "lfai-text-embeddings-tiny"
+description = "Tiny ONNX MiniLM embeddings backend for CowabungaAI (no torch)."
+
+# x-release-please-start-version
+version = "0.14.0"
+# x-release-please-end
+
+dependencies = [
+    "onnxruntime == 1.18.1",
+    "numpy == 1.26.4",
+    "tokenizers == 0.19.1",
+    "cowabunga-sdk",
+]
+requires-python = "~=3.11"
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = ["huggingface_hub ==0.25.1"]
+
+[tool.pip-tools]
+generate-hashes = true
+
+[tool.setuptools]
+py-modules = ["main_tiny"]
+
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+
+[tool.ruff]
+target-version = "py311"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
