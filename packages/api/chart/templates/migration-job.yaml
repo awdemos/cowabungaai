@@ -23,5 +23,13 @@ spec:
           command: ["/usr/local/bin/migrate"]
           securityContext:
             {{- toYaml .Values.api.migration.securityContext | nindent 12 }}
+          {{- with .Values.api.migration.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.api.migration.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       restartPolicy: Never
   backoffLimit: 4

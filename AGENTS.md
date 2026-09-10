@@ -1,207 +1,141 @@
-# CowabungaAI Development Agents
+# CowabungaAI — Agent Handbook
 
-This document describes the AI coding agents that operate in this repository and provides guidelines for their use.
+Instructions for AI coding agents working in this repository.
+CowabungaAI (formerly LeapfrogAI) is a UDS-Zarf-deployable LLM inference
+platform: a Rust OpenAI-compatible API, a React UI, zarf-packaged model
+backends, and a GPU k3d cluster runtime.
 
-## Available Agents
+*Verified against the working deployment: 2026-09-10.*
 
-### Sisyphus (Main Orchestrator)
-**Role**: Orchestrates development tasks, manages other agents, ensures code quality
-**Capabilities**:
-- Orchestrates multi-file operations
-- Delegates to specialized agents (frontend-ui-ux-engineer, document-writer)
-- Validates work across multiple files and modules
-- Manages todo tracking for complex tasks
-- Reviews code changes before finalizing
+## Repository Layout
 
-### Agent Specialization
+- `rust/crates/api/` — the main API service (Axum, OpenAI-compatible).
+  - `rust/crates/api/src/main.rs` — server startup. NOTE: as of this
+    writing it always wires `MemoryStorage` (line ~24); turso/libSQL
+    persistence exists in the codebase but is not used by the server.
+  - `rust/crates/api/src/bin/migrate.rs` — schema migrations binary.
+    Reads `TURSO_URL` and optionally `TURSO_DATABASE_PATH`.
+- `rust/crates/db/src/libsql.rs` — libSQL client wrapper.
+  **Important**: remote mode is used only for `libsql://` or `https://`
+  URLs (both TLS); any other scheme (`http://`, `ws://`) falls back to
+  `Builder::new_local` (file mode). Plain HTTP sqld endpoints therefore
+  cannot be used remotely unless TLS is terminated.
+- `rust/crates/cowabunga_sdk/` — shared SDK: gRPC/Python bindings used
+  by model backends (embeddings, llama.cpp, whisper, vllm wrappers).
+- `packages/` — one zarf package per component, each self-contained:
+  - `packages/api/`, `packages/ui/`, `packages/vllm/`,
+    `packages/text-embeddings/` (torch, 5.75 GB),
+    `packages/text-embeddings-tiny/` (ONNX MiniLM, no torch),
+    `packages/llama-cpp-python/`, `packages/whisper/`,
+    `packages/turso/` (libSQL server), `packages/k3d-gpu/`.
+  - Each has: `Dockerfile`, `zarf.yaml` (+ optional `zarf-config.yaml`
+    for create-time sets/flavors), `values/upstream-values.yaml`
+    (Helm), sometimes `chart/` ( Helm chart vendored) and `src/`.
+- `legacy/cowabunga_sdk/` — source of the SDK wheel image.
+- `Makefile` — the authoritative build/deploy flow (`make help`).
+- `GPU_DEPLOYMENT_REPORT.md`, `KNOWN_ISSUES.md` — recon notes from the
+  first GPU bring-up (some contents are stale; verify against code).
 
-#### Frontend UI/UX
-**Agent**: `frontend-ui-ux-engineer`
-**Use for**: Visual changes, styling, layout, animation, responsive design
-**Capabilities**:
-- Creates and modifies React/Svelte/Vue components
-- Applies Tailwind CSS classes and modern design patterns
-- Ensures responsive layouts and mobile compatibility
-- Implements accessibility standards (WCAG, ARIA)
+## Build & Deploy (the flow that actually works here)
 
-#### Document Writer
-**Agent**: `document-writer`
-**Use for**: README files, API documentation, architecture diagrams
-**Capabilities**:
-- Generates comprehensive project documentation
-- Creates architecture diagrams
-- Writes clear, structured markdown files
-- Ensures consistency with existing docs
+The build host runs docker = **podman 6.1.1 shim** over a rootful
+podman machine VM. Everything is non-root via the world-writable socket:
 
-#### Oracle (Architecture Advisor)
-**Agent**: `oracle`
-**Use for**: Complex architectural decisions, multi-system tradeoffs, code quality
-**Capabilities**:
-- Deep analysis of system design patterns
-- Recommends best practices for distributed systems
-- Reviews and validates implementation approaches
-- Provides guidance on security, performance, and scalability
-
-#### Librarian (Research Agent)
-**Agent**: `librarian`
-**Use for**: External dependencies, OSS packages, documentation research
-**Capabilities**:
-- Researches best practices from open-source projects
-- Locates implementation examples
-- Checks for dependency vulnerabilities
-- Retrieves library version information
-
-#### Explore Agent
-**Agent**: `explore`
-**Use for**: Codebase pattern discovery, file searching, AST analysis
-**Capabilities**:
-- Searches codebase for specific patterns and implementations
-- Uses AST-grep for structural analysis
-- Finds imports, exports, and code relationships
-- Analyzes file dependencies and module structures
-
-#### Subagent Execution
-The system supports subagent execution through `task` and `subagents/utils` modules. These are used by the main orchestrator (Sisyphus) to delegate specialized work.
-
-## Code Style Guidelines
-
-### General Principles
-- **Clarity**: Code should be self-documenting and easy to understand
-- **Consistency**: Follow existing patterns in codebase
-- **Simplicity**: Prefer straightforward solutions over complex ones
-- **Type Safety**: Use TypeScript types correctly, avoid `any` type
-- **Error Handling**: Always handle errors gracefully, provide meaningful error messages
-- **Performance**: Consider performance implications of changes
-
-### TypeScript/JavaScript Guidelines
-
-#### Imports
-```typescript
-// Preferred - explicit named imports
-import { expect, test } from '@playwright/test';
-import type { Page } from '@playwright/test';
-
-// Avoid wildcard imports
-// import * from 'library-name';  // Not recommended
-
-// Type imports
-import type { FileObject } from 'openai/resources/files';
-```
-
-#### Naming Conventions
-
-#### Files
-- **Components**: PascalCase (e.g., `UserProfile.ts`, `ChatMessage.ts`)
-- **Utilities**: camelCase (e.g., `fileHelpers.ts`, `navigationHelpers.ts`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `API_BASE_URL`, `LONG_RESPONSE_PROMPT`)
-- **Test Files**: kebab-case (e.g., `api-keys.test.ts`, `header.test.ts`)
-- **Test Functions**: camelCase (e.g., `createAPIKey`, `deleteBtn`
-
-#### Functions
-```typescript
-// Async functions use camelCase
-async function createAPIKey(): Promise<void> {
-  const { page } = getTestPage();
-  // ...
-}
-
-// Utility functions use camelCase
-function formatDate(date: Date): string {
-  // ...
-}
-```
-
-#### Error Handling
-
-#### Expected Patterns
-```typescript
-// Try-catch blocks for async operations
-try {
-  await someAsyncOperation();
-} catch (error) {
-  logError('Operation failed', error);
-  throw new ApplicationError(error.message);
-}
-
-// Validate inputs before processing
-function validateApiKey(key: string): boolean {
-  if (!key || key.trim().length === 0) {
-    throw new Error('API key is required');
-  }
-  return true;
-}
-```
-
-#### Testing Guidelines
-
-#### E2E Testing
-- Test critical user flows (authentication, file operations, chat)
-- Test error conditions and edge cases
-- Verify UI responsiveness and accessibility
-- Test API error handling
-- Verify data serialization/deserialization
-
-#### API Testing
-- Mock API responses for local development
-- Test API error handling
-- Verify data serialization/deserialization
-
-#### Documentation Requirements
-
-#### README Files
-- Project overview and architecture
-- Installation and setup instructions
-- Development guidelines and contribution process
-- API reference documentation
-- Troubleshooting guide
-
-## Build/Lint/Test Commands
-
-The repository uses several tools for building and testing codebase:
-
-### Testing Framework
-- **Playwright**: E2E testing framework for UI
-- **Expectation/Assert**: Assertion library for test assertions
-- **Test Organization**: Tests organized by feature/feature
-
-### Linting
-- **Ruff**: Python linter for fast, type-safe linting
-- **ESLint**: JavaScript/TypeScript linter
-- **Prettier**: Code formatter for consistent formatting
-
-### Running Tests
 ```bash
-# Run all tests
-npm test
+# 1. Local registry (required before any image build)
+make local-registry                      # registry on localhost:5000
+
+# 2. Images (tag = git short SHA, e.g. 0bf35225)
+docker build --platform linux/amd64 \
+  --build-arg LOCAL_VERSION=$V --build-arg SDK_REGISTRY=localhost:5000 \
+  -t ghcr.io/defenseunicorns/cowabungaai/<component>:$V \
+  -f packages/<component>/Dockerfile .
+docker push --tls-verify=false localhost:5000/...
 ```
 
-### Docker/Packaging
+**Zarf package create + deploy** (works with no internet access on the
+deploy target — models are downloaded at `create` time via
+`scripts/model_download*.py` and data-injected into `/data/.model`):
 
-Images are built and can be run directly:
 ```bash
-# Run UI
-docker run -d -p 5173:5173 \
-  --name leapfrogai-ui \
-  ghcr.io/defenseunicorns/leapfrogai/leapfrogai-ui:4dd6953f
+zarf package create <pkg dir> -o . --flavor upstream \
+  --set IMAGE_VERSION=$V --confirm
+# copy the .tar.zst into the k3d node and deploy from inside the node
+zarf package deploy /tmp/<pkg>.tar.zst --confirm
 ```
 
-## Environment Variables
+**Cluster** (one-time, see `packages/k3d-gpu/`): custom node image
+`ghcr.io/defenseunicorns/leapfrogai/k3d-gpu:<tag or :patched2>` with the
+k3d entrypoint fix; cluster created, then `zarf init` + package deploys
+for turso, tiny-embeddings, api, ui (and llama-cpp-python / vllm).
 
-Required environment variables should be documented in deployment guides.
+## Gotchas (verified the hard way — keep these)
 
----
+1. **Zarf variables must have defaults.** An unset `ZARF_VAR_*` renders
+   as the literal `###ZARF_VAR_X###` in Helm values, which evaluates
+   truthy — that once silently rendered `uds.dev` Package CRDs that
+   fail without UDS/Istio CRDs ("resource mapping not found"). If this
+   repo's app is deployed without UDS Studio, the api/ui charts must
+   NOT render `uds-package.yaml`/`istio-*` templates.
+2. **`write_file`/patch tools refuse templated YAML** — Helm files
+   containing `{{ }}` must be edited via Python, not the built-in
+   write/patch tools (their linter misparses them).
+3. **Always `docker cp` the freshly built package into the node
+   before deploy** — a previously copied `/tmp/pkg-*.tar.zst` is NOT
+   refreshed automatically; stale packages have caused silent rollbacks
+   of fixes (the UI deploy loop lost ~30 min to this).
+4. **Half-installed Helm releases**: interrupted deploys leave
+   `pending-install` releases in surprise namespaces (e.g. UI in
+   `cowabunga` instead of `cowabungaai`). Check with
+   `zarf tools helm list -A` before re-deploying; uninstall leftovers.
+5. **Migration job env contract** (api + ui charts): `TURSO_URL` must
+   be set; if `TURSO_DATABASE_PATH` is set, the migrate binary runs in
+   local-file mode (and needs a mounted `/data`). The current deploy
+   uses local-file mode on an emptyDir because the bundled turso sqld
+   is plain HTTP while the client build only speaks TLS for remote.
+6. **Model package layout**: backends read `/data/.model/…`. For
+   llama-cpp-python the gguf must be named `model.gguf`; for
+   text-embeddings-tiny the ONNX must be `onnx/model.onnx` →
+   normalized to `model.onnx`.
+7. **GGUF architecture support**: `prism-ml/Ternary-Bonsai-1.7B-gguf`
+   declares `general.architecture=qwen3` — needs llama-cpp-python
+   >= 0.3.x (qwen3 support, Apr 2025). The repo pinned 0.2.72 and was
+   bumped to 0.3.20 for this reason. Do not downgrade blindly.
+8. **vLLM image has no GGUF loader** (no gguf entry in
+   `QUANTIZATION_METHODS` at the pinned version) — GGUF models go to
+   llama-cpp-python, not vLLM.
 
-*Last Updated: 2025-01-11*
+## Code Style
 
-## Deployment
+- Rust: follow workspace conventions (`rust/crates/*`), keep error
+  handling explicit; prefer `thiserror`-style variants.
+- Python (backends): stdlib + SDK imports, log via `logging`, gRPC
+  service classes subclass the SDK base classes (see
+  `packages/*/main*.py`).
+- TS/React only in the UI: explicit named imports, no `any`,
+  camelCase test functions, kebab-case test files.
+- Keep `zarf.yaml` variables defaulted; keep chart values valid
+  Kubernetes quantities (never `cpu: 0`).
 
-Observed deployment configuration:
+## Environment
 
-- Makefile present — inspect `make help` or `make deploy`
-- GitHub Actions workflows in `.github/workflows`
+- Registry: `localhost:5000` (world-access on the build host).
+- In-cluster zarf registry: `127.0.0.1:31711` (from the node).
+- Secrets: `turso-auth` (key `token`) in `cowabungaai` and `cowabunga`
+  namespaces; dummy `sso-client-uds-cowabunga` (keycloak disabled via
+  `PUBLIC_DISABLE_KEYCLOAK`).
+- NodePorts: UI on `30080/30081` (node-level; reach patterns documented
+  in the podman-machine-k8s skill).
+- Model tooling venv for HF downloads: `.venv-modeltools/`
+  (python3.12; huggingface_hub + hf_transfer). PEP 668 blocks pip
+  system installs — always use this venv.
 
-General redeploy process:
+## Verification Checklist Before Claiming "Deployed"
 
-1. Commit and push changes to the default branch.
-2. Trigger the relevant CI/CD pipeline or run the documented deploy command.
-3. If the project is served via GitHub Pages, the site redeploys automatically after the push.
+- `kubectl -n cowabungaai get pods` → all Running/Completed, no
+  `CreateContainerError`.
+- `kubectl exec deploy/cowabunga-api -c sidecar -- wget -qO- \
+  http://cowabunga-api:8080/ready` → `{"ready":true,...}`.
+- UI service returns HTTP 200 (`wget`/curl probe through a pod).
+- For model services: one real inference round-trip before declaring
+  success (embed call for te*, generate for llama-cpp / vllm).

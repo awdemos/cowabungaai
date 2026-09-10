@@ -1,29 +1,29 @@
 [project]
-name = "lfai-vllm"
-description = "A LeapfrogAI API-compatible VLLM wrapper for quantized and un-quantized model inferencing across GPU infrastructures."
+name = "lfai-text-embeddings-tiny"
+description = "Tiny ONNX MiniLM embeddings backend for CowabungaAI (no torch)."
 
 # x-release-please-start-version
 version = "0.14.0"
 # x-release-please-end
 
 dependencies = [
-    "pydantic == 2.8.2",
-    "vllm == 0.4.3",
-    "python-dotenv == 1.0.1",
+    "onnxruntime == 1.18.1",
+    "numpy == 1.26.4",
+    "tokenizers == 0.19.1",
     "cowabunga-sdk",
-    "confz == 2.0.1",
 ]
 requires-python = "~=3.11"
 readme = "README.md"
 
 [project.optional-dependencies]
-dev = ["confz == 2.0.1", "huggingface_hub[cli,hf_transfer] ==0.25.1"]
+dev = ["huggingface_hub ==0.25.1"]
 
 [tool.pip-tools]
 generate-hashes = true
 
 [tool.setuptools]
-py-modules = []
+py-modules = ["main_tiny"]
+
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]

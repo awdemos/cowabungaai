@@ -42,8 +42,8 @@ USER nonroot
 
 # copy-in SDK from sdk stage and vllm source code from host
 WORKDIR /home/cowabungaai
-COPY --from=sdk --chown=nonroot:nonroot /cowabungaai/${SDK_DEST} ./${SDK_DEST}
-COPY --chown=nonroot:nonroot ${COMPONENT_DIRECTORY} packages/vllm
+COPY --from=sdk --chown=65532:65532 /cowabungaai/${SDK_DEST} ./${SDK_DEST}
+COPY --chown=65532:65532 ${COMPONENT_DIRECTORY} packages/vllm
 
 # create virtual environment for light-weight portability and minimal libraries
 RUN curl https://pyenv.run | bash && \
@@ -88,11 +88,11 @@ USER nonroot
 WORKDIR /home/cowabungaai
 
 # copy-in SDK from sdk stagem model and vllm source code from builder
-COPY --from=sdk --chown=nonroot:nonroot /cowabungaai/${SDK_DEST} ./${SDK_DEST}
-COPY --from=builder --chown=nonroot:nonroot /home/cowabungaai/.venv /home/cowabungaai/.venv
-COPY --from=builder --chown=nonroot:nonroot /home/cowabungaai/packages/vllm/src /home/cowabungaai/packages/vllm/src
+COPY --from=sdk --chown=65532:65532 /cowabungaai/${SDK_DEST} ./${SDK_DEST}
+COPY --from=builder --chown=65532:65532 /home/cowabungaai/.venv /home/cowabungaai/.venv
+COPY --from=builder --chown=65532:65532 /home/cowabungaai/packages/vllm/src /home/cowabungaai/packages/vllm/src
 # copy-in python binaries
-COPY --from=builder --chown=nonroot:nonroot /home/nonroot/.pyenv/versions/${PYTHON_VERSION}/ /home/nonroot/.pyenv/versions/${PYTHON_VERSION}/
+COPY --from=builder --chown=65532:65532 /home/nonroot/.pyenv/versions/${PYTHON_VERSION}/ /home/nonroot/.pyenv/versions/${PYTHON_VERSION}/
 
 # remove vLLM callback to stats server
 ENV VLLM_NO_USAGE_STATS=1
