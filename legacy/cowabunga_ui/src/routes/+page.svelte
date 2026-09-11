@@ -30,4 +30,9 @@
     <img alt="LeapfrogAI Logo" src={logo} class="logo" />
   </div>
   <Button on:click={signInWithKeycloak}>Log In with UDS SSO</Button>
+  <form method="POST" action="/auth/local" class="flex flex-col gap-2 w-72">
+    <input name="username" placeholder="username" class="h-10 rounded border border-gray-400 px-3 text-black" required />
+    <input name="password" type="password" placeholder="password" class="h-10 rounded border border-gray-400 px-3 text-black" required />
+    <Button type="submit">Log In</Button>
+  </form>
 </div>
