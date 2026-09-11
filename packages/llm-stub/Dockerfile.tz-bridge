@@ -1,0 +1,4 @@
+FROM python:3.11-slim
+COPY tz-bridge-proxy.py /app/proxy.py
+RUN chmod a+rX /app /app/proxy.py
+CMD ["python", "-u", "/app/proxy.py"]

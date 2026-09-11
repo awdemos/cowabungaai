@@ -25,12 +25,20 @@ export const POST: RequestHandler = async ({ request, locals: { session } }) => 
 
   // We have to use the Vercel AI SDK createOpenAI helper here instead of our internal getOpenAiClient for streaming to
   // work (Vercel AI uses a slightly different type of provider)
-  const openai = createOpenAI({
-    apiKey: env.OPENAI_API_KEY ? env.OPENAI_API_KEY : session.access_token,
-    baseURL: env.OPENAI_API_KEY
+  // Direct-to-TensorZero chat: TZ serves an OpenAI-compatible streaming
+  // endpoint; model names are `tensorzero::model_name::<model>`. Falls back
+  // to the platform API when CHAT_API_BASE_URL is not set.
+  const chatBase = env.CHAT_API_BASE_URL
+    ? env.CHAT_API_BASE_URL
+    : env.OPENAI_API_KEY
       ? `${env.LEAPFROGAI_API_BASE_URL}/v1`
-      : `${env.LEAPFROGAI_API_BASE_URL}/openai/v1`
-  });
+      : `${env.LEAPFROGAI_API_BASE_URL}/openai/v1`;
+  const apiKey = env.CHAT_API_KEY
+    ? env.CHAT_API_KEY
+    : env.OPENAI_API_KEY
+      ? env.OPENAI_API_KEY
+      : session.access_token;
+  const openai = createOpenAI({ apiKey, baseURL: chatBase });
 
   const reformatedMessages = messages.map((message: LFMessage) => ({
     ...message,
