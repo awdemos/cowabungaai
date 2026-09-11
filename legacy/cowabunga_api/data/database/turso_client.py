@@ -132,7 +132,7 @@ class TursoQueryBuilder(QueryBuilder):
         self, client: httpx.AsyncClient, sql: str, params: list, headers: dict
     ) -> TursoResult:
         payload = {"statements": [{"query": sql, "params": params}]}
-        response = await client.post(f"{self.base_url}/", json=payload, headers=headers)
+        response = await _legacy_api_post(client, self.base_url, payload, headers)
         response.raise_for_status()
         results = response.json()
 
@@ -189,7 +189,7 @@ class TursoQueryBuilder(QueryBuilder):
             statements.append({"query": sql, "params": list(record.values())})
 
         payload = {"statements": statements}
-        response = await client.post(f"{self.base_url}/", json=payload, headers=headers)
+        response = await _legacy_api_post(client, self.base_url, payload, headers)
         response.raise_for_status()
 
         results = response.json()
@@ -276,12 +276,14 @@ class TursoAuthClient(AuthClient):
 
     async def set_session(self, access_token: str, refresh_token: str) -> None:
         self._access_token = access_token
-        # Attempt to extract user_id from JWT
-        if access_token and access_token.count(".") == 2:
+        # Attempt to extract user_id from JWT (2- or 3-part tokens both seen:
+        # pre-3part UI sessions mint "header.payload" without a signature)
+        parts = (access_token or "").split(".")
+        if len(parts) >= 2:
             try:
                 import base64
                 import json
-                payload_b64 = access_token.split(".")[1]
+                payload_b64 = parts[1]
                 # Add padding if needed
                 padding = 4 - len(payload_b64) % 4
                 if padding != 4:
@@ -296,6 +298,72 @@ class TursoOptions:
     def __init__(self):
         self.headers = {}
         self.auto_refresh_token = False
+
+
+
+
+async def _legacy_api_post(
+    client: "httpx.AsyncClient", base_url: str, payload: dict, headers: dict
+) -> httpx.Response:
+    """Compatibility bridge: older sqld exposed POST / with {"statements":
+    [{"query","params"}]}; current sqld only serves /v2/pipeline. Translate the
+    legacy payload to v2 and map the v2 response back to the legacy list shape
+    so the rest of this client works unchanged."""
+    requests = []
+    for stmt in payload.get("statements", []):
+        req = {"type": "execute", "stmt": {"sql": stmt["query"]}}
+        if stmt.get("params"):
+            args = []
+            for v in stmt["params"]:
+                if v is None:
+                    args.append({"type": "null", "value": None})
+                elif isinstance(v, bool):
+                    args.append({"type": "text", "value": str(int(v))})
+                elif isinstance(v, (int,)):
+                    args.append({"type": "text", "value": str(v)})
+                elif isinstance(v, float):
+                    args.append({"type": "text", "value": str(v)})
+                else:
+                    args.append({"type": "text", "value": str(v)})
+            req["stmt"]["args"] = args
+        requests.append(req)
+    v2_payload = {"requests": requests + [{"type": "close"}]}
+    v2_headers = dict(headers)
+    v2_headers["Content-Type"] = "application/json"
+    response = await client.post(
+        f"{base_url}/v2/pipeline", json=v2_payload, headers=v2_headers
+    )
+    response.raise_for_status()
+    v2 = response.json()
+
+    legacy = []
+    for res in v2.get("results", []):
+        if res.get("type") == "error":
+            legacy.append({"error": {"message": res.get("error", {}).get("message", "unknown error")}})
+            continue
+        result = res.get("response", {}).get("result", {})
+        cols = [c["name"] for c in result.get("cols", [])]
+        rows = []
+        for row in result.get("rows", []):
+            vals = []
+            for cell in row:
+                if isinstance(cell, dict):
+                    vals.append(cell.get("value", cell.get("v")))
+                else:
+                    vals.append(cell)
+            rows.append(vals)
+        legacy.append({"results": {"columns": cols, "rows": rows}})
+
+    class _LegacyResponse:
+        status_code = 200
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return legacy
+
+    return _LegacyResponse()
 
 
 class TursoClient(DatabaseClient):
@@ -330,11 +398,47 @@ class TursoClient(DatabaseClient):
     def options(self) -> TursoOptions:
         return self._options
 
+    async def _execute_raw_sql(self, sql: str, params: list) -> TursoResult:
+        """Run an arbitrary statement through the v2 pipeline adapter."""
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            headers = {"Content-Type": "application/json"}
+            tok = (self._options.headers or {}).get("Authorization")
+            if tok:
+                headers["Authorization"] = tok
+            payload = {"statements": [{"query": sql, "params": params}]}
+            response = await _legacy_api_post(client, self.base_url, payload, headers)
+            response.raise_for_status()
+            results = response.json()
+        if not results or not isinstance(results, list):
+            return TursoResult(data=[])
+        first = results[0]
+        if "error" in first:
+            return TursoResult(data=[], error=first["error"].get("message"))
+        if "results" not in first:
+            return TursoResult(data=[])
+        cols = first["results"].get("columns", [])
+        rows = first["results"].get("rows", [])
+        return TursoResult(data=[dict(zip(cols, row)) for row in rows])
+
+    async def table_columns(self, table_name: str) -> list[str]:
+        """Return the column names of a table (PRAGMA table_info via v2 pipeline)."""
+        res = await self._execute_raw_sql(
+            f"PRAGMA table_info({table_name})", []
+        )
+        if not res.data:
+            return []
+        out = set()
+        for row in res.data:
+            name = row.get("name")
+            if name:
+                out.add(name)
+        return sorted(out)
+
     async def health_check(self) -> bool:
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 payload = {"statements": [{"query": "SELECT 1", "params": []}]}
-                response = await client.post(f"{self.base_url}/", json=payload)
+                response = await _legacy_api_post(client, self.base_url, payload, {"Content-Type": "application/json"})
                 return response.status_code == 200
         except Exception:
             return False
