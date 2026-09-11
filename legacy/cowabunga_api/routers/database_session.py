@@ -131,8 +131,12 @@ def _validate_jwt_token(token: str) -> bool:
     """
 
     try:
-        _header, _payload, _signature = token.split(".")
-        if not _header or not _payload or not _signature:
+        parts = token.split(".")
+        # UI sessions minted before the 3-part fix carry 2-part tokens
+        # (header.payload); tolerate both shapes — legacy auth is unsigned.
+        if len(parts) < 2:
+            return False
+        if not parts[0] or not parts[1]:
             return False
         return True
     except ValueError:

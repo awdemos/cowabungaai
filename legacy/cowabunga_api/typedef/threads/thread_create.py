@@ -81,10 +81,18 @@ class CreateThreadRequest(BaseModel):
         try:
             crud_message = CRUDMessage(db=session)
 
+            normalized_content = []
+            for block in message_content:
+                b = dict(block) if isinstance(block, dict) else block
+                if isinstance(b, dict) and b.get("type") == "text" and isinstance(b.get("text"), dict):
+                    text_part = dict(b["text"])
+                    text_part.setdefault("annotations", [])
+                    b["text"] = text_part
+                normalized_content.append(b)
             message = Message(
                 id="",  # Leave blank to have Postgres generate a UUID
                 attachments=attachments,
-                content=message_content,
+                content=normalized_content,
                 created_at=0,  # Leave blank to have Postgres generate a timestamp
                 metadata=self.metadata,
                 object="thread.message",

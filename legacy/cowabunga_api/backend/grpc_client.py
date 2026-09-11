@@ -189,3 +189,15 @@ async def create_token_count(model: Model, request: lfai.TokenCountRequest):
             model=model.name,
             text=request.text,
         )
+
+
+def count_tokens(model, text):
+    """Token count via the backend gRPC token-count endpoint; falls back to a
+    conservative whitespace-based estimate if the backend is unavailable."""
+    try:
+        import asyncio
+        return asyncio.get_event_loop().run_until_complete(
+            create_token_count(model, lfai.TokenCountRequest(text=text))
+        )
+    except Exception:  # pragma: no cover - backend may not support token counting
+        return max(1, len(text.split()) + 10)

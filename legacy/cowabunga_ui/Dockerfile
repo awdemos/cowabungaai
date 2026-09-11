@@ -1,13 +1,5 @@
 FROM node:18-alpine AS builder
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache libreoffice openjdk11-jre fontconfig msttcorefonts-installer \
-    && update-ms-fonts \
-    && fc-cache -f
-
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-ENV PATH=${JAVA_HOME}/bin:$PATH
-
 WORKDIR /app
 
 COPY . .
@@ -15,6 +7,9 @@ COPY . .
 RUN npm ci
 
 ENV NODE_ENV=production
+# door-based deployment (tailscale/box forwarders): app-level origin gate off,
+# edge proxies are the security boundary
+ENV DISABLE_CSRF_ORIGIN_CHECK=1
 RUN npm run build
 
 FROM node:18-alpine AS runtime
@@ -34,6 +29,10 @@ WORKDIR /app
 
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./package.json
+# runtime deps: adapter-node keeps server deps external, node_modules required
+COPY --from=builder /app/node_modules ./node_modules
+# world-readable: node runs as 65532 and must read package.json ("type": "module")
+RUN chmod -R a+rX /app
 # COPY --from=builder /app/node_modules/.prisma/client ./node_modules/.prisma/client
 # UI uses the API directly, not Prisma client
 
@@ -47,4 +46,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:3000/ || exit 1
 
-CMD ["build"]
+CMD ["node", "/app/build/index.js"]

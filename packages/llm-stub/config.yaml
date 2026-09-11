@@ -1,0 +1,7 @@
+prompt_format:
+  chat:
+    system: "system: {}\n"
+    user: "user: {}\n"
+    assistant: "assistant: {}\n"
+defaults:
+  max_new_tokens: 128

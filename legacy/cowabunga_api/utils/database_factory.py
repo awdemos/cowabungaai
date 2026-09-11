@@ -30,3 +30,8 @@ async def get_session() -> DatabaseClient:
         DatabaseClient instance
     """
     return await create_database_client()
+
+
+async def get_database_client() -> DatabaseClient:
+    """Alias for create_database_client used by routers/health.py."""
+    return await create_database_client()

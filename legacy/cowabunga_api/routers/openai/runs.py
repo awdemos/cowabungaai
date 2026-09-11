@@ -22,9 +22,15 @@ router = APIRouter(prefix="/openai/v1/threads", tags=["openai/threads/runs"])
 
 @router.post("/{thread_id}/runs", response_model=None)
 async def create_run(
-    thread_id: str, session: Session, request: RunCreateParamsRequest
+    thread_id: str, session: Session, request: dict
 ) -> Run | StreamingResponse:
-    """Create a run."""
+    """Create a run.
+
+    Body validated inside the handler: declaring the model in the
+    signature triggers a FastAPI/pydantic TypeAdapter crash with the
+    openai TypedDicts at request time."""
+    if isinstance(request, dict):
+        request = RunCreateParamsRequest(**request)
 
     if request.tools and not validate_assistant_tool(request.tools):
         raise HTTPException(

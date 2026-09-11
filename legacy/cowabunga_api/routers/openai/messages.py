@@ -13,9 +13,16 @@ router = APIRouter(prefix="/openai/v1/threads", tags=["openai/threads/messages"]
 
 @router.post("/{thread_id}/messages")
 async def create_message(
-    thread_id: str, request: CreateMessageRequest, session: Session
+    thread_id: str, request: dict, session: Session
 ) -> Message:
-    """Create a message."""
+    """Create a message.
+
+    Body taken as a raw dict and validated inside the handler:
+    FastAPI's lazy TypeAdapter on CreateMessageRequest can crash at
+    request time (pydantic evaluating openai TypedDicts), so we avoid
+    declaring the model in the signature."""
+    if isinstance(request, dict):
+        request = CreateMessageRequest(**request)
 
     crud_message = CRUDMessage(db=session)
 
