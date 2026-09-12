@@ -44,9 +44,9 @@ k3d_gpu_cluster_create() {
     # The podman-docker shim does not serve docker's info template, so fall
     # back to podman info.
     local rootless=""
-    rootless=$(docker info --format '{{.Host.Security.Rootless}}' 2>/dev/null)
+    rootless=$(docker info --format '{{.Host.Security.Rootless}}' 2>/dev/null || true)
     if [ -z "$rootless" ] && command -v podman >/dev/null 2>&1; then
-        rootless=$(podman info --format '{{.Host.Security.Rootless}}' 2>/dev/null)
+        rootless=$(podman info --format '{{.Host.Security.Rootless}}' 2>/dev/null || true)
     fi
     if [ "$rootless" = "true" ]; then
         cat >&2 <<'EOF'
