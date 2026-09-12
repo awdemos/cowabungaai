@@ -102,9 +102,8 @@ class TursoQueryBuilder(QueryBuilder):
             set_clauses = [f"{col} = ?" for col in self._data.keys()]
             sql = f"UPDATE {self.table_name} SET {', '.join(set_clauses)}"
             params = list(self._data.values())
-        elif self._operation == "INSERT":
-            return "", []
         else:
+            # INSERT builds per-record statements in _execute_insert instead
             return "", []
 
         if self._filters:

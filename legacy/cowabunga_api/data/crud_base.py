@@ -1,5 +1,6 @@
+"""Generic CRUD operations for pydantic models backed by a DatabaseClient."""
+
 import os
-"""CRUD Operations for VectorStore."""
 
 from typing import Generic, TypeVar
 from pydantic import BaseModel
@@ -235,7 +236,7 @@ class CRUDBase(Generic[ModelType]):
 
         result = await query.execute()
 
-        return bool(result.data) if hasattr(result, 'data') else False
+        return bool(getattr(result, "data", None))
 
     async def get_current_user(self) -> dict:
         """Get the current user with admin status."""
