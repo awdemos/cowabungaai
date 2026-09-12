@@ -38,6 +38,10 @@ audit:
 dev-api:
     cd rust && cargo run -p cowabunga-api
 
+# Run the Rust repeater test backend locally
+dev-repeater:
+    cd rust && cargo run -p cowabunga-repeater
+
 # Generate Rust SDK from protobufs
 gen-proto:
     cd rust && cargo run -p cowabunga-sdk --bin gen-proto

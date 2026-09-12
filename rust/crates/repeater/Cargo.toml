@@ -1,0 +1,21 @@
+[package]
+name = "cowabunga-repeater"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "cowabunga-repeater"
+path = "src/main.rs"
+
+[dependencies]
+cowabunga-sdk = { path = "../sdk" }
+tokio = { workspace = true }
+tokio-stream = { workspace = true }
+tonic = { workspace = true }
+async-trait = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }

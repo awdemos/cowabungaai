@@ -558,6 +558,7 @@ dependencies = [
  "chrono",
  "cowabunga-db",
  "cowabunga-models",
+ "cowabunga-repeater",
  "cowabunga-sdk",
  "futures",
  "hex",
@@ -596,6 +597,21 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "tokio-test",
+]
+
+[[package]]
+name = "cowabunga-repeater"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "cowabunga-sdk",
+ "tokio",
+ "tokio-stream",
+ "tonic 0.13.1",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
 ]
 
 [[package]]

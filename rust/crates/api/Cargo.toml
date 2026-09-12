@@ -31,3 +31,4 @@ hex = "0.4"
 [dev-dependencies]
 tower = { workspace = true }
 http-body-util = "0.1"
+cowabunga-repeater = { path = "../repeater" }
