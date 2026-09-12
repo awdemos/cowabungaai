@@ -107,7 +107,7 @@ components:
           - "values/upstream-values.yaml"
     images:
       - "ghcr.io/defenseunicorns/cowabungaai/vllm:###ZARF_PKG_TMPL_IMAGE_VERSION###"
-      - "cgr.dev/chainguard/bash:latest"
+      - "cgr.dev/chainguard/bash@sha256:30a00321e2a37ec2852a50d2b817317f9aa15ac262f9c1b47ab114c622fea77f"
     dataInjections:
       # location where locally downloaded model files are located
       - source: ".model/"

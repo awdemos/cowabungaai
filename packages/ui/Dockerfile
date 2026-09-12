@@ -28,6 +28,9 @@ LABEL org.opencontainers.image.version="0.14.0"
 LABEL maintainer="CowabungaAI Team"
 
 COPY --from=builder /cowabungaai/target/release/cowabunga-ui /usr/local/bin/cowabunga-ui
+# Ship the lockfile so image SBOM scanners (syft) can attribute crate-level deps
+# to the statically stripped binary.
+COPY --from=builder /cowabungaai/Cargo.lock /usr/local/share/cowabunga/Cargo.lock
 
 ENV LEPTOS_SITE_ADDR=0.0.0.0:3000
 ENV LEPTOS_OUTPUT_NAME=cowabunga-ui
