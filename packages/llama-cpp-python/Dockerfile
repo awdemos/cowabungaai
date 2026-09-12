@@ -42,8 +42,10 @@ LABEL maintainer="CowabungaAI Team"
 
 COPY --from=builder /cowabungaai/.venv/ /cowabungaai/.venv/
 
-COPY packages/llama-cpp-python/main.py .
-COPY packages/llama-cpp-python/config.yaml .
+# --chmod: build contexts with a restrictive umask (e.g. 0077 checkouts) would
+# otherwise preserve 0600 modes and the non-root runtime user couldn't read these.
+COPY --chmod=644 packages/llama-cpp-python/main.py .
+COPY --chmod=644 packages/llama-cpp-python/config.yaml .
 
 EXPOSE 50051
 
