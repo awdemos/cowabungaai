@@ -1,4 +1,3 @@
-import fnmatch
 import os
 from huggingface_hub import snapshot_download
 from config import DownloadConfig
