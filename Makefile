@@ -4,6 +4,9 @@ REG_NAME ?= registry
 LOCAL_VERSION ?= $(shell git rev-parse --short HEAD)
 BUILDER ?= default
 DOCKER_FLAGS :=
+# Dev builds can pass --skip-sbom here for much faster package creates; release
+# and CI builds must keep SBOM generation enabled (spec NFR3.1).
+# Example: make build-cpu ZARF_FLAGS=--skip-sbom
 ZARF_FLAGS :=
 FLAVOR := upstream
 SILENT_DOCKER_FLAGS := --quiet
@@ -55,15 +58,17 @@ docker-turso:
 	docker tag ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
 
 turso-upstream-images: local-registry ## pull/push upstream Turso dependency images to the local registry
-	docker pull ghcr.io/tursodatabase/libsql-server:latest
-	docker tag ghcr.io/tursodatabase/libsql-server:latest localhost:${REG_PORT}/tursodatabase/libsql-server:latest
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/tursodatabase/libsql-server:latest
+	# Digests pinned 2026-09-12; keep in sync with packages/turso/zarf.yaml and
+	# packages/turso/chart. Pushing the manifest makes it retrievable by digest.
+	docker pull ghcr.io/tursodatabase/libsql-server@sha256:6dd3eb276d9d3604e4a48ac4a999a2e267814732d57d7e94c04ba71482333a67
+	docker tag ghcr.io/tursodatabase/libsql-server@sha256:6dd3eb276d9d3604e4a48ac4a999a2e267814732d57d7e94c04ba71482333a67 localhost:${REG_PORT}/tursodatabase/libsql-server:local
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/tursodatabase/libsql-server:local
 	docker pull alpine:3.19
 	docker tag alpine:3.19 localhost:${REG_PORT}/library/alpine:3.19
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/library/alpine:3.19
-	docker pull curlimages/curl:latest
-	docker tag curlimages/curl:latest localhost:${REG_PORT}/curlimages/curl:latest
-	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/curlimages/curl:latest
+	docker pull curlimages/curl@sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777
+	docker tag curlimages/curl@sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777 localhost:${REG_PORT}/curlimages/curl:local
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/curlimages/curl:local
 
 build-turso: local-registry docker-turso turso-upstream-images
 	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}

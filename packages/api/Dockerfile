@@ -28,6 +28,9 @@ LABEL org.opencontainers.image.version="0.14.0"
 LABEL maintainer="CowabungaAI Team"
 
 COPY --from=builder /cowabungaai/target/release/cowabunga-api /usr/local/bin/cowabunga-api
+# Ship the lockfile so image SBOM scanners (syft) can attribute crate-level deps
+# to the statically stripped binary.
+COPY --from=builder /cowabungaai/Cargo.lock /usr/local/share/cowabunga/Cargo.lock
 
 EXPOSE 8080
 

@@ -9,6 +9,16 @@ The purpose of this document is to describe how to run a development loop on the
 
 Please first see the pre-requisites listed on the CowabungaAI documentation website's [Requirements](https://docs.leapfrog.ai/docs/local-deploy-guide/requirements/) and [Dependencies](https://docs.leapfrog.ai/docs/local-deploy-guide/dependencies/), before going to each component's subdirectory README
 
+### Faster local package builds
+
+Zarf generates an SBOM (syft scan) for every image on every `zarf package create`, which dominates build time for the model packages. For local dev loops you can skip it — release/CI builds must keep it enabled:
+
+```bash
+make build-cpu ZARF_FLAGS=--skip-sbom
+```
+
+Other build-time notes: the Rust API and UI images each compile the whole workspace from scratch (no dependency caching between them), and the model packages (llama-cpp-python, text-embeddings, whisper, vllm) embed their `.model/` weights into the zarf archive via `dataInjections`, which makes those packages very large and slow to create. Upstream base images referenced in `zarf.yaml` files are pinned by digest; if you bump one, update the digest everywhere it appears (zarf.yaml, chart templates/values, Makefile `*-upstream-images` targets).
+
 ## PyEnv
 
 It is **_HIGHLY RECOMMENDED_** that PyEnv be installed on your machine, and a new virtual environment is created for every new development branch.

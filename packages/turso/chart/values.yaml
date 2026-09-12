@@ -6,6 +6,8 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/tursodatabase/libsql-server
+  # Pinned digest (resolved 2026-09-12); when set it takes precedence over tag.
+  digest: "sha256:6dd3eb276d9d3604e4a48ac4a999a2e267814732d57d7e94c04ba71482333a67"
   pullPolicy: IfNotPresent
   tag: "latest"
 
