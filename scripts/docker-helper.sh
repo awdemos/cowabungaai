@@ -38,6 +38,35 @@ k3d_gpu_cluster_create() {
     local image="${2:-ghcr.io/defenseunicorns/leapfrogai/k3d-gpu:latest}"
     local taint_gpu_node="${TAINT_GPU_NODE:-false}"
 
+    # Rootless podman cannot run a functional k3s cluster: kube-proxy needs
+    # NET_ADMIN/iptables (userspace mode was removed in k8s 1.28), and k3s
+    # --rootless needs subuid delegation a container userns does not have.
+    # The podman-docker shim does not serve docker's info template, so fall
+    # back to podman info.
+    local rootless=""
+    rootless=$(docker info --format '{{.Host.Security.Rootless}}' 2>/dev/null)
+    if [ -z "$rootless" ] && command -v podman >/dev/null 2>&1; then
+        rootless=$(podman info --format '{{.Host.Security.Rootless}}' 2>/dev/null)
+    fi
+    if [ "$rootless" = "true" ]; then
+        cat >&2 <<'EOF'
+WARNING: your container engine is rootless podman. k3s will NOT run
+functionally here (kubelet needs the KubeletInUserNamespace gate, but
+kube-proxy then fails: no iptables/NET_ADMIN, and userspace proxy mode was
+removed in Kubernetes 1.28).
+
+Working options on this host:
+  1. Rootful podman socket (recommended):
+       sudo podman system service -p 2375 --log-level=warn &
+       export DOCKER_HOST=tcp://127.0.0.1:2375
+       scripts/docker-helper.sh create-cluster
+     (GPU passthrough additionally needs an nvidia CDI spec:
+      sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml)
+  2. Any rootful docker host.
+EOF
+        return 1
+    fi
+
     echo "Creating GPU-enabled k3d cluster: $cluster_name"
     echo "Shape: 1 server + 2 agents (agent-0 = GPU pool, agent-1 = CPU pool)"
     echo "Using DOCKER_SOCK=$DOCKER_SOCK"
@@ -52,6 +81,8 @@ k3d_gpu_cluster_create() {
     # NOTE: k3d (v5.7) only supports --gpus at cluster scope, so every node
     # container sees the physical GPU; the cowabungaai/gpu label is the
     # scheduling control, not the device plugin's resource accounting.
+    # NOTE: under rootless podman (the common setup on this host) kubelet
+    # cannot open /dev/kmsg without the KubeletInUserNamespace feature gate.
     DOCKER_SOCK="$DOCKER_SOCK" k3d cluster create "$cluster_name" \
         --gpus all \
         --image "$image" \
@@ -61,6 +92,8 @@ k3d_gpu_cluster_create() {
         --agents-memory 8g \
         --k3s-node-label "$GPU_NODE_LABEL@agent:0" \
         --k3s-node-label "$CPU_NODE_LABEL@agent:1" \
+        --k3s-arg "--kubelet-arg=feature-gates=KubeletInUserNamespace=true@server:*" \
+        --k3s-arg "--kubelet-arg=feature-gates=KubeletInUserNamespace=true@agent:*" \
         --wait
 
     if [[ "$taint_gpu_node" == "true" ]]; then
