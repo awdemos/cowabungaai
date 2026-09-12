@@ -1,7 +1,7 @@
 """CowabungaAI Embeddings via Langchain Embeddings Interface."""
 
 import os
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.backend.grpc_client import create_embeddings
 import logging
@@ -26,7 +26,7 @@ class CowabungaAIEmbeddings:
             list[list[float]]: The list of embedding vectors for each document.
         """
         model = await self._get_model()
-        request = lfai.EmbeddingRequest(inputs=texts)
+        request = sdk.EmbeddingRequest(inputs=texts)
         response = await create_embeddings(model=model, request=request)
 
         list_of_embeddings = [data.embedding for data in response.data]

@@ -8,7 +8,7 @@ from cowabunga_api.typedef.counting import (
     TokenCountResponse,
 )
 from cowabunga_api.backend.grpc_client import create_token_count
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 
 router = APIRouter(prefix="/cowabunga/v1/count", tags=["cowabunga/count"])
 
@@ -28,7 +28,7 @@ async def tokens(
 
     try:
         return await create_token_count(
-            model, lfai.TokenCountRequest(text=request.text)
+            model, sdk.TokenCountRequest(text=request.text)
         )
     except Exception as e:
         raise HTTPException(

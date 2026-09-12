@@ -3,7 +3,7 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 from cowabunga_api.backend.grpc_client import create_embeddings
 from cowabunga_api.typedef.embeddings import (
     CreateEmbeddingRequest,
@@ -31,9 +31,9 @@ async def embeddings(
         )
 
     if isinstance(req.input, str):
-        request = lfai.EmbeddingRequest(inputs=[req.input])
+        request = sdk.EmbeddingRequest(inputs=[req.input])
     elif list_str := _to_list_of_strs(req.input):
-        request = lfai.EmbeddingRequest(inputs=list_str)
+        request = sdk.EmbeddingRequest(inputs=list_str)
     else:
         raise HTTPException(
             status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
