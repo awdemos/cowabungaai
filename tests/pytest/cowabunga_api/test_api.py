@@ -3,6 +3,7 @@ import os
 import shutil
 import time
 from typing import Optional
+from unittest.mock import MagicMock
 
 import pytest
 from fastapi.applications import BaseHTTPMiddleware
@@ -65,7 +66,20 @@ def dummy_auth_middleware():
     app.middleware_stack = app.build_middleware_stack()
 
 
-def test_config_load():
+@pytest.fixture
+def override_database_session():
+    """Override the auth dependency so endpoints don't need a live Turso DB."""
+    from cowabunga_api.routers.database_session import init_database_client
+
+    async def _mock_session():
+        return MagicMock()
+
+    app.dependency_overrides[init_database_client] = _mock_session
+    yield
+    app.dependency_overrides.clear()
+
+
+def test_config_load(override_database_session):
     """Test that the config is loaded correctly."""
     with TestClient(app) as client:
         response = client.get("/cowabunga/v1/models")
@@ -73,14 +87,14 @@ def test_config_load():
         assert response.status_code == 200
         expected_response = {
             "config_sources": {"repeater-test-config.yaml": [MODEL]},
-            "models": {MODEL: {"backend": "localhost:50051", "name": MODEL}},
+            "models": {MODEL: {"backend": "localhost:50051", "name": MODEL, "capabilities": None}},
             "directory": COWABUNGA_CONFIG_PATH,
             "filename": COWABUNGA_CONFIG_FILENAME,
         }
         assert response.json() == expected_response
 
 
-def test_config_delete(tmp_path):
+def test_config_delete(tmp_path, override_database_session):
     """Test that the config is deleted correctly."""
     # Move repeater-test-config.yaml to temp dir so that we can remove it at a later step
     tmp_config_filepath = shutil.copyfile(
@@ -95,7 +109,7 @@ def test_config_delete(tmp_path):
 
         expected_response = {
             "config_sources": {"repeater-test-config.yaml": [MODEL]},
-            "models": {MODEL: {"backend": "localhost:50051", "name": MODEL}},
+            "models": {MODEL: {"backend": "localhost:50051", "name": MODEL, "capabilities": None}},
             "directory": os.environ["COWABUNGA_CONFIG_PATH"],
             "filename": COWABUNGA_CONFIG_FILENAME,
         }
@@ -137,8 +151,9 @@ def test_routes():
         "/openai/v1/files": ["POST"],
         "/openai/v1/assistants": ["POST"],
         "/cowabunga/v1/count/tokens": ["POST"],
-        "/cowabunga/v1/rag/configure": ["GET", "PATCH"],
     }
+    if os.environ.get("DEV"):
+        expected_routes["/cowabunga/v1/rag/configure"] = ["GET", "PATCH"]
 
     openai_routes = [
         ("/openai/v1/files", "upload_file", ["POST"]),

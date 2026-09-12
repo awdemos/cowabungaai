@@ -1,6 +1,5 @@
 """Tests for common typedef modules."""
 
-import pytest
 from cowabunga_api.typedef.common import MetadataObject, Usage
 
 

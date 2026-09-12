@@ -1,6 +1,5 @@
 """Tests for audio typedef models."""
 
-import pytest
 from cowabunga_api.typedef.audio.audio_types import (
     CreateTranscriptionRequest,
     CreateTranscriptionResponse,

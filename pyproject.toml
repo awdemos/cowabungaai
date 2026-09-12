@@ -48,6 +48,9 @@ line-ending = "auto"
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
 
+[tool.setuptools]
+py-modules = []
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"

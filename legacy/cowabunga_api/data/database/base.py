@@ -1,7 +1,7 @@
 """Abstract base class for database clients."""
 
 from abc import ABC, abstractmethod
-from typing import Any, TypeVar, Generic
+from typing import Any, TypeVar
 from pydantic import BaseModel
 
 ModelType = TypeVar("ModelType", bound=BaseModel)

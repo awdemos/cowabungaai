@@ -1,7 +1,6 @@
 """Tests for Assistant CRUD operations."""
 
 import pytest
-from openai.types.beta import Assistant
 from cowabunga_api.data.crud_assistant import CRUDAssistant, FilterAssistant
 from tests.mocks.mock_session import mock_session  # noqa: F401
 

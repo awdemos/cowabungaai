@@ -1,9 +1,9 @@
 import pytest
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 from tests.utils.crud_utils import MockAPIResponse
 from tests.mocks.mock_tables import mock_data_model, MockModel
 
-from src.cowabunga_api.data.crud_base import CRUDBase
+from cowabunga_api.data.crud_base import CRUDBase
 
 
 class MockModelNoID(BaseModel):
@@ -54,7 +54,7 @@ def mock_crud_base(mock_session):
             MockModelStrID(id="", name="mock-data"),
             mock_data_dict,
             mock_data_model,
-            _mock_authed(dict(name="mock-data")),
+            "GENERATED_ID",
         ),
         (
             MockModelFields(id=1, name="mock-data", created_at=0),
@@ -107,7 +107,15 @@ async def test_create(
 
     assert result == expected_result
     mock_session.table.assert_called_with(mock_crud_base.table_name)
-    if expected_call:
+    if expected_call == "GENERATED_ID":
+        # libsql schema drift fix: create() mints a client-side id when the
+        # model has an id field but the insert carried none
+        (args, _) = mock_table.insert.call_args
+        inserted = args[0]
+        assert inserted["name"] == "mock-data"
+        assert inserted["user_id"] == "mock-api-key"
+        assert len(inserted["id"]) == 32  # os.urandom(16).hex()
+    elif expected_call:
         mock_table.insert.assert_called_with(expected_call)
 
 
@@ -149,23 +157,21 @@ async def test_get(mock_response, expected_result, mock_session, mock_crud_base)
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "filters, mock_response, expected_error",
+    "filters, mock_response",
     [
-        ({"id": 1}, {}, ValidationError),
-        (None, {}, ValidationError),
+        ({"id": 1}, {}),
+        (None, {}),
     ],
 )
-async def test_get_fail(
-    filters, mock_response, expected_error, mock_session, mock_crud_base
-):
-    """Invalid model data still raises ValidationError; None response returns None."""
+async def test_get_fail(filters, mock_response, mock_session, mock_crud_base):
+    """Uncastable row returns None (drift-tolerant get); None response returns None."""
     mock_table = mock_session.table(mock_crud_base.table_name)
     mock_table.select.return_value.execute.return_value = MockAPIResponse(
         data=mock_response
     )
 
-    with pytest.raises(expected_error):
-        await mock_crud_base.get(filters)
+    result = await mock_crud_base.get(filters)
+    assert result is None
 
 
 @pytest.mark.asyncio
@@ -179,9 +185,7 @@ async def test_get_fail(
 async def test_get_none_response(filters, mock_session, mock_crud_base):
     """None response from DB returns None gracefully."""
     mock_table = mock_session.table(mock_crud_base.table_name)
-    mock_table.select.return_value.execute.return_value = MockAPIResponse(
-        data=None
-    )
+    mock_table.select.return_value.execute.return_value = MockAPIResponse(data=None)
 
     result = await mock_crud_base.get(filters)
     assert result is None
@@ -215,22 +219,20 @@ async def test_list(mock_response, expected_result, mock_session, mock_crud_base
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "filters, mock_response, expected_error",
+    "filters, mock_response",
     [
-        ({"id": 1}, {}, ValidationError),
+        ({"id": 1}, {}),
     ],
 )
-async def test_list_fail(
-    filters, mock_response, expected_error, mock_session, mock_crud_base
-):
-    """Invalid model data still raises ValidationError; None response returns []."""
+async def test_list_fail(filters, mock_response, mock_session, mock_crud_base):
+    """Uncastable rows are skipped (drift-tolerant list); result is an empty list."""
     mock_table = mock_session.table(mock_crud_base.table_name)
     mock_table.select.return_value.execute.return_value = MockAPIResponse(
         data=mock_response
     )
 
-    with pytest.raises(expected_error):
-        await mock_crud_base.list(filters)
+    result = await mock_crud_base.list(filters)
+    assert result == []
 
 
 @pytest.mark.asyncio
@@ -245,9 +247,7 @@ async def test_list_fail(
 async def test_list_none_response(filters, mock_session, mock_crud_base):
     """None response from DB returns empty list gracefully."""
     mock_table = mock_session.table(mock_crud_base.table_name)
-    mock_table.select.return_value.execute.return_value = MockAPIResponse(
-        data=None
-    )
+    mock_table.select.return_value.execute.return_value = MockAPIResponse(data=None)
 
     result = await mock_crud_base.list(filters)
     assert result == []

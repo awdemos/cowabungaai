@@ -1,8 +1,7 @@
 """Tests for the OpenAI audio router."""
 
 import pytest
-from fastapi.testclient import TestClient
-from fastapi import HTTPException, status
+from fastapi import status
 from cowabunga_api.routers.openai.audio import router
 from tests.utils.router_utils import client_with_auth_override
 from unittest.mock import patch, MagicMock

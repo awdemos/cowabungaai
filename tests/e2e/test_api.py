@@ -1,32 +1,48 @@
 import io
 import logging
+import os
 import uuid
 
 import pytest as pytest
 import requests
 
-from tests.utils.client import create_test_user
+from tests.utils.client import get_cowabunga_api_url_base
 
 logger = logging.getLogger(__name__)
 test_id = str(uuid.uuid4())
 
+
+class MissingEnvironmentVariable(Exception):
+    pass
+
+
+try:
+    jwt_token = os.environ["COWABUNGA_USER_JWT"]
+except KeyError as exc:
+    raise MissingEnvironmentVariable(
+        "COWABUNGA_USER_JWT must be defined for the test to pass. "
+        "Please check the api README for instructions on obtaining this token."
+    ) from exc
+
+api_base = get_cowabunga_api_url_base()
+
 get_urls = {
-    "assistants_url": "https://cowabunga-api.uds.dev/openai/v1/assistants",
-    "assistants_id_url": f"https://cowabunga-api.uds.dev/openai/v1/assistants/{test_id}",
-    "files_url": "https://cowabunga-api.uds.dev/openai/v1/files",
-    "files_specific_url": f"https://cowabunga-api.uds.dev/openai/v1/files/{test_id}",
-    "files_specific_content_url": f"https://cowabunga-api.uds.dev/openai/v1/files/{test_id}/content",
+    "assistants_url": f"{api_base}/openai/v1/assistants",
+    "assistants_id_url": f"{api_base}/openai/v1/assistants/{test_id}",
+    "files_url": f"{api_base}/openai/v1/files",
+    "files_specific_url": f"{api_base}/openai/v1/files/{test_id}",
+    "files_specific_content_url": f"{api_base}/openai/v1/files/{test_id}/content",
 }
 
 post_urls = {
-    "assistants_url": "https://cowabunga-api.uds.dev/openai/v1/assistants",
-    "assistants_id_url": f"https://cowabunga-api.uds.dev/openai/v1/assistants/{test_id}",
-    "files_url": "https://cowabunga-api.uds.dev/openai/v1/files",
+    "assistants_url": f"{api_base}/openai/v1/assistants",
+    "assistants_id_url": f"{api_base}/openai/v1/assistants/{test_id}",
+    "files_url": f"{api_base}/openai/v1/files",
 }
 
 delete_urls = {
-    "assistants_id_url": f"https://cowabunga-api.uds.dev/openai/v1/assistants/{test_id}",
-    "files_specific_url": f"https://cowabunga-api.uds.dev/openai/v1/files/{test_id}",
+    "assistants_id_url": f"{api_base}/openai/v1/assistants/{test_id}",
+    "files_specific_url": f"{api_base}/openai/v1/files/{test_id}",
 }
 
 
@@ -100,8 +116,6 @@ def verify_request(
 
 
 def test_api_row_level_security():
-    jwt_token = create_test_user()
-
     # Confirm that legitimate requests are allowed
     verify_request(get_urls, "get", jwt_token, True)
     verify_request(post_urls, "post", jwt_token, True)

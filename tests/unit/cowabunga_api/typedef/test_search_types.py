@@ -1,6 +1,5 @@
 """Tests for vector store search typedefs."""
 
-import pytest
 from cowabunga_api.typedef.vectorstores.search_types import Vector, SearchItem, SearchResponse
 
 

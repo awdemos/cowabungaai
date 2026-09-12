@@ -1,6 +1,5 @@
 """Tests for backend converters."""
 
-import pytest
 from cowabunga_api.backend.converters import from_content_param_to_content
 
 

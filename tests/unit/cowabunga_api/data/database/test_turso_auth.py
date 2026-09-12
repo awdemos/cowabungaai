@@ -1,6 +1,5 @@
 """Tests for Turso authentication module."""
 
-import pytest
 from datetime import datetime, timedelta
 from cowabunga_api.data.database.turso_auth import User, UserResponse, Session
 

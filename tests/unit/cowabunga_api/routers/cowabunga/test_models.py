@@ -1,7 +1,6 @@
 """Tests for the CowabungaAI models router."""
 
 import pytest
-from fastapi.testclient import TestClient
 from cowabunga_api.routers.cowabunga.models import router
 from tests.utils.router_utils import client_with_auth_override
 from unittest.mock import patch, MagicMock
