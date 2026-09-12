@@ -4,7 +4,7 @@ import os
 import tempfile
 from typing import Iterator
 
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 from faster_whisper import WhisperModel
 
 logging.basicConfig(
@@ -61,8 +61,8 @@ def make_whisper_request(filename, task, language, temperature, prompt):
 
 
 def call_whisper(
-    request_iterator: Iterator[lfai.AudioRequest], task: str
-) -> lfai.AudioResponse:
+    request_iterator: Iterator[sdk.AudioRequest], task: str
+) -> sdk.AudioResponse:
     data = bytearray()
     prompt = ""
     temperature = 0.0
@@ -101,31 +101,31 @@ def call_whisper(
             logger.info("Transcription complete!")
         elif task == "translate":
             logger.info("Translation complete!")
-        return lfai.AudioResponse(text=text)
+        return sdk.AudioResponse(text=text)
 
 
-class Whisper(lfai.AudioServicer):
+class Whisper(sdk.AudioServicer):
     def Translate(
         self,
-        request_iterator: Iterator[lfai.AudioRequest],
-        context: lfai.GrpcContext,
+        request_iterator: Iterator[sdk.AudioRequest],
+        context: sdk.GrpcContext,
     ):
         return call_whisper(request_iterator, "translate")
 
     def Transcribe(
         self,
-        request_iterator: Iterator[lfai.AudioRequest],
-        context: lfai.GrpcContext,
+        request_iterator: Iterator[sdk.AudioRequest],
+        context: sdk.GrpcContext,
     ):
         return call_whisper(request_iterator, "transcribe")
 
     def Name(self, request, context):
-        return lfai.NameResponse(name="whisper")
+        return sdk.NameResponse(name="whisper")
 
 
 async def main():
     logger.info(f"GPU_ENABLED = {GPU_ENABLED}")
-    await lfai.serve(Whisper())
+    await sdk.serve(Whisper())
 
 
 if __name__ == "__main__":

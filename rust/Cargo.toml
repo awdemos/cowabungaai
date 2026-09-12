@@ -19,7 +19,6 @@ libsql = "0.9"
 tonic = { version = "0.13" }
 tonic-build = { version = "0.13" }
 prost = { version = "0.13" }
-refinery = { version = "0.8", features = ["tokio-postgres"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 thiserror = "2.0"
