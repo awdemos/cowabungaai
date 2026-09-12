@@ -27,48 +27,72 @@ docker_root() {
     fi
 }
 
+# Node pool labels. GPU workloads should nodeSelect cowabungaai/gpu=true;
+# everything else stays on the unlabeled pool by default (or via anti-affinity).
+GPU_NODE_LABEL="cowabungaai/gpu=true"
+CPU_NODE_LABEL="cowabungaai/cpu=true"
+
 # Function to run k3d with proper GPU flags
 k3d_gpu_cluster_create() {
     local cluster_name="${1:-uds}"
     local image="${2:-ghcr.io/defenseunicorns/leapfrogai/k3d-gpu:latest}"
-    
+    local taint_gpu_node="${TAINT_GPU_NODE:-false}"
+
     echo "Creating GPU-enabled k3d cluster: $cluster_name"
+    echo "Shape: 1 server + 2 agents (agent-0 = GPU pool, agent-1 = CPU pool)"
     echo "Using DOCKER_SOCK=$DOCKER_SOCK"
-    
+
     # Ensure NVIDIA runtime is configured
     if command -v nvidia-ctk &> /dev/null; then
         echo "Configuring NVIDIA container runtime..."
         sudo nvidia-ctk runtime configure --runtime=docker || true
     fi
-    
-    # Create cluster with GPU support
+
+    # Create cluster with GPU support.
+    # NOTE: k3d (v5.7) only supports --gpus at cluster scope, so every node
+    # container sees the physical GPU; the cowabungaai/gpu label is the
+    # scheduling control, not the device plugin's resource accounting.
     DOCKER_SOCK="$DOCKER_SOCK" k3d cluster create "$cluster_name" \
         --gpus all \
         --image "$image" \
         --servers 1 \
-        --agents 1 \
+        --agents 2 \
         --servers-memory 4g \
         --agents-memory 8g \
+        --k3s-node-label "$GPU_NODE_LABEL@agent:0" \
+        --k3s-node-label "$CPU_NODE_LABEL@agent:1" \
         --wait
-    
+
+    if [[ "$taint_gpu_node" == "true" ]]; then
+        echo "Tainting GPU agent (NoSchedule) for dedicated GPU workloads..."
+        local gpu_agent
+        gpu_agent=$(kubectl get nodes -l "$GPU_NODE_LABEL" -o jsonpath='{.items[0].metadata.name}')
+        kubectl taint nodes "$gpu_agent" "$GPU_NODE_LABEL:NoSchedule"
+    fi
+
     echo "Cluster $cluster_name created successfully with GPU support"
+    echo "GPU pool:  kubectl get nodes -l $GPU_NODE_LABEL"
+    echo "CPU pool:  kubectl get nodes -l $CPU_NODE_LABEL"
 }
 
-# Function to add worker node with GPU
+# Function to add a worker node. k3d v5.7 `node create` has no --gpus flag, so
+# added nodes inherit cluster-scope GPU access; label them into the right pool.
 k3d_add_gpu_worker() {
     local cluster_name="${1:-uds}"
     local node_name="${2:-gpu-worker-1}"
     local image="${3:-ghcr.io/defenseunicorns/leapfrogai/k3d-gpu:latest}"
-    
-    echo "Adding GPU worker node $node_name to cluster $cluster_name"
-    
+    local label="${4:-$GPU_NODE_LABEL}"
+
+    echo "Adding worker node $node_name (label: $label) to cluster $cluster_name"
+
     k3d node create "$node_name" \
         --cluster "$cluster_name" \
         --role agent \
         --image "$image" \
         --memory 8g \
+        --k3s-node-label "$label" \
         --wait
-    
+
     echo "Worker node $node_name added successfully"
 }
 
