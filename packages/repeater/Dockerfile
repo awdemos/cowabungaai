@@ -41,8 +41,10 @@ LABEL org.opencontainers.image.version="0.14.0"
 LABEL maintainer="CowabungaAI Team"
 
 COPY --from=builder /cowabungaai/.venv/ /cowabungaai/.venv/
-COPY packages/repeater/main.py .
-COPY packages/repeater/config.yaml .
+# --chmod: build contexts with a restrictive umask (e.g. 0077 checkouts) would
+# otherwise preserve 0600 modes and the non-root runtime user couldn't read these.
+COPY --chmod=644 packages/repeater/main.py .
+COPY --chmod=644 packages/repeater/config.yaml .
 
 # Publish port
 EXPOSE 50051

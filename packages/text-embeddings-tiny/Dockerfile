@@ -42,7 +42,9 @@ LABEL maintainer="CowabungaAI Team"
 
 COPY --chown=65532:65532 --from=builder /cowabungaai/.venv/ /cowabungaai/.venv/
 
-COPY --chown=65532:65532 packages/text-embeddings-tiny/main_tiny.py .
+# --chmod: build contexts with a restrictive umask (e.g. 0077 checkouts) would
+# otherwise preserve 0600 modes and the non-root runtime user couldn't read these.
+COPY --chown=65532:65532 --chmod=644 packages/text-embeddings-tiny/main_tiny.py .
 
 ENV COWABUNGA_MODEL_PATH=/data/.model
 

@@ -8,6 +8,10 @@ version = "0.14.0"
 
 dependencies = [
     "faster-whisper == 1.0.3",
+    # faster_whisper.utils imports requests at module import time; without the
+    # [dev] extra (CPU builds) nothing else pulls it in transitively.
+    "requests",
+    "huggingface_hub",
     "cowabunga-sdk",
 ]
 requires-python = "~=3.11"

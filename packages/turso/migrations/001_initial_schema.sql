@@ -202,9 +202,11 @@ CREATE TABLE IF NOT EXISTS vector_content (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_vector_content_embedding 
-ON vector_content USING libsql_vector_idx(embedding);
-
+-- The ANN index `USING libsql_vector_idx(embedding)` is libsql-only syntax and
+-- fails on stock sqlite3, which this package uses (Dockerfile/init-db.sh and the
+-- chart's statement endpoint both execute through plain sqlite). libsql deploys
+-- that want the ANN index must add it out-of-band; vector search here does not
+-- rely on it.
 CREATE INDEX IF NOT EXISTS idx_vector_content_store ON vector_content(vector_store_id);
 CREATE INDEX IF NOT EXISTS idx_vector_content_file ON vector_content(file_id);
 CREATE INDEX IF NOT EXISTS idx_vector_content_user ON vector_content(user_id);
