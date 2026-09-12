@@ -17,7 +17,21 @@ Zarf generates an SBOM (syft scan) for every image on every `zarf package create
 make build-cpu ZARF_FLAGS=--skip-sbom
 ```
 
-Other build-time notes: the Rust API and UI images each compile the whole workspace from scratch (no dependency caching between them), and the model packages (llama-cpp-python, text-embeddings, whisper, vllm) embed their `.model/` weights into the zarf archive via `dataInjections`, which makes those packages very large and slow to create. Upstream base images referenced in `zarf.yaml` files are pinned by digest; if you bump one, update the digest everywhere it appears (zarf.yaml, chart templates/values, Makefile `*-upstream-images` targets).
+More build-time levers:
+
+- **Parallel builds**: independent package targets can build concurrently (the SDK image is built once first): `make -j$(nproc) build-cpu`
+- **Skip model weights**: `make build-cpu MODEL_DATA=false` produces small, fast zarf packages without the multi-GB `.model/` weights embedded (`scripts/strip_data_injections.py`). Air-gapped deployments need the default `MODEL_DATA=true`.
+- **Rust dependency caching**: the API and UI images use cargo-chef, so editing crate source no longer recompiles the entire dependency graph — only the workspace crates rebuild.
+
+### SBOMs
+
+Zarf packages embed SBOMs automatically at `package create`. For the docker-path images (the custom turso image, llm-stub, tz-bridge), generate SPDX SBOMs explicitly:
+
+```bash
+make sbom   # requires syft: https://anchore.com/syft
+```
+
+Base images referenced in `zarf.yaml` files are pinned by digest; if you bump one, update the digest everywhere it appears (zarf.yaml, chart templates/values, Makefile `*-upstream-images` targets).
 
 ## PyEnv
 

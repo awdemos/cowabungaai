@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/zarf.schema.json
+
+kind: ZarfPackageConfig
+metadata:
+  name: llm-stub
+  version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+  description: >
+    TensorZero-backed LLM stub plus the tz-bridge proxy. Development tooling:
+    loads the two images into the cluster registry; apply
+    packages/llm-stub/tz-bridge-k8s.yaml for the workload.
+
+constants:
+  - name: IMAGE_VERSION
+    value: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+
+components:
+  - name: llm-stub
+    required: true
+    images:
+      - ghcr.io/defenseunicorns/cowabungaai/llm-stub:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/tz-bridge:###ZARF_PKG_TMPL_IMAGE_VERSION###
