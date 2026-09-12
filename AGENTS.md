@@ -10,11 +10,15 @@ backends, and a GPU k3d cluster runtime.
 ## Repository Layout
 
 - `rust/crates/api/` — the main API service (Axum, OpenAI-compatible).
-  - `rust/crates/api/src/main.rs` — server startup. NOTE: as of this
-    writing it always wires `MemoryStorage` (line ~24); turso/libSQL
-    persistence exists in the codebase but is not used by the server.
+  - `rust/crates/api/src/main.rs` — server startup. Wires `LibsqlStorage`
+    when `TURSO_URL` is set (remote for `libsql://`/`https://`, local file
+    otherwise); falls back to in-memory storage with a hardcoded dev
+    `test-key` only when `TURSO_URL` is unset. Non-TLS `http://` URLs fall
+    back to in-memory (the client only speaks TLS remotely).
   - `rust/crates/api/src/bin/migrate.rs` — schema migrations binary.
     Reads `TURSO_URL` and optionally `TURSO_DATABASE_PATH`.
+  - `rust/crates/repeater/` — minimal gRPC model backend in Rust
+    (echo backend) proving the SDK server side; `just dev-repeater`.
 - `rust/crates/db/src/libsql.rs` — libSQL client wrapper.
   **Important**: remote mode is used only for `libsql://` or `https://`
   URLs (both TLS); any other scheme (`http://`, `ws://`) falls back to
