@@ -28,7 +28,9 @@ dependencies = [
     "prometheus-fastapi-instrumentator == 7.0.0",
     "rerankers[flashrank] == 0.5.3",
     "toml == 0.10.2",
-    "PyYAML == 6.0.2"
+    "PyYAML == 6.0.2",
+    "aiosqlite == 0.20.0",
+    "PyJWT == 2.9.0"
 ]
 requires-python = "~=3.11"
 

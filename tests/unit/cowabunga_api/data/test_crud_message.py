@@ -1,7 +1,6 @@
 """Tests for Message CRUD operations."""
 
 import pytest
-from openai.types.beta.threads import Message
 from cowabunga_api.data.crud_message import CRUDMessage
 from tests.mocks.mock_session import mock_session  # noqa: F401
 

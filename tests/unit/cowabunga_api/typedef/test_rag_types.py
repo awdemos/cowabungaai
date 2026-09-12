@@ -1,6 +1,5 @@
 """Tests for RAG typedef module."""
 
-import pytest
 from cowabunga_api.typedef.rag.rag_types import ConfigurationSingleton, ConfigurationPayload
 
 

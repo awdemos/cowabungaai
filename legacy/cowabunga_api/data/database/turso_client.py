@@ -90,10 +90,6 @@ class TursoQueryBuilder(QueryBuilder):
         self._offset = start
         return self
 
-    def single(self) -> "TursoQueryBuilder":
-        self._limit = 1
-        return self
-
     def _build_sql(self) -> tuple[str, list]:
         params = []
 

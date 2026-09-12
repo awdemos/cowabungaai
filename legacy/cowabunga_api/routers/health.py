@@ -6,7 +6,7 @@ import psutil
 import sys
 from datetime import datetime
 from cowabunga_api.utils import get_model_config
-from cowabunga_api.utils.database_factory import get_database_client
+from cowabunga_api.utils.database_factory import create_database_client
 
 router = APIRouter(tags=["health"])
 
@@ -61,7 +61,7 @@ async def readiness_check():
     """Readiness check endpoint."""
     db_healthy = False
     try:
-        db = await get_database_client()
+        db = await create_database_client()
         db_healthy = await db.health_check()
     except Exception:
         db_healthy = False

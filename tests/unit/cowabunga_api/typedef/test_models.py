@@ -1,6 +1,5 @@
 """Tests for models typedef module."""
 
-import pytest
 from cowabunga_api.typedef.models.model_types import Model, ModelResponseModel, ModelResponse
 
 

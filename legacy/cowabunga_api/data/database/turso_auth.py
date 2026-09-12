@@ -1,9 +1,10 @@
 """Turso authentication implementation."""
 
 import bcrypt
+import hashlib
 import secrets
 from datetime import datetime, timedelta
-from typing import Optional, Any
+from typing import Optional
 from dataclasses import dataclass
 import aiosqlite
 import jwt

@@ -1,7 +1,6 @@
 """Tests for Thread CRUD operations."""
 
 import pytest
-from openai.types.beta import Thread
 from cowabunga_api.data.crud_thread import CRUDThread
 from tests.mocks.mock_session import mock_session  # noqa: F401
 

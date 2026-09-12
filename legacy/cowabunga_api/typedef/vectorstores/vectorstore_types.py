@@ -53,12 +53,12 @@ class CreateVectorStoreRequest(BaseModel):
     file_ids: list[str] | None = Field(
         default=[],
         description="List of file IDs to be included in the vector store.",
-        example=["file-abc123", "file-def456"],
+        examples=[["file-abc123", "file-def456"]],
     )
     name: str | None = Field(
         default=None,
         description="Optional name for the vector store.",
-        example="My Vector Store",
+        examples=["My Vector Store"],
     )
     expires_after: ExpiresAfter | None = Field(
         default=None,
@@ -68,7 +68,7 @@ class CreateVectorStoreRequest(BaseModel):
     metadata: dict | None = Field(
         default=None,
         description="Optional metadata for the vector store.",
-        example={"project": "AI Research", "version": "1.0"},
+        examples=[{"project": "AI Research", "version": "1.0"}],
     )
 
     def add_days_to_timestamp(self, timestamp: int, days: int) -> int:

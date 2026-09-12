@@ -1,8 +1,7 @@
 """Tests for the runs steps router."""
 
 import pytest
-from fastapi import HTTPException, status
-from fastapi.testclient import TestClient
+from fastapi import status
 from cowabunga_api.routers.openai.runs_steps import router
 from tests.utils.router_utils import client_with_auth_override
 from unittest.mock import patch, AsyncMock, MagicMock

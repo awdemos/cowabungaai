@@ -7,7 +7,6 @@ from cowabunga_api.utils.database_factory import (
     create_database_client,
     get_session,
 )
-from cowabunga_api.data.database import TursoClient
 
 
 @pytest.mark.asyncio

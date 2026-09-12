@@ -1,6 +1,5 @@
 """Tests for backend helper functions."""
 
-import pytest
 from cowabunga_api.backend.helpers import grpc_chat_role
 
 

@@ -1,7 +1,6 @@
 """Tests for FileObject CRUD operations."""
 
 import pytest
-from openai.types import FileObject
 from cowabunga_api.data.crud_file_object import CRUDFileObject, FilterFileObject
 from tests.mocks.mock_session import mock_session  # noqa: F401
 

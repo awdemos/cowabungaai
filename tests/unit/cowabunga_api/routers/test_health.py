@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from cowabunga_api.routers.health import router
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, AsyncMock
 
 
 client = TestClient(router)
@@ -35,6 +35,16 @@ def mock_config():
         yield mock
 
 
+@pytest.fixture
+def mock_db_factory():
+    """Mock the database client factory for readiness checks."""
+    with patch("cowabunga_api.routers.health.create_database_client") as mock:
+        db = MagicMock()
+        db.health_check = AsyncMock(return_value=True)
+        mock.return_value = db
+        yield mock
+
+
 def test_health_check(mock_psutil, mock_config):
     """Test the basic health check endpoint."""
     response = client.get("/health")
@@ -49,7 +59,7 @@ def test_health_check(mock_psutil, mock_config):
     assert data["cpu_usage"] == 25.0
 
 
-def test_readiness_check(mock_psutil):
+def test_readiness_check(mock_psutil, mock_config, mock_db_factory):
     """Test the readiness check endpoint."""
     response = client.get("/ready")
     assert response.status_code == 200
