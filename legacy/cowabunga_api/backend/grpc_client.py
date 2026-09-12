@@ -5,7 +5,7 @@ from typing import Iterator, AsyncGenerator, Any, List
 import grpc
 from fastapi.responses import StreamingResponse
 
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 from cowabunga_api.backend.helpers import recv_chat, recv_completion
 from cowabunga_api.typedef.audio import (
     CreateTranscriptionResponse,
@@ -35,10 +35,10 @@ from cowabunga_sdk.chat.chat_pb2 import (
 )
 
 
-async def stream_completion(model: Model, request: lfai.CompletionRequest):
+async def stream_completion(model: Model, request: sdk.CompletionRequest):
     """Stream completion using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.CompletionStreamServiceStub(channel)
+        stub = sdk.CompletionStreamServiceStub(channel)
         stream = stub.CompleteStream(request)
 
         await stream.wait_for_connection()
@@ -47,11 +47,11 @@ async def stream_completion(model: Model, request: lfai.CompletionRequest):
         )
 
 
-async def completion(model: Model, request: lfai.CompletionRequest):
+async def completion(model: Model, request: sdk.CompletionRequest):
     """Complete using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.CompletionServiceStub(channel)
-        response: lfai.CompletionResponse = await stub.Complete(request)
+        stub = sdk.CompletionServiceStub(channel)
+        response: sdk.CompletionResponse = await stub.Complete(request)
         finish_reason_enum = FinishReason(response.choices[0].finish_reason)
 
         return CompletionResponse(
@@ -75,10 +75,10 @@ async def completion(model: Model, request: lfai.CompletionRequest):
         )
 
 
-async def stream_chat_completion(model: Model, request: lfai.ChatCompletionRequest):
+async def stream_chat_completion(model: Model, request: sdk.ChatCompletionRequest):
     """Stream chat completion using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.ChatCompletionStreamServiceStub(channel)
+        stub = sdk.ChatCompletionStreamServiceStub(channel)
         stream = stub.ChatCompleteStream(request)
 
         await stream.wait_for_connection()
@@ -88,13 +88,13 @@ async def stream_chat_completion(model: Model, request: lfai.ChatCompletionReque
 
 
 async def stream_chat_completion_raw(
-    model: Model, request: lfai.ChatCompletionRequest
+    model: Model, request: sdk.ChatCompletionRequest
 ) -> AsyncGenerator[ProtobufChatCompletionResponse, Any]:
     """Stream chat completion using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.ChatCompletionStreamServiceStub(channel)
+        stub = sdk.ChatCompletionStreamServiceStub(channel)
         stream: grpc.aio.UnaryStreamCall[
-            lfai.ChatCompletionRequest, lfai.ChatCompletionResponse
+            sdk.ChatCompletionRequest, sdk.ChatCompletionResponse
         ] = stub.ChatCompleteStream(request)
 
         await stream.wait_for_connection()
@@ -103,11 +103,11 @@ async def stream_chat_completion_raw(
             yield response
 
 
-async def chat_completion(model: Model, request: lfai.ChatCompletionRequest):
+async def chat_completion(model: Model, request: sdk.ChatCompletionRequest):
     """Complete chat using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.ChatCompletionServiceStub(channel)
-        response: lfai.ChatCompletionResponse = await stub.ChatComplete(request)
+        stub = sdk.ChatCompletionServiceStub(channel)
+        response: sdk.ChatCompletionResponse = await stub.ChatComplete(request)
         finish_reason_enum = FinishReason(response.choices[0].finish_reason)
 
         return ChatCompletionResponse(
@@ -116,7 +116,7 @@ async def chat_completion(model: Model, request: lfai.ChatCompletionRequest):
                 ChatChoice(
                     index=0,
                     message=ChatMessage(
-                        role=lfai.ChatRole.Name(
+                        role=sdk.ChatRole.Name(
                             response.choices[0].chat_item.role
                         ).lower(),
                         content=response.choices[0].chat_item.content,
@@ -132,18 +132,18 @@ async def chat_completion(model: Model, request: lfai.ChatCompletionRequest):
         )
 
 
-async def create_embeddings(model: Model, request: lfai.EmbeddingRequest):
+async def create_embeddings(model: Model, request: sdk.EmbeddingRequest):
     """Create embeddings using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.EmbeddingsServiceStub(channel)
+        stub = sdk.EmbeddingsServiceStub(channel)
         embeddings: List[EmbeddingResponseData] = []
 
         # Loop through inputs - 500 at a time
         for i in range(0, len(request.inputs), 500):
             request_embeddings = request.inputs[i : i + 500]
 
-            range_request = lfai.EmbeddingRequest(inputs=request_embeddings)
-            e: lfai.EmbeddingResponse = await stub.CreateEmbedding(range_request)
+            range_request = sdk.EmbeddingRequest(inputs=request_embeddings)
+            e: sdk.EmbeddingResponse = await stub.CreateEmbedding(range_request)
             if e and e.embeddings is not None:
                 data = [
                     EmbeddingResponseData(
@@ -160,29 +160,29 @@ async def create_embeddings(model: Model, request: lfai.EmbeddingRequest):
         )
 
 
-async def create_transcription(model: Model, request: Iterator[lfai.AudioRequest]):
+async def create_transcription(model: Model, request: Iterator[sdk.AudioRequest]):
     """Transcribe audio using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.AudioStub(channel)
-        response: lfai.AudioResponse = await stub.Transcribe(request)
+        stub = sdk.AudioStub(channel)
+        response: sdk.AudioResponse = await stub.Transcribe(request)
 
         return CreateTranscriptionResponse(text=response.text)
 
 
-async def create_translation(model: Model, request: Iterator[lfai.AudioRequest]):
+async def create_translation(model: Model, request: Iterator[sdk.AudioRequest]):
     """Translate audio using the specified model."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.AudioStub(channel)
-        response: lfai.AudioResponse = await stub.Translate(request)
+        stub = sdk.AudioStub(channel)
+        response: sdk.AudioResponse = await stub.Translate(request)
 
         return CreateTranslationResponse(text=response.text)
 
 
-async def create_token_count(model: Model, request: lfai.TokenCountRequest):
+async def create_token_count(model: Model, request: sdk.TokenCountRequest):
     """Count tokens using the specified model backend."""
     async with grpc.aio.insecure_channel(model.backend) as channel:
-        stub = lfai.TokenCountServiceStub(channel)
-        response: lfai.TokenCountResponse = await stub.CountTokens(request)
+        stub = sdk.TokenCountServiceStub(channel)
+        response: sdk.TokenCountResponse = await stub.CountTokens(request)
 
         return TokenCountResponse(
             token_count=response.count,
@@ -197,7 +197,7 @@ def count_tokens(model, text):
     try:
         import asyncio
         return asyncio.get_event_loop().run_until_complete(
-            create_token_count(model, lfai.TokenCountRequest(text=text))
+            create_token_count(model, sdk.TokenCountRequest(text=text))
         )
     except Exception:  # pragma: no cover - backend may not support token counting
         return max(1, len(text.split()) + 10)

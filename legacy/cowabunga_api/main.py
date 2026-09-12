@@ -11,11 +11,11 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import RedirectResponse
 from cowabunga_api.routers.base import router as base_router
 from cowabunga_api.routers.cowabunga import auth
-from cowabunga_api.routers.cowabunga import models as lfai_models
-from cowabunga_api.routers.cowabunga import vector_stores as lfai_vector_stores
-from cowabunga_api.routers.cowabunga import count as lfai_token_count
-from cowabunga_api.routers.cowabunga import rag as lfai_rag
-from cowabunga_api.routers.cowabunga import tokens as lfai_tokens
+from cowabunga_api.routers.cowabunga import models as cowabunga_models
+from cowabunga_api.routers.cowabunga import vector_stores as cowabunga_vector_stores
+from cowabunga_api.routers.cowabunga import count as cowabunga_token_count
+from cowabunga_api.routers.cowabunga import rag as cowabunga_rag
+from cowabunga_api.routers.cowabunga import tokens as cowabunga_tokens
 from cowabunga_api.routers.openai import (
     assistants,
     audio,
@@ -113,12 +113,12 @@ app.include_router(vector_stores.router)
 app.include_router(runs.router)
 app.include_router(messages.router)
 app.include_router(runs_steps.router)
-app.include_router(lfai_vector_stores.router)
+app.include_router(cowabunga_vector_stores.router)
 if os.environ.get("DEV"):
-    app.include_router(lfai_rag.router)
-app.include_router(lfai_token_count.router)
-app.include_router(lfai_models.router)
-app.include_router(lfai_tokens.router)
+    app.include_router(cowabunga_rag.router)
+app.include_router(cowabunga_token_count.router)
+app.include_router(cowabunga_models.router)
+app.include_router(cowabunga_tokens.router)
 # This should be at the bottom to prevent it preempting more specific runs endpoints
 # https://fastapi.tiangolo.com/tutorial/path-params/#order-matters
 app.include_router(threads.router)

@@ -3,7 +3,7 @@
 from typing import Annotated, AsyncGenerator, Any
 from fastapi import HTTPException, APIRouter, Depends
 from fastapi.responses import StreamingResponse
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 from cowabunga_api.backend.grpc_client import (
     chat_completion,
     stream_chat_completion,
@@ -36,12 +36,12 @@ async def chat_complete(
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    chat_items: list[lfai.ChatItem] = []
+    chat_items: list[sdk.ChatItem] = []
     for m in req.messages:
         chat_items.append(
-            lfai.ChatItem(role=grpc_chat_role(m.role), content=m.content_as_str())
+            sdk.ChatItem(role=grpc_chat_role(m.role), content=m.content_as_str())
         )
-    request = lfai.ChatCompletionRequest(
+    request = sdk.ChatCompletionRequest(
         chat_items=chat_items,
         max_new_tokens=req.max_tokens,
         temperature=req.temperature,
@@ -66,12 +66,12 @@ async def chat_complete_stream_raw(
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    chat_items: list[lfai.ChatItem] = []
+    chat_items: list[sdk.ChatItem] = []
     for m in req.messages:
         chat_items.append(
-            lfai.ChatItem(role=grpc_chat_role(m.role), content=m.content_as_str())
+            sdk.ChatItem(role=grpc_chat_role(m.role), content=m.content_as_str())
         )
-    request = lfai.ChatCompletionRequest(
+    request = sdk.ChatCompletionRequest(
         chat_items=chat_items,
         max_new_tokens=req.max_tokens,
         temperature=req.temperature,

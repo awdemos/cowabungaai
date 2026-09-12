@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.backend.grpc_client import create_token_count
 from cowabunga_api.routers.database_session import Session
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 
 import logging
 
@@ -22,6 +22,6 @@ async def count_tokens_route(
     model = config.models["text-embeddings"]
     logger.info(f"Model: {model}")
 
-    result = await create_token_count(model, lfai.TokenCountRequest(text=text))
+    result = await create_token_count(model, sdk.TokenCountRequest(text=text))
     logger.info(f"Token count: {result}")
     return result.token_count

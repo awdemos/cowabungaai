@@ -20,18 +20,3 @@ async def create_database_client() -> DatabaseClient:
     turso_auth_token = os.getenv("TURSO_AUTH_TOKEN")
 
     return await TursoClient.create(base_url=turso_url, auth_token=turso_auth_token)
-
-
-# Backward compatibility alias
-async def get_session() -> DatabaseClient:
-    """Get database session (backward compatibility).
-
-    Returns:
-        DatabaseClient instance
-    """
-    return await create_database_client()
-
-
-async def get_database_client() -> DatabaseClient:
-    """Alias for create_database_client used by routers/health.py."""
-    return await create_database_client()

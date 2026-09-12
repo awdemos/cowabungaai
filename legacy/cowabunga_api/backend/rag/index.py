@@ -11,7 +11,7 @@ from openai.types.beta.vector_stores import VectorStoreFile
 from openai.types.beta.vector_stores.vector_store_file import LastError
 
 from cowabunga_api.backend.rag.document_loader import load_file, split
-from cowabunga_api.backend.rag.leapfrogai_embeddings import CowabungaAIEmbeddings
+from cowabunga_api.backend.rag.cowabungaai_embeddings import CowabungaAIEmbeddings
 from cowabunga_api.data.crud_file_bucket import CRUDFileBucket
 from cowabunga_api.data.crud_file_object import CRUDFileObject, FilterFileObject
 from cowabunga_api.data.crud_vector_store import CRUDVectorStore, FilterVectorStore

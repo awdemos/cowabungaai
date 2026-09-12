@@ -11,7 +11,7 @@ from cowabunga_api.typedef.completion import CompletionRequest, CompletionRespon
 from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 
 router = APIRouter(prefix="/openai/v1/completions", tags=["openai/completions"])
 
@@ -31,7 +31,7 @@ async def complete(
             detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
         )
 
-    request = lfai.CompletionRequest(
+    request = sdk.CompletionRequest(
         prompt=req.prompt,  # type: ignore
         max_new_tokens=req.max_tokens,
         temperature=req.temperature,

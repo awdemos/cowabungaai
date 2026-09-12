@@ -14,7 +14,7 @@ from cowabunga_api.typedef.audio import (
 from cowabunga_api.routers.database_session import Session
 from cowabunga_api.utils import get_model_config
 from cowabunga_api.utils.config import Config
-import cowabunga_sdk as lfai
+import cowabunga_sdk as sdk
 
 router = APIRouter(prefix="/openai/v1/audio", tags=["openai/audio"])
 
@@ -34,10 +34,10 @@ async def transcribe(
         )
 
     # Create a request that contains the metadata for the AudioRequest
-    audio_metadata = lfai.AudioMetadata(
+    audio_metadata = sdk.AudioMetadata(
         prompt=req.prompt, temperature=req.temperature, inputlanguage=req.language
     )
-    audio_metadata_request = lfai.AudioRequest(metadata=audio_metadata)
+    audio_metadata_request = sdk.AudioRequest(metadata=audio_metadata)
 
     # Read the file and get an iterator of all the data chunks
     chunk_iterator = read_chunks(req.file.file, 1024)
@@ -63,8 +63,8 @@ async def translate(
         )
 
     # Create a request that contains the metadata for the AudioRequest
-    audio_metadata = lfai.AudioMetadata(prompt=req.prompt, temperature=req.temperature)
-    audio_metadata_request = lfai.AudioRequest(metadata=audio_metadata)
+    audio_metadata = sdk.AudioMetadata(prompt=req.prompt, temperature=req.temperature)
+    audio_metadata_request = sdk.AudioRequest(metadata=audio_metadata)
 
     # Read the file and get an iterator of all the data chunks
     chunk_iterator = read_chunks(req.file.file, 1024)

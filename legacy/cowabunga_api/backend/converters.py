@@ -67,7 +67,7 @@ def from_text_to_message(text: str, search_responses: SearchResponse | None) -> 
         for search_response in search_responses.data:
             all_vector_ids.append(search_response.id)
             file_name = search_response.metadata.get("source", "source")
-            replacement_text = f"【4:0†{file_name}】"  # TODO: What should these numbers be? https://github.com/defenseunicorns/leapfrogai/issues/1110
+            replacement_text = f"【4:0†{file_name}】"  # TODO: citation position indices are hardcoded pending annotation-format decision (see repo issue tracker)
             annotations.append(
                 FileCitationAnnotation(
                     text=replacement_text,

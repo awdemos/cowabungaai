@@ -3,10 +3,7 @@
 import pytest
 import os
 from unittest.mock import AsyncMock, patch, MagicMock
-from cowabunga_api.utils.database_factory import (
-    create_database_client,
-    get_session,
-)
+from cowabunga_api.utils.database_factory import create_database_client
 
 
 @pytest.mark.asyncio
@@ -97,22 +94,3 @@ class TestDatabaseFactory:
 
         if "DATABASE_TYPE" in os.environ:
             del os.environ["DATABASE_TYPE"]
-
-    @patch('cowabunga_api.utils.database_factory.TursoClient.create', new_callable=AsyncMock)
-    async def test_get_session_backward_compatibility(self, mock_create):
-        """Test that get_session still works for backward compatibility."""
-        os.environ["DATABASE_TYPE"] = "turso"
-        os.environ["TURSO_URL"] = "http://test-compat:8080"
-
-        mock_client = MagicMock()
-        mock_client.base_url = "http://test-compat:8080"
-        mock_create.return_value = mock_client
-
-        try:
-            client = await get_session()
-            assert client is mock_client
-        finally:
-            if "DATABASE_TYPE" in os.environ:
-                del os.environ["DATABASE_TYPE"]
-            if "TURSO_URL" in os.environ:
-                del os.environ["TURSO_URL"]

@@ -2,7 +2,7 @@
 
 from rerankers.results import RankedResults
 from langchain_core.embeddings import Embeddings
-from cowabunga_api.backend.rag.leapfrogai_embeddings import CowabungaAIEmbeddings
+from cowabunga_api.backend.rag.cowabungaai_embeddings import CowabungaAIEmbeddings
 from cowabunga_api.data.crud_vector_content import CRUDVectorContent
 from cowabunga_api.typedef.rag.rag_types import ConfigurationSingleton
 from cowabunga_api.typedef.vectorstores.search_types import SearchResponse, SearchItem

@@ -24,7 +24,7 @@ def _import_or_skip(module: str):
         "cowabunga_api.backend.converters",
         "cowabunga_api.backend.grpc_client",
         "cowabunga_api.backend.helpers",
-        "cowabunga_api.backend.rag.leapfrogai_embeddings",
+        "cowabunga_api.backend.rag.cowabungaai_embeddings",
         "cowabunga_api.backend.rag.query",
     ],
 )
