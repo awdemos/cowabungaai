@@ -12,6 +12,7 @@ dist/
 tmp/
 temp/
 zarf-sbom/
+.build/
 /values.yaml
 .pytest_cache
 *egg-info

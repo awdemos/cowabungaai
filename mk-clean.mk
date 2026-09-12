@@ -10,6 +10,7 @@ clean-artifacts: # Zarf packages, UDS bundles, Python build artifacts, etc.
 	-rm -rf packages/**/build
 	find . -name 'uds-bundle-*-*.tar.zst' -delete
 	find . -type d -name 'zarf-sbom' -exec rm -rf {} +
+	rm -rf .build
 	find . -name '*.whl' -delete
 	find . -type d -name '*.egg-info' -exec rm -rf {} +
 
