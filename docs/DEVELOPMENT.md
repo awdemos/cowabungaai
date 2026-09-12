@@ -84,6 +84,8 @@ chmod +x /usr/local/bin/kubectl
 
 Once you have a running cluster (see [k3d-gpu setup](../packages/k3d-gpu/README.md)), you can access it with kubectl or k9s.
 
+The helper creates a **1-server + 2-agent** shape: `agent-0` is labeled `cowabungaai/gpu=true` (the GPU pool — point GPU workloads at it via `nodeSelector`), `agent-1` is labeled `cowabungaai/cpu=true` (the CPU pool). A single-server control plane is intentional: multi-server etcd HA on one docker host is fake HA. Note that k3d only supports `--gpus` at cluster scope, so every node container can see the physical GPU — the labels (not device-plugin accounting) are the scheduling control. Set `TAINT_GPU_NODE=true` when creating the cluster to additionally taint the GPU agent `NoSchedule` for dedicated GPU workloads.
+
 ### kubectl
 
 ```bash
