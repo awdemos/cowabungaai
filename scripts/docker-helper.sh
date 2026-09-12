@@ -41,12 +41,17 @@ k3d_gpu_cluster_create() {
     # Rootless podman cannot run a functional k3s cluster: kube-proxy needs
     # NET_ADMIN/iptables (userspace mode was removed in k8s 1.28), and k3s
     # --rootless needs subuid delegation a container userns does not have.
+    # Only applies when using the DEFAULT engine: if DOCKER_HOST is set the
+    # user deliberately selected an engine (e.g. a rootful podman socket),
+    # and the rootless podman CLI on this box would false-positive.
     # The podman-docker shim does not serve docker's info template, so fall
     # back to podman info.
     local rootless=""
-    rootless=$(docker info --format '{{.Host.Security.Rootless}}' 2>/dev/null || true)
-    if [ -z "$rootless" ] && command -v podman >/dev/null 2>&1; then
-        rootless=$(podman info --format '{{.Host.Security.Rootless}}' 2>/dev/null || true)
+    if [ -z "${DOCKER_HOST:-}" ]; then
+        rootless=$(docker info --format '{{.Host.Security.Rootless}}' 2>/dev/null || true)
+        if [ -z "$rootless" ] && command -v podman >/dev/null 2>&1; then
+            rootless=$(podman info --format '{{.Host.Security.Rootless}}' 2>/dev/null || true)
+        fi
     fi
     if [ "$rootless" = "true" ]; then
         cat >&2 <<'EOF'
