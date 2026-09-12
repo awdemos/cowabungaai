@@ -18,10 +18,9 @@ async def count_tokens_route(
     session: Session,  # pylint: disable=unused-argument # required for authorizing endpoint
 ) -> int:
     config = get_model_config()
-    logger.info(f"Model config: {config}")
     model = config.models["text-embeddings"]
-    logger.info(f"Model: {model}")
+    logger.info(f"Counting tokens with model backend: {model.name}")
 
     result = await create_token_count(model, sdk.TokenCountRequest(text=text))
-    logger.info(f"Token count: {result}")
+    logger.info(f"Token count for model {model.name}: {result.token_count}")
     return result.token_count
