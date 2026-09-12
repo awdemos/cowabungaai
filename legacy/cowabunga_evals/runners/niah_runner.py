@@ -336,7 +336,6 @@ class NIAH_Runner:
         """Deletes the current assistant"""
         logging.info("deleting assistant...")
         self.client.beta.assistants.delete(assistant_id=assistant_id)
-        pass
 
     def _create_vector_store(self) -> VectorStore:
         logging.info("Creating vector store...")

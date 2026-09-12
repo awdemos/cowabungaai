@@ -19,9 +19,6 @@ from openai.types.beta.threads import (
 )
 
 from cowabunga_api.typedef.vectorstores.search_types import SearchResponse
-from cowabunga_api.typedef.common import MetadataObject
-
-
 def from_assistant_stream_event_to_str(stream_event: AssistantStreamEvent):
     return f"event: {stream_event.event}\ndata: {stream_event.data.model_dump_json()}"
 
@@ -98,9 +95,7 @@ def from_text_to_message(text: str, search_responses: SearchResponse | None) -> 
         thread_id="",
         content=[message_content],
         role="assistant",
-        metadata=MetadataObject(
-            vector_ids=all_vector_ids.__str__(),
-        ),
+        metadata={"vector_ids": str(all_vector_ids)},
     )
 
     return new_message

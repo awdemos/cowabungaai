@@ -7,13 +7,13 @@ from cowabunga_evals.metrics import NIAH_Retrieval, NIAH_Response, NIAH_Chunk_Ra
 from cowabunga_evals.runners import NIAH_Runner
 
 
-def niah_eval(*args, **kwargs) -> dict:
+def niah_eval() -> dict:
     """Run the Needle in a Haystack evaluation"""
     logging.info("Beginning Needle in a Haystack Evaluation...")
     eval_results = {}
     niah_test_cases = []
 
-    niah_runner = NIAH_Runner(*args, **kwargs)
+    niah_runner = NIAH_Runner()
     niah_runner.run_experiment()
 
     # build test cases out of the niah_dataset

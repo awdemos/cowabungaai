@@ -96,12 +96,13 @@ class DatabaseClient(ABC):
     
     @classmethod
     @abstractmethod
-    async def create(cls, **kwargs) -> "DatabaseClient":
+    async def create(cls, base_url: str, auth_token: str | None = None) -> "DatabaseClient":
         """Factory method to create database client.
-        
+
         Args:
-            **kwargs: Database-specific configuration
-            
+            base_url: URL of the database service
+            auth_token: Optional authentication token
+
         Returns:
             Configured database client instance
         """
