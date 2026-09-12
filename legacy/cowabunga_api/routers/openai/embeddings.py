@@ -10,7 +10,7 @@ from cowabunga_api.typedef.embeddings import (
     CreateEmbeddingResponse,
 )
 from cowabunga_api.routers.database_session import Session
-from cowabunga_api.utils import get_model_config
+from cowabunga_api.utils import get_model_config, require_model_backend
 from cowabunga_api.utils.config import Config
 
 router = APIRouter(prefix="/openai/v1/embeddings", tags=["openai/embeddings"])
@@ -23,12 +23,7 @@ async def embeddings(
     model_config: Annotated[Config, Depends(get_model_config)],
 ) -> CreateEmbeddingResponse:
     """Create embeddings from the given input."""
-    model = model_config.get_model_backend(req.model)
-    if model is None:
-        raise HTTPException(
-            status_code=status.HTTP_405_METHOD_NOT_ALLOWED,
-            detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
-        )
+    model = require_model_backend(model_config, req.model)
 
     if isinstance(req.input, str):
         request = sdk.EmbeddingRequest(inputs=[req.input])

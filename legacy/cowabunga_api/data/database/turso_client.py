@@ -443,7 +443,6 @@ class TursoClient(DatabaseClient):
         cls,
         base_url: str = "http://turso:8080",
         auth_token: Optional[str] = None,
-        **kwargs,
     ) -> "TursoClient":
         client = cls(base_url, auth_token)
 

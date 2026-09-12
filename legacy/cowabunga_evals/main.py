@@ -33,7 +33,7 @@ class RAGEvaluator:
                     )
             self.eval_list = eval_list
 
-    def run_evals(self, *args, **kwargs) -> None:
+    def run_evals(self) -> None:
         """Run all of the selected evaluations"""
         if self.eval_list is None:
             raise AttributeError(
@@ -46,7 +46,7 @@ class RAGEvaluator:
         start_time = time.time()
         for eval_name in self.eval_list:
             eval_fn = globals()[eval_name]
-            eval_result = eval_fn(*args, **kwargs)
+            eval_result = eval_fn()
             self.eval_results.update(eval_result)
         end_time = time.time()
 

@@ -14,13 +14,13 @@ from cowabunga_evals.models import *  # noqa (imports all models)
 from cowabunga_evals.runners import QA_Runner
 
 
-def qa_eval(*args, **kwargs) -> dict:
+def qa_eval() -> dict:
     """Runs the Question/Answer evaluation"""
     logging.info("Beginning Question/Answer Evaluation...")
     eval_results = {}
     qa_test_cases = []
 
-    qa_runner = QA_Runner(*args, **kwargs)
+    qa_runner = QA_Runner()
     qa_runner.run_experiment()
 
     # build test cases out of the qa_dataset

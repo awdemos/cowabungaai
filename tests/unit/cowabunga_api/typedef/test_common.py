@@ -1,19 +1,6 @@
 """Tests for common typedef modules."""
 
-from cowabunga_api.typedef.common import MetadataObject, Usage
-
-
-def test_metadata_object_creation():
-    """Test MetadataObject can be created with arbitrary attributes."""
-    obj = MetadataObject(name="test", value=42)
-    assert obj.name == "test"
-    assert obj.value == 42
-
-
-def test_metadata_object_missing_attribute():
-    """Test MetadataObject returns None for missing attributes."""
-    obj = MetadataObject()
-    assert obj.nonexistent is None
+from cowabunga_api.typedef.common import Usage
 
 
 def test_usage_creation():

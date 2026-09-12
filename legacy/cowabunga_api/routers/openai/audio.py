@@ -2,7 +2,7 @@
 
 from itertools import chain
 from typing import Annotated
-from fastapi import HTTPException, APIRouter, Depends
+from fastapi import APIRouter, Depends
 
 from cowabunga_api.backend.grpc_client import create_transcription, create_translation
 from cowabunga_api.backend.helpers import read_chunks
@@ -12,7 +12,7 @@ from cowabunga_api.typedef.audio import (
     CreateTranslationRequest,
 )
 from cowabunga_api.routers.database_session import Session
-from cowabunga_api.utils import get_model_config
+from cowabunga_api.utils import get_model_config, require_model_backend
 from cowabunga_api.utils.config import Config
 import cowabunga_sdk as sdk
 
@@ -26,12 +26,7 @@ async def transcribe(
     req: CreateTranscriptionRequest = Depends(CreateTranscriptionRequest.as_form),
 ) -> CreateTranscriptionResponse:
     """Create a transcription from the given audio file."""
-    model = model_config.get_model_backend(req.model)
-    if model is None:
-        raise HTTPException(
-            status_code=405,
-            detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
-        )
+    model = require_model_backend(model_config, req.model)
 
     # Create a request that contains the metadata for the AudioRequest
     audio_metadata = sdk.AudioMetadata(
@@ -55,12 +50,7 @@ async def translate(
     req: CreateTranslationRequest = Depends(CreateTranslationRequest.as_form),
 ) -> CreateTranscriptionResponse:
     """Create a translation to english from the given audio file."""
-    model = model_config.get_model_backend(req.model)
-    if model is None:
-        raise HTTPException(
-            status_code=405,
-            detail=f"Model {req.model} not found. Currently supported models are {list(model_config.models.keys())}",
-        )
+    model = require_model_backend(model_config, req.model)
 
     # Create a request that contains the metadata for the AudioRequest
     audio_metadata = sdk.AudioMetadata(prompt=req.prompt, temperature=req.temperature)
