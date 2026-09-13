@@ -148,7 +148,7 @@ Below is the current component flavors list:
 | [vllm](packages/vllm/)                         |      ✅      |      🚧      |
 | [vllm](packages/vllm/)                         |      ✅      |      🚧      |
 
-Flavors with any components labelled as 🚧 are not available as a quick start bundle deployment yet. Please refer to the [DEVELOPMENT.md](./docs/DEVELOPMENT.md) for instructions on how to build a component's Zarf package for local testing.
+Flavors with any components labelled as 🚧 are not available as a quick start bundle deployment yet. Please refer to the [DEVELOPMENT.md](./docs/DEVELOPMENT_legacy.md) for instructions on how to build a component's Zarf package for local testing.
 
 ## Usage
 
@@ -163,7 +163,7 @@ For contributing and local deployment and development for each component in a lo
 
 Each of the CowabungaAI components can also be run individually outside of a Kubernetes or Containerized environment. This is useful when testing changes to a specific component, but will not assist in a full deployment of CowabungaAI. Please refer to the [above section](#usage) for deployment instructions. Please refer to the [next section](#contributing) for rules on contributing to CowabungaAI.
 
-**_First_** refer to the [DEVELOPMENT.md](docs/DEVELOPMENT.md) document for general development details.
+**_First_** refer to the [DEVELOPMENT.md](docs/DEVELOPMENT_legacy.md) document for general development details.
 
 **_Then_** refer to the linked READMEs for each individual sub-directory's local development instructions.
 
