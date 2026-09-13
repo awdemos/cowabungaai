@@ -14,7 +14,7 @@
 
 ## Status
 
-SUPERSEDED - See [Turso Integration Plan](../TURSO_INTEGRATION_PLAN.md)
+SUPERSEDED - See [Turso Integration Plan](../notes/TURSO_INTEGRATION_PLAN.md)
 
 > **Note:** This ADR originally selected Supabase as the database solution. As of 2026-05-15, CowabungaAI has migrated to Turso (libSQL/SQLite) to reduce complexity and resource usage. See the Turso Integration Plan for details.
 

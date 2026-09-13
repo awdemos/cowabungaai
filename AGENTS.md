@@ -37,7 +37,7 @@ backends, and a GPU k3d cluster runtime.
     (Helm), sometimes `chart/` ( Helm chart vendored) and `src/`.
 - `legacy/cowabunga_sdk/` — source of the SDK wheel image.
 - `Makefile` — the authoritative build/deploy flow (`make help`).
-- `GPU_DEPLOYMENT_REPORT.md`, `KNOWN_ISSUES.md` — recon notes from the
+- `docs/notes/GPU_DEPLOYMENT_REPORT.md`, `docs/notes/KNOWN_ISSUES.md` — recon notes from the
   first GPU bring-up (some contents are stale; verify against code).
 
 ## Build & Deploy (the flow that actually works here)

@@ -4,7 +4,7 @@
 
 ## 📣 CowabungaAI Status Update 📣
 
-> ⚠️ **Status Update** - CowabungaAI now uses Turso as its primary database. Supabase has been removed. See `TURSO_INTEGRATION_PLAN.md` for migration details.
+> ⚠️ **Status Update** - CowabungaAI now uses Turso as its primary database. Supabase has been removed. See `docs/notes/TURSO_INTEGRATION_PLAN.md` for migration details.
 
 Thank you for your interest in CowabungaAI!
 

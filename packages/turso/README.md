@@ -121,4 +121,4 @@ See `scripts/migrate-from-supabase.sh` for automated migration.
 - [Migration Guide](./MIGRATION.md)
 
 ## Status
-🚧 **In Development** - See [TURSO_INTEGRATION_PLAN.md](../../TURSO_INTEGRATION_PLAN.md) for timeline.
+🚧 **In Development** - See [TURSO_INTEGRATION_PLAN.md](../../docs/notes/TURSO_INTEGRATION_PLAN.md) for timeline.

@@ -279,7 +279,7 @@ build-cowabunga-api: ## Build the CowabungaAI API
 
 **Formerly known as LeapfrogAI**
 
-![CowabungaAI](./cowabungaai_logo.png)
+![CowabungaAI](../../cowabungaai_logo.png)
 
 CowabungaAI is a self-hosted AI platform designed for air-gapped environments.
 
