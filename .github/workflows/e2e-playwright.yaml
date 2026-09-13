@@ -1,0 +1,142 @@
+# End-to-end testing that deploys and tests API and UI
+
+name: e2e-playwright
+on:
+  pull_request:
+    types:
+      - opened            # default trigger
+      - reopened          # default trigger
+      - synchronize       # default trigger
+      - ready_for_review  # don't run on draft PRs
+      - milestoned        # allows us to trigger on bot PRs
+    paths:
+      # Catch-all
+      - "**"
+
+      # Ignore updates to the .github directory, unless it's this current file
+      - "!.github/**"
+      - ".github/workflows/e2e-playwright.yaml"
+      - ".github/actions/uds-cluster/action.yaml"
+      - ".github/actions/scripts/createUser.sh"
+      - ".github/actions/config/uds-config.yaml"
+
+      # Ignore docs and website things
+      - "!**.md"
+      - "!docs/**"
+      - "!adr/**"
+      - "!website/**"
+      - "!netlify.toml"
+
+      # Ignore updates to generic github metadata files
+      - "!CODEOWNERS"
+      - "!.gitignore"
+      - "!LICENSE"
+
+      # Ignore local development files
+      - "!.pre-commit-config.yaml"
+      - "!tasks.yaml"
+
+      # Ignore non e2e tests changes
+      - "!tests/pytest/**"
+
+      # Ignore changes to unrelated packages
+      - "!packages/k3d-gpu/**"
+      - "!packages/llama-cpp-python/**"
+      - "!packages/repeater/**"
+      - "!packages/text-embeddings/**"
+      - "!packages/vllm/**"
+      - "!packages/whisper/**"
+
+
+
+concurrency:
+  group: e2e-playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e_playwright:
+    runs-on: ai-ubuntu-big-boy-8-core
+    if: ${{ !github.event.pull_request.draft }}
+
+    permissions:
+      contents: read
+      packages: read
+      id-token: write # This is needed for OIDC federation.
+
+    steps:
+        - name: Checkout Repo
+          uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+        - name: Setup Node
+          uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+          with:
+            node-version-file: 'src/leapfrogai_ui/package.json'
+
+        - name: Setup Python
+          uses: ./.github/actions/python
+
+        - name: Generate Fake Playwright User Password
+          id: generate-password
+          run: |
+            PASSWORD=$(cat <(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9!@#$%^&*()_+-=[]{}|;:,.<>?' | head -c 20) <(echo '!@1Aa') | fold -w1 | shuf | tr -d '\n')
+            echo "::add-mask::$PASSWORD"
+            echo "FAKE_E2E_USER_PASSWORD=$PASSWORD" >> $GITHUB_ENV
+
+        - name: Setup UDS Cluster
+          uses: ./.github/actions/uds-cluster
+          with:
+            registry1Username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+            registry1Password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
+            ghToken: ${{ secrets.GITHUB_TOKEN }}
+            chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
+
+        - name: Create Test User
+          run: |
+            chmod +x ./.github/scripts/createUser.sh
+            ./.github/scripts/createUser.sh
+
+        - name: Setup LFAI-API and Turso
+          uses: ./.github/actions/lfai-core
+
+        - name: Test API
+          run: |
+            python -m pytest ./tests/e2e/test_api.py -v
+
+
+        ##########
+        # UI
+        ##########
+        - name: Install UI/Playwright Dependencies
+          run: |
+            npm --prefix src/leapfrogai_ui ci
+            npx --prefix src/leapfrogai_ui playwright install
+
+        - name: Deploy LFAI-UI
+          run: |
+            make build-ui LOCAL_VERSION=e2e-test
+            docker image prune -af
+            uds zarf package deploy packages/ui/zarf-package-leapfrogai-ui-amd64-e2e-test.tar.zst --set DISABLE_KEYCLOAK=false --confirm
+            rm packages/ui/zarf-package-leapfrogai-ui-amd64-e2e-test.tar.zst
+
+        # Run the playwright UI tests using the deployed API endpoint and upload report as an artifact
+        # Note - workflow doesn't need teardown and causes import issues
+        - name: UI/API E2E Playwright Tests
+          run: |
+            cp src/leapfrogai_ui/.env.example src/leapfrogai_ui/.env
+            rm src/leapfrogai_ui/tests/global.teardown.ts
+            mkdir -p src/leapfrogai_ui/playwright/.auth
+            TEST_ENV=CI USERNAME=doug PASSWORD=$FAKE_E2E_USER_PASSWORD DEFAULT_MODEL=llama-cpp-python npm --prefix src/leapfrogai_ui run test:integration:ci
+
+        # Upload the Playwright report as an artifact
+        - name: Archive Playwright Report
+          uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+          if: ${{ !cancelled() }}
+          with:
+            name: playwright-report
+            path: src/leapfrogai_ui/e2e-report/
+            retention-days: 30
+
+        # The UI can be removed after the Playwright tests are finished
+        - name: Cleanup UI
+          run: |
+            uds zarf package remove leapfrogai-ui --confirm

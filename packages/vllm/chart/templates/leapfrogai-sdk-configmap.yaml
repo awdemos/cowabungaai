@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.nameOverride }}-sdk-configmap"
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
+data:
+  config.yaml: |
+    model:
+      source: {{ .Values.cowabungaaiConfig.model.source | quote }}
+    max_context_length: {{ .Values.cowabungaaiConfig.maxContextLength | quote }}
+    stop_tokens:
+      {{- $stopTokens := .Values.cowabungaaiConfig.stopTokens }}
+      {{- range $stopToken := splitList ", " .Values.cowabungaaiConfig.stopTokens }}
+      - {{ printf "%s" $stopToken }}
+      {{- end }}
+    prompt_format:
+    {{- with .Values.cowabungaaiConfig.promptFormat.chat }}
+      chat:
+      {{- if .system }}
+        system: {{ .system | quote }}
+      {{- end }}
+      {{- if .assistant }}
+        assistant: {{ .assistant | quote }}
+      {{- end }}
+      {{- if .user }}
+        user: {{ .user | quote }}
+      {{- end }}
+      {{- if .function }}
+        function: {{ .function | quote }}
+      {{- end }}
+    {{- end }}
+    defaults:
+      temperature: {{ .Values.cowabungaaiConfig.defaults.temperature | quote }}
+      top_p: {{ .Values.cowabungaaiConfig.defaults.topP | quote }}
+      top_k: {{ .Values.cowabungaaiConfig.defaults.topK | quote }}
+      repetition_penalty: {{ .Values.cowabungaaiConfig.defaults.repetitionPenalty | quote }}
+      max_new_tokens: {{ .Values.cowabungaaiConfig.defaults.maxNewTokens | quote }}

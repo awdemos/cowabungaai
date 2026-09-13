@@ -1,0 +1,31 @@
+name: Publish Release Artifacts
+
+on: workflow_call
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write # This is needed for OIDC federation.
+
+jobs:
+  build-and-publish-artifacts:
+    runs-on: ai-ubuntu-big-boy-8-core
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - name: Get Version
+        id: get_version
+        run: |
+          LFAI_VERSION=$(jq -r '.["."]' .github/.release-please-manifest.json)
+          echo "LFAI_VERSION=$LFAI_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Release CowabungaAI ${{ steps.get_version.outputs.LFAI_VERSION }}
+        uses: ./.github/actions/release
+        with:
+          releaseTag: ${{ steps.get_version.outputs.LFAI_VERSION }}
+          registry1Username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          registry1Password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
+          ghToken: ${{ secrets.GITHUB_TOKEN }}
+          chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}

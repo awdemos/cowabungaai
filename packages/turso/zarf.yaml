@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: turso
+  version: '###ZARF_PKG_TMPL_IMAGE_VERSION###'
+  description: Turso/libSQL database server for CowabungaAI (replaces Supabase)
+
+components:
+  - name: turso
+    required: true
+    description: "Turso database server"
+    
+    charts:
+      - name: turso
+        version: 0.1.0
+        namespace: cowabunga
+        localPath: chart
+    
+    images:
+      - ghcr.io/tursodatabase/libsql-server:latest
+      - alpine:3.19
+      - curlimages/curl:latest

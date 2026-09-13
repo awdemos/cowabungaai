@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/uds.schema.json
+
+kind: UDSBundle
+metadata:
+  name: cowabungaai
+  description: A UDS bundle for deploying CowabungaAI with CPU-only support
+  version: dev
+
+packages:
+
+  # API
+  - name: cowabunga-api
+    path: ../../../packages/api/
+    ref: dev
+
+  # Chat Model
+  - name: llama-cpp-python
+    path: ../../../packages/llama-cpp-python/
+    ref: dev
+
+  # Text Embeddings Model
+  - name: text-embeddings
+    path: ../../../packages/text-embeddings/
+    ref: dev
+
+  # Transcription Model
+  - name: whisper
+    path: ../../../packages/whisper/
+    ref: dev
+
+  # UI
+  - name: cowabunga-ui
+    path: ../../../packages/ui/
+    ref: dev

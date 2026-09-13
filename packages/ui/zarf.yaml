@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/zarf.schema.json
+
+kind: ZarfPackageConfig
+metadata:
+  name: cowabunga-ui
+  version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+  description: >
+    A UI for CowabungaAI
+
+constants:
+  - name: IMAGE_VERSION
+    value: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+
+variables:
+  - name: COWABUNGA_API_BASE_URL
+    description: The base URL for the CowabungaAI API
+    default: http://cowabunga-api.cowabungaai.svc.cluster.local:8080
+    prompt: true
+    sensitive: true
+  - name: OPENAI_API_KEY
+    description: OpenAI API key - if specified, the UI will use OpenAI instead of CowabungaAI
+    prompt: true
+    default: ""
+    sensitive: true
+  - name: SUBDOMAIN
+    description: The subdomain for the application, Istio-ingress configuration
+    default: "ai"
+  - name: DOMAIN
+    description: The domain to use for the application, Istio-ingress configuration
+    default: "uds.dev"
+    prompt: true
+    sensitive: true
+  - name: MODEL
+    description: The default LLM model to use for chat and summarization
+    default: llama-cpp-python
+    prompt: true
+    sensitive: false
+  - name: SYSTEM_PROMPT
+    description: The default system prompt to use for the LLM
+    default: "You may be provided with a list of files and their content in the following structure: [{filename: test.pdf, text: some fake text}]. Using the content of these files as context, you should refer to specific files by their filename when relevant and use the text content to provide detailed, accurate, and relevant information or answers. If the user asks questions that can be answered based on the content of the provided files, use the appropriate files text in your response. If the user requests clarification, further details, or specific information about a file, respond using the most relevant file or files. If necessary, combine information from multiple files to form a comprehensive response."
+    prompt: true
+    sensitive: false
+  - name: TEMPERATURE
+    description: The default temperature for the LLM
+    default: "0.1"
+    prompt: true
+    sensitive: false
+  - name: DISABLE_KEYCLOAK
+    description: Disable keycloak true or false
+    default: "false"
+    prompt: true
+    sensitive: false
+  - name: MESSAGE_LENGTH_LIMIT
+    description: The maximum length of a message to allow from the user to the backend
+    default: "10000"
+    prompt: true
+    sensitive: false
+
+components:
+  - name: cowabunga-ui
+    required: true
+    only:
+      flavor: upstream
+    charts:
+      - name: cowabunga-ui
+        namespace: cowabunga
+        localPath: chart
+        valuesFiles:
+          - "values/upstream-values.yaml"
+        # x-release-please-start-version
+        version: 0.14.0
+        # x-release-please-end
+    images:
+      - ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - ghcr.io/defenseunicorns/cowabungaai/ui-migrations:###ZARF_PKG_TMPL_IMAGE_VERSION###
+    actions:
+      onDeploy:
+        after:
+          - wait:
+              cluster:
+                kind: Job
+                name: cowabunga-ui-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
+                namespace: cowabunga
+                condition: complete
+          - wait:
+              cluster:
+                kind: Deployment
+                name: cowabunga-ui
+                namespace: cowabunga
+                condition: Available

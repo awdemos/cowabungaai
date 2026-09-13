@@ -1,0 +1,116 @@
+{
+  "batch": "naming_quality",
+  "batch_index": 5,
+  "assessments": {
+    "naming_quality": 84.0
+  },
+  "dimension_notes": {
+    "naming_quality": {
+      "evidence": [
+        "get_initial_messages_base and get_ending_messages_base in run_create_base.py construct SSE event strings from scratch via from_assistant_stream_event_to_str rather than retrieving existing data",
+        "process() in ConfigHandler (config.py) is a generic verb that obscures its actual behavior of reloading or removing model configs on file system events",
+        "_to_list_of_strs() in embeddings.py uses informal abbreviation 'strs' inconsistent with the codebase's otherwise full-word naming",
+        "Consistent crud_ prefix across all data access modules with uniform create/get/list/update/delete method names",
+        "Descriptive from_*_to_* converter naming pattern in converters.py (e.g., from_assistant_stream_event_to_str)",
+        "Boolean predicates consistently use is_ and can_ prefixes (is_supported_mime_type, can_use_rag)"
+      ],
+      "impact_scope": "module",
+      "fix_scope": "single_edit",
+      "confidence": "medium"
+    }
+  },
+  "dimension_judgment": {
+    "naming_quality": {
+      "dimension_character": "The codebase demonstrates strong, consistent naming conventions—CRUD prefixes, descriptive DTO names, and honest boolean predicates—marred by a handful of local mismatches where 'get' methods construct data and a generic 'process' verb obscures intent.",
+      "score_rationale": "Most names communicate intent clearly and conventions are applied consistently across ~137 files. The score reflects isolated name/behavior mismatches and minor abbreviation drift rather than systemic problems."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "naming_quality",
+      "identifier": "get_builds_not_gets",
+      "summary": "get_initial_messages_base and get_ending_messages_base construct event strings rather than retrieve existing data",
+      "related_files": [
+        "src/cowabunga_api/typedef/runs/run_create_base.py"
+      ],
+      "evidence": [
+        "get_initial_messages_base builds SSE event strings from scratch using from_assistant_stream_event_to_str(ThreadRunCreated(...))",
+        "get_ending_messages_base similarly constructs a ThreadRunCompleted event string from scratch"
+      ],
+      "suggestion": "Rename to build_initial_messages_base and build_ending_messages_base to accurately reflect their construction behavior",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "naming_quality",
+      "identifier": "generic_process_verb",
+      "summary": "ConfigHandler.process() uses a generic verb that obscures its config-reloading intent",
+      "related_files": [
+        "src/cowabunga_api/utils/config.py"
+      ],
+      "evidence": [
+        "def process(self, event) handles created/modified/deleted file events by calling load_config_file or remove_model_by_config"
+      ],
+      "suggestion": "Rename to _handle_config_file_event or _reload_config_on_event to communicate the actual behavior",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    },
+    {
+      "dimension": "naming_quality",
+      "identifier": "informal_strs_abbreviation",
+      "summary": "_to_list_of_strs uses informal abbreviation inconsistent with full-word conventions",
+      "related_files": [
+        "src/cowabunga_api/routers/openai/embeddings.py"
+      ],
+      "evidence": [
+        "def _to_list_of_strs(v: list) -> list[str]: uses 'strs' instead of 'strings'"
+      ],
+      "suggestion": "Rename to _to_list_of_strings to match the codebase's preference for full words",
+      "confidence": "medium",
+      "impact_scope": "local",
+      "fix_scope": "single_edit"
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "Converter/builder methods occasionally inherit 'get' prefixes from surrounding CRUD-oriented code where retrieval is the dominant pattern"
+    ],
+    "likely_symptoms": [
+      "get_initial_messages_base",
+      "get_ending_messages_base"
+    ],
+    "possible_false_positives": []
+  },
+  "context_updates": {
+    "naming_quality": {
+      "add": [
+        {
+          "header": "Consistent CRUD naming conventions",
+          "description": "All data access modules use crud_ prefix with uniform create/get/list/update/delete method names, making the data layer predictable.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Descriptive from_*_to_* converter pattern",
+          "description": "Converter functions in converters.py use verbose but clear from_source_to_target naming, eliminating ambiguity about transformation direction.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "Boolean predicate naming discipline",
+          "description": "Functions returning booleans consistently use is_ or can_ prefixes (is_supported_mime_type, can_use_rag), making conditional logic readable.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "id_ convention for avoiding builtin shadowing",
+          "description": "The parameter name id_ is used consistently across CRUD modules to avoid shadowing Python's built-in id, treated as an established convention.",
+          "settled": true,
+          "positive": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,141 @@
+name: pytest
+
+on:
+  pull_request:
+    types:
+      - opened            # default trigger
+      - reopened          # default trigger
+      - synchronize       # default trigger
+      - ready_for_review  # don't run on draft PRs
+      - milestoned        # allows us to trigger on bot PRs
+    paths:
+      - "**"
+      - "!.github/**"
+      - ".github/workflows/pytest.yaml"
+      - ".github/workflows/pytest-shim.yaml"
+
+      # Ignore docs and website things
+      - "!**.md"
+      - "!docs/**"
+      - "!adr/**"
+      - "!website/**"
+      - "!netlify.toml"
+
+      # Ignore updates to generic github metadata files
+      - "!CODEOWNERS"
+      - "!.gitignore"
+      - "!LICENSE"
+
+      # Ignore UI things (no Python)
+      - "!src/leapfrogai_ui/**"
+      - "!packages/ui/**"
+
+# Declare default permissions as read only.
+permissions:
+  contents: read
+  packages: read
+  id-token: write # This is needed for OIDC federation.
+
+concurrency:
+  group: pytest-integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - name: Setup Python
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install Python Dependencies
+        run: pip install ".[dev]" "src/leapfrogai_api" "src/leapfrogai_sdk"
+
+      - name: Setup Repeater
+        env:
+          LOCAL_VERSION: e2e-test
+        run: |
+          make docker-repeater
+          docker run -p 50051:50051 -d --name=repeater ghcr.io/defenseunicorns/leapfrogai/repeater:$LOCAL_VERSION
+
+      - name: Run Pytest
+        run: make test-api-unit
+        env:
+          LFAI_RUN_REPEATER_TESTS: true
+          DEV: true
+
+  integration:
+    runs-on: ai-ubuntu-big-boy-8-core
+    if: ${{ !github.event.pull_request.draft }}
+
+    # If basic unit tests fail, do not run this job
+    needs: pytest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - name: Setup Python
+        uses: actions/setup-python@f677139bbe7f9c59b41e40162b753c062f5d49a3 # v5.2.0
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install Python Deps
+        run: pip install ".[dev]" "src/leapfrogai_api" "src/leapfrogai_sdk"
+
+      - name: Setup Repeater
+        env:
+          LOCAL_VERSION: e2e-test
+        run: |
+          make docker-repeater
+          docker run -p 50051:50051 -d --name=repeater ghcr.io/defenseunicorns/leapfrogai/repeater:$LOCAL_VERSION
+
+      - name: Setup UDS Cluster
+        uses: ./.github/actions/uds-cluster
+        with:
+          registry1Username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          registry1Password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
+          ghToken: ${{ secrets.GITHUB_TOKEN }}
+          chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
+
+      - name: Setup API and Turso
+        uses: ./.github/actions/lfai-core
+
+      - name: Generate Secrets
+        id: generate_secrets
+        run: |
+          TURSO_PASS=$(cat <(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9!@#$%^&*()_+-=[]{}|;:,.<>?' | head -c 20) <(echo '!@1Aa') | fold -w1 | shuf | tr -d '\n')
+          echo "::add-mask::$TURSO_PASS"
+          echo "TURSO_PASS=$TURSO_PASS" >> $GITHUB_OUTPUT
+          TURSO_ANON_KEY=$(uds zarf tools kubectl get secret turso-bootstrap-jwt -n leapfrogai -o jsonpath='{.data.anon-key}' | base64 -d)
+          echo "::add-mask::$TURSO_ANON_KEY"
+          echo "TURSO_ANON_KEY=$TURSO_ANON_KEY" >> $GITHUB_OUTPUT
+
+      - name: Verify Secrets
+        run: |
+          echo "TURSO_ANON_KEY is set: ${{ steps.generate_secrets.outputs.TURSO_ANON_KEY != '' }}"
+          echo "TURSO_PASS is set: ${{ steps.generate_secrets.outputs.TURSO_PASS != '' }}"
+
+      - name: Setup Text-Embeddings
+        run: |
+          make build-text-embeddings LOCAL_VERSION=e2e-test
+          docker image prune -af
+          uds zarf package deploy packages/text-embeddings/zarf-package-text-embeddings-amd64-e2e-test.tar.zst -l=trace --confirm
+          rm packages/text-embeddings/zarf-package-text-embeddings-amd64-e2e-test.tar.zst
+
+      - name: Run Integration Tests
+        env:
+          TURSO_ANON_KEY: ${{ steps.generate_secrets.outputs.TURSO_ANON_KEY }}
+          TURSO_PASS: ${{ steps.generate_secrets.outputs.TURSO_PASS }}
+          TURSO_EMAIL: doug@uds.dev
+          TURSO_URL: https://turso-kong.uds.dev
+          # Turn off NIAH tests that are not applicable for integration testing using the Repeater model
+          LFAI_RUN_NIAH_TESTS: "false"
+        run: |
+          make test-user-pipeline
+          env $(cat .env | xargs) python -m pytest -v -s tests/integration/api

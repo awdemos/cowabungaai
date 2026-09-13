@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/uds.schema.json
+
+kind: UDSBundle
+metadata:
+  name: cowabungaai
+  description: A UDS bundle for deploying CowabungaAI
+  version: 0.13.1-upstream
+
+packages:
+
+  # API
+  - name: cowabunga-api
+    repository: ghcr.io/defenseunicorns/packages/uds/cowabungaai/cowabunga-api
+    ref: 0.13.1-upstream
+
+  # Chat Model
+  - name: llama-cpp-python
+    repository: ghcr.io/defenseunicorns/packages/uds/cowabungaai/llama-cpp-python
+    ref: 0.13.1-upstream
+
+  # Text Embeddings Model
+  - name: text-embeddings
+    repository: ghcr.io/defenseunicorns/packages/uds/cowabungaai/text-embeddings
+    ref: 0.13.1-upstream
+
+  # Transcription Model
+  - name: whisper
+    repository: ghcr.io/defenseunicorns/packages/uds/cowabungaai/whisper
+    ref: 0.13.1-upstream
+
+  # UI
+  - name: cowabunga-ui
+    repository: ghcr.io/defenseunicorns/packages/uds/cowabungaai/cowabunga-ui
+    ref: 0.13.1-upstream

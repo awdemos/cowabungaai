@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: lfai-{{ .Values.nameOverride }}
+        {{- include "chart.selectorLabels" . | nindent 8 }}
+    spec:
+      runtimeClassName: {{ .Values.gpu.runtimeClassName }}
+      # It's necessary to include the ###ZARF_DATA_INJECTION_MARKER### somewhere in the podspec, otherwise data injections will not occur.
+      initContainers:
+        - name: data-loader
+          image: cgr.dev/chainguard/bash:latest
+          securityContext:
+            {{- toYaml .Values.modelInjectionContainer.securityContext | nindent 12 }}
+          # This command looks for the Zarf "data injection marker" which is a timestamped file that is injected after everything else and marks the injection as complete.
+          command:
+            [
+              "sh",
+              "-c",
+              'while [ ! -f ###ZARF_CONST_MODEL_PATH###/###ZARF_DATA_INJECTION_MARKER### ]; do echo "waiting for zarf data sync" && sleep 1; done; echo "we are done waiting!"',
+            ]
+          resources:
+            {{- toYaml .Values.modelInjectionContainer.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.modelInjectionContainer.volumeMounts | nindent 12 }}
+      volumes:
+        - name: cowabungaai-pv-storage
+          persistentVolumeClaim:
+            claimName: lfai-{{ .Values.nameOverride }}-pv-claim
+        - name: cowabungaai-sdk-configmap
+          configMap:
+            name: "{{ .Values.nameOverride }}-sdk-configmap"
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Values.nameOverride }}-engine-configmap"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: cowabungaai-pv-storage
+              mountPath: "/data"
+            - name: cowabungaai-sdk-configmap
+              mountPath: "/home/cowabungaai/config.yaml"
+              subPath: "config.yaml"
+              readOnly: true
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

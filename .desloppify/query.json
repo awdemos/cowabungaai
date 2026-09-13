@@ -1,0 +1,677 @@
+{
+  "command": "show",
+  "query": "review",
+  "status_filter": "open",
+  "total": 10,
+  "summary": {
+    "by_tier": {
+      "T1": 10
+    },
+    "by_detector": {
+      "review": 10
+    },
+    "files": 1
+  },
+  "by_file": {
+    ".": [
+      {
+        "id": "review::.::holistic::abstraction_fitness::unearned_helper_object_or_default",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "object_or_default is a generic helper that restates a ternary None check without added policy",
+        "detail": {
+          "holistic": true,
+          "dimension": "abstraction_fitness",
+          "related_files": [
+            "src/cowabunga_api/backend/helpers.py",
+            "src/cowabunga_api/routers/openai/assistants.py"
+          ],
+          "evidence": [
+            "backend/helpers.py line 121: 'def object_or_default(obj: Any | None, _default: Any) -> Any: if obj is not None: return obj else: return _default'",
+            "Used 9 times in routers/openai/assistants.py lines 141-159 for name, description, instructions, model, tools, tool_resources, temperature, top_p, metadata, response_format"
+          ],
+          "suggestion": "Inline the expression: use 'request.name or old_assistant.name' where falsy-vs-None distinction does not matter, or 'request.name if request.name is not None else old_assistant.name' where it does. Then remove object_or_default and its tests.",
+          "reasoning": "",
+          "summary_hash": "b7bb8867"
+        }
+      },
+      {
+        "id": "review::.::holistic::ai_generated_debt::client_docstring_bloat",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Multi-line docstrings on trivial one-line getter functions in test utilities",
+        "detail": {
+          "holistic": true,
+          "dimension": "ai_generated_debt",
+          "related_files": [
+            "tests/utils/client.py"
+          ],
+          "evidence": [
+            "get_cowabunga_model() has a 6-line docstring for 'return os.getenv(\"COWABUNGA_MODEL\", \"vllm\")'",
+            "get_openai_key() has a 9-line docstring for a 3-line env-var lookup",
+            "get_openai_model(), get_cowabunga_api_key(), get_cowabunga_api_url(), get_cowabunga_api_url_base(), openai_client(), cowabunga_client() all repeat the same pattern"
+          ],
+          "suggestion": "Replace verbose Google-style docstrings on trivial getters with single-line docstrings or omit them entirely; the types and behavior are self-evident.",
+          "reasoning": "",
+          "summary_hash": "b68ff31c"
+        }
+      },
+      {
+        "id": "review::.::holistic::ai_generated_debt::crud_base_defensive_overengineering",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Meaningless 'except Exception as e: raise e' blocks in CRUD base methods",
+        "detail": {
+          "holistic": true,
+          "dimension": "ai_generated_debt",
+          "related_files": [
+            "src/cowabunga_api/data/crud_base.py"
+          ],
+          "evidence": [
+            "create() wraps result parsing in try/except that catches Exception and immediately re-raises it without modification",
+            "list() and update() repeat the same pattern",
+            "The only genuine handler is the IndexError branch in get(); the bare 'except Exception as e: raise e' adds no value and obscures the real control flow"
+          ],
+          "suggestion": "Remove the no-op except/raise wrappers; keep only the IndexError guard in get().",
+          "reasoning": "",
+          "summary_hash": "68207efe"
+        }
+      },
+      {
+        "id": "review::.::holistic::ai_generated_debt::data_path_defensive_overengineering",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Unnecessary try/except around a file-open that already raises FileNotFoundError",
+        "detail": {
+          "holistic": true,
+          "dimension": "ai_generated_debt",
+          "related_files": [
+            "tests/utils/data_path.py"
+          ],
+          "evidence": [
+            "The function wraps 'with open(data_path, \"r\"):' in try/except FileNotFoundError just to re-raise FileNotFoundError with a slightly different message",
+            "A restating comment 'Check if the file exists' sits directly above the with-open block"
+          ],
+          "suggestion": "Remove the try/except wrapper and the restating comment; let the built-in FileNotFoundError propagate naturally, or use data_path.exists() for an explicit guard.",
+          "reasoning": "",
+          "summary_hash": "03062254"
+        }
+      },
+      {
+        "id": "review::.::holistic::ai_generated_debt::model_download_restating_comments",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Restating comments echo the code without adding insight",
+        "detail": {
+          "holistic": true,
+          "dimension": "ai_generated_debt",
+          "related_files": [
+            "packages/llama-cpp-python/scripts/model_download.py"
+          ],
+          "evidence": [
+            "'# Create .model directory if it doesn't exist' precedes os.makedirs('.model', exist_ok=True)",
+            "'# Check if the model is already downloaded' precedes os.path.exists(OUTPUT_FILE)",
+            "'# Download the model using huggingface_hub' precedes hf_hub_download(...)",
+            "'# Rename to expected output file if different' precedes os.rename(...)",
+            "'# Verify checksum if provided' precedes a hashlib check"
+          ],
+          "suggestion": "Delete the restating comments; the code is self-explanatory. Keep only comments that explain WHY (e.g., why HF_HUB_ENABLE_HF_TRANSFER is set).",
+          "reasoning": "",
+          "summary_hash": "4f87bfcc"
+        }
+      },
+      {
+        "id": "review::.::holistic::ai_generated_debt::router_boilerplate_exception_handling",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Identical copy-pasted try/except \u2192 HTTPException boilerplate across OpenAI router files",
+        "detail": {
+          "holistic": true,
+          "dimension": "ai_generated_debt",
+          "related_files": [
+            "src/cowabunga_api/routers/openai/assistants.py",
+            "src/cowabunga_api/routers/openai/threads.py",
+            "src/cowabunga_api/routers/openai/runs.py",
+            "src/cowabunga_api/routers/openai/messages.py",
+            "src/cowabunga_api/routers/openai/files.py",
+            "src/cowabunga_api/routers/openai/vector_stores.py"
+          ],
+          "evidence": [
+            "assistants.py create_assistant: 'except Exception as exc: raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=\"Unable to parse assistant request\") from exc'",
+            "threads.py modify_thread: identical shape with 'Unable to parse thread request'",
+            "runs.py modify_run: identical shape with 'Unable to parse run request'",
+            "messages.py create_message: identical shape with 'Unable to parse message request'",
+            "files.py upload_file: identical shape with 'Failed to parse file'",
+            "A second identical pattern for 500-level errors appears in the same files"
+          ],
+          "suggestion": "Extract a small helper in the routers package (e.g., raise_parse_error, raise_db_error) or use a FastAPI exception handler to avoid repeating the same 4-line block in every router.",
+          "reasoning": "",
+          "summary_hash": "844e9274"
+        }
+      },
+      {
+        "id": "review::.::holistic::api_surface_coherence::crud_delete_silent_exception_swallowing",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "CRUDBase.delete catches all exceptions and silently returns False",
+        "detail": {
+          "holistic": true,
+          "dimension": "api_surface_coherence",
+          "related_files": [
+            "src/cowabunga_api/data/crud_base.py"
+          ],
+          "evidence": [
+            "CRUDBase.delete contains 'except Exception: return False' which hides database connection errors, permission errors, and syntax errors from callers"
+          ],
+          "suggestion": "Let specific exceptions propagate or wrap them in a custom CRUD exception that preserves the original cause. Only return False when the delete genuinely matched zero rows.",
+          "reasoning": "",
+          "summary_hash": "274196ca"
+        }
+      },
+      {
+        "id": "review::.::holistic::api_surface_coherence::crud_filter_typing_inconsistency",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "CRUD subclasses use inconsistent filter types: some typed models, some raw dicts",
+        "detail": {
+          "holistic": true,
+          "dimension": "api_surface_coherence",
+          "related_files": [
+            "src/cowabunga_api/data/crud_assistant.py",
+            "src/cowabunga_api/data/crud_vector_store.py",
+            "src/cowabunga_api/data/crud_file_object.py",
+            "src/cowabunga_api/data/crud_thread.py",
+            "src/cowabunga_api/data/crud_run.py",
+            "src/cowabunga_api/data/crud_message.py",
+            "src/cowabunga_api/data/crud_api_key.py"
+          ],
+          "evidence": [
+            "CRUDAssistant, CRUDVectorStore, and CRUDFileObject override get/list/delete to accept typed filter models (FilterAssistant, FilterVectorStore, FilterFileObject)",
+            "CRUDThread, CRUDRun, and CRUDMessage inherit base methods directly and pass raw dict filters like {'id': thread_id}",
+            "CRUDAPIKey overrides get/list but still accepts dict | None, not a typed filter model"
+          ],
+          "suggestion": "Standardize all CRUD subclasses to use typed filter models that convert to dict internally, or remove typed filter subclasses and consistently use dicts across the layer. Pick one pattern and apply it uniformly.",
+          "reasoning": "",
+          "summary_hash": "db513c83"
+        }
+      },
+      {
+        "id": "review::.::holistic::api_surface_coherence::database_client_api_divergence",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Database client backends expose unequal query surfaces and different factory parameter names",
+        "detail": {
+          "holistic": true,
+          "dimension": "api_surface_coherence",
+          "related_files": [
+            "src/cowabunga_api/data/database/turso_client.py",
+            "src/cowabunga_api/data/database/supabase_client.py",
+            "src/cowabunga_api/data/database/base.py"
+          ],
+          "evidence": [
+            "TursoQueryBuilder adds neq, gt, gte, lt, lte, order, limit, range beyond the QueryBuilder ABC",
+            "SupabaseQueryBuilder only wraps the Supabase query object and does not expose the extra filter methods",
+            "TursoClient.create(base_url, auth_token) vs SupabaseClient.create(supabase_url, supabase_key) \u2014 parameter names differ even though semantic roles are identical",
+            "Callers depending on backend-specific query capabilities will fail silently when the factory returns the other backend"
+          ],
+          "suggestion": "Expand the QueryBuilder ABC to include the common filter methods, implement them for both backends, and align factory parameter names (e.g., url and key for both). Alternatively, document which query operations are backend-specific.",
+          "reasoning": "",
+          "summary_hash": "04a637f8"
+        }
+      },
+      {
+        "id": "review::.::holistic::api_surface_coherence::overloaded_return_types",
+        "tier": 1,
+        "confidence": "high",
+        "summary": "Public functions return union types based on runtime flags rather than separate endpoints",
+        "detail": {
+          "holistic": true,
+          "dimension": "api_surface_coherence",
+          "related_files": [
+            "src/cowabunga_api/backend/composer.py",
+            "src/cowabunga_api/routers/openai/runs.py",
+            "src/cowabunga_api/routers/openai/chat.py",
+            "src/cowabunga_api/routers/openai/completions.py"
+          ],
+          "evidence": [
+            "Composer.generate_response returns Run | StreamingResponse based on request.stream flag",
+            "create_run in runs.py returns Run | StreamingResponse based on runtime branching",
+            "chat_complete returns either a ChatCompletionResponse or a StreamingResponse based on req.stream",
+            "complete in completions.py similarly branches on req.stream with no return type annotation"
+          ],
+          "suggestion": "Either split streaming and non-streaming into separate functions with distinct return types, or document the union return type explicitly and ensure callers handle both cases. Adding return type annotations to chat_complete and complete would also help.",
+          "reasoning": "",
+          "summary_hash": "3a99dbb3"
+        }
+      }
+    ]
+  },
+  "total_matching": 117,
+  "hidden": {
+    "by_detector": {
+      "review": 107
+    },
+    "total": 107
+  },
+  "noise_budget": 10,
+  "noise_global_budget": 0,
+  "narrative": {
+    "phase": "stagnation",
+    "headline": "\u26a0 13 security issues \u2014 review before other cleanup. Score plateaued at 71.0 for 5 scans. Test health (0.0%) is where the breakthrough is. (117 review work items \u2014 run `desloppify show review --status open`)",
+    "dimensions": {
+      "lowest_dimensions": [
+        {
+          "name": "Test health",
+          "strict": 0.0,
+          "failing": 58,
+          "impact": 0.0
+        },
+        {
+          "name": "Test strategy",
+          "strict": 42.0,
+          "failing": 7,
+          "impact": 0.0,
+          "subjective": true,
+          "impact_description": "re-review to improve"
+        },
+        {
+          "name": "Cross-module arch",
+          "strict": 58.0,
+          "failing": 6,
+          "impact": 0.0,
+          "subjective": true,
+          "impact_description": "re-review to improve"
+        }
+      ],
+      "biggest_gap_dimensions": [
+        {
+          "name": "Test health",
+          "lenient": 40.7,
+          "strict": 0.0,
+          "gap": 40.7,
+          "wontfix_count": 0
+        },
+        {
+          "name": "Code quality",
+          "lenient": 89.1,
+          "strict": 80.3,
+          "gap": 8.8,
+          "wontfix_count": 0
+        },
+        {
+          "name": "File health",
+          "lenient": 98.8,
+          "strict": 96.2,
+          "gap": 2.6,
+          "wontfix_count": 0
+        }
+      ],
+      "stagnant_dimensions": [
+        {
+          "name": "Code quality",
+          "strict": 80.3,
+          "stuck_scans": 5
+        },
+        {
+          "name": "Security",
+          "strict": 96.9,
+          "stuck_scans": 5
+        },
+        {
+          "name": "File health",
+          "strict": 96.2,
+          "stuck_scans": 5
+        },
+        {
+          "name": "Duplication",
+          "strict": 97.1,
+          "stuck_scans": 5
+        },
+        {
+          "name": "Test health",
+          "strict": 0.0,
+          "stuck_scans": 5
+        }
+      ]
+    },
+    "actions": [
+      {
+        "type": "reorganize",
+        "detector": "orphaned",
+        "count": 70,
+        "description": "70 orphaned issues \u2014 delete dead files or relocate with `desloppify move`",
+        "command": "desloppify show orphaned --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 1,
+        "lane": "restructure"
+      },
+      {
+        "type": "reorganize",
+        "detector": "flat_dirs",
+        "count": 1,
+        "description": "1 flat_dirs issues \u2014 create subdirectories and use `desloppify move`",
+        "command": "desloppify show flat_dirs --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 2,
+        "lane": "restructure"
+      },
+      {
+        "type": "reorganize",
+        "detector": "facade",
+        "count": 21,
+        "description": "21 facade issues \u2014 flatten re-export facades or consolidate barrel files",
+        "command": "desloppify show facade --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 3,
+        "lane": "restructure"
+      },
+      {
+        "type": "refactor",
+        "detector": "structural",
+        "count": 7,
+        "description": "7 structural work items \u2014 review large files \u2014 split only when responsibilities are clearly separable",
+        "command": "desloppify show structural --status open",
+        "impact": 0.0,
+        "dimension": "File health",
+        "priority": 4,
+        "lane": "refactor_0"
+      },
+      {
+        "type": "refactor",
+        "detector": "test_coverage",
+        "count": 58,
+        "description": "58 test_coverage work items \u2014 review test coverage gaps \u2014 focus on critical modules with many importers first; defer test writing until code quality issues are resolved",
+        "command": "desloppify show test_coverage --status open",
+        "impact": 0.0,
+        "dimension": "Test health",
+        "priority": 5,
+        "lane": "test_coverage"
+      },
+      {
+        "type": "refactor",
+        "detector": "signature",
+        "count": 15,
+        "description": "15 signature work items \u2014 consolidate inconsistent function signatures",
+        "command": "desloppify show signature --status open",
+        "impact": 0.0,
+        "dimension": "Unknown",
+        "priority": 6,
+        "lane": "refactor_0"
+      },
+      {
+        "type": "refactor",
+        "detector": "responsibility_cohesion",
+        "count": 3,
+        "description": "3 responsibility_cohesion work items \u2014 split modules with too many responsibilities \u2014 extract focused sub-modules",
+        "command": "desloppify show responsibility_cohesion --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 7,
+        "lane": "refactor_0"
+      },
+      {
+        "type": "refactor",
+        "detector": "boilerplate_duplication",
+        "count": 7,
+        "description": "7 boilerplate_duplication work items \u2014 extract shared boilerplate into reusable helpers or base classes",
+        "command": "desloppify show boilerplate_duplication --status open",
+        "impact": 0.0,
+        "dimension": "Duplication",
+        "priority": 8,
+        "lane": "refactor_0"
+      },
+      {
+        "type": "refactor",
+        "detector": "review",
+        "count": 117,
+        "description": "117 review work items need investigation \u2014 run `desloppify show review --status open` to see them",
+        "command": "desloppify show review --status open",
+        "impact": 0.0,
+        "dimension": "Unknown",
+        "priority": 9,
+        "lane": "refactor_1"
+      },
+      {
+        "type": "manual_fix",
+        "detector": "smells",
+        "count": 91,
+        "description": "91 smells issues \u2014 inspect with `desloppify next` and fix manually",
+        "command": "desloppify show smells --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 10,
+        "lane": "refactor_0"
+      },
+      {
+        "type": "manual_fix",
+        "detector": "global_mutable_config",
+        "count": 1,
+        "description": "1 global_mutable_config work items \u2014 refactor module-level mutable state \u2014 use explicit init functions or dependency injection",
+        "command": "desloppify show global_mutable_config --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 11,
+        "lane": "refactor_2"
+      },
+      {
+        "type": "manual_fix",
+        "detector": "stale_exclude",
+        "count": 3,
+        "description": "3 stale_exclude work items \u2014 remove stale exclusion or verify it's still needed",
+        "command": "desloppify show stale_exclude --status open",
+        "impact": 0.0,
+        "dimension": "Code quality",
+        "priority": 12,
+        "lane": "refactor_3"
+      },
+      {
+        "type": "manual_fix",
+        "detector": "security",
+        "count": 13,
+        "description": "13 security work items \u2014 review and fix security issues \u2014 prioritize by severity",
+        "command": "desloppify show security --status open",
+        "impact": 0.0,
+        "dimension": "Security",
+        "priority": 13,
+        "lane": "refactor_0"
+      },
+      {
+        "type": "debt_review",
+        "detector": null,
+        "description": "2.1 pts of wontfix debt \u2014 review stale decisions",
+        "command": "desloppify show --status wontfix",
+        "gap": 2.1,
+        "priority": 14,
+        "lane": "debt_review"
+      }
+    ],
+    "strategy": {
+      "fixer_leverage": {
+        "auto_fixable_count": 0,
+        "total_count": 641,
+        "coverage": 0.0,
+        "impact_ratio": 0.0,
+        "recommendation": "none"
+      },
+      "lanes": {
+        "restructure": {
+          "actions": [
+            1,
+            2,
+            3
+          ],
+          "file_count": 92,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "refactor_0": {
+          "actions": [
+            4,
+            6,
+            7,
+            8,
+            10,
+            13
+          ],
+          "file_count": 69,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "refactor_1": {
+          "actions": [
+            9
+          ],
+          "file_count": 1,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "refactor_2": {
+          "actions": [
+            11
+          ],
+          "file_count": 1,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "refactor_3": {
+          "actions": [
+            12
+          ],
+          "file_count": 3,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "test_coverage": {
+          "actions": [
+            5
+          ],
+          "file_count": 54,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        },
+        "debt_review": {
+          "actions": [
+            14
+          ],
+          "file_count": 0,
+          "total_impact": 0.0,
+          "automation": "manual",
+          "run_first": false
+        }
+      },
+      "can_parallelize": true,
+      "hint": "6 independent workstreams, safe to parallelize. Rescan after each phase to verify. Review: 117 issue(s) \u2014 `desloppify show review --status open`."
+    },
+    "tools": {
+      "fixers": [],
+      "move": {
+        "available": true,
+        "relevant": true,
+        "reason": "70 orphaned files + 1 flat directories",
+        "usage": "desloppify move <source> <dest> [--dry-run]"
+      },
+      "plan": {
+        "command": "desloppify plan",
+        "description": "Generate prioritized markdown cleanup plan"
+      },
+      "badge": {
+        "generated": true,
+        "in_readme": false,
+        "path": "scorecard.png",
+        "recommendation": "Add to README: <img src=\"scorecard.png\" width=\"100%\">"
+      }
+    },
+    "debt": {
+      "overall_gap": 2.1,
+      "wontfix_count": 0,
+      "worst_dimension": "Test health",
+      "worst_gap": 40.7,
+      "trend": "stable"
+    },
+    "milestone": null,
+    "primary_action": {
+      "command": "desloppify show orphaned --status open",
+      "description": "70 orphaned issues \u2014 delete dead files or relocate with `desloppify move`"
+    },
+    "why_now": "6 independent workstreams, safe to parallelize. Rescan after each phase to verify. Review: 117 issue(s) \u2014 `desloppify show review --status open`.",
+    "verification_step": {
+      "command": "desloppify scan",
+      "reason": "revalidate after changes"
+    },
+    "risk_flags": [
+      {
+        "type": "wontfix_gap",
+        "severity": "medium",
+        "message": "Strict/lenient gap is 2.1 pts with 0 wontfix issues"
+      }
+    ],
+    "strict_target": {
+      "target": 85.0,
+      "current": 71.0,
+      "gap": 14.0,
+      "state": "below",
+      "warning": null
+    },
+    "reminders": [
+      {
+        "type": "review_issues_pending",
+        "message": "117 review work item(s) need investigation. Run `desloppify show review --status open` to see the work queue.",
+        "command": "desloppify show review --status open",
+        "priority": 1,
+        "severity": "high"
+      }
+    ],
+    "reminder_history": {
+      "zone_classification": 3,
+      "report_scores": 6,
+      "feedback_nudge": 3,
+      "stagnant_nudge": 20,
+      "wontfix_growing": 3,
+      "review_issues_pending": 3
+    }
+  },
+  "config": {
+    "target_strict_score": 95,
+    "review_max_age_days": 30,
+    "review_batch_max_files": 80,
+    "holistic_max_age_days": 30,
+    "generate_scorecard": true,
+    "badge_path": "scorecard.png",
+    "exclude": [
+      ".logs",
+      "src/leapfrogai_sdk/build",
+      ".claude/pairup_sessions/"
+    ],
+    "ignore": [],
+    "ignore_metadata": {},
+    "zone_overrides": {},
+    "review_dimensions": [],
+    "large_files_threshold": 0,
+    "props_threshold": 0,
+    "issue_noise_budget": 10,
+    "issue_noise_global_budget": 0,
+    "execution_log_max_entries": 10000,
+    "needs_rescan": false,
+    "languages": {},
+    "commit_tracking_enabled": true,
+    "commit_pr": 0,
+    "commit_default_branch": "",
+    "commit_message_template": "desloppify: {status} {count} issue(s) \u2014 {summary}",
+    "trust_plugins": false,
+    "transition_messages": {},
+    "hermes_enabled": false,
+    "hermes_models": {
+      "execute": "openrouter:x-ai/grok-4.20-beta",
+      "review": "openrouter:google/gemini-3.1-pro-preview"
+    }
+  }
+}

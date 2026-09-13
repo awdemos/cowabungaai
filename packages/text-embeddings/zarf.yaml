@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/zarf.schema.json
+
+kind: ZarfPackageConfig
+metadata:
+  name: text-embeddings
+  version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+  description: >
+    text embeddings model
+
+constants:
+  - name: IMAGE_VERSION
+    value: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+
+variables:
+  - name: GPU_LIMIT
+    description: The GPU limit for the model inferencing.
+    default: "0"
+    pattern: "^[0-9]+$"
+  - name: GPU_RUNTIME
+    description: The GPU class name for the model inferencing. Leave blank for CPU-only.
+    default: ""
+    pattern: "^(nvidia)?$"
+  - name: PVC_SIZE
+    description: Size of the PVC used for model storage.
+    default: "15Gi"
+    pattern: "^[0-9]+[a-zA-Z]+$"
+  - name: PVC_ACCESS_MODE
+    description: Access mode of the PVC used for model storage.
+    default: "ReadWriteOnce"
+    pattern: "^(ReadWriteOnce|ReadOnlyMany|ReadWriteMany)$"
+  - name: PVC_STORAGE_CLASS
+    description: Storage class of the PVC used for model storage.
+    default: "local-path"
+
+components:
+  - name: text-embeddings-model
+    required: true
+    only:
+      flavor: upstream
+    charts:
+      - name: text-embeddings-model
+        namespace: cowabungaai
+        localPath: chart
+        releaseName: text-embeddings-model
+        # x-release-please-start-version
+        version: 0.14.0
+        # x-release-please-end
+        valuesFiles:
+          - "values/upstream-values.yaml"
+    images:
+      - ghcr.io/defenseunicorns/cowabungaai/text-embeddings:###ZARF_PKG_TMPL_IMAGE_VERSION###
+      - cgr.dev/chainguard/bash:latest
+    dataInjections:
+      - source: .model/
+        target:
+          namespace: cowabungaai
+          selector: app=lfai-text-embeddings
+          container: data-loader
+          path: /data/.model
+        compress: true
+    actions:
+      onCreate:
+        before:
+          # NOTE: This assumes python is installed and in $PATH and 'huggingface_hub[cli,hf_transfer]' has been installed
+          - cmd: python scripts/model_download.py
+            env:
+              - REPO_ID=hkunlp/instructor-xl
+              - REVISION=ce48b213095e647a6c3536364b9fa00daf57f436

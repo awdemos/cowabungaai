@@ -1,0 +1,240 @@
+{
+  "batch": "design_coherence",
+  "batch_index": 17,
+  "assessments": {
+    "design_coherence": 62.0
+  },
+  "dimension_notes": {
+    "design_coherence": {
+      "evidence": [
+        "src/cowabunga_sdk/llm.py LLM decorator contains 4 nearly identical service methods with duplicated token-counting, finish-reason determination, and response-building logic",
+        "src/cowabunga_evals/runners/niah_runner.py NIAH_Runner class mixes dataset loading, vector store lifecycle, assistant management, API orchestration, scoring, and cleanup in 412 LOC",
+        "src/cowabunga_api/data/database/turso_auth.py TursoAuthClient handles API key auth, JWT validation, session auth, user creation, password sign-in, and token generation in one 371 LOC class",
+        "src/cowabunga_api/data/crud_run.py and crud_vector_store.py duplicate the same update boilerplate pattern instead of extracting it to CRUDBase",
+        "src/cowabunga_api/routers/openai/chat.py chat_complete and chat_complete_stream_raw duplicate model lookup, message conversion, and request building",
+        "src/cowabunga_api/data/crud_api_key.py CRUDAPIKey.create() performs cryptographic key generation via backend.security.api_key, mixing business logic with data access",
+        "Mechanical orphaned flags are overwhelmingly false positives due to FastAPI router mounting, package __init__ re-exports, test imports, and CLI entry points"
+      ],
+      "impact_scope": "subsystem",
+      "fix_scope": "multi_file_refactor",
+      "confidence": "high"
+    }
+  },
+  "dimension_judgment": {
+    "design_coherence": {
+      "dimension_character": "The codebase shows coherent structural patterns in its routers and CRUD layer, but several core modules suffer from mixed responsibilities and duplicated logic. The FastAPI routers and CRUDBase are well-designed, while the SDK decorator, eval runner, and auth client accumulate too many concerns in single classes or functions.",
+      "score_rationale": "A score of 62.0 reflects localized but significant design debt in core files: the LLM decorator duplicates ~80% of logic across four methods, the NIAH runner conflates six distinct responsibilities, and the Turso auth client combines three auth strategies with user management. These are not surface-level issues; they increase maintenance cost and bug surface area."
+    }
+  },
+  "issues": [
+    {
+      "dimension": "design_coherence",
+      "identifier": "llm_decorator_monolith",
+      "summary": "LLM decorator contains four nearly identical completion methods with duplicated logic",
+      "related_files": ["src/cowabunga_sdk/llm.py"],
+      "evidence": [
+        "ChatComplete (lines 134-158), ChatCompleteStream (160-197), Complete (199-219), and CompleteStream (221-255) each build a gen stream, consume it, count tokens, determine finish reason, and build a response",
+        "_build_gen_stream manually maps ~15 request fields to GenerationConfig one by one (lines 114-131)",
+        "Token-counting and finish-reason logic is duplicated across all four methods"
+      ],
+      "suggestion": "Extract a shared helper that accepts a stream and request, consumes it, counts tokens, determines finish reason, and returns the response. Use a single data-driven mapping or dataclass conversion for GenerationConfig instead of 15 manual assignments.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "concern_verdict": "confirmed",
+      "concern_fingerprint": "b9df60947b4d2798"
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "niah_runner_mixed_responsibilities",
+      "summary": "NIAH runner class mixes dataset loading, vector store lifecycle, API orchestration, scoring, and cleanup",
+      "related_files": ["src/cowabunga_evals/runners/niah_runner.py"],
+      "evidence": [
+        "__init__ has 13 optional parameters and performs side effects: loads dataset, creates vector store (lines 41-95)",
+        "run_experiment is ~140 LOC handling file I/O, assistant creation, thread/run API calls, response parsing, scoring, cleanup, and result collation (lines 97-248)",
+        "cleanup, _load_niah_dataset, _create_assistant, _create_vector_store, _delete_file are all distinct responsibilities bundled in one class"
+      ],
+      "suggestion": "Split into focused collaborators: a DatasetLoader, a VectorStoreManager, an ExperimentRunner that orchestrates them, and a separate Scorer. Move side effects out of __init__.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "concern_verdict": "confirmed",
+      "concern_fingerprint": "0ef50dc6363919de"
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "turso_auth_mixed_responsibilities",
+      "summary": "TursoAuthClient combines three authentication strategies with user management and session handling",
+      "related_files": ["src/cowabunga_api/data/database/turso_auth.py"],
+      "evidence": [
+        "Single class implements API key auth (_authenticate_api_key), JWT auth (_authenticate_jwt), session auth (_authenticate_session), user creation (create_user), and password sign-in (sign_in) across 371 LOC",
+        "set_session both stores tokens in memory and writes to the database",
+        "create_api_key generates tokens and persists hashes, mixing cryptography with storage"
+      ],
+      "suggestion": "Decompose into focused classes: Authenticator (JWT, API key, session strategies), UserService (create_user, sign_in), and SessionStore. Each should have a single responsibility.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "concern_verdict": "confirmed",
+      "concern_fingerprint": "b512caca0a31de65"
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "crud_update_boilerplate_duplication",
+      "summary": "CRUD update pattern is duplicated across subclasses instead of living in CRUDBase",
+      "related_files": [
+        "src/cowabunga_api/data/crud_run.py",
+        "src/cowabunga_api/data/crud_vector_store.py"
+      ],
+      "evidence": [
+        "crud_run.py update (lines 14-29) and crud_vector_store.py update both repeat: data, _count = await self.db.table(...).update(...).eq(...).execute(); _, response = data; if response: del response[0]['user_id']; return self.model(**response[0]); return None",
+        "The pattern is identical but not extracted to the base class"
+      ],
+      "suggestion": "Move the common update-and-return pattern into CRUDBase.update(), allowing subclasses to override only when they need custom behavior.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "single_edit",
+      "concern_verdict": "confirmed",
+      "concern_fingerprint": "e6c9d8829ef3016b"
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "chat_router_method_duplication",
+      "summary": "Chat router duplicates model lookup and request building across sync and stream methods",
+      "related_files": ["src/cowabunga_api/routers/openai/chat.py"],
+      "evidence": [
+        "chat_complete (lines 24-52) and chat_complete_stream_raw (lines 55-80) both perform identical model lookup, message-to-chat-item conversion, and ChatCompletionRequest construction",
+        "The only difference is the final call (stream_chat_completion vs stream_chat_completion_raw)"
+      ],
+      "suggestion": "Extract a shared helper that builds the model backend and gRPC request from a ChatCompletionRequest. Both router methods should call it.",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "concern_verdict": "confirmed"
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "crud_api_key_business_logic_leak",
+      "summary": "CRUDAPIKey.create generates cryptographic keys, mixing business logic with data access",
+      "related_files": ["src/cowabunga_api/data/crud_api_key.py"],
+      "evidence": [
+        "create() calls APIKey.generate() from backend.security.api_key (line 67)",
+        "It also masks the returned key with a checksum formatter (line 113)",
+        "The CRUD layer should not know about key generation algorithms or masking formats"
+      ],
+      "suggestion": "Extract API key generation and masking into a dedicated service module (e.g., services/api_key_service.py) that uses CRUDAPIKey for persistence but owns the cryptographic and formatting logic.",
+      "confidence": "high",
+      "impact_scope": "module",
+      "fix_scope": "multi_file_refactor",
+      "concern_verdict": "confirmed",
+      "concern_fingerprint": "6bd3a1d96a0d1881"
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "composer_orphaned_false_positive",
+      "summary": "Mechanical orphaned flag is incorrect for composer.py",
+      "related_files": ["src/cowabunga_api/backend/composer.py"],
+      "evidence": [
+        "composer.py is actively imported by src/cowabunga_api/routers/openai/runs.py at line 18"
+      ],
+      "suggestion": "",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "concern_verdict": "dismissed",
+      "concern_fingerprint": "c58d753cd6eb0ea0",
+      "reasoning": "The file is imported by routers/openai/runs.py. The mechanical scanner missed the import because it may not traverse FastAPI router imports correctly."
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "grpc_client_orphaned_false_positive",
+      "summary": "Mechanical orphaned flag is incorrect for grpc_client.py",
+      "related_files": ["src/cowabunga_api/backend/grpc_client.py"],
+      "evidence": [
+        "grpc_client.py is imported by src/cowabunga_api/routers/openai/chat.py at line 6"
+      ],
+      "suggestion": "",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "concern_verdict": "dismissed",
+      "concern_fingerprint": "edb2cc1c474f4b1c",
+      "reasoning": "The file is imported by routers/openai/chat.py. The mechanical scanner missed the import."
+    },
+    {
+      "dimension": "design_coherence",
+      "identifier": "helpers_orphaned_false_positive",
+      "summary": "Mechanical orphaned flag is incorrect for helpers.py",
+      "related_files": ["src/cowabunga_api/backend/helpers.py"],
+      "evidence": [
+        "helpers.py is imported by src/cowabunga_api/backend/grpc_client.py and src/cowabunga_api/routers/openai/audio.py"
+      ],
+      "suggestion": "",
+      "confidence": "high",
+      "impact_scope": "local",
+      "fix_scope": "single_edit",
+      "concern_verdict": "dismissed",
+      "concern_fingerprint": "086379409cd78445",
+      "reasoning": "The file is imported by grpc_client.py and routers/openai/audio.py. The mechanical scanner missed the imports."
+    }
+  ],
+  "retrospective": {
+    "root_causes": [
+      "LLM decorator grew organically by copy-pasting methods instead of extracting shared logic",
+      "NIAH runner and Turso auth client were written as single-file scripts and never refactored into focused classes",
+      "CRUDBase was designed as a generic base but subclasses still duplicate common update/response patterns",
+      "Mechanical scanner's orphaned detector produces false positives for FastAPI routers, package re-exports, and CLI entry points"
+    ],
+    "likely_symptoms": [
+      "llm_decorator_monolith",
+      "niah_runner_mixed_responsibilities",
+      "turso_auth_mixed_responsibilities",
+      "crud_update_boilerplate_duplication"
+    ],
+    "possible_false_positives": [
+      "Most orphaned file flags are false positives due to FastAPI router mounting, package __init__ re-exports, test imports, and CLI entry points"
+    ]
+  },
+  "context_updates": {
+    "design_coherence": {
+      "add": [
+        {
+          "header": "FastAPI routers follow consistent focused pattern",
+          "description": "OpenAI and Cowabunga router modules each handle a single resource domain with predictable CRUD+exception patterns. This is a positive, maintainable design.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "CRUDBase provides clean generic data access abstraction",
+          "description": "The Generic CRUDBase with TypeVar pattern gives a consistent interface across all data models. Most subclasses are thin and focused.",
+          "settled": true,
+          "positive": true
+        },
+        {
+          "header": "LLM decorator duplicates logic across four service methods",
+          "description": "The cowabunga_sdk.llm.LLM decorator adds ChatComplete, ChatCompleteStream, Complete, and CompleteStream with ~80% duplicated token-counting, finish-reason, and response-building logic. This should be extracted into shared helpers.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "NIAH runner conflates six distinct responsibilities",
+          "description": "niah_runner.py handles dataset loading, vector store lifecycle, assistant management, thread/run orchestration, scoring, and cleanup in a single 412 LOC class. This is a clear mixed-responsibility hotspot.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Turso auth client bundles three auth strategies plus user management",
+          "description": "turso_auth.py mixes API key auth, JWT auth, session auth, user creation, password sign-in, and token generation in one 371 LOC class. Each strategy deserves its own focused module.",
+          "settled": true,
+          "positive": false
+        },
+        {
+          "header": "Mechanical orphaned flags are mostly false positives",
+          "description": "The scanner flagged ~44 files as orphaned, but nearly all are actively used via FastAPI router mounting, package __init__ re-exports, test imports, or CLI entry points. This reduces trust in the orphaned detector for this codebase.",
+          "settled": true,
+          "positive": false
+        }
+      ]
+    }
+  }
+}

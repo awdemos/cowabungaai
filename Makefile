@@ -1,0 +1,383 @@
+ARCH ?= amd64
+REG_PORT ?= 5000
+REG_NAME ?= registry
+LOCAL_VERSION ?= $(shell git rev-parse --short HEAD)
+BUILDER ?= default
+DOCKER_FLAGS :=
+ZARF_FLAGS :=
+FLAVOR := upstream
+SILENT_DOCKER_FLAGS := --quiet
+SILENT_ZARF_FLAGS := --no-progress -l warn --no-color
+MAX_JOBS := 4
+######################################################################################
+
+.PHONY: help
+help: ## Display this help information
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
+		| sort | awk 'BEGIN {FS = ":.*?## "}; \
+		{printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+## Clean up targets for test artifacts, cachce, etc.
+include mk-clean.mk
+
+gen-proto: ## Generate the Rust SDK from protobuf definitions
+	cd rust && cargo run -p cowabunga-sdk --bin gen-proto
+
+gen-python: ## Generate the protobufs for the OpenAI typing within the legacy cowabunga_api module
+	python3 -m grpc_tools.protoc -I legacy/cowabunga_sdk/proto \
+			--pyi_out=legacy/. \
+			--python_out=legacy/. \
+			--grpc_python_out=legacy/. \
+			legacy/cowabunga_sdk/proto/cowabunga_sdk/**/*.proto
+
+local-registry: ## Start up a local container registry. Errors in this target are ignored.
+	@echo "Creating local Docker registry..."
+	-@docker run -d -p ${REG_PORT}:5000 --restart=always --name ${REG_NAME} registry:2
+	@echo "Local registry created at localhost:${REG_PORT}"
+
+
+# Clean up: Stop and remove the local registry
+clean-registry:
+	@echo "Cleaning up..."
+	@docker stop ${REG_NAME}
+	@docker rm ${REG_NAME}
+
+sdk-wheel: ## build wheels for the legacy cowabunga_sdk package as a dependency for other lfai components
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} -f legacy/cowabunga_sdk/Dockerfile .
+
+sdk-wheel-registry: sdk-wheel local-registry ## tag and push the SDK image to the local registry for docker-container builders
+	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-sdk:${LOCAL_VERSION}
+
+docker-turso:
+	## Build the turso database image with API server
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} -f packages/turso/Dockerfile packages/turso/.
+	docker tag ghcr.io/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
+
+turso-upstream-images: local-registry ## pull/push upstream Turso dependency images to the local registry
+	docker pull ghcr.io/tursodatabase/libsql-server:latest
+	docker tag ghcr.io/tursodatabase/libsql-server:latest localhost:${REG_PORT}/tursodatabase/libsql-server:latest
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/tursodatabase/libsql-server:latest
+	docker pull alpine:3.19
+	docker tag alpine:3.19 localhost:${REG_PORT}/library/alpine:3.19
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/library/alpine:3.19
+	docker pull curlimages/curl:latest
+	docker tag curlimages/curl:latest localhost:${REG_PORT}/curlimages/curl:latest
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/curlimages/curl:latest
+
+build-turso: local-registry docker-turso turso-upstream-images
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/turso:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/turso --flavor ${FLAVOR} -a ${ARCH} -o packages/turso --registry-override=ghcr.io=localhost:${REG_PORT} --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+docker-api: local-registry
+	@echo $(DOCKER_FLAGS)
+	@echo $(ZARF_FLAGS)
+ifeq ($(FLAVOR),upstream)
+	## Build the Rust API image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} -f packages/api/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
+endif
+	## Build the migration container for this version of the API
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} -f Dockerfile.migrations .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
+
+build-api: local-registry docker-api ## Build the cowabunga-api Rust container and Zarf package
+ifeq ($(FLAVOR),upstream)
+	## Push the images to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-api:${LOCAL_VERSION}
+endif
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/api-migrations:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/api --flavor ${FLAVOR} -a ${ARCH} -o packages/api --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+docker-ui:
+	## Build the Rust UI image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} -f packages/ui/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
+
+	## Build the migration container for the version of the UI
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} -t ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} -f Dockerfile.migrations .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
+
+build-ui: local-registry docker-ui ## Build the cowabunga-ui Rust container and Zarf package
+	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/cowabunga-ui:${LOCAL_VERSION}
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/ui-migrations:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/ui --flavor ${FLAVOR} -a ${ARCH} -o packages/ui --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+docker-llama-cpp-python: sdk-wheel-registry
+	## Build the image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} -f packages/llama-cpp-python/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION}
+
+build-llama-cpp-python: local-registry docker-llama-cpp-python ## Build the llama-cpp-python (cpu) container and Zarf package
+	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/llama-cpp-python:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/llama-cpp-python --flavor ${FLAVOR} -a ${ARCH} -o packages/llama-cpp-python --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+docker-vllm: sdk-wheel-registry
+	## Build the image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} -f packages/vllm/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION}
+
+build-vllm: local-registry docker-vllm ## Build the vllm container and Zarf package
+	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/vllm:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/vllm --flavor ${FLAVOR} -a ${ARCH} -o packages/vllm --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+docker-text-embeddings: sdk-wheel-registry
+	## Build the image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} -f packages/text-embeddings/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION}
+
+build-text-embeddings: local-registry docker-text-embeddings ## Build the text-embeddings container and Zarf package
+	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/text-embeddings:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/text-embeddings --flavor ${FLAVOR} -a ${ARCH} -o packages/text-embeddings --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+
+docker-whisper: sdk-wheel-registry
+	## Build the image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} -f packages/whisper/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION}
+
+build-whisper: local-registry docker-whisper ## Build the whisper container and zarf package
+	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/whisper:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/whisper --flavor ${FLAVOR} -a ${ARCH} -o packages/whisper --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+docker-repeater: sdk-wheel-registry
+	## Build the image (and tag it for the local registry)
+	docker build --load --builder ${BUILDER} ${DOCKER_FLAGS} --platform=linux/${ARCH} --build-arg LOCAL_VERSION=${LOCAL_VERSION} --build-arg SDK_REGISTRY=localhost:${REG_PORT} -t ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} -f packages/repeater/Dockerfile .
+	docker tag ghcr.io/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION} localhost:${REG_PORT}/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION}
+
+build-repeater: local-registry docker-repeater ## Build the repeater container and zarf package
+	## Push the image to the local registry (Zarf is super slow if the image is only in the local daemon)
+	docker push ${DOCKER_FLAGS} localhost:${REG_PORT}/defenseunicorns/cowabungaai/repeater:${LOCAL_VERSION}
+
+	## Build the Zarf package
+	uds zarf package create packages/repeater --flavor ${FLAVOR} -a ${ARCH} -o packages/repeater --registry-override=ghcr.io=localhost:${REG_PORT} --insecure-skip-tls-verify --set IMAGE_VERSION=${LOCAL_VERSION} ${ZARF_FLAGS} --confirm
+
+build-cpu: build-api build-ui build-llama-cpp-python build-text-embeddings build-whisper ## Build all zarf packages for a cpu-enabled deployment of LFAI
+
+build-gpu: build-api build-ui build-vllm build-text-embeddings build-whisper ## Build all zarf packages for a gpu-enabled deployment of LFAI
+
+build-all: build-cpu build-gpu ## Build all of the LFAI packages
+
+include tests/Makefile
+
+include packages/k3d-gpu/Makefile
+
+silent-build-api-parallel:
+	@echo "API build started"
+	@mkdir -p .logs
+	@$(MAKE) build-api DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-api.log 2>&1
+	@echo "API build completed"
+
+silent-build-turso-parallel:
+	@echo "Turso build started"
+	@mkdir -p .logs
+	@$(MAKE) build-turso DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-turso.log 2>&1
+	@echo "Turso build completed"
+
+silent-build-ui-parallel:
+	@echo "UI build started"
+	@mkdir -p .logs
+	@$(MAKE) build-ui DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-ui.log 2>&1
+	@echo "UI build completed"
+
+silent-build-vllm-parallel:
+	@echo "VLLM build started"
+	@mkdir -p .logs
+	@$(MAKE) build-vllm DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-vllm.log 2>&1
+	@echo "VLLM build completed"
+
+silent-build-llama-cpp-python-parallel:
+	@echo "llama-cpp-python build started"
+	@mkdir -p .logs
+	@$(MAKE) build-llama-cpp-python DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-llama-cpp-python.log 2>&1
+	@echo "llama-cpp-python build completed"
+
+silent-build-text-embeddings-parallel:
+	@echo "text-embeddings build started"
+	@mkdir -p .logs
+	@$(MAKE) build-text-embeddings DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-text-embeddings.log 2>&1
+	@echo "text-embeddings build completed"
+
+silent-build-whisper-parallel:
+	@echo "whisper build started"
+	@mkdir -p .logs
+	@$(MAKE) build-whisper DOCKER_FLAGS="$(DOCKER_FLAGS) $(SILENT_DOCKER_FLAGS)" ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" > .logs/build-whisper.log 2>&1
+	@echo "whisper build completed"
+
+silent-build-all:
+	@echo "Starting parallel builds..."
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-ui-parallel silent-build-vllm-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@echo "All builds completed"
+
+silent-build-gpu:
+	@echo "Starting parallel builds..."
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-ui-parallel silent-build-vllm-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@echo "All builds completed"
+
+silent-build-cpu:
+	@echo "Starting parallel builds..."
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-ui-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@echo "All builds completed"
+
+# Define individual deployment targets
+silent-deploy-turso-package:
+	@echo "Starting Turso deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/turso/zarf-package-turso-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-turso.log 2>&1
+	@echo "Turso deployment completed"
+
+silent-deploy-api-package:
+	@echo "Starting API deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/api/zarf-package-cowabunga-api-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-api.log 2>&1
+	@echo "API deployment completed"
+
+silent-deploy-ui-package:
+	@echo "Starting UI deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/ui/zarf-package-cowabunga-ui-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-ui.log 2>&1
+	@echo "UI deployment completed"
+
+silent-deploy-llama-cpp-python-package:
+	@echo "Starting llama-cpp-python deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/llama-cpp-python/zarf-package-llama-cpp-python-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-llama-cpp-python.log 2>&1
+	@echo "llama-cpp-python deployment completed"
+
+silent-deploy-vllm-package:
+	@echo "Starting VLLM deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/vllm/zarf-package-vllm-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-vllm.log 2>&1
+	@echo "VLLM deployment completed"
+
+silent-deploy-text-embeddings-package:
+	@echo "Starting text-embeddings deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/text-embeddings/zarf-package-text-embeddings-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-text-embeddings.log 2>&1
+	@echo "text-embeddings deployment completed"
+
+silent-deploy-whisper-package:
+	@echo "Starting whisper deployment..."
+	@mkdir -p .logs
+	@uds zarf package deploy packages/whisper/zarf-package-whisper-${ARCH}-${LOCAL_VERSION}.tar.zst ${ZARF_FLAGS} --confirm > .logs/deploy-whisper.log 2>&1
+	@echo "whisper deployment completed"
+
+silent-deploy-cpu:
+	@echo "Logs at .logs/*.log"
+	@echo "Starting parallel deployments..."
+	@echo "Deploying the rest of the packages..."
+	@$(MAKE) -j${MAX_JOBS} \
+		silent-deploy-api-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-ui-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-llama-cpp-python-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-text-embeddings-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-whisper-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
+	@echo "All deployments completed"
+
+silent-deploy-gpu:
+	@echo "Logs at .logs/*.log"
+	@echo "Starting parallel deployments..."
+	@echo "Deploying API and models..."
+	@$(MAKE) -j${MAX_JOBS} \
+		silent-deploy-api-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS}" \
+		silent-deploy-vllm-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS}" \
+		silent-deploy-text-embeddings-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS} --set=GPU_RUNTIME='nvidia'" \
+		silent-deploy-whisper-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS} --set=GPU_RUNTIME='nvidia'"
+	@echo "Deploying UI..."
+	@$(MAKE) silent-deploy-ui-package ZARF_FLAGS="${ZARF_FLAGS} ${SILENT_ZARF_FLAGS} --set=MODEL='vllm'"
+	@echo "All deployments completed"
+
+silent-fresh-cowabunga-gpu:
+	@echo "Cleaning up previous artifacts..."
+	@$(MAKE) clean-artifacts > /dev/null 2>&1
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@echo "Creating a uds gpu enabled cluster..."
+	@$(MAKE) create-uds-gpu-cluster DOCKER_FLAGS="${SILENT_DOCKER_FLAGS}" ZARF_FLAGS="${SILENT_ZARF_FLAGS}" > .logs/create-uds-gpu-cluster.log 2>&1
+	@echo "Testing the uds gpu cluster..."
+	@$(MAKE) test-uds-gpu-cluster > .logs/test-uds-gpu-cluster.log 2>&1
+	@echo "Building all packages..."
+	@$(MAKE) silent-build-gpu
+	@echo "Deploying all packages..."
+	@$(MAKE) silent-deploy-gpu
+	@echo "Done!"
+	@echo "UI is available at https://ai.uds.dev"
+	@echo "API is available at https://cowabunga-api.uds.dev"
+
+silent-fresh-cowabunga-cpu:
+	@echo "Cleaning up previous artifacts..."
+	@$(MAKE) clean-artifacts > /dev/null 2>&1
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@echo "Creating a uds cpu-only cluster..."
+	@$(MAKE) create-uds-cpu-cluster DOCKER_FLAGS="${SILENT_DOCKER_FLAGS}" ZARF_FLAGS="${SILENT_ZARF_FLAGS}" > .logs/create-uds-cpu-cluster.log 2>&1
+	@echo "Building all packages..."
+	@$(MAKE) silent-build-cpu
+	@echo "Deploying all packages..."
+	@$(MAKE) silent-deploy-cpu
+	@echo "Done!"
+	@echo "UI is available at https://ai.uds.dev"
+	@echo "API is available at https://cowabunga-api.uds.dev"
+
+# Turso-specific targets (alternative to Supabase)
+silent-build-cpu-turso:
+	@echo "Starting parallel builds (Turso variant)..."
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@$(MAKE) -j${MAX_JOBS} silent-build-api-parallel silent-build-turso-parallel silent-build-ui-parallel silent-build-llama-cpp-python-parallel silent-build-text-embeddings-parallel silent-build-whisper-parallel
+	@echo "All builds completed"
+
+silent-deploy-cpu-turso:
+	@echo "Logs at .logs/*.log"
+	@echo "Starting parallel deployments (Turso variant)..."
+	@echo "Deploying Turso first..."
+	@$(MAKE) silent-deploy-turso-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
+	@echo "Deploying the rest of the packages..."
+	@$(MAKE) -j${MAX_JOBS} \
+		silent-deploy-api-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-ui-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-llama-cpp-python-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-text-embeddings-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)" \
+		silent-deploy-whisper-package ZARF_FLAGS="$(ZARF_FLAGS) $(SILENT_ZARF_FLAGS)"
+	@echo "All deployments completed"
+
+silent-fresh-cowabunga-cpu-turso:
+	@echo "Cleaning up previous artifacts..."
+	@$(MAKE) clean-artifacts > /dev/null 2>&1
+	@echo "Logs at .logs/*.log"
+	@mkdir -p .logs
+	@echo "Creating a uds cpu-only cluster..."
+	@$(MAKE) create-uds-cpu-cluster DOCKER_FLAGS="${SILENT_DOCKER_FLAGS}" ZARF_FLAGS="${SILENT_ZARF_FLAGS}" > .logs/create-uds-cpu-cluster.log 2>&1
+	@echo "Building all packages (Turso variant)..."
+	@$(MAKE) silent-build-cpu-turso
+	@echo "Deploying all packages..."
+	@$(MAKE) silent-deploy-cpu-turso
+	@echo "Done!"
+	@echo "UI is available at https://ai.uds.dev"
+	@echo "API is available at https://cowabunga-api.uds.dev"
+	@echo "Turso database is available at turso.cowabungaai.svc.cluster.local:8080"

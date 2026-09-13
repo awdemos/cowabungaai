@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "chart.fullname" . }}-migrations-{{ .Values.api.migration.image.tag | default .Chart.AppVersion }}
+  namespace: {{ .Release.Namespace | default "cowabungaai" }}
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "chart.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: turso-migrations
+          image: "{{ .Values.api.migration.image.repository }}:{{ .Values.api.migration.image.tag | default .Chart.AppVersion }}"
+          {{- with .Values.api.migration.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          command: ["/usr/local/bin/migrate"]
+          securityContext:
+            {{- toYaml .Values.api.migration.securityContext | nindent 12 }}
+      restartPolicy: Never
+  backoffLimit: 4

@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/zarf.schema.json
+
+kind: ZarfPackageConfig
+metadata:
+  description: "CowabungaAI API common"
+  name: cowabunga-api-common
+  version: "###ZARF_PKG_TMPL_IMAGE_VERSION###"
+
+components:
+  - name: cowabunga-api
+    description: "The CowabungaAI Rust API that shadows the OpenAI API specification"
+    required: true
+    charts:
+      - name: cowabunga
+        namespace: cowabungaai
+        localPath: ../chart
+        # x-release-please-start-version
+        version: 0.14.0
+        # x-release-please-end
+    actions:
+      onDeploy:
+        after:
+          - wait:
+              cluster:
+                kind: Job
+                name: cowabunga-api-migrations-###ZARF_PKG_TMPL_IMAGE_VERSION###
+                namespace: cowabungaai
+                condition: complete

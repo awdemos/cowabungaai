@@ -1,0 +1,36 @@
+name: ui-test
+on:
+  pull_request:
+    paths:
+      # Ignore all workflows except this one
+      - ".github/workflows/ui-test.yaml"
+
+      # LFAI-UI things (no Python)
+      - "src/leapfrogai_ui/**"
+      - "packages/ui/**"
+
+# Declare default permissions as read only.
+permissions: read-all
+
+
+concurrency:
+  group: ui-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ui-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          node-version-file: 'src/leapfrogai_ui/package.json'
+
+      - name: Install Dependencies
+        run: npm --prefix src/leapfrogai_ui ci
+
+      - name: Run Unit Tests
+        run: npm --prefix src/leapfrogai_ui run test:unit

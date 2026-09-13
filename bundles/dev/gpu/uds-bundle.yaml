@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/uds-cli/uds-cli/v0.16.0/uds.schema.json
+
+kind: UDSBundle
+metadata:
+  name: cowabungaai
+  description: A UDS bundle for deploying CowabungaAI with GPU support
+  version: dev
+
+packages:
+
+  # OpenAI-like API
+  - name: cowabunga-api
+    path: ../../../packages/api
+    ref: dev
+
+  # Model for generic chat and summarization
+  - name: vllm
+    path: ../../../packages//vllm
+    ref: dev
+
+  # Model for providing vector embeddings for text
+  - name: text-embeddings
+    path: ../../../packages/text-embeddings
+    ref: dev
+
+  # Model for converting audio to text
+  - name: whisper
+    path: ../../../packages/whisper
+    ref: dev
+
+  # UI
+  - name: cowabunga-ui
+    path: ../../../packages/ui/
+    ref: dev

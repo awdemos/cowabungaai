@@ -1,0 +1,111 @@
+# End-to-end testing that deploys and tests API, llama-cpp-python, and text-embeddings
+
+name: e2e-text-backend-full-cpu
+on:
+  pull_request:
+    types:
+      - opened            # default trigger
+      - reopened          # default trigger
+      - synchronize       # default trigger
+      - ready_for_review  # don't run on draft PRs
+      - milestoned        # allows us to trigger on bot PRs
+    paths:
+      # Catch-all
+      - "**"
+
+      # Ignore updates to the .github directory, unless it's this current file
+      - "!.github/**"
+      - ".github/workflows/e2e-text-backend-full-cpu.yaml"
+      - ".github/actions/uds-cluster/action.yaml"
+
+      # Ignore docs and website things
+      - "!**.md"
+      - "!docs/**"
+      - "!adr/**"
+      - "!website/**"
+      - "!netlify.toml"
+
+      # Ignore updates to generic github metadata files
+      - "!CODEOWNERS"
+      - "!.gitignore"
+      - "!LICENSE"
+
+      # Ignore local development files
+      - "!.pre-commit-config.yaml"
+      - "!tasks.yaml"
+
+      # Ignore non e2e tests changes
+      - "!tests/pytest/**"
+
+      # Ignore LFAI-UI source code changes
+      - "!src/leapfrogai_ui/**"
+
+      # Ignore changes to unrelated packages
+      - "!packages/k3d-gpu/**"
+      - "!packages/repeater/**"
+      - "!packages/ui/**"
+      - "!packages/vllm/**"
+      - "!packages/whisper/**"
+
+
+
+concurrency:
+  group: e2e-text-backend-full-cpu-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e_text_backend_full_cpu:
+    runs-on: ai-ubuntu-big-boy-8-core
+    if: ${{ !github.event.pull_request.draft }}
+
+    permissions:
+      contents: read
+      packages: read
+      id-token: write # This is needed for OIDC federation.
+
+    steps:
+        - name: Checkout Repo
+          uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+        - name: Setup Python
+          uses: ./.github/actions/python
+
+        - name: Setup UDS Cluster
+          uses: ./.github/actions/uds-cluster
+          with:
+            registry1Username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+            registry1Password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
+            ghToken: ${{ secrets.GITHUB_TOKEN }}
+            chainguardIdentity: ${{ secrets.CHAINGUARD_IDENTITY }}
+
+        - name: Setup LFAI-API and Turso
+          uses: ./.github/actions/lfai-core
+
+        ##########
+        # text-embeddings
+        ##########
+        - name: Deploy text-embeddings
+          run: |
+            make build-text-embeddings LOCAL_VERSION=e2e-test
+            docker image prune -af
+            uds zarf package deploy packages/text-embeddings/zarf-package-text-embeddings-amd64-e2e-test.tar.zst -l=trace --confirm
+            rm packages/text-embeddings/zarf-package-text-embeddings-amd64-e2e-test.tar.zst
+
+        ##########
+        # llama
+        ##########
+        - name: Deploy llama-cpp-python
+          run: |
+            make build-llama-cpp-python LOCAL_VERSION=e2e-test
+            docker image prune -af
+            uds zarf package deploy packages/llama-cpp-python/zarf-package-llama-cpp-python-amd64-e2e-test.tar.zst -l=trace --confirm
+            rm packages/llama-cpp-python/zarf-package-llama-cpp-python-amd64-e2e-test.tar.zst
+
+        ##########
+        # Test
+        ##########
+        - name: Test Text Backend
+          env:
+              COWABUNGA_MODEL: llama-cpp-python
+          run: |
+            python -m pytest ./tests/e2e/test_text_backend_full.py -v
