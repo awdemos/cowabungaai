@@ -1,5 +1,8 @@
 # Development
 
+> [!WARNING]
+> **Legacy documentation.** This document is retained for historical reference and may no longer reflect the current codebase. For up-to-date architecture and design documentation, see the [AI-generated wiki](./1.Overview.md) in this directory.
+
 > [!IMPORTANT]
 > Please read the entirety of the root [README.md](../README.md) and the [CowabungaAI documentation website](https://docs.leapfrog.ai/docs/local-deploy-guide/quick_start/) prior to reading this document. Also, please refer to the [CONTRIBUTING.md](../.github/CONTRIBUTING.md) for rules on contributing to the CowabungaAI project.
 

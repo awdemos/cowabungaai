@@ -1,5 +1,8 @@
 # Quick Start Commands
 
+> [!WARNING]
+> **Legacy documentation.** This document is retained for historical reference and may no longer reflect the current codebase. For up-to-date architecture and design documentation, see the [AI-generated wiki](./1.Overview.md) in this directory.
+
 > Copy-paste commands for setting up a GPU-enabled CowabungaAI cluster.
 
 ## Prerequisites
