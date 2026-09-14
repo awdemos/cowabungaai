@@ -22,6 +22,10 @@ RUN rm -f packages/llama-cpp-python/build/*.whl && \
 
 RUN pip install packages/llama-cpp-python/build/lfai_llama_cpp_python*.whl --no-index --find-links=packages/llama-cpp-python/build/
 
+# Prepare an empty /data/.model directory in the builder stage so the
+# runtime stage (which has no shell) can copy it in.
+RUN mkdir -p /data/.model && touch /data/.model/.keep
+
 # hardened and slim python image
 FROM ghcr.io/defenseunicorns/leapfrogai/python:3.11 AS runtime
 
@@ -41,6 +45,16 @@ LABEL org.opencontainers.image.version="0.14.0"
 LABEL maintainer="CowabungaAI Team"
 
 COPY --from=builder /cowabungaai/.venv/ /cowabungaai/.venv/
+
+# The runtime image is a minimal Wolfi Python image and lacks libgomp, which
+# llama-cpp-python's libllama.so requires.
+COPY --from=builder /usr/lib/libgomp.so.1 /usr/lib/libgomp.so.1
+COPY --from=builder /usr/lib/libgomp.so.1.0.0 /usr/lib/libgomp.so.1.0.0
+COPY --from=builder /usr/lib/libstdc++.so.6 /usr/lib/libstdc++.so.6
+COPY --from=builder /usr/lib/libgcc_s.so.1 /usr/lib/libgcc_s.so.1
+
+# Model weights are mounted here at runtime (PVC in K8s, volume in Docker).
+COPY --from=builder /data/.model /data/.model
 
 # --chmod: build contexts with a restrictive umask (e.g. 0077 checkouts) would
 # otherwise preserve 0600 modes and the non-root runtime user couldn't read these.
