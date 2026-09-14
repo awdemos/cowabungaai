@@ -42,7 +42,9 @@ LABEL maintainer="CowabungaAI Team"
 
 COPY --from=builder /cowabungaai/.venv/ /cowabungaai/.venv/
 
-COPY packages/text-embeddings/main.py .
+# --chmod: restrictive umask checkouts preserve 0600 modes and the non-root
+# runtime user cannot read the source otherwise.
+COPY --chmod=644 packages/text-embeddings/main.py .
 
 EXPOSE 50051
 
